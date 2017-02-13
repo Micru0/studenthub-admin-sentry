@@ -28,13 +28,6 @@
 
             <ion-spinner *ngIf="isLoading"></ion-spinner>
             <span *ngIf="!isLoading">Sign in</span>
-
-          </button>
-
-          <button type="button" ion-button small clear
-            *ngIf="!keyboard.isKeyboardOpen"
-            (click)="loadForgotPasswordPage()" >
-            Forgot password?
           </button>
         </div>
 

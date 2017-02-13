@@ -2,7 +2,10 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Platform, Events } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
+import { LoginPage } from '../pages/start-pages/login/login';
 import { HomePage } from '../pages/logged-in/home/home';
+
+import { AuthService } from '../providers/auth.service';
 
 
 @Component({
@@ -12,14 +15,14 @@ export class MyApp implements OnInit {
   rootPage;
 
   constructor(
-      platform: Platform,
+      private _platform: Platform,
       private _events: Events,
       private _auth: AuthService,
       private _zone: NgZone
   ) {
-    platform.ready().then(() => {
+    this._platform.ready().then(() => {
         // Native functions
-        if (platform.is('cordova') && this._platform.is('mobile')) {
+        if (this._platform.is('cordova') && this._platform.is('mobile')) {
             StatusBar.styleDefault();
             Splashscreen.hide();
         }
