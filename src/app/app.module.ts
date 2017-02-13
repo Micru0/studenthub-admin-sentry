@@ -1,30 +1,40 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
+
+// Start Pages [Logged Out]
+import { LoginPage } from '../pages/start-pages/login/login';
+// Pages when logged in
+import { HomePage } from '../pages/logged-in/home/home';
+
+// Providers / Services
+import { AuthService } from '../providers/auth.service';
+import { ConfigService } from '../providers/config.service';
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
+    // Logged Out
+    LoginPage,
+    // Logged In
+    HomePage
+  ],
+  entryComponents: [
+    MyApp,
+    // Logged Out
+    LoginPage,
+    // Logged In
+    HomePage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
   ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
+  providers: [
+      {provide: ErrorHandler, useClass: IonicErrorHandler},
+      AuthService, //Handles all Authorization
+      ConfigService //Handles Environment-specific Variables
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  bootstrap: [IonicApp]
 })
 export class AppModule {}
