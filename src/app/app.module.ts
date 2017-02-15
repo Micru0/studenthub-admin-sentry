@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 
@@ -32,8 +33,9 @@ import { ConfigService } from '../providers/config.service';
   ],
   providers: [
       {provide: ErrorHandler, useClass: IonicErrorHandler},
-      AuthService, //Handles all Authorization
-      ConfigService //Handles Environment-specific Variables
+      Storage, // Ionic Storage
+      AuthService, // Handles all Authorization
+      ConfigService // Handles Environment-specific Variables
   ],
   bootstrap: [IonicApp]
 })
