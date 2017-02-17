@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MenuController, NavController } from 'ionic-angular';
 
 // Page Imports
-import { HomePage } from '../home/home';
+import { DefaultPage } from '../default/default';
 
 // Services
 import { AuthService } from '../../../providers/auth.service';
@@ -13,7 +13,7 @@ import { AuthService } from '../../../providers/auth.service';
 })
 export class NavigationPage {
 
-  rootPage: any = HomePage;
+  rootPage: any = DefaultPage;
 
   @ViewChild('loggedInContent') nav: NavController
 
@@ -21,6 +21,16 @@ export class NavigationPage {
     private _auth: AuthService,
     private _menuCtrl: MenuController
   ){}
+
+  loadPage(pageName: string){
+    switch(pageName){
+      case "summary":
+        this.rootPage = DefaultPage;
+        break;
+    }
+
+    this._menuCtrl.close();
+  }
 
   /**
    * Log Agent out of the app
