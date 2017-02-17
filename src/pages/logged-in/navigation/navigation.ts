@@ -3,6 +3,7 @@ import { MenuController, NavController } from 'ionic-angular';
 
 // Page Imports
 import { DefaultPage } from '../default/default';
+import { CompanyListPage } from '../company/company-list/company-list';
 
 // Services
 import { AuthService } from '../../../providers/auth.service';
@@ -26,6 +27,9 @@ export class NavigationPage {
     switch(pageName){
       case "summary":
         this.rootPage = DefaultPage;
+        break;
+      case "companies":
+        this.rootPage = CompanyListPage;
         break;
     }
 

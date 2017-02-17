@@ -9,7 +9,10 @@ import { LoginPage } from '../pages/start-pages/login/login';
 // Pages when logged in
 import { NavigationPage } from '../pages/logged-in/navigation/navigation';
 import { DefaultPage } from '../pages/logged-in/default/default';
-
+// Company CRUD
+import { CompanyListPage } from '../pages/logged-in/company/company-list/company-list';
+import { CompanyViewPage } from '../pages/logged-in/company/company-view/company-view';
+import { CompanyFormPage } from '../pages/logged-in/company/company-form/company-form';
 // Providers / Services
 import { AuthService } from '../providers/auth.service';
 import { ConfigService } from '../providers/config.service';
@@ -21,7 +24,11 @@ import { ConfigService } from '../providers/config.service';
     LoginPage,
     // Logged In
     NavigationPage,
-    DefaultPage
+    DefaultPage,
+    // Company Crud
+    CompanyListPage,
+    CompanyViewPage,
+    CompanyFormPage
   ],
   entryComponents: [
     MyApp,
@@ -29,7 +36,11 @@ import { ConfigService } from '../providers/config.service';
     LoginPage,
     // Logged In
     NavigationPage,
-    DefaultPage
+    DefaultPage,
+    // Company Crud
+    CompanyListPage,
+    CompanyViewPage,
+    CompanyFormPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
