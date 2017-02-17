@@ -103,8 +103,10 @@ export class AuthService {
     const p3 = this._storage.get('name');
     const p4 = this._storage.get('email');
     Promise.all([p1, p2, p3, p4]).then(results => {
-      this.setAccessToken(results[0], results[1], results[2], results[3]);
-      return this.getAccessToken();
+      if(results[0] && results[1] && results[2] && results[3]){
+        this.setAccessToken(results[0], results[1], results[2], results[3]);
+        return this.getAccessToken();
+      }
     });
 
     // No Access Token Available

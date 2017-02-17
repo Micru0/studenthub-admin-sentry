@@ -52,7 +52,7 @@ export class MyApp implements OnInit {
         // Set root to Login Page
         this.rootPage = LoginPage;
 
-        // Show Toast Message explaining logout reason if there's one set
+        // Show Message explaining logout reason if there's one set
         if(logoutReason){
           console.log(logoutReason);
         }

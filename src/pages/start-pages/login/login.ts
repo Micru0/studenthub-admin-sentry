@@ -58,7 +58,7 @@ export class LoginPage {
 
       if(res.operation == "success"){
         // Successfully logged in, set the access token within AuthService
-        this._auth.setAccessToken(res.token, +res.agentId, res.name, res.email);
+        this._auth.setAccessToken(res.token, res.id, res.name, res.email);
       }else if(res.operation == "error"){
         let alert = this._alertCtrl.create({
           title: 'Unable to Log In',
