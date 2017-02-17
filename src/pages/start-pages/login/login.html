@@ -1,6 +1,7 @@
 <ion-content class='contentArea' padding>
   <div class='brand'>
     <img src="assets/logo.png" />
+    <h3>Payroll Admin</h3>
   </div>
 
   <ion-card class='loginCard'>
@@ -9,13 +10,15 @@
       <!-- Login Form -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="classicInput" novalidate>
 
-        <input type="email" #emailInput
+        <ion-input type="email" #emailInput
           formControlName="email"
-          placeholder="Your Email Address"/>
+          placeholder="Your Email Address">
+        </ion-input>
 
-        <input type="password" #passwordInput
+        <ion-input type="password" #passwordInput
           formControlName="password"
-          placeholder="Your Password"/>
+          placeholder="Your Password">
+        </ion-input>
 
         <div text-center>
           <button ion-button block outline color="dark" type="submit"
