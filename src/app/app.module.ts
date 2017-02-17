@@ -7,6 +7,7 @@ import { MyApp } from './app.component';
 // Start Pages [Logged Out]
 import { LoginPage } from '../pages/start-pages/login/login';
 // Pages when logged in
+import { NavigationPage } from '../pages/logged-in/navigation/navigation';
 import { HomePage } from '../pages/logged-in/home/home';
 
 // Providers / Services
@@ -19,6 +20,7 @@ import { ConfigService } from '../providers/config.service';
     // Logged Out
     LoginPage,
     // Logged In
+    NavigationPage,
     HomePage
   ],
   entryComponents: [
@@ -26,6 +28,7 @@ import { ConfigService } from '../providers/config.service';
     // Logged Out
     LoginPage,
     // Logged In
+    NavigationPage,
     HomePage
   ],
   imports: [

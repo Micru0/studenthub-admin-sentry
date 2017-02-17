@@ -3,7 +3,7 @@ import { Platform, Events } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { LoginPage } from '../pages/start-pages/login/login';
-import { HomePage } from '../pages/logged-in/home/home';
+import { NavigationPage } from '../pages/logged-in/navigation/navigation';
 
 import { AuthService } from '../providers/auth.service';
 
@@ -29,7 +29,7 @@ export class MyApp implements OnInit {
 
         // Figure out which page to load on app start [Based on Auth]
         if(this._auth.isLoggedIn){
-            this.rootPage = HomePage;
+            this.rootPage = NavigationPage;
         }else{
             this.rootPage = LoginPage;
         }
@@ -43,7 +43,7 @@ export class MyApp implements OnInit {
       // On Login Event, set root to Internal app page
       this._events.subscribe('user:login', (userEventData) => {
         this._zone.run(() => {
-          this.rootPage = HomePage;
+          this.rootPage = NavigationPage;
         });
       });
 
