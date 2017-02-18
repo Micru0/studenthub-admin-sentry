@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
+// Pages
+import { CompanyFormPage } from '../company-form/company-form';
 // Models
 import { Company } from '../../../../models/company';
 
@@ -13,16 +15,20 @@ export class CompanyViewPage {
 
   constructor(
     public navCtrl: NavController,
+    private _modalCtrl: ModalController,
     params: NavParams
   ) {
     this.company = params.get('model');
   }
 
   /**
-   * Loads Modal form to update
+   * Loads Form in modal to update
    */
   update(){
-    console.log("Attempting to update");
+    let modal = this._modalCtrl.create(CompanyFormPage, {
+      model: this.company
+    });
+    modal.present();
   }
 
 }

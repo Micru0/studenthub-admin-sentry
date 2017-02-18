@@ -46,9 +46,8 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   update(model: Company): Observable<any>{
-    let url = `${this._companyEndpoint}`;
+    let url = `${this._companyEndpoint}/${model.company_id}`;
     let params = {
-      "id": model.company_id,
       "name": model.company_name,
       "email": model.company_email
     };
