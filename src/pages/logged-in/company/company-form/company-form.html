@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons left>
-      <button ion-button icon-only (click)="close()">
+      <button ion-button icon-only (click)="close()" [disabled]="!form.valid">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
@@ -19,16 +19,21 @@
 
 <ion-content padding>
   <form [formGroup]="form">
+    <ion-list>
+        <ion-item>
+          <ion-label floating>Name</ion-label>
+          <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
 
-    <ion-input formControlName="name"
-      type="text" placeholder="Name"></ion-input>
+        <ion-item>
+          <ion-label floating>Email</ion-label>
+          <ion-input type="text" formControlName="email"></ion-input>
+        </ion-item>
 
-    <ion-input formControlName="email"
-      type="text" placeholder="Email"></ion-input>
-
-    <ion-input *ngIf="!model.company_id"
-      formControlName="password"
-      type="password" placeholder="Password"></ion-input>
-
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input type="password" *ngIf="!model.company_id" formControlName="password"></ion-input>
+        </ion-item>
+    </ion-list>
   </form>
 </ion-content>
