@@ -31,10 +31,8 @@ export class CompanyFormPage {
     // Load the passed model if available
     this.model = params.get('model');
 
-    /**
-     *  Initialize the Form
-     */
-    if(!this.model){ // Show Create Form
+    // Init Form
+    if(!this.model.company_id){ // Show Create Form
       this.operation = "Create";
       this.form = this._fb.group({
         name: ["", Validators.required],
@@ -51,10 +49,21 @@ export class CompanyFormPage {
     }
   }
 
+  /**
+   * Update Model Data based on Form Input
+   */
   updateModelDataFromForm(){
     this.model.company_name = this.form.value.name;
     this.model.company_email = this.form.value.email;
     this.model.company_password_hash = this.form.value.password;
+  }
+
+  /**
+   * Close the page
+   */
+  close(){
+    let data = { 'refresh': false };
+    this._viewCtrl.dismiss(data);
   }
 
   /**
@@ -94,14 +103,6 @@ export class CompanyFormPage {
         prompt.present();
       }
     });
-  }
-
-  /**
-   * Close the page
-   */
-  close(){
-    let data = { 'refresh': false };
-    this._viewCtrl.dismiss(data);
   }
 
 }

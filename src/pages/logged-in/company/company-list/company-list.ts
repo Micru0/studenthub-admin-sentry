@@ -6,6 +6,8 @@ import { CompanyViewPage } from '../company-view/company-view';
 import { CompanyFormPage } from '../company-form/company-form';
 // Providers
 import { CompanyService } from '../../../../providers/logged-in/company.service';
+// Models
+import { Company } from '../../../../models/company';
 
 @Component({
   selector: 'page-company-list',
@@ -51,7 +53,7 @@ export class CompanyListPage {
    */
   create(){
     let modal = this._modalCtrl.create(CompanyFormPage, {
-      //model: newNote
+      model: new Company()
     });
     // Refresh List if required
     modal.onDidDismiss(data => {
