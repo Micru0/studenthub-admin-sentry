@@ -1,16 +1,34 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle="left">
-      <ion-icon name="menu"></ion-icon>
-    </button>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
 
-    <ion-title>Company Form</ion-title>
+    <ion-title>{{ operation }}</ion-title>
+
+    <ion-buttons right>
+      <button ion-button clear color="primary" 
+        (click)="save()">
+        Save
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Create/Update Company Form</h2>
-  <p>
-    Form here
-  </p>
+  <form [formGroup]="form">
+
+    <ion-input formControlName="name"
+      type="text" placeholder="Name"></ion-input>
+
+    <ion-input formControlName="email"
+      type="text" placeholder="Email"></ion-input>
+
+    <ion-input *ngIf="!model"
+      formControlName="password"
+      type="password" placeholder="Password"></ion-input>
+
+  </form>
 </ion-content>

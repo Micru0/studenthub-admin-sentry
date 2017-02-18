@@ -24,17 +24,15 @@ export class CompanyService {
 
   /**
    * Create
-   * @param {string} name
-   * @param {string} email
-   * @param {string} password
+   * @param {any} model
    * @returns {Observable<any>}
    */
-  create(name: string, email: string, password: string): Observable<any>{
+  create(model: any): Observable<any>{
     let postUrl = `${this._companyEndpoint}`;
     let params = {
-      "name": name,
-      "email": email,
-      "password": password,
+      "name": model.name,
+      "email": model.email,
+      "password": model.password,
     };
     
     return this._authhttp.post(postUrl, params);
@@ -42,17 +40,15 @@ export class CompanyService {
 
   /**
    * Update
-   * @param {number} id
-   * @param {string} name
-   * @param {string} email
+   * @param {any} model
    * @returns {Observable<any>}
    */
-  update(id: number, name: string, email: string): Observable<any>{
+  update(model: any): Observable<any>{
     let url = `${this._companyEndpoint}`;
     let params = {
-      "id": id,
-      "name": name,
-      "email": email
+      "id": model.id,
+      "name": model.name,
+      "email": model.email
     };
 
     return this._authhttp.patch(url, params);
@@ -60,11 +56,11 @@ export class CompanyService {
 
   /**
    * Deletes a comment
-   * @param {number} id
+   * @param {any} model
    * @returns {Observable<any>}
    */
-  delete(id: number): Observable<any>{
-    let url = `${this._companyEndpoint}/${id}`;
+  delete(model: any): Observable<any>{
+    let url = `${this._companyEndpoint}/${model.id}`;
     return this._authhttp.delete(url);
   }
 
