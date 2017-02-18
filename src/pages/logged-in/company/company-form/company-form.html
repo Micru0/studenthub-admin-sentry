@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons left>
-      <button ion-button icon-only (click)="close()" [disabled]="!form.valid">
+      <button ion-button icon-only (click)="close()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
@@ -10,6 +10,7 @@
 
     <ion-buttons right>
       <button ion-button clear color="primary" 
+        [disabled]="!form.valid"
         (click)="save()">
         Save
       </button>

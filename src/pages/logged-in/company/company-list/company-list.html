@@ -10,9 +10,19 @@
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let company of companies" (click)="rowSelected(company)">
-      {{ company.company_name }}
-    </button>  
+    <ion-item-sliding *ngFor="let company of companies">
+      <button ion-item (click)="rowSelected(company)">
+        {{ company.company_name }}
+      </button>  
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="delete(company)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
 </ion-list>
 </ion-content>
 

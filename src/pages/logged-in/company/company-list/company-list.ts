@@ -66,4 +66,17 @@ export class CompanyListPage {
     modal.present();
   }
 
+  /**
+   * Delete the provided model
+   */
+  delete(company: Company){
+    let loader = this._loadingCtrl.create();
+    loader.present();
+
+    this.companyService.delete(company).subscribe(jsonResp => {
+      loader.dismiss();
+      this.loadData();
+    });
+  }
+
 }
