@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 // Services
 import { AuthHttpService } from './authhttp.service';
+// Models
+import { Company } from '../../models/company';
 
 /**
  * Manages Company Functionality on the server
@@ -24,31 +26,31 @@ export class CompanyService {
 
   /**
    * Create
-   * @param {any} model
+   * @param {Company} model
    * @returns {Observable<any>}
    */
-  create(model: any): Observable<any>{
+  create(model: Company): Observable<any>{
     let postUrl = `${this._companyEndpoint}`;
     let params = {
-      "name": model.name,
-      "email": model.email,
-      "password": model.password,
+      "name": model.company_name,
+      "email": model.company_email,
+      "password": model.company_password_hash,
     };
-    
+
     return this._authhttp.post(postUrl, params);
   }
 
   /**
    * Update
-   * @param {any} model
+   * @param {Company} model
    * @returns {Observable<any>}
    */
-  update(model: any): Observable<any>{
+  update(model: Company): Observable<any>{
     let url = `${this._companyEndpoint}`;
     let params = {
-      "id": model.id,
-      "name": model.name,
-      "email": model.email
+      "id": model.company_id,
+      "name": model.company_name,
+      "email": model.company_email
     };
 
     return this._authhttp.patch(url, params);
@@ -56,11 +58,11 @@ export class CompanyService {
 
   /**
    * Deletes a comment
-   * @param {any} model
+   * @param {Company} model
    * @returns {Observable<any>}
    */
-  delete(model: any): Observable<any>{
-    let url = `${this._companyEndpoint}/${model.id}`;
+  delete(model: Company): Observable<any>{
+    let url = `${this._companyEndpoint}/${model.company_id}`;
     return this._authhttp.delete(url);
   }
 

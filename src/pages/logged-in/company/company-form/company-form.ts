@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../../../../validators/custom.validator';
 // Providers
 import { CompanyService } from '../../../../providers/logged-in/company.service';
+// Models
+import { Company } from '../../../../models/company';
 
 @Component({
   selector: 'page-company-form',
@@ -12,7 +14,7 @@ import { CompanyService } from '../../../../providers/logged-in/company.service'
 })
 export class CompanyFormPage {
 
-  public model: any;
+  public model: Company;
   public operation:string;
 
   public form: FormGroup;
@@ -72,7 +74,7 @@ export class CompanyFormPage {
       // Update
       action = this.companyService.update(this.model);
     }
-    
+
     action.subscribe(jsonResponse => {
       loader.dismiss();
 
