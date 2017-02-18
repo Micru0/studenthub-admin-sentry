@@ -97,7 +97,7 @@ export class CompanyFormPage {
       // On Failure
       if(jsonResponse.operation == "error"){
         let prompt = this._alertCtrl.create({
-          message: jsonResponse.message,
+          message: JSON.stringify(jsonResponse.message),
           buttons: ["Ok"]
         });
         prompt.present();
