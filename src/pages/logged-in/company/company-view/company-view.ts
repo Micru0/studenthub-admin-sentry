@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-company-view',
@@ -8,8 +8,13 @@ import { NavController } from 'ionic-angular';
 })
 export class CompanyViewPage {
 
-  constructor(public navCtrl: NavController) {
+  public company;
 
+  constructor(
+    public navCtrl: NavController,
+    params: NavParams
+  ) {
+    this.company = params.get('model');
   }
 
 }

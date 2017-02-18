@@ -8,9 +8,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Company List</h2>
-  <p>
-    full list > master/detail
-  </p>
+<ion-content>
+  <ion-list>
+    <button ion-item *ngFor="let company of companies" (click)="rowSelected(company)">
+      {{ company.company_name }}
+    </button>  
+</ion-list>
 </ion-content>
+
+<ion-footer>
+  <button ion-button full>
+    Create
+  </button>
+</ion-footer>

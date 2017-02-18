@@ -4,12 +4,38 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title>Company Detail Page</ion-title>
+    <ion-title>{{ company.company_name }}</ion-title>
+
+    <ion-buttons right>
+      <button ion-button color='danger'>
+        Delete
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <p>
-    Show full company details
-  </p>
+  <h5>Id</h5>
+  <p>{{ company.company_id }}</p>
+
+  <h5>Company</h5>
+  <p>{{ company.company_name }}</p>
+
+  <h5>Email</h5>
+  <p>{{ company.company_email }}</p>
+
+  <h5>Status</h5>
+  <p>{{ company.company_status }}</p>
+
+  <h5>Created at</h5>
+  <p>{{ company.company_created_at }}</p>
+
+  <h5>Updated at</h5>
+  <p>{{ company.company_updated_at }}</p>
 </ion-content>
+
+<ion-footer>
+  <button ion-button full color='dark'>
+    Update
+  </button>
+</ion-footer>

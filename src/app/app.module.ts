@@ -13,9 +13,12 @@ import { DefaultPage } from '../pages/logged-in/default/default';
 import { CompanyListPage } from '../pages/logged-in/company/company-list/company-list';
 import { CompanyViewPage } from '../pages/logged-in/company/company-view/company-view';
 import { CompanyFormPage } from '../pages/logged-in/company/company-form/company-form';
-// Providers / Services
+// Generic Services
 import { AuthService } from '../providers/auth.service';
 import { ConfigService } from '../providers/config.service';
+// Logged-in Services
+import { AuthHttpService } from '../providers/logged-in/authhttp.service';
+import { CompanyService } from '../providers/logged-in/company.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import { ConfigService } from '../providers/config.service';
       {provide: ErrorHandler, useClass: IonicErrorHandler},
       Storage, // Ionic Storage
       AuthService, // Handles all Authorization
-      ConfigService // Handles Environment-specific Variables
+      ConfigService, // Handles Environment-specific Variables
+      AuthHttpService,
+      CompanyService
   ],
   bootstrap: [IonicApp]
 })
