@@ -2,24 +2,24 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, ModalController } from 'ionic-angular';
 
 // Pages
-import { CompanyViewPage } from '../company-view/company-view';
-import { CompanyFormPage } from '../company-form/company-form';
+import { StaffViewPage } from '../staff-view/staff-view';
+import { StaffFormPage } from '../staff-form/staff-form';
 // Providers
-import { CompanyService } from '../../../../providers/logged-in/company.service';
+import { StaffService } from '../../../../providers/logged-in/staff.service';
 // Models
-import { Company } from '../../../../models/company';
+import { Staff } from '../../../../models/staff';
 
 @Component({
-  selector: 'page-company-list',
-  templateUrl: 'company-list.html'
+  selector: 'page-staff-list',
+  templateUrl: 'staff-list.html'
 })
-export class CompanyListPage {
+export class StaffListPage {
 
-  public companies: Company[];
+  public staff: Staff[];
 
   constructor(
     public navCtrl: NavController,
-    public companyService: CompanyService,
+    public staffService: StaffService,
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
   ) {}
@@ -29,11 +29,11 @@ export class CompanyListPage {
   }
 
   loadData(){
-    // Load list of companies
+    // Load list of staff
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.companyService.list().subscribe(response => {
-      this.companies = response;
+    this.staffService.list().subscribe(response => {
+      this.staff = response;
       loader.dismiss();
     });
   }
@@ -43,7 +43,7 @@ export class CompanyListPage {
    */
   rowSelected(model){
     // Load Detail Page
-    this.navCtrl.push(CompanyViewPage, {
+    this.navCtrl.push(StaffViewPage, {
       'model': model
     });
   }
@@ -52,8 +52,8 @@ export class CompanyListPage {
    * Loads the create page
    */
   create(){
-    let modal = this._modalCtrl.create(CompanyFormPage, {
-      model: new Company()
+    let modal = this._modalCtrl.create(StaffFormPage, {
+      model: new Staff()
     });
     // Refresh List if required
     modal.onDidDismiss(data => {
@@ -69,11 +69,11 @@ export class CompanyListPage {
   /**
    * Delete the provided model
    */
-  delete(company: Company){
+  delete(staff: Staff){
     let loader = this._loadingCtrl.create();
     loader.present();
 
-    this.companyService.delete(company).subscribe(jsonResp => {
+    this.staffService.delete(staff).subscribe(jsonResp => {
       loader.dismiss();
       this.loadData();
     });

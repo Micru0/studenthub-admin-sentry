@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>{{ staff.staff_name }}</ion-title>
+
+    <ion-buttons right>
+      <button ion-button (click)="update()">
+        Update
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h5>Id</h5>
+  <p>{{ staff.staff_id }}</p>
+
+  <h5>Staff Member</h5>
+  <p>{{ staff.staff_name }}</p>
+
+  <h5>Email</h5>
+  <p>{{ staff.staff_email }}</p>
+
+  <h5>Status</h5>
+  <p>{{ staff.staff_status }}</p>
+
+  <h5>Created at</h5>
+  <p>{{ staff.staff_created_at }}</p>
+
+  <h5>Updated at</h5>
+  <p>{{ staff.staff_updated_at }}</p>
+</ion-content>
