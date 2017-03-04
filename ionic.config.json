@@ -1,6 +1,6 @@
 {
-  "name": "ionic-default",
-  "app_id": "",
+  "name": "Payroll Admin",
+  "app_id": "dfb10dee",
   "v2": true,
   "typescript": true
 }
