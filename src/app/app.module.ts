@@ -1,4 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
@@ -24,6 +25,12 @@ import { ConfigService } from '../providers/config.service';
 import { AuthHttpService } from '../providers/logged-in/authhttp.service';
 import { CompanyService } from '../providers/logged-in/company.service';
 import { StaffService } from '../providers/logged-in/staff.service';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'dfb10dee'
+  }
+};
 
 @NgModule({
   declarations: [
@@ -59,7 +66,8 @@ import { StaffService } from '../providers/logged-in/staff.service';
     StaffFormPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   providers: [
       {provide: ErrorHandler, useClass: IonicErrorHandler},
