@@ -31,13 +31,9 @@ export class MyApp implements OnInit {
 
             // Check for App update via Ionic Deploy
             this._checkForUpdate();
-        }
 
-        // Figure out which page to load on app start [Based on Auth]
-        if(this._auth.isLoggedIn){
-            this.rootPage = NavigationPage;
-        }else{
-            this.rootPage = LoginPage;
+            // Initiate the access token request which determines login status.
+            this._auth.getAccessToken();
         }
     });
   }
@@ -62,7 +58,6 @@ export class MyApp implements OnInit {
         if(logoutReason){
           console.log(logoutReason);
         }
-
       });
   }
 
