@@ -18,6 +18,13 @@ import { CompanyFormPage } from '../pages/logged-in/company/company-form/company
 import { StaffListPage } from '../pages/logged-in/staff/staff-list/staff-list';
 import { StaffViewPage } from '../pages/logged-in/staff/staff-view/staff-view';
 import { StaffFormPage } from '../pages/logged-in/staff/staff-form/staff-form';
+
+// Bank CRUD
+import { BankListPage } from '../pages/logged-in/bank/bank-list/bank-list';
+import { BankViewPage } from '../pages/logged-in/bank/bank-view/bank-view';
+import { BankFormPage } from '../pages/logged-in/bank/bank-form/bank-form';
+
+
 // Generic Services
 import { AuthService } from '../providers/auth.service';
 import { ConfigService } from '../providers/config.service';
@@ -25,6 +32,8 @@ import { ConfigService } from '../providers/config.service';
 import { AuthHttpService } from '../providers/logged-in/authhttp.service';
 import { CompanyService } from '../providers/logged-in/company.service';
 import { StaffService } from '../providers/logged-in/staff.service';
+import { BankService } from '../providers/logged-in/bank.service';
+
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -47,7 +56,10 @@ const cloudSettings: CloudSettings = {
     // Staff Crud
     StaffListPage,
     StaffViewPage,
-    StaffFormPage
+    StaffFormPage,
+    BankListPage,
+    BankViewPage,
+    BankFormPage
   ],
   entryComponents: [
     MyApp,
@@ -63,7 +75,11 @@ const cloudSettings: CloudSettings = {
     // Staff Crud
     StaffListPage,
     StaffViewPage,
-    StaffFormPage
+    StaffFormPage,
+    BankListPage,
+    BankViewPage,
+    BankFormPage
+
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -76,7 +92,8 @@ const cloudSettings: CloudSettings = {
       ConfigService, // Handles Environment-specific Variables
       AuthHttpService,
       CompanyService,
-      StaffService
+      StaffService,
+      BankService
   ],
   bootstrap: [IonicApp]
 })
