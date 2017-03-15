@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>{{ bank.bank_name }}</ion-title>
+
+    <ion-buttons right>
+      <button ion-button (click)="update()">
+        Update
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h5>Company ID</h5>
+  <p>{{ bank.bank_id }}</p>
+
+  <h5>Bank Member</h5>
+  <p>{{ bank.bank_name }}</p>
+</ion-content>

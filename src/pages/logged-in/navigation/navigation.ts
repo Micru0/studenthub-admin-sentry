@@ -5,6 +5,7 @@ import { MenuController, NavController } from 'ionic-angular';
 import { DefaultPage } from '../default/default';
 import { CompanyListPage } from '../company/company-list/company-list';
 import { StaffListPage } from '../staff/staff-list/staff-list';
+import { BankListPage } from '../bank/bank-list/bank-list';
 
 // Services
 import { AuthService } from '../../../providers/auth.service';
@@ -34,6 +35,9 @@ export class NavigationPage {
         break;
       case "staff":
         this.rootPage = StaffListPage;
+        break;
+      case "bank":
+        this.rootPage = BankListPage;
         break;
     }
 
