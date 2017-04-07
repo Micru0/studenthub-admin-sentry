@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, ViewController, LoadingController, AlertController, NavParams } from 'ionic-angular';
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomValidator } from '../../../../validators/custom.validator';
 // Providers
 import { BankService } from '../../../../providers/logged-in/bank.service';
 // Models

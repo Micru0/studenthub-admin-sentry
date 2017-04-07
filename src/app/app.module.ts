@@ -1,8 +1,15 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { HttpModule } from '@angular/http';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { IonicStorageModule } from '@ionic/storage';
 
+// Ionic Native
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+
+// App Imports
 import { MyApp } from './app.component';
 
 // Start Pages [Logged Out]
@@ -23,7 +30,6 @@ import { StaffFormPage } from '../pages/logged-in/staff/staff-form/staff-form';
 import { BankListPage } from '../pages/logged-in/bank/bank-list/bank-list';
 import { BankViewPage } from '../pages/logged-in/bank/bank-view/bank-view';
 import { BankFormPage } from '../pages/logged-in/bank/bank-form/bank-form';
-
 
 // Generic Services
 import { AuthService } from '../providers/auth.service';
@@ -82,12 +88,18 @@ const cloudSettings: CloudSettings = {
 
   ],
   imports: [
+    BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
     CloudModule.forRoot(cloudSettings),
     IonicStorageModule.forRoot()
   ],
   providers: [
+      // Ionic Native 
+      StatusBar,
+      SplashScreen,
       {provide: ErrorHandler, useClass: IonicErrorHandler},
+      // Custom
       AuthService, // Handles all Authorization
       ConfigService, // Handles Environment-specific Variables
       AuthHttpService,
