@@ -26,6 +26,11 @@ import { StaffListPage } from '../pages/logged-in/staff/staff-list/staff-list';
 import { StaffViewPage } from '../pages/logged-in/staff/staff-view/staff-view';
 import { StaffFormPage } from '../pages/logged-in/staff/staff-form/staff-form';
 
+// Transfer
+import { TransferListPage } from '../pages/logged-in/transfer/transfer-list/transfer-list';
+import { TransferViewPage } from '../pages/logged-in/transfer/transfer-view/transfer-view';
+
+
 // Bank CRUD
 import { BankListPage } from '../pages/logged-in/bank/bank-list/bank-list';
 import { BankViewPage } from '../pages/logged-in/bank/bank-view/bank-view';
@@ -34,12 +39,16 @@ import { BankFormPage } from '../pages/logged-in/bank/bank-form/bank-form';
 // Generic Services
 import { AuthService } from '../providers/auth.service';
 import { ConfigService } from '../providers/config.service';
+
 // Logged-in Services
 import { AuthHttpService } from '../providers/logged-in/authhttp.service';
 import { CompanyService } from '../providers/logged-in/company.service';
 import { StaffService } from '../providers/logged-in/staff.service';
 import { BankService } from '../providers/logged-in/bank.service';
+import { TransferService } from '../providers/logged-in/transfer.service';
 
+import { GroupByPipe } from '../pages/logged-in/transfer/groupby-pipe';
+import { SortPipe } from '../pages/logged-in/transfer/timestamp-pipe';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -55,6 +64,8 @@ const cloudSettings: CloudSettings = {
     // Logged In
     NavigationPage,
     DefaultPage,
+    TransferListPage,
+    TransferViewPage,
     // Company Crud
     CompanyListPage,
     CompanyViewPage,
@@ -65,7 +76,10 @@ const cloudSettings: CloudSettings = {
     StaffFormPage,
     BankListPage,
     BankViewPage,
-    BankFormPage
+    BankFormPage,    
+    // Pipes
+    GroupByPipe,
+    SortPipe
   ],
   entryComponents: [
     MyApp,
@@ -74,6 +88,8 @@ const cloudSettings: CloudSettings = {
     // Logged In
     NavigationPage,
     DefaultPage,
+    TransferListPage,
+    TransferViewPage,
     // Company Crud
     CompanyListPage,
     CompanyViewPage,
@@ -105,7 +121,8 @@ const cloudSettings: CloudSettings = {
       AuthHttpService,
       CompanyService,
       StaffService,
-      BankService
+      BankService,
+      TransferService
   ],
   bootstrap: [IonicApp]
 })

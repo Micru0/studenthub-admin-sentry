@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Transfer Details</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list *ngIf="transfer">
+    
+    <button ion-item>
+      Transfer Created : {{ transfer.invoice_created_at}}<br> 
+      Transfer Updated :{{ transfer.invoice_updated_at}}<br>    
+      Total:{{ transfer.total}}<br> 
+
+      Invoice Status:
+      <span *ngIf="transfer.invoice_status=='10'"> Transfer Initiated </span>
+      <span *ngIf="transfer.invoice_status=='1'"> Payment Sent </span>
+      <span *ngIf="transfer.invoice_status=='2'"> Payment Received </span>
+      <span *ngIf="transfer.invoice_status=='3'"> Salary distribution in progress </span>
+      <span *ngIf="transfer.invoice_status=='4'"> Transfer Completed </span>
+      <span *ngIf="transfer.invoice_status=='5'"> Transfer Locked </span>
+      <br>
+
+    </button>
+
+    <ion-item-group *ngFor="let group of transfer.candidates | store_name">
+      <ion-item-divider><b>{{group.name}}</b></ion-item-divider>
+      <button *ngFor="let resource of group.resources" ion-item>        
+         <ion-row>
+            <ion-col > Candidate Name:</ion-col>
+             <ion-col >{{resource.candidate_name}}</ion-col>
+        </ion-row>
+
+      <ion-row>
+      <ion-col > Candidate Email:</ion-col>
+        <ion-col >{{resource.candidate_email}}</ion-col>
+     </ion-row>
+
+     <ion-row>
+      <ion-col > Hourly Rate:</ion-col>
+        <ion-col>{{resource.hourly_rate}}</ion-col>
+     </ion-row>
+
+      <ion-row>
+      <ion-col > Hours:</ion-col>
+        <ion-col>{{resource.hours}}</ion-col>
+     </ion-row>
+
+      <ion-row>
+      <ion-col > Bonus:</ion-col>
+        <ion-col>{{resource.bonus}}</ion-col>
+     </ion-row>
+
+      <ion-row>
+      <ion-col > Transfer Cost:</ion-col>
+        <ion-col>{{resource.transfer_cost}}</ion-col>
+     </ion-row>
+
+     <ion-row>
+      <ion-col > Total:</ion-col>
+        <ion-col >{{ totalCost(resource.hourly_rate,resource.hours,resource.bonus,resource.transfer_cost) }}</ion-col>
+     </ion-row>
+
+     <ion-row>
+      <ion-col > IBAN Code:</ion-col>
+        <ion-col >{{ resource.candidate_iban }}</ion-col>
+     </ion-row>
+
+     <ion-row>
+      <ion-col > Bank:</ion-col>
+        <ion-col >{{ resource.bank_name }}</ion-col>
+     </ion-row> 
+
+      </button>
+      <br>
+    </ion-item-group>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer *ngIf="transfer">
+  
+  <button *ngIf="transfer.invoice_status === '5'" ion-button full (click)="markUnlock(transfer.invoice_id)">
+    Unlock Transfer
+  </button>
+ 
+  <button *ngIf="transfer.invoice_status === '10'" ion-button full (click)="markReceived(transfer.invoice_id)">
+   Lock Transfer
+  </button>
+
+  <button *ngIf="transfer.invoice_status !== '10'" ion-button full (click)="markProgress(transfer.invoice_id)">
+    Mark in progress
+  </button>
+
+  <button *ngIf="transfer.invoice_status !== '10'" ion-button full (click)="markComplete(transfer.invoice_id)">
+    Mark as complete
+  </button>
+
+  <button ion-button full (click)="generateInvoice(transfer.invoice_id)">
+    Generate Invoice
+  </button>
+
+</ion-footer>

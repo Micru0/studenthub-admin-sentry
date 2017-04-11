@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>Transfer List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngFor="let transferMember of transfers" [ngClass]="{'my-class': transferMember.invoice_status=='1' }" (click)="transferDetails(transferMember.invoice_id)">
+    <ion-card-header>
+      Transfer #{{ transferMember.invoice_id}}
+    </ion-card-header>
+    <ion-card-content>
+        Company Name: {{ transferMember.company_name }}<br>     
+        Company Email: {{ transferMember.company_email }}<br>     
+        Total: {{ transferMember.total }}<br>     
+        Company Total: {{ transferMember.company_total }}<br>             
+        Transfer Created: {{ transferMember.invoice_created_at}}<br>
+        Transfer Updated: {{ transferMember.invoice_updated_at}}  <br>  
+        Total: {{ transferMember.total}}  <br />
+
+        <span *ngIf="transferMember.invoice_status=='10'"> Transfer Initiated </span>
+        <span *ngIf="transferMember.invoice_status=='1'"> Payment Sent </span>
+        <span *ngIf="transferMember.invoice_status=='2'"> Payment Received </span>
+        <span *ngIf="transferMember.invoice_status=='3'"> Salary distribution in progress </span>
+        <span *ngIf="transferMember.invoice_status=='4'"> Transfer Completed </span>
+        <span *ngIf="transferMember.invoice_status=='5'"> Transfer Locked </span>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-row text-center>
+    <div class="pagination-wrapper">
+      <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+        {{ page }}
+      </button>
+    </div>
+  </ion-row>
+
+</ion-content>
