@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, ResponseContentType, RequestOptions, RequestMethod } from '@angular/http';
 import { Platform, Events } from 'ionic-angular';
+
+import { saveAs } from 'file-saver';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
@@ -25,6 +27,42 @@ export class AuthHttpService {
     private _platform: Platform,
     private _events: Events
     ) {}
+
+  /**
+   * Requests via GET verb
+   * @param {string} endpointUrl
+   * @returns {Observable<any>}
+   */
+  getRaw(endpointUrl: string): Observable<any> {
+    const url = this._config.apiBaseUrl + endpointUrl;
+    return this._http.get(url, { headers: this._buildAuthHeaders() })
+      .catch((err) => this._handleError(err))
+      .take(1)
+      .map((res: Response) => {
+        return res;
+      });
+  }
+
+  /**
+  * Requests via PDF GET verb
+  * @param {string} endpointUrl
+  * @param {number} invoice_id
+  * @returns {Observable<any>}
+  */
+  pdfget(endpointUrl: string, invoice_id: number): Observable<any> {
+    const url = this._config.apiBaseUrl + endpointUrl;
+    const bearerToken = this._auth.getAccessToken();
+    return this._http.get(url, {
+      responseType: ResponseContentType.Blob,
+      headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + bearerToken })
+    }).map(
+      (response) => { // download file
+        var blob = new Blob([response.blob()], { type: 'application/pdf' });
+        //file name to dowanload/generate invoice 
+        var filename = `Invoice ${invoice_id} Details.pdf`;
+        saveAs(blob, filename);
+      });
+  }
 
   /**
    * Requests via GET verb
