@@ -19,6 +19,15 @@ export class CompanyService {
    * List of all companies
    * @returns {Observable<any>}
    */
+  listSubCompanies(company_id: number): Observable<any>{
+    let url = this._companyEndpoint + '/subcompanies/' + company_id;
+    return this._authhttp.get(url);
+  }
+
+  /**
+   * List of all companies
+   * @returns {Observable<any>}
+   */
   list(): Observable<any>{
     let url = this._companyEndpoint;
     return this._authhttp.get(url);
@@ -32,6 +41,7 @@ export class CompanyService {
   create(model: Company): Observable<any>{
     let postUrl = `${this._companyEndpoint}`;
     let params = {
+      "parent": model.parent,
       "name": model.company_name,
       "email": model.company_email,
       "password": model.company_password_hash,
@@ -48,6 +58,7 @@ export class CompanyService {
   update(model: Company): Observable<any>{
     let url = `${this._companyEndpoint}/${model.company_id}`;
     let params = {
+      "parent": model.parent,
       "name": model.company_name,
       "email": model.company_email
     };

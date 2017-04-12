@@ -1,6 +1,7 @@
 
 export class Company{
     company_id: number;
+    parent: number;
     company_name: string;
     company_email: string;
     company_auth_key: string;
