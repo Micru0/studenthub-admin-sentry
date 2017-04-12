@@ -35,6 +35,7 @@ export class CompanyFormPage {
     if(!this.model.company_id){ // Show Create Form
       this.operation = "Create";
       this.form = this._fb.group({
+        parent: [this.model.parent],
         name: ["", Validators.required],
         email: ["", [Validators.required, CustomValidator.emailValidator]],
         password: ["", Validators.required]
@@ -42,6 +43,7 @@ export class CompanyFormPage {
     }else{ // Show Update Form
       this.operation = "Update";
       this.form = this._fb.group({
+        parent: [this.model.parent],
         name: [this.model.company_name, Validators.required],
         email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
         password: [this.model.company_password_hash] //not required
@@ -53,6 +55,7 @@ export class CompanyFormPage {
    * Update Model Data based on Form Input
    */
   updateModelDataFromForm(){
+    this.model.parent = this.form.value.parent;
     this.model.company_name = this.form.value.name;
     this.model.company_email = this.form.value.email;
     this.model.company_password_hash = this.form.value.password;
