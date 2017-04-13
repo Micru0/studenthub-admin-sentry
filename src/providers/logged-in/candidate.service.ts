@@ -19,6 +19,15 @@ export class CandidateService {
    * List of all candidate to review changes 
    * @returns {Observable<any>}
    */
+  listByStore(store_id: number): Observable<any>{
+    let url = this._candidateEndpoint + '/filter/' + store_id;
+    return this._authhttp.getRaw(url);
+  }
+
+  /**
+   * List of all candidate to review changes 
+   * @returns {Observable<any>}
+   */
   listToReview(): Observable<any>{
     let url = this._candidateEndpoint + '/review';
     return this._authhttp.getRaw(url);
