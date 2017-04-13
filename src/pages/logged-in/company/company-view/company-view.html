@@ -27,13 +27,7 @@
   <h5>Status</h5>
   <p>{{ company.company_status }}</p>
 
-  <h5>Created at</h5>
-  <p>{{ company.company_created_at }}</p>
-
-  <h5>Updated at</h5>
-  <p>{{ company.company_updated_at }}</p>
-
-  <h5>Sub Companies</h5>
+  <h5 *ngIf="subcompanies && subcompanies.length > 0">Sub Companies</h5>
   <ion-list>
     <ion-item-sliding *ngFor="let company of subcompanies">
       <button ion-item (click)="rowSelected(company)">
@@ -50,10 +44,31 @@
     </ion-item-sliding>
   </ion-list>
 
+  <h5 *ngIf="stores && stores.length > 0">Stores</h5>
+  <ion-list>
+    <ion-item-sliding *ngFor="let store of stores">
+      <button ion-item (click)="storeSelected(store)">
+        {{ store.store_name }}
+      </button>  
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteStore(store)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+
 </ion-content>
 
 <ion-footer>
   <button ion-button full (click)="create(company.company_id)">
     Create Sub Company
+  </button>
+
+  <button *ngIf="!subcompanies || subcompanies.length == 0" ion-button full (click)="createStore(company.company_id)">
+    Create Store
   </button>
 </ion-footer>

@@ -39,6 +39,10 @@ import { BankListPage } from '../pages/logged-in/bank/bank-list/bank-list';
 import { BankViewPage } from '../pages/logged-in/bank/bank-view/bank-view';
 import { BankFormPage } from '../pages/logged-in/bank/bank-form/bank-form';
 
+//Stpre CRUD 
+import { StoreViewPage } from '../pages/logged-in/store/store-view/store-view';
+import { StoreFormPage } from '../pages/logged-in/store/store-form/store-form';
+
 // Generic Services
 import { AuthService } from '../providers/auth.service';
 import { ConfigService } from '../providers/config.service';
@@ -50,6 +54,7 @@ import { StaffService } from '../providers/logged-in/staff.service';
 import { BankService } from '../providers/logged-in/bank.service';
 import { TransferService } from '../providers/logged-in/transfer.service';
 import { CandidateService } from '../providers/logged-in/candidate.service';
+import { StoreService } from '../providers/logged-in/store.service';
 
 import { GroupByPipe } from '../pages/logged-in/transfer/groupby-pipe';
 import { SortPipe } from '../pages/logged-in/transfer/timestamp-pipe';
@@ -68,6 +73,9 @@ const cloudSettings: CloudSettings = {
     // Logged In
     NavigationPage,
     DefaultPage,
+    //Store Crud
+    StoreFormPage,
+    StoreViewPage,
     //Transfer Crud
     TransferListPage,
     TransferViewPage,
@@ -96,6 +104,9 @@ const cloudSettings: CloudSettings = {
     // Logged In
     NavigationPage,
     DefaultPage,
+    //Store Crud
+    StoreFormPage,
+    StoreViewPage,
     //Transfer Crud
     TransferListPage,
     TransferViewPage,
@@ -135,7 +146,8 @@ const cloudSettings: CloudSettings = {
       StaffService,
       BankService,
       TransferService,
-      CandidateService
+      CandidateService,
+      StoreService
   ],
   bootstrap: [IonicApp]
 })

@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>{{ store.store_name }}</ion-title>
+
+    <ion-buttons right>
+      <button ion-button (click)="update()">
+        Update
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h5>ID</h5>
+  <p>{{ store.store_id }}</p>
+
+  <h5>Store Name</h5>
+  <p>{{ store.store_name }}</p>
+
+</ion-content>

@@ -76,5 +76,13 @@ export class CompanyService {
     return this._authhttp.delete(url);
   }
 
-
+  /**
+   * View company
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  view(model: Company): Observable<any>{
+    let url = `${this._companyEndpoint}/${model.company_id}`;
+    return this._authhttp.get(url);
+  }
 }
