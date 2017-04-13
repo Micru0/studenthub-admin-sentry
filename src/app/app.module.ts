@@ -30,7 +30,10 @@ import { StaffFormPage } from '../pages/logged-in/staff/staff-form/staff-form';
 import { TransferListPage } from '../pages/logged-in/transfer/transfer-list/transfer-list';
 import { TransferViewPage } from '../pages/logged-in/transfer/transfer-view/transfer-view';
 
-
+// Candidate 
+import { CandidateViewPage } from '../pages/logged-in/candidate/candidate-view/candidate-view';
+import { CandidateReviewListPage } from '../pages/logged-in/candidate/candidate-review-list/candidate-review-list';
+    
 // Bank CRUD
 import { BankListPage } from '../pages/logged-in/bank/bank-list/bank-list';
 import { BankViewPage } from '../pages/logged-in/bank/bank-view/bank-view';
@@ -46,6 +49,7 @@ import { CompanyService } from '../providers/logged-in/company.service';
 import { StaffService } from '../providers/logged-in/staff.service';
 import { BankService } from '../providers/logged-in/bank.service';
 import { TransferService } from '../providers/logged-in/transfer.service';
+import { CandidateService } from '../providers/logged-in/candidate.service';
 
 import { GroupByPipe } from '../pages/logged-in/transfer/groupby-pipe';
 import { SortPipe } from '../pages/logged-in/transfer/timestamp-pipe';
@@ -64,8 +68,12 @@ const cloudSettings: CloudSettings = {
     // Logged In
     NavigationPage,
     DefaultPage,
+    //Transfer Crud
     TransferListPage,
     TransferViewPage,
+    //candidate Crud
+    CandidateReviewListPage,
+    CandidateViewPage,
     // Company Crud
     CompanyListPage,
     CompanyViewPage,
@@ -88,8 +96,12 @@ const cloudSettings: CloudSettings = {
     // Logged In
     NavigationPage,
     DefaultPage,
+    //Transfer Crud
     TransferListPage,
     TransferViewPage,
+    //candidate Crud
+    CandidateReviewListPage,
+    CandidateViewPage,    
     // Company Crud
     CompanyListPage,
     CompanyViewPage,
@@ -122,7 +134,8 @@ const cloudSettings: CloudSettings = {
       CompanyService,
       StaffService,
       BankService,
-      TransferService
+      TransferService,
+      CandidateService
   ],
   bootstrap: [IonicApp]
 })

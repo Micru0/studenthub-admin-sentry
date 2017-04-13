@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>Candidates</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let candidate of candidates">
+      <button ion-item (click)="rowSelected(candidate)">
+        {{ candidate.candidate_name }}
+      </button>  
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="delete(candidate)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+        <button ion-button (click)="approve(candidate)">
+          <ion-icon name="checkmark"></ion-icon>
+          Approve
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+</ion-list>
+
+<ion-row text-center>
+  <div class="pagination-wrapper">
+    <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+      {{ page }}
+    </button>
+  </div>
+</ion-row>
+
+</ion-content>
