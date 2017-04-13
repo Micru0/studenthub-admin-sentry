@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>{{ candidate.candidate_name }}</ion-title>
+
+    <ion-buttons right>
+      <button *ngIf="!candidate.approved" ion-button full (click)="approve(candidate)">
+        Approve
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h5>Id</h5>
+  <p>{{ candidate.candidate_id }}</p>
+
+  <h5>Bank Name</h5>
+  <p>{{ candidate.bank_name }}</p>
+
+  <h5>Bank Account Name</h5>
+  <p>{{ candidate.bank_account_name }}</p>
+
+  <h5>IBAN</h5>
+  <p>{{ candidate.candidate_iban }}</p>
+
+  <h5>Candidate Name</h5>
+  <p>{{ candidate.candidate_name }}</p>
+
+  <h5>Candidate Name - Arabic</h5>
+  <p>{{ candidate.candidate_name_ar }}</p>
+
+  <h5>Candidate Email</h5>
+  <p>{{ candidate.candidate_email }}</p>
+
+  <h5>Candidate Phone No</h5>
+  <p>{{ candidate.candidate_phone }}</p>
+
+  <h5>Candidate Birthdate</h5>
+  <p>{{ candidate.candidate_birth_date }}</p>
+  
+  <h5>Candidate Civil ID</h5>
+  <p>{{ candidate.candidate_civil_id }}</p>
+
+  <h5>Candidate Civil Expiry Date</h5>
+  <p>{{ candidate.candidate_civil_expiry_date }}</p>
+
+  <h5>Candidate Civil Photo Front</h5>
+  <p>{{ candidate.candidate_civil_photo_front }}</p>
+
+  <h5>Candidate Civil Photo Back</h5>
+  <p>{{ candidate.candidate_civil_photo_back }}</p>
+
+  <h5>Candidate Hourly Rate</h5>
+  <p>{{ candidate.candidate_hourly_rate }}</p>
+
+  <h5>Candidate Status</h5>
+  <p>{{ candidate.candidate_status }}</p>
+
+</ion-content>

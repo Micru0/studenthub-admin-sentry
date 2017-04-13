@@ -7,6 +7,7 @@ import { CompanyListPage } from '../company/company-list/company-list';
 import { StaffListPage } from '../staff/staff-list/staff-list';
 import { BankListPage } from '../bank/bank-list/bank-list';
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
+import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
 
 // Services
 import { AuthService } from '../../../providers/auth.service';
@@ -30,6 +31,9 @@ export class NavigationPage {
     switch(pageName){
       case "summary":
         this.rootPage = DefaultPage;
+        break;
+      case "candidate-review":
+        this.rootPage = CandidateReviewListPage;
         break;
       case "transfers":
         this.rootPage = TransferListPage;
