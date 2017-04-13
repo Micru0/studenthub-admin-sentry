@@ -2,19 +2,18 @@ import { Component } from '@angular/core';
 import { NavController, ViewController, LoadingController, AlertController, NavParams } from 'ionic-angular';
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomValidator } from '../../../../validators/custom.validator';
 // Providers
-import { CompanyService } from '../../../../providers/logged-in/company.service';
+import { StoreService } from '../../../../providers/logged-in/store.service';
 // Models
-import { Company } from '../../../../models/company';
+import { Store } from '../../../../models/store';
 
 @Component({
-  selector: 'page-company-form',
-  templateUrl: 'company-form.html'
+  selector: 'page-store-form',
+  templateUrl: 'store-form.html'
 })
-export class CompanyFormPage {
+export class StoreFormPage {
 
-  public model: Company;
+  public model: Store;
   public operation:string;
 
   public form: FormGroup;
@@ -22,7 +21,7 @@ export class CompanyFormPage {
   constructor(
     params: NavParams,
     public navCtrl: NavController,
-    public companyService: CompanyService,
+    public storeService: StoreService,
     private _fb: FormBuilder,
     private _viewCtrl: ViewController,
     private _loadingCtrl: LoadingController,
@@ -32,19 +31,15 @@ export class CompanyFormPage {
     this.model = params.get('model');
 
     // Init Form
-    if(!this.model.company_id){ // Show Create Form
+    if(!this.model.store_id){ // Show Create Form
       this.operation = "Create";
       this.form = this._fb.group({
-        name: ["", Validators.required],
-        email: ["", [Validators.required, CustomValidator.emailValidator]],
-        password: ["", Validators.required]
+        name: ["", Validators.required]
       });
     }else{ // Show Update Form
       this.operation = "Update";
       this.form = this._fb.group({
-        name: [this.model.company_name, Validators.required],
-        email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
-        password: [this.model.company_password_hash] //not required
+        name: [this.model.store_name, Validators.required]
       });
     }
   }
@@ -53,9 +48,7 @@ export class CompanyFormPage {
    * Update Model Data based on Form Input
    */
   updateModelDataFromForm(){
-    this.model.company_name = this.form.value.name;
-    this.model.company_email = this.form.value.email;
-    this.model.company_password_hash = this.form.value.password;
+    this.model.store_name = this.form.value.name
   }
 
   /**
@@ -76,12 +69,12 @@ export class CompanyFormPage {
     this.updateModelDataFromForm();
 
     let action;
-    if(!this.model.company_id){
+    if(!this.model.store_id){
       // Create
-      action = this.companyService.create(this.model);
+      action = this.storeService.create(this.model);
     }else{
       // Update
-      action = this.companyService.update(this.model);
+      action = this.storeService.update(this.model);
     }
 
     action.subscribe(jsonResponse => {
