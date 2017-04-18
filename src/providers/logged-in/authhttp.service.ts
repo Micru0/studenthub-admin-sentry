@@ -44,6 +44,27 @@ export class AuthHttpService {
   }
 
   /**
+  * Requests via Excel GET verb
+  * @param {string} endpointUrl
+  * @param {number} invoice_id
+  * @returns {Observable<any>}
+  */
+  excelget(endpointUrl: string, invoice_id: number): Observable<any> {
+    const url = this._config.apiBaseUrl + endpointUrl;
+    const bearerToken = this._auth.getAccessToken();
+    return this._http.get(url, {
+      responseType: ResponseContentType.Blob,
+      headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + bearerToken })
+    }).map(
+      (response) => { // download file
+        var blob = new Blob([response.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        //file name to dowanload/generate invoice 
+        var filename = `Invoice ${invoice_id} Details.xlsx`;
+        saveAs(blob, filename);
+      });
+  }
+
+  /**
   * Requests via PDF GET verb
   * @param {string} endpointUrl
   * @param {number} invoice_id

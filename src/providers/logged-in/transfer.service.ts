@@ -23,6 +23,16 @@ export class TransferService {
   }
 
   /**
+   * Download excel
+   * @param {number} invoice_id
+   * @returns {Observable<any>}
+   */
+  export(invoice_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/export/${invoice_id}`;
+    return this._authhttp.excelget(url,invoice_id);
+  }
+
+  /**
    * Generating Invoice copy
    * @param {number} invoice_id
    * @returns {Observable<any>}

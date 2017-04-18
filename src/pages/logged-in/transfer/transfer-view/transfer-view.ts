@@ -80,6 +80,15 @@ export class TransferViewPage {
     });
   }
 
+  export(invoice_id: number) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.export(invoice_id).subscribe(response => {
+      this.navCtrl.pop();
+      loader.dismiss();
+    });
+  }
+
   generateInvoice(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
