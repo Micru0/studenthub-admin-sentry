@@ -19,9 +19,9 @@ export class BankService {
    * List of all staff
    * @returns {Observable<any>}
    */
-  list(): Observable<any>{
-    let url = this._bankEndpoint;
-    return this._authhttp.get(url);
+  list(page: number): Observable<any>{
+    let url = this._bankEndpoint + '?page=' + page;
+    return this._authhttp.getRaw(url);
   }
 
   /**

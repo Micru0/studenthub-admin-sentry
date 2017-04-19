@@ -38,7 +38,7 @@ export class CandidateReviewListPage {
     // Load list of candidates
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.candidateService.listToReview().subscribe(response => {
+    this.candidateService.listToReview(page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');

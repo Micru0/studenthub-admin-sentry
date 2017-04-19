@@ -40,7 +40,7 @@ export class StoreViewPage {
     // Load list of companies
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.candidateService.listByStore(this.store.store_id).subscribe(response => {
+    this.candidateService.listByStore(this.store.store_id, page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
