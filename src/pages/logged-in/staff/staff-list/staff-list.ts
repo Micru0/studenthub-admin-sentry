@@ -15,6 +15,10 @@ import { Staff } from '../../../../models/staff';
 })
 export class StaffListPage {
 
+  public pageCount = 0;
+  public currentPage = 1;
+  public pages: number[] = [];
+
   public staff: Staff[];
 
   constructor(
@@ -25,15 +29,31 @@ export class StaffListPage {
   ) {}
 
   ionViewDidLoad() {
-    this.loadData();
+    this.loadData(this.currentPage);
   }
 
-  loadData(){
+  loadData(page: number) {
     // Load list of staff
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.staffService.list().subscribe(response => {
-      this.staff = response;
+    this.staffService.list(page).subscribe(response => {
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.pages = [];
+
+      for(var i = 1; i <= this.pageCount; i++){
+         this.pages.push(i);
+      }
+
+      //hide if no page = 1 
+
+      if(this.pageCount == 1)
+        this.pages = [];
+
+      this.staff = response.json();
+
       loader.dismiss();
     });
   }
@@ -59,7 +79,7 @@ export class StaffListPage {
     modal.onDidDismiss(data => {
       if(data){
         if(data.refresh){
-          this.loadData();
+          this.loadData(this.currentPage);
         }
       }
     });
@@ -75,7 +95,7 @@ export class StaffListPage {
 
     this.staffService.delete(staff).subscribe(jsonResp => {
       loader.dismiss();
-      this.loadData();
+      this.loadData(this.currentPage);
     });
   }
 

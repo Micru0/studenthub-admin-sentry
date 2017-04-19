@@ -19,8 +19,8 @@ export class CandidateService {
    * List of all candidate to review changes 
    * @returns {Observable<any>}
    */
-  listByStore(store_id: number): Observable<any>{
-    let url = this._candidateEndpoint + '/filter/' + store_id;
+  listByStore(store_id: number, page: number): Observable<any>{
+    let url = this._candidateEndpoint + '/filter/' + store_id + '?page=' + page;
     return this._authhttp.getRaw(url);
   }
 
@@ -28,8 +28,8 @@ export class CandidateService {
    * List of all candidate to review changes 
    * @returns {Observable<any>}
    */
-  listToReview(): Observable<any>{
-    let url = this._candidateEndpoint + '/review';
+  listToReview(page: number): Observable<any>{
+    let url = this._candidateEndpoint + '/review?page=' + page;
     return this._authhttp.getRaw(url);
   }
 
@@ -37,8 +37,8 @@ export class CandidateService {
    * List of all staff
    * @returns {Observable<any>}
    */
-  list(): Observable<any>{
-    let url = this._candidateEndpoint;
+  list(page: number): Observable<any>{
+    let url = this._candidateEndpoint + '?page=' + page;
     return this._authhttp.getRaw(url);
   }
 

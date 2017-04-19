@@ -15,6 +15,10 @@ import { Company } from '../../../../models/company';
 })
 export class CompanyListPage {
 
+  public pageCount = 0;
+  public currentPage = 1;
+  public pages: number[] = [];
+
   public companies: Company[];
 
   constructor(
@@ -25,15 +29,30 @@ export class CompanyListPage {
   ) {}
 
   ionViewDidLoad() {
-    this.loadData();
+    this.loadData(this.currentPage);
   }
 
-  loadData(){
+  loadData(page: number) {
     // Load list of companies
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.companyService.list().subscribe(response => {
-      this.companies = response;
+    this.companyService.list(page).subscribe(response => {
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.pages = [];
+
+      for(var i = 1; i <= this.pageCount; i++){
+         this.pages.push(i);
+      }
+
+      //hide if no page = 1 
+
+      if(this.pageCount == 1)
+        this.pages = [];
+
+      this.companies = response.json();
       loader.dismiss();
     });
   }
@@ -59,7 +78,7 @@ export class CompanyListPage {
     modal.onDidDismiss(data => {
       if(data){
         if(data.refresh){
-          this.loadData();
+          this.loadData(this.currentPage);
         }
       }
     });
@@ -75,7 +94,7 @@ export class CompanyListPage {
 
     this.companyService.delete(company).subscribe(jsonResp => {
       loader.dismiss();
-      this.loadData();
+      this.loadData(this.currentPage);
     });
   }
 
