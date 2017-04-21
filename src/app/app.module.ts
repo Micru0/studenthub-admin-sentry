@@ -39,6 +39,11 @@ import { BankListPage } from '../pages/logged-in/bank/bank-list/bank-list';
 import { BankViewPage } from '../pages/logged-in/bank/bank-view/bank-view';
 import { BankFormPage } from '../pages/logged-in/bank/bank-form/bank-form';
 
+// University CRUD
+import { UniversityListPage } from '../pages/logged-in/university/university-list/university-list';
+import { UniversityViewPage } from '../pages/logged-in/university/university-view/university-view';
+import { UniversityFormPage } from '../pages/logged-in/university/university-form/university-form';
+
 //Stpre CRUD 
 import { StoreViewPage } from '../pages/logged-in/store/store-view/store-view';
 import { StoreFormPage } from '../pages/logged-in/store/store-form/store-form';
@@ -52,6 +57,7 @@ import { AuthHttpService } from '../providers/logged-in/authhttp.service';
 import { CompanyService } from '../providers/logged-in/company.service';
 import { StaffService } from '../providers/logged-in/staff.service';
 import { BankService } from '../providers/logged-in/bank.service';
+import { UniversityService } from '../providers/logged-in/university.service';
 import { TransferService } from '../providers/logged-in/transfer.service';
 import { CandidateService } from '../providers/logged-in/candidate.service';
 import { StoreService } from '../providers/logged-in/store.service';
@@ -90,9 +96,14 @@ const cloudSettings: CloudSettings = {
     StaffListPage,
     StaffViewPage,
     StaffFormPage,
+    // Bank
     BankListPage,
     BankViewPage,
     BankFormPage,    
+    // University
+    UniversityListPage,
+    UniversityViewPage,
+    UniversityFormPage,    
     // Pipes
     GroupByPipe,
     SortPipe
@@ -121,10 +132,14 @@ const cloudSettings: CloudSettings = {
     StaffListPage,
     StaffViewPage,
     StaffFormPage,
+    // Bank
     BankListPage,
     BankViewPage,
-    BankFormPage
-
+    BankFormPage,
+    // University
+    UniversityListPage,
+    UniversityViewPage,
+    UniversityFormPage,    
   ],
   imports: [
     BrowserModule,
@@ -147,7 +162,8 @@ const cloudSettings: CloudSettings = {
       BankService,
       TransferService,
       CandidateService,
-      StoreService
+      StoreService,
+      UniversityService
   ],
   bootstrap: [IonicApp]
 })
