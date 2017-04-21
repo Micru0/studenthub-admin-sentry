@@ -6,6 +6,7 @@ import { DefaultPage } from '../default/default';
 import { CompanyListPage } from '../company/company-list/company-list';
 import { StaffListPage } from '../staff/staff-list/staff-list';
 import { BankListPage } from '../bank/bank-list/bank-list';
+import { UniversityListPage } from '../university/university-list/university-list';
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
 import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
 
@@ -46,6 +47,9 @@ export class NavigationPage {
         break;
       case "bank":
         this.rootPage = BankListPage;
+        break;
+      case "university":
+        this.rootPage = UniversityListPage;
         break;
     }
 
