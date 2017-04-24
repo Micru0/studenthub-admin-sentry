@@ -87,8 +87,8 @@
     Unlock Transfer
   </button>
  
-  <button *ngIf="transfer.invoice_status === '10'" ion-button full (click)="markReceived(transfer.invoice_id)">
-   Lock Transfer
+  <button *ngIf="transfer.invoice_status !== '10'" ion-button full (click)="markReceived(transfer.invoice_id)">
+   Mark Received
   </button>
 
   <button *ngIf="transfer.invoice_status !== '10'" ion-button full (click)="markProgress(transfer.invoice_id)">
