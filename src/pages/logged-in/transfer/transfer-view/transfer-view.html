@@ -87,20 +87,20 @@
     Unlock Transfer
   </button>
  
-  <button *ngIf="transfer.invoice_status !== '10'" ion-button full (click)="markReceived(transfer.invoice_id)">
+  <button *ngIf="transfer.invoice_status !== '10' && transfer.invoice_status !== '2' && transfer.invoice_status !== '4'" ion-button full (click)="markReceived(transfer.invoice_id)">
    Mark Received
   </button>
 
-  <button *ngIf="transfer.invoice_status !== '10'" ion-button full (click)="markProgress(transfer.invoice_id)">
+  <button *ngIf="transfer.invoice_status !== '10' && transfer.invoice_status !== '2' && transfer.invoice_status !== '4'" ion-button full (click)="markProgress(transfer.invoice_id)">
     Mark in progress
   </button>
 
-  <button *ngIf="transfer.invoice_status !== '10'" ion-button full (click)="markComplete(transfer.invoice_id)">
+  <button *ngIf="transfer.invoice_status !== '10' && transfer.invoice_status !== '4'" ion-button full (click)="markComplete(transfer.invoice_id)">
     Mark as complete
   </button>
 
-  <button ion-button full (click)="generateInvoice(transfer.invoice_id)">
-    Generate Invoice
+  <button *ngIf="transfer.invoice_status == '2' || transfer.invoice_status == '4'" ion-button full (click)="generateInvoice(transfer.invoice_id)">
+    Download Invoice
   </button>
 
   <button ion-button full (click)="export(transfer.invoice_id)">
