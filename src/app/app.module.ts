@@ -39,6 +39,10 @@ import { BankListPage } from '../pages/logged-in/bank/bank-list/bank-list';
 import { BankViewPage } from '../pages/logged-in/bank/bank-view/bank-view';
 import { BankFormPage } from '../pages/logged-in/bank/bank-form/bank-form';
 
+// Country CRUD
+import { CountryListPage } from '../pages/logged-in/country/country-list/country-list';
+import { CountryViewPage } from '../pages/logged-in/country/country-view/country-view';
+
 // University CRUD
 import { UniversityListPage } from '../pages/logged-in/university/university-list/university-list';
 import { UniversityViewPage } from '../pages/logged-in/university/university-view/university-view';
@@ -61,6 +65,7 @@ import { UniversityService } from '../providers/logged-in/university.service';
 import { TransferService } from '../providers/logged-in/transfer.service';
 import { CandidateService } from '../providers/logged-in/candidate.service';
 import { StoreService } from '../providers/logged-in/store.service';
+import { CountryService } from '../providers/logged-in/country.service';
 
 import { GroupByPipe } from '../pages/logged-in/transfer/groupby-pipe';
 import { SortPipe } from '../pages/logged-in/transfer/timestamp-pipe';
@@ -103,7 +108,10 @@ const cloudSettings: CloudSettings = {
     // University
     UniversityListPage,
     UniversityViewPage,
-    UniversityFormPage,    
+    UniversityFormPage,   
+    //country Crud
+    CountryListPage,
+    CountryViewPage, 
     // Pipes
     GroupByPipe,
     SortPipe
@@ -139,7 +147,10 @@ const cloudSettings: CloudSettings = {
     // University
     UniversityListPage,
     UniversityViewPage,
-    UniversityFormPage,    
+    UniversityFormPage,   
+    //country Crud
+    CountryListPage,
+    CountryViewPage,  
   ],
   imports: [
     BrowserModule,
@@ -163,7 +174,8 @@ const cloudSettings: CloudSettings = {
       TransferService,
       CandidateService,
       StoreService,
-      UniversityService
+      UniversityService,
+      CountryService
   ],
   bootstrap: [IonicApp]
 })

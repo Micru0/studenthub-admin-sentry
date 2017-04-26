@@ -61,5 +61,9 @@ export class CandidateService {
     let url = `${this._candidateEndpoint}/approve/${model.candidate_id}`;
     return this._authhttp.patch(url, {});
   }
-
+  
+  listByCountry(country_id: number, page: number): Observable<any>{
+    let url = this._candidateEndpoint + '/search?country_id=' + country_id + '&page=' + page;
+    return this._authhttp.getRaw(url);
+  }
 }

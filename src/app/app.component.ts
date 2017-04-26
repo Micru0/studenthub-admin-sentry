@@ -12,7 +12,6 @@ import { NavigationPage } from '../pages/logged-in/navigation/navigation';
 
 import { AuthService } from '../providers/auth.service';
 
-
 @Component({
   templateUrl: 'app.html'
 })
