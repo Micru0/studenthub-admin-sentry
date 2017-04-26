@@ -9,6 +9,7 @@ import { BankListPage } from '../bank/bank-list/bank-list';
 import { UniversityListPage } from '../university/university-list/university-list';
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
 import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
+import { CountryListPage } from '../country/country-list/country-list';
 
 // Services
 import { AuthService } from '../../../providers/auth.service';
@@ -51,6 +52,9 @@ export class NavigationPage {
       case "university":
         this.rootPage = UniversityListPage;
         break;
+      case "country":
+        this.rootPage = CountryListPage;
+        break;  
     }
 
     this._menuCtrl.close();
