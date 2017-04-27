@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 // Services
 import { AuthHttpService } from './authhttp.service';
-// Models
-import { Country } from '../../models/country';
 
 /**
  * Manages Country Functionality on the server
