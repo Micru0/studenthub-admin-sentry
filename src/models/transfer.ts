@@ -13,4 +13,12 @@ export class Transfer {
 	invoice_updated_at: string;
 	profit: number;
 	candidates: TransferCandidate[];
+	invoices: Invoice[];
+}
+
+export class Invoice {
+    invoice_id: number;
+    transfer_id: number;
+    invoice_Date: string;
+    invoice_status: string;
 }

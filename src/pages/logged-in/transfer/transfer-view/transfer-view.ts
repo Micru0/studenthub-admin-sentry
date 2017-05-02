@@ -5,7 +5,7 @@ import { NavController, NavParams, ModalController, LoadingController, AlertCont
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
 
 // Models
-import { Transfer } from '../../../../models/transfer';
+import { Transfer, Invoice } from '../../../../models/transfer';
 
 @Component({
   selector: 'page-transfer-view',
@@ -14,8 +14,9 @@ import { Transfer } from '../../../../models/transfer';
 export class TransferViewPage {
   
   public transfer: Transfer;
-
   public transfer_id: number;
+  public invoices: Invoice[] = []; //unpaid invoices 
+  public receipts: Invoice[] = []; //paid invoices 
 
   constructor(
     public navCtrl: NavController,
@@ -40,6 +41,15 @@ export class TransferViewPage {
     loader.present();
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
       this.transfer = response;
+
+      response.invoices.forEach((value, index) => {
+        if(value.invoice_status == 'paid') {
+          this.receipts.push(value);
+        }else{
+          this.invoices.push(value);
+        }
+      });
+
       loader.dismiss();
     });
   }
@@ -88,19 +98,40 @@ export class TransferViewPage {
       loader.dismiss();
     });
   }
-
-  generateInvoice(invoice_id: number) {
+  
+  /** 
+   * Donwload Receipt
+   */
+  downloadReceipt(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.generateInvoiceCopy(invoice_id).subscribe(response => {
-      this.navCtrl.pop();
+    this.transferService.downloadReceipt(invoice_id).subscribe(response => {
+      //this.navCtrl.pop();
       loader.dismiss();
     });
   }
-  
-  // Calculating Total cost     
-  totalCost(hourly_rate, hours, bonus, transfer_cost) {
-    return (2 * (Number(hours) + Number(bonus)) - Number(transfer_cost));
+
+  /** 
+   * Donwload invoice
+   */
+  downloadInvoice(invoice_id: number) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.downloadInvoice(invoice_id).subscribe(response => {
+      //this.navCtrl.pop();
+      loader.dismiss();
+    });
+  }
+
+  /**
+   * Calculating Total per Candidate
+   */     
+  total(candidate) {
+    return (Number(candidate.company_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
+  }
+
+  totalCandidate(candidate) {
+    return (Number(candidate.candidate_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
   }
 }
 

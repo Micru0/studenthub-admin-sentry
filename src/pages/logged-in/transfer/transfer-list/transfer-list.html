@@ -9,28 +9,28 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let transfer of transfers |  orderBy:'transfer_created_at'">
+      {{transfer.transfer_status}}
+      <ion-item>
+        <span *ngIf="transfer.transfer_status=='10'"> Transfer Initiated </span>
+        <span *ngIf="transfer.transfer_status=='1'"> Payment Sent </span>
+        <span *ngIf="transfer.transfer_status=='2'"> Payment Received </span>
+        <span *ngIf="transfer.transfer_status=='3'"> Salary distribution in progress </span>
+        <span *ngIf="transfer.transfer_status=='4'"> Transfer Completed </span>
+        <span *ngIf="transfer.transfer_status=='5'"> Transfer Locked </span>
 
-  <ion-card *ngFor="let transferMember of transfers" [ngClass]="{'my-class': transferMember.invoice_status=='1' }" (click)="transferDetails(transferMember.invoice_id)">
-    <ion-card-header>
-      Transfer #{{ transferMember.invoice_id}}
-    </ion-card-header>
-    <ion-card-content>
-        Company Name: {{ transferMember.company_name }}<br>     
-        Company Email: {{ transferMember.company_email }}<br>     
-        Total: {{ transferMember.total }}<br>     
-        Company Total: {{ transferMember.company_total }}<br>             
-        Transfer Created: {{ transferMember.invoice_created_at}}<br>
-        Transfer Updated: {{ transferMember.invoice_updated_at}}  <br>  
-        Total: {{ transferMember.total}}  <br />
-
-        <span *ngIf="transferMember.invoice_status=='10'"> Transfer Initiated </span>
-        <span *ngIf="transferMember.invoice_status=='1'"> Payment Sent </span>
-        <span *ngIf="transferMember.invoice_status=='2'"> Payment Received </span>
-        <span *ngIf="transferMember.invoice_status=='3'"> Salary distribution in progress </span>
-        <span *ngIf="transferMember.invoice_status=='4'"> Transfer Completed </span>
-        <span *ngIf="transferMember.invoice_status=='5'"> Transfer Locked </span>
-    </ion-card-content>
-  </ion-card>
+        <button ion-item [ngClass]="{'my-class': transfer.transfer_status=='1' }" (click)="transferDetails(transfer.transfer_id)">  
+        Transfer Id : {{ transfer.transfer_id}}<br>    
+        Company: {{ transfer.company_name }} <br> 
+        Company Total: {{ transfer.company_total}} <br>   
+        Total: {{ transfer.total}} <br>   
+        Transfer Created: {{ transfer.transfer_created_at}}<br>
+        Transfer Updated: {{ transfer.transfer_updated_at}}          
+        </button>
+      </ion-item>
+    </ion-item-sliding>    
+  </ion-list>
 
   <ion-row text-center>
     <div class="pagination-wrapper">

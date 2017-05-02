@@ -9,7 +9,7 @@ import { AuthHttpService } from './authhttp.service';
 @Injectable()
 export class TransferService {
 
-  private _transferEndpoint: string = "/invoices";
+  private _transferEndpoint: string = "/transfers";
 
   constructor(private _authhttp: AuthHttpService) { }
 
@@ -37,9 +37,19 @@ export class TransferService {
    * @param {number} invoice_id
    * @returns {Observable<any>}
    */
-  generateInvoiceCopy(invoice_id: number): Observable<any> {
+  downloadInvoice(invoice_id: number): Observable<any> {
     let url = `${this._transferEndpoint}/pdf/${invoice_id}`;
-    return this._authhttp.pdfget(url,invoice_id);
+    return this._authhttp.pdfget(url, 'Invoice ' + invoice_id + ' Details.pdf');
+  }
+
+  /**
+   * Generating Invoice copy
+   * @param {number} invoice_id
+   * @returns {Observable<any>}
+   */
+  downloadReceipt(invoice_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/pdf/${invoice_id}`;
+    return this._authhttp.pdfget(url, 'Receipt ' + invoice_id + ' Details.pdf');
   }
 
   /**

@@ -11,17 +11,17 @@
   <ion-list *ngIf="transfer">
     
     <button ion-item>
-      Transfer Created : {{ transfer.invoice_created_at}}<br> 
-      Transfer Updated :{{ transfer.invoice_updated_at}}<br>    
+      Transfer Created : {{ transfer.transfer_created_at}}<br> 
+      Transfer Updated :{{ transfer.transfer_updated_at}}<br>    
       Total:{{ transfer.total}}<br> 
 
       Invoice Status:
-      <span *ngIf="transfer.invoice_status=='10'"> Transfer Initiated </span>
-      <span *ngIf="transfer.invoice_status=='1'"> Payment Sent </span>
-      <span *ngIf="transfer.invoice_status=='2'"> Payment Received </span>
-      <span *ngIf="transfer.invoice_status=='3'"> Salary distribution in progress </span>
-      <span *ngIf="transfer.invoice_status=='4'"> Transfer Completed </span>
-      <span *ngIf="transfer.invoice_status=='5'"> Transfer Locked </span>
+      <span *ngIf="transfer.transfer_status=='10'"> Transfer Initiated </span>
+      <span *ngIf="transfer.transfer_status=='1'"> Payment Sent </span>
+      <span *ngIf="transfer.transfer_status=='2'"> Payment Received </span>
+      <span *ngIf="transfer.transfer_status=='3'"> Salary distribution in progress </span>
+      <span *ngIf="transfer.transfer_status=='4'"> Transfer Completed </span>
+      <span *ngIf="transfer.transfer_status=='5'"> Transfer Locked </span>
       <br>
 
     </button>
@@ -41,7 +41,12 @@
 
      <ion-row>
       <ion-col > Hourly Rate:</ion-col>
-        <ion-col>{{resource.hourly_rate}}</ion-col>
+        <ion-col>{{resource.candidate_hourly_rate}}</ion-col>
+     </ion-row>
+
+     <ion-row>
+      <ion-col > Hourly Rate Company Paying:</ion-col>
+        <ion-col>{{resource.company_hourly_rate}}</ion-col>
      </ion-row>
 
       <ion-row>
@@ -60,8 +65,13 @@
      </ion-row>
 
      <ion-row>
-      <ion-col > Total:</ion-col>
-        <ion-col >{{ totalCost(resource.hourly_rate,resource.hours,resource.bonus,resource.transfer_cost) }}</ion-col>
+      <ion-col > Company Total:</ion-col>
+        <ion-col >{{ total(resource) }}</ion-col>
+     </ion-row>
+
+     <ion-row>
+      <ion-col > Candidate Total:</ion-col>
+        <ion-col >{{ totalCandidate(resource) }}</ion-col>
      </ion-row>
 
      <ion-row>
@@ -79,39 +89,58 @@
     </ion-item-group>
 
   </ion-list>
+
+  <h3 *ngIf="invoices.length > 0">Invoices</h3>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let invoice of invoices">
+      <button ion-item (click)="downloadInvoice(invoice.invoice_id)">
+        Download Invoice #{{ invoice.invoice_id }}
+      </button>
+    </ion-item-sliding>
+  </ion-list>
+
+  <h3 *ngIf="receipts.length > 0">Receipts</h3>
+  
+  <ion-list>
+    <ion-item-sliding *ngFor="let receipt of receipts">
+      <button ion-item (click)="downloadReceipt(receipt.invoice_id)">
+        Download Receipt #{{ receipt.invoice_id }}
+      </button>
+    </ion-item-sliding>
+  </ion-list>
+ 
+  <br />
+
 </ion-content>
 
 <ion-footer *ngIf="transfer">
   
   <!-- unlock transfer only if transfer in lock status -->
 
-  <button *ngIf="transfer.invoice_status === '5'" ion-button full (click)="markUnlock(transfer.invoice_id)">
+  <button *ngIf="transfer.transfer_status === '5'" ion-button full (click)="markUnlock(transfer.transfer_id)">
     Unlock Transfer
   </button>
  
   <!-- mark received only if transfer is payment sent -->
 
-  <button *ngIf="transfer.invoice_status === '1'" ion-button full (click)="markReceived(transfer.invoice_id)">
+  <button *ngIf="transfer.transfer_status === '1'" ion-button full (click)="markReceived(transfer.transfer_id)">
    Mark Received
   </button>
 
   <!-- mark in progress only if transfer status = payment received -->
 
-  <button *ngIf="transfer.invoice_status === '2'" ion-button full (click)="markProgress(transfer.invoice_id)">
+  <button *ngIf="transfer.transfer_status === '2'" ion-button full (click)="markProgress(transfer.transfer_id)">
     Mark in progress
   </button>
 
   <!-- mark as complete only if transfer status = in progress -->
 
-  <button *ngIf="transfer.invoice_status === '3'" ion-button full (click)="markComplete(transfer.invoice_id)">
+  <button *ngIf="transfer.transfer_status === '3'" ion-button full (click)="markComplete(transfer.transfer_id)">
     Mark as complete
   </button>
 
-  <button *ngIf="transfer.invoice_status == '2' || transfer.invoice_status == '3' || transfer.invoice_status == '4'" ion-button full (click)="generateInvoice(transfer.invoice_id)">
-    Download Invoice
-  </button>
-
-  <button ion-button full (click)="export(transfer.invoice_id)">
+  <button ion-button full (click)="export(transfer.transfer_id)">
     Download as Excel
   </button>
   
