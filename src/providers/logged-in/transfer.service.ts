@@ -101,4 +101,28 @@ export class TransferService {
     let url = `${this._transferEndpoint}/unlock/${invoice_id}`;
     return this._authhttp.patch(url, '');
   }
+
+  /**
+   * Get all unpaid candidates in transfer
+   * @param {number} transfer_id
+   * @returns {Observable<any>}
+   */
+  listUnpaidCandidates(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/unpaid-candidates/${transfer_id}`;
+    return this._authhttp.get(url);
+  }
+
+  /**
+   * Mark candidates as paid 
+   * @param {number} transfer_id
+   * @param {array} candidates
+   * @returns {Observable<any>}
+   */
+  markPaid(transfer_id: number, candidates: any): Observable<any> {
+    let url = `${this._transferEndpoint}/mark-paid/${transfer_id}`;
+    let params = {
+      "candidates": candidates,
+    };
+    return this._authhttp.patch(url, params);
+  }
 }
