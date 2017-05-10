@@ -49,7 +49,7 @@ export class CompanyService {
 
     return this._authhttp.post(postUrl, params);
   }
-
+  
   /**
    * Update
    * @param {Company} model
