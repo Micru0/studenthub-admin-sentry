@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, ViewController, LoadingController, AlertController, NavParams, ToastController } from 'ionic-angular';
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../../../../validators/custom.validator';
@@ -26,21 +26,22 @@ export class StaffFormPage {
     private _fb: FormBuilder,
     private _viewCtrl: ViewController,
     private _loadingCtrl: LoadingController,
-    private _alertCtrl: AlertController
+    private _alertCtrl: AlertController,
+    private _toastCtrl: ToastController
   ){
     // Load the passed model if available
     this.model = params.get('model');
 
     // Init Form
     if(!this.model.staff_id){ // Show Create Form
-      this.operation = "Create";
+      this.operation = "Create Staff";
       this.form = this._fb.group({
         name: ["", Validators.required],
         email: ["", [Validators.required, CustomValidator.emailValidator]],
         password: ["", Validators.required]
       });
     }else{ // Show Update Form
-      this.operation = "Update";
+      this.operation = "Update Staff";
       this.form = this._fb.group({
         name: [this.model.staff_name, Validators.required],
         email: [this.model.staff_email, [Validators.required, CustomValidator.emailValidator]],
@@ -89,20 +90,36 @@ export class StaffFormPage {
 
       // On Success
       if(jsonResponse.operation == "success"){
+        
         // Close the page
         let data = { 'refresh': true };
         this._viewCtrl.dismiss(data);
+        
+        //success toast
+        let toast = this._toastCtrl.create({
+          message: "Staff Member "+this.model.staff_name+' account created successfully',
+          duration: 3000
+        });
+        toast.present();
       }
 
       // On Failure
-      if(jsonResponse.operation == "error"){
+      if (jsonResponse.operation == "error") {
+        var html = '';
+
+        for (let i in jsonResponse.message) {
+          for (let j of jsonResponse.message[i]) {
+             html += j + '<br />';
+          }
+        }
+        
+        //failer text
         let prompt = this._alertCtrl.create({
-          message: JSON.stringify(jsonResponse.message),
+          message: html,
           buttons: ["Ok"]
         });
         prompt.present();
       }
     });
   }
-
 }

@@ -72,7 +72,8 @@ export class CompanyListPage {
    */
   create(){
     let modal = this._modalCtrl.create(CompanyFormPage, {
-      model: new Company()
+      model: new Company(),
+      subcompany: 0
     });
     // Refresh List if required
     modal.onDidDismiss(data => {

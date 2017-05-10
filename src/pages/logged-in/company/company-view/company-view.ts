@@ -81,14 +81,14 @@ export class CompanyViewPage {
   /**
    * Loads the create page
    */
-  create(parent_company_id: number){
-    
+  create(parent_company_id: number,subcompany: number = 0){
     var company = new Company();
 
     company.parent = parent_company_id;
 
     let modal = this._modalCtrl.create(CompanyFormPage, {
       model: company,
+      subcompany : subcompany
     });
     
     // Refresh List if required

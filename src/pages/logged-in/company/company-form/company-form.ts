@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, ViewController, LoadingController, AlertController, NavParams, ToastController } from 'ionic-angular';
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../../../../validators/custom.validator';
@@ -16,36 +16,53 @@ export class CompanyFormPage {
 
   public model: Company;
   public operation:string;
-
+  public isSubCompany:number = 0;
   public form: FormGroup;
 
   constructor(
-    params: NavParams,
+    public params: NavParams,
     public navCtrl: NavController,
     public companyService: CompanyService,
     private _fb: FormBuilder,
     private _viewCtrl: ViewController,
     private _loadingCtrl: LoadingController,
-    private _alertCtrl: AlertController
+    private _alertCtrl: AlertController,
+    private _toastCtrl: ToastController
   ){
     // Load the passed model if available
-    this.model = params.get('model');
+    this.model = this.params.get('model');
+    this.isSubCompany = this.params.get('subcompany');
+    console.log('subcompany='+this.isSubCompany);
 
     // Init Form
+  
     if(!this.model.company_id){ // Show Create Form
-      this.operation = "Create";
-      this.form = this._fb.group({
-        name: ["", Validators.required],
-        email: ["", [Validators.required, CustomValidator.emailValidator]],
-        password: ["", Validators.required]
-      });
-    }else{ // Show Update Form
-      this.operation = "Update";
-      this.form = this._fb.group({
-        name: [this.model.company_name, Validators.required],
-        email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
-        password: [this.model.company_password_hash] //not required
-      });
+      
+      this.operation  = (this.isSubCompany) ? "Create Sub Company" : "Create Company";
+      if (this.isSubCompany) {
+        this.form = this._fb.group({
+          name: ["", Validators.required],
+        });
+      } else {
+        this.form = this._fb.group({
+          name: ["", Validators.required],
+          email: ["", [Validators.required, CustomValidator.emailValidator]],
+          password: ["", Validators.required]
+        });
+      }
+    } else { // Show Update Form
+      this.operation  = (this.isSubCompany) ? "Update  Sub Company" : "Update Company";
+      if (this.isSubCompany) {
+        this.form = this._fb.group({
+            name: [this.model.company_name, Validators.required],
+        });
+      } else {
+        this.form = this._fb.group({
+            name: [this.model.company_name, Validators.required],
+            email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
+            password: [this.model.company_password_hash] //not required
+        });
+      }
     }
   }
 
@@ -76,12 +93,13 @@ export class CompanyFormPage {
     this.updateModelDataFromForm();
 
     let action;
-    if(!this.model.company_id){
+
+    if (!this.model.company_id) {
       // Create
       action = this.companyService.create(this.model);
-    }else{
+    } else {
       // Update
-      action = this.companyService.update(this.model);
+      action =  this.companyService.update(this.model);
     }
 
     action.subscribe(jsonResponse => {
@@ -92,12 +110,28 @@ export class CompanyFormPage {
         // Close the page
         let data = { 'refresh': true };
         this._viewCtrl.dismiss(data);
+
+        let toast = this._toastCtrl.create({
+          message: this.model.company_name+' account saved successfully',
+          duration: 3000
+        });
+        toast.present();
+
       }
 
       // On Failure
-      if(jsonResponse.operation == "error"){
+      if (jsonResponse.operation == "error") {
+        var html = '';
+
+        for (let i in jsonResponse.message) {
+          for (let j of jsonResponse.message[i]) {
+             html += j + '<br />';
+          }
+        }
+        
+        //failer text
         let prompt = this._alertCtrl.create({
-          message: JSON.stringify(jsonResponse.message),
+          message: html,
           buttons: ["Ok"]
         });
         prompt.present();
