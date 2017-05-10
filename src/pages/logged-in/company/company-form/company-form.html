@@ -27,12 +27,12 @@
           <ion-input type="text" formControlName="name"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item *ngIf="!isSubCompany">
           <ion-label floating>Email</ion-label>
           <ion-input type="text" formControlName="email"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item *ngIf="!isSubCompany">
           <ion-label floating>Password</ion-label>
           <ion-input type="password" *ngIf="!model.company_id" formControlName="password"></ion-input>
         </ion-item>
