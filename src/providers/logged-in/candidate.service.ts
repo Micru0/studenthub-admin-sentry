@@ -16,24 +16,6 @@ export class CandidateService {
   constructor(private _authhttp: AuthHttpService) { }
 
   /**
-   * List of all candidate to review changes 
-   * @returns {Observable<any>}
-   */
-  listByStore(store_id: number, page: number): Observable<any>{
-    let url = this._candidateEndpoint + '/filter/' + store_id + '?page=' + page;
-    return this._authhttp.getRaw(url);
-  }
-
-  /**
-   * List of all candidate to review changes 
-   * @returns {Observable<any>}
-   */
-  listToReview(page: number): Observable<any>{
-    let url = this._candidateEndpoint + '/review?page=' + page;
-    return this._authhttp.getRaw(url);
-  }
-
-  /**
    * List of all staff
    * @returns {Observable<any>}
    */
@@ -63,7 +45,30 @@ export class CandidateService {
   }
   
   listByCountry(country_id: number, page: number): Observable<any>{
-    let url = this._candidateEndpoint + '/search?country_id=' + country_id + '&page=' + page;
+    let url = this._candidateEndpoint + '/search?by=country_id&country_id=' + country_id + '&page=' + page;
+    return this._authhttp.getRaw(url);
+  }
+
+ /**
+   * List of all candidate to review changes 
+   * @returns {Observable<any>}
+   */
+  listByStore(store_id: number, page: number): Observable<any>{
+    let url = this._candidateEndpoint + '/search?by=store_id&store_id=' + store_id + '&page=' + page;
+    return this._authhttp.getRaw(url);
+  }
+
+  /**
+   * List of all candidate to review changes 
+   * @returns {Observable<any>}
+   */
+  listToReview(page: number): Observable<any>{
+    let url = this._candidateEndpoint + '/search?by=review&review=0&page=' + page;
+    return this._authhttp.getRaw(url);
+  }
+
+  listByUniversity(university_id: number, page: number): Observable<any>{
+    let url = this._candidateEndpoint + '/search?by=university_id&university_id=' + university_id + '&page=' + page;
     return this._authhttp.getRaw(url);
   }
 }
