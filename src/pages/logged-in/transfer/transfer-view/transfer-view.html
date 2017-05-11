@@ -24,6 +24,11 @@
       <span *ngIf="transfer.transfer_status=='5'"> Transfer Locked </span>
       <br>
 
+      <span *ngIf="transfer.transfer_status=='3'">
+      Total Candidates Paid : {{ transfer.total_paid }} <br />
+      Total Candidates Unpaid : {{ transfer.total_unpaid }}
+      </span>
+
     </button>
 
     <ion-item-group *ngFor="let group of transfer.candidates | store_name">
