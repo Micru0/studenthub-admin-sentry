@@ -16,7 +16,7 @@ export class CompanyFormPage {
 
   public model: Company;
   public operation:string;
-  public isSubCompany:number = 0;
+  public isSubCompany:number=0;
   public form: FormGroup;
 
   constructor(
@@ -30,10 +30,15 @@ export class CompanyFormPage {
     private _toastCtrl: ToastController
   ){
     // Load the passed model if available
+    // this.isSubCompany = 0;
     this.model = this.params.get('model');
     this.isSubCompany = this.params.get('subcompany');
     console.log('subcompany='+this.isSubCompany);
 
+    if (this.model.parent_company_id){
+      this.model.parent = this.model.parent_company_id;
+      this.isSubCompany = 1;
+    }
     // Init Form
   
     if(!this.model.company_id){ // Show Create Form

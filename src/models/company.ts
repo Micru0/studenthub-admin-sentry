@@ -10,4 +10,5 @@ export class Company{
     company_status: string;
     company_created_at: string;
     company_updated_at: string;
+    parent_company_id: number;
 }
