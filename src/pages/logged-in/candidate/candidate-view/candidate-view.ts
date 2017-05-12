@@ -14,6 +14,8 @@ import { Candidate } from '../../../../models/candidate';
 export class CandidateViewPage {
 
   public candidate: Candidate;
+  // public bucketUrl = "https://bawes-public.s3.eu-west-2.amazonaws.com/";
+  public permanentBucketUrl = "https://sh-payroll.s3.eu-west-2.amazonaws.com/";
 
   constructor(
     public navCtrl: NavController,
