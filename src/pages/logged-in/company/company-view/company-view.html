@@ -27,6 +27,7 @@
   <h5>Status</h5>
   <p>{{ company.company_status }}</p>
 
+
   <h5 *ngIf="subcompanies && subcompanies.length > 0">Sub Companies</h5>
   <ion-list>
     <ion-item-sliding *ngFor="let company of subcompanies">
@@ -64,7 +65,7 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full (click)="create(company.company_id,1)">
+  <button *ngIf="!stores || stores.length == 0" ion-button full  (click)="create(company.company_id,1)">
     Create Sub Company
   </button>
 
