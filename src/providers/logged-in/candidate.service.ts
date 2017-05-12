@@ -10,7 +10,7 @@ import { Candidate } from '../../models/candidate';
  */
 @Injectable()
 export class CandidateService {
-
+  
   private _candidateEndpoint: string = "/candidates";
 
   constructor(private _authhttp: AuthHttpService) { }

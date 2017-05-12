@@ -60,14 +60,21 @@
       <h5>Candidate Civil Expiry Date</h5>
       <p>{{ candidate.candidate_civil_expiry_date }}</p>
     </ion-item>
+
     <ion-item>
       <h5>Candidate Civil Photo Front</h5>
-      <p>{{ candidate.candidate_civil_photo_front }}</p>
+      <ion-avatar item-left *ngIf="candidate.candidate_civil_photo_front">
+        <img [src]="permanentBucketUrl + candidate.candidate_civil_photo_front">
+      </ion-avatar>
     </ion-item>
+
     <ion-item>
       <h5>Candidate Civil Photo Back</h5>
-      <p>{{ candidate.candidate_civil_photo_back }}</p>
+      <ion-avatar item-left *ngIf="candidate.candidate_civil_photo_back">
+        <img [src]="permanentBucketUrl + candidate.candidate_civil_photo_back">
+      </ion-avatar>
     </ion-item>
+    
     <ion-item>
       <h5>Candidate Hourly Rate</h5>
       <p>{{ candidate.candidate_hourly_rate }}</p>
