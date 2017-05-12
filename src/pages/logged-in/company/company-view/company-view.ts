@@ -51,7 +51,8 @@ export class CompanyViewPage {
    */
   update(){
     let modal = this._modalCtrl.create(CompanyFormPage, {
-      model: this.company
+      model: this.company,
+      subcompany: 0
     });
     modal.present();
 
