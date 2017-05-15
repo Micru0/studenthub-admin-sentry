@@ -118,4 +118,37 @@ export class AuthService {
   }
 
 
+  /**
+   * Handles Caught Errors from All Authorized Requests Made to Server
+   * @returns {Observable} 
+   */
+  private _handleError(error: any): Observable<any> {
+      let errMsg = (error.message) ? error.message :
+          error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+
+      // Handle Bad Requests
+      // This error usually appears when agent attempts to handle an 
+      // account that he's been removed from assigning
+      if (error.status === 400) {
+          this._events.publish("accountAssignment:removed");
+          return Observable.empty<Response>();
+      }
+
+      // Handle No Internet Connection Error
+      if (error.status == 0) {
+          this._events.publish("internet:offline");
+          //this._auth.logout("Unable to connect to Plugn servers. Please check your internet connection.");
+          return Observable.empty<Response>();
+      }
+
+      // Handle Expired Session Error
+      if (error.status === 401) {
+          this.logout('Session expired, please log back in.');
+          return Observable.empty<Response>();
+      }
+
+      alert("Error: "+errMsg);
+
+      return Observable.throw(errMsg);
+  }
 }

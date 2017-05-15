@@ -53,9 +53,10 @@ export class StaffListPage {
         this.pages = [];
 
       this.staff = response.json();
-
-      loader.dismiss();
-    });
+    },
+    error => {},
+    () => {loader.dismiss();}
+    );
   }
 
   /**

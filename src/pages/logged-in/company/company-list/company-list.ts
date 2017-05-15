@@ -53,8 +53,10 @@ export class CompanyListPage {
         this.pages = [];
 
       this.companies = response.json();
-      loader.dismiss();
-    });
+    },
+    error => {},
+    () => {loader.dismiss();}
+    );
   }
 
   /**

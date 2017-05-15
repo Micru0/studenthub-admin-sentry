@@ -42,6 +42,7 @@ export class TransferListPage {
     // Load list of transfer
     let loader = this._loadingCtrl.create();
     loader.present();
+    //subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
     this.transferService.list(page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
@@ -59,9 +60,10 @@ export class TransferListPage {
         this.pages = [];
 
       this.transfers = response.json();
-      
-      loader.dismiss();
-    });
+    },
+    error => {},
+    () => {loader.dismiss();}
+    );
   }
 
   pageLinkColor(page: number) {
