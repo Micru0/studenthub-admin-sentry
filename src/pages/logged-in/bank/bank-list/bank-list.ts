@@ -53,8 +53,10 @@ export class BankListPage {
         this.pages = [];
 
       this.bank = response.json();
-      loader.dismiss();
-    });
+    },
+    error => {},
+    () => {loader.dismiss();}
+    );
   }
 
   /**

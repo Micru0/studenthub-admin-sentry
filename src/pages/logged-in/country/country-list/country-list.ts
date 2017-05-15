@@ -52,9 +52,10 @@ export class CountryListPage {
         this.pages = [];
 
       this.countries = response.json();
-
-      loader.dismiss();
-    });
+    },
+    error => {},
+    () => {loader.dismiss();}
+    );
   }
 
   /**

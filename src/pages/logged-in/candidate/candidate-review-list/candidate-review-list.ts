@@ -55,8 +55,10 @@ export class CandidateReviewListPage {
         this.pages = [];
 
       this.candidates = response.json();
-      loader.dismiss();
-    });
+    },
+    error => {},
+    () => {loader.dismiss();}
+    );
   }
 
   /**
