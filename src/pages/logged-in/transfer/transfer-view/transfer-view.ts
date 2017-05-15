@@ -28,12 +28,15 @@ export class TransferViewPage {
     public params: NavParams,
     public alertCtrl: AlertController
   ) {
-
     this.transfer_id = params.get('transfer_id');
-    
   }
 
   ionViewWillLoad() {
+    this.loadData();
+  }
+
+  // load data after paid to user
+  ionViewWillEnter() {
     this.loadData();
   }
 
@@ -91,7 +94,6 @@ export class TransferViewPage {
           'transfer_id': this.transfer_id
         });
       }
-      
     });
   }
 
