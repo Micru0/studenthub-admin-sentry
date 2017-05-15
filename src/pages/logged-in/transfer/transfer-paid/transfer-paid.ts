@@ -33,7 +33,7 @@ export class TransferPaidPage  {
   }
 
   markPaid() {
-
+    
     if(this.candidates.length == 0)
     {
         let prompt = this._alertCtrl.create({
