@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, NavParams, ModalController } from 'ionic-angular';
 // Pages
 import { UniversityFormPage } from '../university-form/university-form';
+import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 // Providers
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
 // Models
 import { University } from '../../../../models/university';
 import { Candidate } from '../../../../models/candidate';
+
 @Component({
   selector: 'page-university-view',
   templateUrl: 'university-view.html'
@@ -62,6 +64,13 @@ export class UniversityViewPage {
       this.candidates = response.json();
 
       loader.dismiss();
+    });
+  }
+
+  candidateDetail(candidate:Candidate) {
+    // Load Detail Page
+    this.navCtrl.push(CandidateViewPage, {
+      'model': candidate
     });
   }
 
