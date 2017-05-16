@@ -9,8 +9,17 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>Summary n stuff here</h2>
-  <p>
-    Maybe show stats and warnings here?
-  </p>
+  
+  <ion-card *ngIf="statistics && statistics.transfers">
+    <ion-card-header>
+      Transfers
+    </ion-card-header>
+
+    <ion-list>
+      <button ion-item *ngFor="let transfer of statistics.transfers">
+        {{ transfer.count }} - {{ transfer.transfer_status }}
+      </button>
+    </ion-list>
+  </ion-card>
+
 </ion-content>

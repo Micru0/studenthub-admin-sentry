@@ -47,6 +47,9 @@ export class TransferViewPage {
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
       this.transfer = response;
 
+      this.receipts = [];
+      this.invoices = [];
+      
       response.invoices.forEach((value, index) => {
         if(value.invoice_status == 'paid') {
           this.receipts.push(value);

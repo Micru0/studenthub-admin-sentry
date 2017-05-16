@@ -67,6 +67,7 @@ import { TransferService } from '../providers/logged-in/transfer.service';
 import { CandidateService } from '../providers/logged-in/candidate.service';
 import { StoreService } from '../providers/logged-in/store.service';
 import { CountryService } from '../providers/logged-in/country.service';
+import { StatisticService } from '../providers/logged-in/statistic.service';
 
 import { GroupByPipe } from '../pages/logged-in/transfer/groupby-pipe';
 import { SortPipe } from '../pages/logged-in/transfer/timestamp-pipe';
@@ -178,7 +179,8 @@ const cloudSettings: CloudSettings = {
       CandidateService,
       StoreService,
       UniversityService,
-      CountryService
+      CountryService,
+      StatisticService
   ],
   bootstrap: [IonicApp]
 })
