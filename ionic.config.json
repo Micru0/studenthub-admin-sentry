@@ -1,6 +1,5 @@
 {
   "name": "Payroll Admin",
   "app_id": "dfb10dee",
-  "v2": true,
-  "typescript": true
+  "type": "ionic-angular"
 }
