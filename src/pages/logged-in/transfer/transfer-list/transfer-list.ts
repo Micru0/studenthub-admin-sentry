@@ -16,6 +16,9 @@ import { Transfer } from '../../../../models/transfer';
 })
 export class TransferListPage {
 
+  public transferStatus:number = 0;
+  public companyName: string = '';
+  
   public pageCount = 0;
   public currentPage = 1;
   public pages: number[] = [];
@@ -39,11 +42,12 @@ export class TransferListPage {
   }
 
   loadData(page: number) {
+
     // Load list of transfer
     let loader = this._loadingCtrl.create();
     loader.present();
     //subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
-    this.transferService.list(page).subscribe(response => {
+    this.transferService.list(this.companyName, this.transferStatus, page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
