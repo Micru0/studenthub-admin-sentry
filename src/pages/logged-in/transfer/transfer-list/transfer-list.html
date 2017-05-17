@@ -9,6 +9,34 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      Search
+    </ion-card-header>
+    <ion-card-content>
+
+      <ion-item>
+        <ion-label color="primary" stacked>Company name</ion-label>
+        <ion-input type="text" placeholder="Enter Company Name" [(ngModel)]="companyName" (change)="loadData(1)"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" stacked>Transfer Status</ion-label>
+        <ion-select [(ngModel)]="transferStatus" (ionChange)="loadData(1)">
+          <ion-option value="0">All</ion-option>
+          <ion-option value="10">Transfer Initiated</ion-option>
+          <ion-option value="1">Payment Sent</ion-option>
+          <ion-option value="2">Payment Received</ion-option>
+          <ion-option value="3">Salary distribution in progress</ion-option>
+          <ion-option value="4">Transfer Completed</ion-option>
+          <ion-option value="5">Transfer Locked</ion-option>
+        </ion-select>
+      </ion-item>  
+
+    </ion-card-content>
+  </ion-card>
+
   <ion-list>
     <ion-item-sliding *ngFor="let transfer of transfers |  orderBy:'transfer_created_at'">
       {{transfer.transfer_status}}

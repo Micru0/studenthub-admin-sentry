@@ -17,8 +17,8 @@ export class TransferService {
    * List of all staff
    * @returns {Observable<any>}
    */
-  list(page: number): Observable<any> {
-    let url = `${this._transferEndpoint}?page=${page}`;
+  list(company_name: string, transfer_status: number, page: number): Observable<any> {
+    let url = `${this._transferEndpoint}?company_name=${company_name}&transfer_status=${transfer_status}&page=${page}`;
     return this._authhttp.getRaw(url);
   }
 
