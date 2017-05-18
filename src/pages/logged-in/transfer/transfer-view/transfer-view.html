@@ -8,122 +8,123 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="transfer">
+    <ion-list *ngIf="transfer">
+      
+      <button ion-item>
+        Transfer Created : {{ transfer.transfer_created_at}}<br> 
+        Transfer Updated :{{ transfer.transfer_updated_at}}<br>    
+        Company Total:{{ transfer.company_total}}<br> 
+        Total:{{ transfer.total}}<br> 
+
+        Invoice Status:
+        <span *ngIf="transfer.transfer_status=='10'"> Transfer Initiated </span>
+        <span *ngIf="transfer.transfer_status=='1'"> Payment Sent </span>
+        <span *ngIf="transfer.transfer_status=='2'"> Payment Received </span>
+        <span *ngIf="transfer.transfer_status=='3'"> Salary distribution in progress </span>
+        <span *ngIf="transfer.transfer_status=='4'"> Transfer Completed </span>
+        <span *ngIf="transfer.transfer_status=='5'"> Transfer Locked </span>
+        <br>
+
+        <span *ngIf="transfer.transfer_status=='3'">
+        Total Candidates Paid : {{ transfer.total_paid }} <br />
+        Total Candidates Unpaid : {{ transfer.total_unpaid }}
+        </span>
+
+      </button>
+
+      <ion-item-group *ngFor="let group of transfer.candidates | store_name">
+        <ion-item-divider><b>{{group.name}}</b></ion-item-divider>
+        <button *ngFor="let resource of group.resources" ion-item>        
+          <ion-row>
+              <ion-col > Candidate Name:</ion-col>
+              <ion-col >{{resource.candidate_name}}</ion-col>
+          </ion-row>
+
+        <ion-row>
+        <ion-col > Candidate Email:</ion-col>
+          <ion-col >{{resource.candidate_email}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col > Hourly Rate:</ion-col>
+          <ion-col>{{resource.candidate_hourly_rate}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col > Hourly Rate Company Paying:</ion-col>
+          <ion-col>{{resource.company_hourly_rate}}</ion-col>
+      </ion-row>
+
+        <ion-row>
+        <ion-col > Hours:</ion-col>
+          <ion-col>{{resource.hours}}</ion-col>
+      </ion-row>
+
+        <ion-row>
+        <ion-col > Bonus:</ion-col>
+          <ion-col>{{resource.bonus}}</ion-col>
+      </ion-row>
+
+        <ion-row>
+        <ion-col > Transfer Cost:</ion-col>
+          <ion-col>{{resource.transfer_cost}}</ion-col>
+      </ion-row>
+
+        <ion-row>
+          <ion-col> Paid to Candidate? :</ion-col>
+          <ion-col>
+            <span *ngIf="resource.paid=='1'"> Yes </span>
+            <span *ngIf="resource.paid=='0'"> No </span>
+          </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col > Company Total:</ion-col>
+          <ion-col >{{ total(resource) }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col > Candidate Total:</ion-col>
+          <ion-col >{{ totalCandidate(resource) }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col > IBAN Code:</ion-col>
+          <ion-col >{{ resource.candidate_iban }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col > Bank:</ion-col>
+          <ion-col >{{ resource.bank_name }}</ion-col>
+      </ion-row> 
+
+        </button>
+        <br>
+      </ion-item-group>
+
+    </ion-list>
+
+    <h3 *ngIf="invoices.length > 0">Invoices</h3>
+
+    <ion-list>
+      <ion-item-sliding *ngFor="let invoice of invoices">
+        <button ion-item (click)="downloadInvoice(invoice.invoice_id)">
+          Download Invoice #{{ invoice.invoice_id }}
+        </button>
+      </ion-item-sliding>
+    </ion-list>
+
+    <h3 *ngIf="receipts.length > 0">Receipts</h3>
     
-    <button ion-item>
-      Transfer Created : {{ transfer.transfer_created_at}}<br> 
-      Transfer Updated :{{ transfer.transfer_updated_at}}<br>    
-      Company Total:{{ transfer.company_total}}<br> 
-      Total:{{ transfer.total}}<br> 
-
-      Invoice Status:
-      <span *ngIf="transfer.transfer_status=='10'"> Transfer Initiated </span>
-      <span *ngIf="transfer.transfer_status=='1'"> Payment Sent </span>
-      <span *ngIf="transfer.transfer_status=='2'"> Payment Received </span>
-      <span *ngIf="transfer.transfer_status=='3'"> Salary distribution in progress </span>
-      <span *ngIf="transfer.transfer_status=='4'"> Transfer Completed </span>
-      <span *ngIf="transfer.transfer_status=='5'"> Transfer Locked </span>
-      <br>
-
-      <span *ngIf="transfer.transfer_status=='3'">
-      Total Candidates Paid : {{ transfer.total_paid }} <br />
-      Total Candidates Unpaid : {{ transfer.total_unpaid }}
-      </span>
-
-    </button>
-
-    <ion-item-group *ngFor="let group of transfer.candidates | store_name">
-      <ion-item-divider><b>{{group.name}}</b></ion-item-divider>
-      <button *ngFor="let resource of group.resources" ion-item>        
-         <ion-row>
-            <ion-col > Candidate Name:</ion-col>
-             <ion-col >{{resource.candidate_name}}</ion-col>
-        </ion-row>
-
-      <ion-row>
-      <ion-col > Candidate Email:</ion-col>
-        <ion-col >{{resource.candidate_email}}</ion-col>
-     </ion-row>
-
-     <ion-row>
-      <ion-col > Hourly Rate:</ion-col>
-        <ion-col>{{resource.candidate_hourly_rate}}</ion-col>
-     </ion-row>
-
-     <ion-row>
-      <ion-col > Hourly Rate Company Paying:</ion-col>
-        <ion-col>{{resource.company_hourly_rate}}</ion-col>
-     </ion-row>
-
-      <ion-row>
-      <ion-col > Hours:</ion-col>
-        <ion-col>{{resource.hours}}</ion-col>
-     </ion-row>
-
-      <ion-row>
-      <ion-col > Bonus:</ion-col>
-        <ion-col>{{resource.bonus}}</ion-col>
-     </ion-row>
-
-      <ion-row>
-      <ion-col > Transfer Cost:</ion-col>
-        <ion-col>{{resource.transfer_cost}}</ion-col>
-     </ion-row>
-
-      <ion-row>
-        <ion-col> Paid to Candidate? :</ion-col>
-        <ion-col>
-          <span *ngIf="resource.paid=='1'"> Yes </span>
-          <span *ngIf="resource.paid=='0'"> No </span>
-        </ion-col>
-     </ion-row>
-
-     <ion-row>
-      <ion-col > Company Total:</ion-col>
-        <ion-col >{{ total(resource) }}</ion-col>
-     </ion-row>
-
-     <ion-row>
-      <ion-col > Candidate Total:</ion-col>
-        <ion-col >{{ totalCandidate(resource) }}</ion-col>
-     </ion-row>
-
-     <ion-row>
-      <ion-col > IBAN Code:</ion-col>
-        <ion-col >{{ resource.candidate_iban }}</ion-col>
-     </ion-row>
-
-     <ion-row>
-      <ion-col > Bank:</ion-col>
-        <ion-col >{{ resource.bank_name }}</ion-col>
-     </ion-row> 
-
-      </button>
-      <br>
-    </ion-item-group>
-
-  </ion-list>
-
-  <h3 *ngIf="invoices.length > 0">Invoices</h3>
-
-  <ion-list>
-    <ion-item-sliding *ngFor="let invoice of invoices">
-      <button ion-item (click)="downloadInvoice(invoice.invoice_id)">
-        Download Invoice #{{ invoice.invoice_id }}
-      </button>
-    </ion-item-sliding>
-  </ion-list>
-
-  <h3 *ngIf="receipts.length > 0">Receipts</h3>
-  
-  <ion-list>
-    <ion-item-sliding *ngFor="let receipt of receipts">
-      <button ion-item (click)="downloadReceipt(receipt.invoice_id)">
-        Download Receipt #{{ receipt.invoice_id }}
-      </button>
-    </ion-item-sliding>
-  </ion-list>
- 
+    <ion-list>
+      <ion-item-sliding *ngFor="let receipt of receipts">
+        <button ion-item (click)="downloadReceipt(receipt.invoice_id)">
+          Download Receipt #{{ receipt.invoice_id }}
+        </button>
+      </ion-item-sliding>
+    </ion-list>
+    <!-- Space in case payment in progress and two footer button shows-->
+    <div *ngIf="transfer && (transfer.transfer_status === '1' || transfer.transfer_status === '2' || transfer.transfer_status === '3' || transfer.transfer_status === '5')" class="margin-bottom-32">&nbsp;</div>
   <br />
   <br />
   

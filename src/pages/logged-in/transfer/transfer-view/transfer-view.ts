@@ -46,7 +46,7 @@ export class TransferViewPage {
     loader.present();
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
       this.transfer = response;
-
+    
       this.receipts = [];
       this.invoices = [];
       
