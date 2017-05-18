@@ -22,4 +22,27 @@
     </ion-list>
   </ion-card>
 
+  <ion-card *ngIf="statistics && statistics.candidates">
+    <ion-card-header>
+      Candidate
+    </ion-card-header>
+    <ion-list>
+        <button ion-item>
+          {{statistics.candidates.total_candidate}} : Total Candidate
+        </button>
+        <button ion-item>
+          {{statistics.candidates.total_approved}} : Total Approved
+        </button>
+        <button ion-item>
+          {{statistics.candidates.total_unapproved}} : Total UnApproved
+        </button>
+        <button ion-item>
+          {{statistics.candidates.total_assign}} : Total Assigned
+        </button>
+        <button ion-item>
+          {{statistics.candidates.total_unassign}} : Total UnAssigned
+        </button>
+    </ion-list>
+  </ion-card>
+
 </ion-content>
