@@ -49,7 +49,7 @@ export class AuthHttpService {
   * @param {number} invoice_id
   * @returns {Observable<any>}
   */
-  excelget(endpointUrl: string, invoice_id: number): Observable<any> {
+  excelget(endpointUrl: string, filename: string): Observable<any> {
     const url = this._config.apiBaseUrl + endpointUrl;
     const bearerToken = this._auth.getAccessToken();
     return this._http.get(url, {
@@ -59,7 +59,6 @@ export class AuthHttpService {
       (response) => { // download file
         var blob = new Blob([response.blob()], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         //file name to dowanload/generate invoice 
-        var filename = `Invoice ${invoice_id} Details.xlsx`;
         saveAs(blob, filename);
       });
   }
