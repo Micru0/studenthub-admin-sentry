@@ -17,7 +17,7 @@ export const environmentList = [
   },
   {
     envName: 'anil',
-    apiEndpoint: 'http://admin.payroll.local/v1',
+    apiEndpoint: 'http://backend.payroll.local/v1',
     environmentName: 'Anil Local Machine'
   },
   {
