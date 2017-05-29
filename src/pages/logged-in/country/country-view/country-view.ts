@@ -9,11 +9,11 @@ import { CandidateService } from '../../../../providers/logged-in/candidate.serv
 
 // Models
 import { Candidate } from '../../../../models/candidate';
-import { Country } from '../../../../models/Country';
+import { Country } from '../../../../models/country';
 
 @Component({
-  selector: 'page-Country-view',
-  templateUrl: 'Country-view.html'
+  selector: 'page-country-view',
+  templateUrl: 'country-view.html'
 })
 export class CountryViewPage {
   

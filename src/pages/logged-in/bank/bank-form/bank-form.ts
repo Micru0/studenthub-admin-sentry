@@ -34,12 +34,16 @@ export class BankFormPage {
     if(!this.model.bank_id){ // Show Create Form
       this.operation = "Create";
       this.form = this._fb.group({
-        name: ["", Validators.required]
+        name: ["", Validators.required],
+        swift_code: ["", Validators.required],
+        address: ["", Validators.required]
       });
     }else{ // Show Update Form
       this.operation = "Update";
       this.form = this._fb.group({
-        name: [this.model.bank_name, Validators.required]
+        name: [this.model.bank_name, Validators.required],
+        swift_code: [this.model.bank_swift_code, Validators.required],
+        address: [this.model.bank_address, Validators.required]
       });
     }
   }
@@ -48,7 +52,9 @@ export class BankFormPage {
    * Update Model Data based on Form Input
    */
   updateModelDataFromForm(){
-    this.model.bank_name = this.form.value.name
+    this.model.bank_name = this.form.value.name,
+    this.model.bank_swift_code = this.form.value.swift_code,
+    this.model.bank_address = this.form.value.address
   }
 
   /**

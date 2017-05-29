@@ -16,8 +16,8 @@
     </ion-card-header>
 
     <ion-list>
-      <button ion-item *ngFor="let transfer of statistics.transfers">
-        {{ transfer.count }} - {{ transfer.transfer_status }}
+      <button ion-item *ngFor="let transfer of statistics.transfers"  (click)=showTransfers(transfer.status_code)>
+        <span class="status_{{transfer.status_code}}"> {{ transfer.count }}</span> - {{ transfer.transfer_status }}
       </button>
     </ion-list>
   </ion-card>

@@ -1,9 +1,12 @@
 page-transfer-list {
- .my-class {
-    background-color: yellow;
-  }
-
-  .pagination-wrapper {
-  	margin: 0 auto 15px auto;
-  }
+//  .my-class {background-color: yellow;}
+  .pagination-wrapper {margin: 0 auto 15px auto;}
+  .list-md .item-block .item-inner .input-wrapper div.item-inner{border: none;}
+  ion-label span {float: right;padding: 7px;position: absolute;right: 1px;z-index: 999;}
+  .label-md {margin-right: 0px;}
 }
+.status_4{background: green;color: #fff;padding: 7px;}
+.status_10{background: grey;color: #fff;padding: 7px;}
+.status_5{background: burlywood;color: #fff;padding: 7px;}
+.status_1,.status_2{background: yellowgreen;color: #fff;padding: 7px;}
+.status_3,{background: #387ef5;color: #fff;padding: 7px;}

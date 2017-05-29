@@ -32,7 +32,9 @@ export class BankService {
   create(model: Bank): Observable<any>{
     let postUrl = `${this._bankEndpoint}`;
     let params = {
-      "name": model.bank_name
+      "name": model.bank_name,
+      "swift_code": model.bank_swift_code,
+      "address": model.bank_address
     };
 
     return this._authhttp.post(postUrl, params);
@@ -47,7 +49,9 @@ export class BankService {
     let url = `${this._bankEndpoint}/${model.bank_id}`;
     let params = {
       "name": model.bank_name,
-      "company_id": model.bank_id
+      "company_id": model.bank_id,
+      "swift_code": model.bank_swift_code,
+      "address": model.bank_address
     };
 
     return this._authhttp.patch(url, params);
