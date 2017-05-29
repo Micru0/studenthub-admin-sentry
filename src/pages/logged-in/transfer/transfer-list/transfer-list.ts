@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ModalController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, ModalController, AlertController,NavParams } from 'ionic-angular';
 
 //Pages
 import { TransferViewPage } from '../transfer-view/transfer-view';
@@ -27,6 +27,7 @@ export class TransferListPage {
 
   constructor(
     public navCtrl: NavController,
+    public _params: NavParams,
     public transferService: TransferService,
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
@@ -38,7 +39,11 @@ export class TransferListPage {
   }
 
   ionViewWillEnter() {
-    this.loadData(this.currentPage);
+    // coming from dashboad to show filter status results
+    if (this._params.get('status')) {
+      this.transferStatus = this._params.get('status');
+    }
+    this.loadData(this.currentPage);  
   }
 
   loadData(page: number) {

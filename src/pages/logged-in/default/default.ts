@@ -4,6 +4,9 @@ import { NavController, LoadingController } from 'ionic-angular';
 
 import { StatisticService } from '../../../providers/logged-in/statistic.service';
 
+//page 
+import { TransferListPage } from '../transfer/transfer-list/transfer-list';
+
 @Component({
   selector: 'page-default',
   templateUrl: 'default.html'
@@ -35,5 +38,11 @@ export class DefaultPage {
     error => {},
     () => {loader.dismiss();}
     );
+  }
+
+  showTransfers(transfer_status:number) {
+    this.navCtrl.push(TransferListPage,{
+      'status' : transfer_status
+    })
   }
 }
