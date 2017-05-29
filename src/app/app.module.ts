@@ -30,6 +30,7 @@ import { StaffFormPage } from '../pages/logged-in/staff/staff-form/staff-form';
 import { TransferListPage } from '../pages/logged-in/transfer/transfer-list/transfer-list';
 import { TransferViewPage } from '../pages/logged-in/transfer/transfer-view/transfer-view';
 import { TransferPaidPage } from '../pages/logged-in/transfer/transfer-paid/transfer-paid';
+import { PayableCandidatesPage } from '../pages/logged-in/transfer/payable-candidates/payable-candidates';
 
 // Candidate 
 import { CandidateViewPage } from '../pages/logged-in/candidate/candidate-view/candidate-view';
@@ -93,6 +94,7 @@ const cloudSettings: CloudSettings = {
     TransferListPage,
     TransferViewPage,
     TransferPaidPage,
+    PayableCandidatesPage,
     //candidate Crud
     CandidateReviewListPage,
     CandidateViewPage,
@@ -133,6 +135,7 @@ const cloudSettings: CloudSettings = {
     TransferListPage,
     TransferViewPage,
     TransferPaidPage,
+    PayableCandidatesPage,
     //candidate Crud
     CandidateReviewListPage,
     CandidateViewPage,    
