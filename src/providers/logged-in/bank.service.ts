@@ -34,7 +34,8 @@ export class BankService {
     let params = {
       "name": model.bank_name,
       "swift_code": model.bank_swift_code,
-      "address": model.bank_address
+      "address": model.bank_address,
+      "type": model.bank_transfer_type
     };
 
     return this._authhttp.post(postUrl, params);
@@ -51,7 +52,8 @@ export class BankService {
       "name": model.bank_name,
       "company_id": model.bank_id,
       "swift_code": model.bank_swift_code,
-      "address": model.bank_address
+      "address": model.bank_address,
+      "type": model.bank_transfer_type
     };
 
     return this._authhttp.patch(url, params);
