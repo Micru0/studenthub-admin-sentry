@@ -141,7 +141,7 @@
   <!-- mark received only if transfer is payment sent -->
 
   <button *ngIf="transfer.transfer_status === '1'" ion-button full (click)="markReceived(transfer.transfer_id)">
-   Mark Received & In Progress
+   Mark Received & Distributing Salary
   </button>
 
   <!-- mark in progress only if transfer status = payment received -->
