@@ -98,4 +98,12 @@ export class PayableCandidatesPage {
       loader.dismiss();
     });
   }
+
+  exportText() {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.downloadTxt().subscribe(response => {
+      loader.dismiss();
+    });
+  }
 }

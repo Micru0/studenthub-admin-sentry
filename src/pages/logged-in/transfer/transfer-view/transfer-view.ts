@@ -127,16 +127,6 @@ export class TransferViewPage {
     });
   }
   
-
-  exportTxt(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.downloadTxt().subscribe(response => {
-      // this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
   /** 
    * Donwload Receipt
    */
