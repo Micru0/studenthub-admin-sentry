@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, LoadingController, AlertController,ToastController } from 'ionic-angular';
 
 import { TransferPaidPage } from '../transfer-paid/transfer-paid';
 
@@ -26,7 +26,8 @@ export class TransferViewPage {
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
     public params: NavParams,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController
   ) {
     this.transfer_id = params.get('transfer_id');
   }
@@ -160,6 +161,39 @@ export class TransferViewPage {
 
   totalCandidate(candidate) {
     return (Number(candidate.candidate_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
+  }
+
+  revertBackToUnlock (invoice_id) {
+    let alert = this.alertCtrl.create({
+      title: 'Locked Status?',
+      message: 'Do you want to revert back status to Locked?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            let loader = this._loadingCtrl.create();
+            loader.present();
+            this.transferService.marklock(invoice_id).subscribe(response => {
+              let result = response;
+              
+              let toast = this.toastCtrl.create({
+                message: result.message,
+                duration: 3000
+              });
+              toast.present();
+
+              this.navCtrl.pop();
+              loader.dismiss();
+            });
+          }
+        }
+      ]
+    });
+    alert.present();   
   }
 }
 
