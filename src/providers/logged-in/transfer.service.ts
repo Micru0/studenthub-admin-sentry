@@ -150,4 +150,15 @@ export class TransferService {
     let url = `${this._transferEndpoint}/text-file`;
     return this._authhttp.get(url);
   }
+
+
+  /**
+   * Mark as Lock
+   * @param {number} invoice_id
+   * @returns {Observable<any>}
+   */
+  marklock(invoice_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/lock/${invoice_id}`;
+    return this._authhttp.patch(url, '');
+  }
 }

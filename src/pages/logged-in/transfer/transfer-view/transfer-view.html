@@ -3,7 +3,12 @@
     <button ion-button menuToggle="left">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Transfer Details</ion-title>
+    <ion-title>Details</ion-title>
+      <ion-buttons right>
+        <button ion-button (click)="export(transfer.transfer_id)">
+          Download as Excel
+        </button>  
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -162,7 +167,7 @@
     Mark as complete
   </button>
 
-  <button ion-button full (click)="export(transfer.transfer_id)">
-    Download as Excel
-  </button>  
+  <button *ngIf="transfer.transfer_status === '1'" ion-button full (click)="revertBackToUnlock(transfer.transfer_id)">
+    Revert Back To Locked
+  </button>
 </ion-footer>
