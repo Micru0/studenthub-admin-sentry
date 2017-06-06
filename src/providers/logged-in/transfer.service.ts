@@ -145,7 +145,6 @@ export class TransferService {
     return this._authhttp.patch(url, params);
   }
 
-
   downloadTxt() {
     let url = `${this._transferEndpoint}/text-file`;
     return this._authhttp.get(url);

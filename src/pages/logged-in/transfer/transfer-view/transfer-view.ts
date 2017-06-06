@@ -81,26 +81,6 @@ export class TransferViewPage {
     });
   }
 
-  markPaid(transfer_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.listUnpaidCandidates(transfer_id).subscribe(response => {
-      
-      loader.dismiss();
-
-      //all candidates paid already 
-
-      if(response.candidates.length == 0) {
-        this.markComplete(transfer_id);
-      }else{
-        this.navCtrl.push(TransferPaidPage, {
-          'candidates': response.candidates,
-          'transfer_id': this.transfer_id
-        });
-      }
-    });
-  }
-
   markComplete(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();

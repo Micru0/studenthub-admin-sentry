@@ -12,7 +12,7 @@
 	<ion-list>
 	    <ion-item-sliding *ngFor="let candidate of candidates">
 	      <button ion-item>
-	        {{ candidate.candidate_name }}
+	        {{ candidate.candidate.candidate_name }}
 	      </button>  
 
 	      <ion-item-options side="right">
@@ -38,7 +38,14 @@
   <button ion-button full (click)="export()">
     Download as Excel
   </button>
-  <button ion-button full (click)="exportText()">
+
+	<!-- mark candidates as paid only if transfer status = in progress -->
+
+  <!--<button *ngIf="candidates && candidates.length > '0'" ion-button full (click)="markAllPaid(transfer.transfer_id)">
+    Mark candidates as paid
+  </button>-->
+
+  <!--<button ion-button full (click)="exportText()">
     Download as Text
-  </button>
+  </button>-->
 </ion-footer>

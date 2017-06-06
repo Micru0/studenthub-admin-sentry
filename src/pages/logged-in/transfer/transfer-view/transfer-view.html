@@ -155,12 +155,6 @@
     Mark in progress
   </button>
 
-  <!-- mark candidates as paid only if transfer status = in progress -->
-
-  <button *ngIf="transfer.transfer_status === '3'" ion-button full (click)="markPaid(transfer.transfer_id)">
-    Mark candidates as paid
-  </button>
-
   <!-- mark as complete only if transfer status = in progress -->
 
   <button *ngIf="transfer.transfer_status === '3'" ion-button full (click)="markComplete(transfer.transfer_id)">
