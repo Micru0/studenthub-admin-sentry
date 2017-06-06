@@ -51,8 +51,9 @@
           <button ion-item [ngClass]="{'my-class': transfer.transfer_status=='1' }" (click)="transferDetails(transfer.transfer_id)">  
           Transfer Id : {{ transfer.transfer_id}}<br>    
           Company: {{ transfer.company_name }} <br> 
-          Company Total: {{ transfer.company_total}} <br>   
-          Total: {{ transfer.total}} <br>   
+          Company Total: KWD {{ transfer.company_total}} <br>   
+          Total: KWD {{ transfer.total}} <br>   
+          Profit: KWD {{ profit(transfer) }}<br>    
           Transfer Created: {{ transfer.transfer_created_at}}<br>
           Transfer Updated: {{ transfer.transfer_updated_at}}          
           </button>
