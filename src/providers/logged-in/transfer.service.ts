@@ -14,6 +14,15 @@ export class TransferService {
   constructor(private _authhttp: AuthHttpService) { }
 
   /**
+   * List of all payable candidates
+   * @returns {Observable<any>}
+   */
+  listPayableCandidates(page: number): Observable<any> {
+    let url = `${this._transferEndpoint}/payable-candidates?page=${page}`;
+    return this._authhttp.getRaw(url);
+  }
+
+  /**
    * List of all staff
    * @returns {Observable<any>}
    */
@@ -23,13 +32,23 @@ export class TransferService {
   }
 
   /**
+   * Download excel containing payable canidates' info 
+   * @param {number} invoice_id
+   * @returns {Observable<any>}
+   */
+  exportPayableCandidates(): Observable<any> {
+    let url = `${this._transferEndpoint}/export-payable-candidates`;
+    return this._authhttp.excelget(url, `Payable Candidates.xlsx`);
+  }
+
+  /**
    * Download excel
    * @param {number} invoice_id
    * @returns {Observable<any>}
    */
   export(invoice_id: number): Observable<any> {
     let url = `${this._transferEndpoint}/export/${invoice_id}`;
-    return this._authhttp.excelget(url,invoice_id);
+    return this._authhttp.excelget(url, `Invoice ${invoice_id} Details.xlsx`);
   }
 
   /**
@@ -124,5 +143,21 @@ export class TransferService {
       "candidates": candidates,
     };
     return this._authhttp.patch(url, params);
+  }
+
+  downloadTxt() {
+    let url = `${this._transferEndpoint}/text-file`;
+    return this._authhttp.get(url);
+  }
+
+
+  /**
+   * Mark as Lock
+   * @param {number} invoice_id
+   * @returns {Observable<any>}
+   */
+  marklock(invoice_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/lock/${invoice_id}`;
+    return this._authhttp.patch(url, '');
   }
 }

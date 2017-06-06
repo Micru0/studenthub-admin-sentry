@@ -27,13 +27,12 @@
           <ion-option value="0">All</ion-option>
           <ion-option value="10">Transfer Initiated</ion-option>
           <ion-option value="1">Payment Sent</ion-option>
-          <ion-option value="2">Payment Received</ion-option>
-          <ion-option value="3">Salary distribution in progress</ion-option>
+          <!--<ion-option value="2">Payment Received</ion-option>-->
+          <ion-option value="3">Received & Distributing Salary</ion-option>
           <ion-option value="4">Transfer Completed</ion-option>
           <ion-option value="5">Transfer Locked</ion-option>
         </ion-select>
-      </ion-item>  
-
+      </ion-item> 
     </ion-card-content>
   </ion-card>
 
@@ -44,7 +43,7 @@
           <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='10'"> Transfer Initiated </span>
           <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='1'"> Payment Sent </span>
           <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='2'"> Payment Received </span>
-          <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='3'"> Salary distribution in progress </span>
+          <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='3'"> Received & Distributing Salary </span>
           <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='4'"> Transfer Completed </span>
           <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='5'"> Transfer Locked </span>
 

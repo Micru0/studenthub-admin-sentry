@@ -4,6 +4,7 @@ export class Bank{
     bank_name: string;
     bank_swift_code: string;
     bank_address: string;
+    bank_transfer_type: string;
     bank_created_at: string;
     bank_updated_at: string;
 }
