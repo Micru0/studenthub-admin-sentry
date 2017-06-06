@@ -90,4 +90,8 @@ export class TransferListPage {
       'transfer_id': transfer_id
     });
   }
+
+  profit(transfer: Transfer) {
+    return (transfer.company_total - transfer.total).toFixed(3);
+  }
 }
