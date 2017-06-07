@@ -3,33 +3,28 @@
     <button ion-button menuToggle="left">
       <ion-icon name="menu"></ion-icon>
     </button>
-
     <ion-title>Unpaid Candidates</ion-title>
-
     <ion-buttons right>
       <button ion-button clear color="primary" (click)="markPaid()">
         Mark paid
       </button>
     </ion-buttons>
-
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-
-  <ion-list>
-    <ion-item *ngFor="let obj of candidatelistData; let i= index">
-      <ion-label>{{ obj.candidate.candidate_name }}</ion-label>
-      <ion-checkbox [(ngModel)]="candidates[i]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
-      <ion-label>KW {{ obj.total_amount }}</ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-row text-center>
-	  <div class="pagination-wrapper">
-	    <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-	      {{ page }}
-	    </button>
-	  </div>
-	</ion-row>
+  <div>
+    <ion-list *ngIf="candidatelistData" >
+      <div *ngFor="let transfer of candidatelistData">
+        <ion-item-divider color="light"><b>Transfer ID : {{transfer.transfer_id}}</b></ion-item-divider>
+        <ion-item-sliding *ngFor="let candidate of transfer.candidates">
+          <ion-item> 
+            <ion-checkbox [(ngModel)]="candidateList[candidate.tc_id]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              <ion-label>{{candidate.candidate.candidate_name}}</ion-label>
+              <ion-badge item-right>KWD {{candidate.total_amount}}</ion-badge>
+          </ion-item>
+        </ion-item-sliding>  
+      </div>
+    </ion-list>
+  </div>
 </ion-content>
  
