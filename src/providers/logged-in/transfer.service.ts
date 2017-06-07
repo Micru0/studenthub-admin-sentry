@@ -145,11 +145,27 @@ export class TransferService {
     return this._authhttp.patch(url, params);
   }
 
+  /**
+   * Mark All candidates as paid 
+   * @param {array} candidates
+   * @returns {Observable<any>}
+   */
+  markPaidAll( candidates: any): Observable<any> {
+    let url = `${this._transferEndpoint}/mark-paid-all`;
+    let params = {
+      "candidates": candidates,
+    };
+    return this._authhttp.patch(url, params);
+  }
+
+  /**
+   * Download text file
+   * @returns {Observable<any>}
+   */
   downloadTxt() {
     let url = `${this._transferEndpoint}/text-file`;
     return this._authhttp.get(url);
   }
-
 
   /**
    * Mark as Lock

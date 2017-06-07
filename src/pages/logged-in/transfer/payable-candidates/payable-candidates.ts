@@ -110,32 +110,18 @@ export class PayableCandidatesPage {
     });
   }
 
-  // markAllPaid(transfer_id: number) {
-  //   let loader = this._loadingCtrl.create();
-  //   loader.present();
-  //   this.transferService.listUnpaidCandidates(transfer_id).subscribe(response => {
-      
-  //     loader.dismiss();
+  markAllPaid(candidates) {
+      this.navCtrl.push(TransferPaidPage, {
+        'candidates': candidates,
+      });
+  }
 
-  //     //all candidates paid already 
-
-  //     if(response.candidates.length == 0) {
-  //       this.markComplete(transfer_id);
-  //     }else{
-  //       this.navCtrl.push(TransferPaidPage, {
-  //         'candidates': response.candidates,
-  //         'transfer_id': this.transfer_id
-  //       });
-  //     }
-  //   });
-  // }
-
-  // markComplete(invoice_id: number) {
-  //   let loader = this._loadingCtrl.create();
-  //   loader.present();
-  //   this.transferService.markComplete(invoice_id).subscribe(response => {
-  //     this.navCtrl.pop();
-  //     loader.dismiss();
-  //   });
-  // }
+  markComplete(invoice_id: number) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.markComplete(invoice_id).subscribe(response => {
+      this.navCtrl.pop();
+      loader.dismiss();
+    });
+  }
 }
