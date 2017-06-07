@@ -41,9 +41,9 @@
 
 	<!-- mark candidates as paid only if transfer status = in progress -->
 
-  <!--<button *ngIf="candidates && candidates.length > '0'" ion-button full (click)="markAllPaid(transfer.transfer_id)">
+  <button *ngIf="candidates && candidates.length > '0'" ion-button full (click)="markAllPaid(candidates)">
     Mark candidates as paid
-  </button>-->
+  </button>
 
   <!--<button ion-button full (click)="exportText()">
     Download as Text
