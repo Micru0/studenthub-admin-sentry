@@ -70,6 +70,17 @@ export class TransferPaidPage  {
     );
   }
 
+  /*
+    * Method perform infinite scroll which 
+    * will load more data just like pagination
+    */
+    doInfinite(infiniteScroll) {
+      this.currentPage = this.currentPage + 1;
+      this.loadData(this.currentPage)
+      console.log('Begin async operation : page: '+this.currentPage);
+      infiniteScroll.complete();
+    }
+    
   pageLinkColor(page: number) {
 
     if(page == this.currentPage) 
