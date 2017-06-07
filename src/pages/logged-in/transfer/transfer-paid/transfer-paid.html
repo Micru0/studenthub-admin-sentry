@@ -24,6 +24,12 @@
       <ion-label>KW {{ obj.total_amount }}</ion-label>
     </ion-item>
   </ion-list>
-
+  <ion-row text-center>
+	  <div class="pagination-wrapper">
+	    <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+	      {{ page }}
+	    </button>
+	  </div>
+	</ion-row>
 </ion-content>
  
