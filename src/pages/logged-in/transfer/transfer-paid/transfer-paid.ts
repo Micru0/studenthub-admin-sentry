@@ -10,16 +10,11 @@ import { TransferService } from '../../../../providers/logged-in/transfer.servic
 })
 export class TransferPaidPage  {
 
-  public candidates: any = [];
+  public candidateList: any = [];
   public candidatesData: any = [];
   public candidatelistData;
   public transfer_id: number;
   public count: number = 0;
-
-
-  public pageCount = 0;
-  public currentPage = 1;
-  public pages: number[] = [];
 
   constructor(
     params: NavParams,
@@ -29,80 +24,54 @@ export class TransferPaidPage  {
     private _alertCtrl: AlertController,
     private transferService: TransferService,
     public toastCtrl: ToastController
-  ) {
-    this.candidates = [];
-  }
+  ) {}
 
 
   ionViewWillEnter() {
-    this.loadData(this.currentPage);
+    this.loadData();
   }
 
-  loadData(page: number) {
+  loadData() {
 
     // Load list of transfer
     let loader = this._loadingCtrl.create();
     loader.present();
     
-    this.transferService.listPayableCandidates(page).subscribe(response => {
-
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
-
-      this.pages = [];
-
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-
-      if(this.pageCount == 1)
-        this.pages = [];
+    this.transferService.listAllPayableCandidates().subscribe(response => {
 
       this.candidatelistData = response.json();
       this.candidatelistData.forEach((value, index) => {
-        this.candidates[index] = value.candidate_id;  
+        
+        value.candidates.forEach((innervalue, innerindex) => {
+          this.candidateList[innervalue.tc_id] = innervalue.candidate_id;  
+          this.candidatesData[innervalue.tc_id] = {
+            'candidate_id' : innervalue.candidate_id,
+            'child_transfer_id' : innervalue.transfer_id,
+            'transfer_id' : value.transfer_id,
+          }
+        });
       });
+      console.log(this.candidatesData);
     },
     error => {},
     () => {loader.dismiss();}
     );
-  }
-
-  /*
-    * Method perform infinite scroll which 
-    * will load more data just like pagination
-    */
-    doInfinite(infiniteScroll) {
-      this.currentPage = this.currentPage + 1;
-      this.loadData(this.currentPage)
-      console.log('Begin async operation : page: '+this.currentPage);
-      infiniteScroll.complete();
-    }
-    
-  pageLinkColor(page: number) {
-
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
   }
   
   markPaid() {
   
     let candidate_ids = [];
 
-    this.candidates.forEach((value, index) => {
+    this.candidateList.forEach((value, index) => {
         if(value === true) {
           candidate_ids.push({
-              'candidate_id':this.candidatelistData[index].candidate_id,
-              'transfer_id':this.candidatelistData[index].transfer_id,
+              'candidate_id':this.candidatesData[index].candidate_id,
+              'transfer_id':this.candidatesData[index].transfer_id,
+              'child_transfer_id':this.candidatesData[index].child_transfer_id,
             }
           );
         } 
     });
-
     if (candidate_ids.length == 0) {
 
         let prompt = this._alertCtrl.create({
