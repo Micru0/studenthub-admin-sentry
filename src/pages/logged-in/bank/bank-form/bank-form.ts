@@ -92,14 +92,23 @@ export class BankFormPage {
       // On Success
       if(jsonResponse.operation == "success"){
         // Close the page
-        let data = { 'refresh': true };
+        let data = { 'refresh': true,'model':jsonResponse.detail };
         this._viewCtrl.dismiss(data);
       }
 
       // On Failure
-      if(jsonResponse.operation == "error"){
+      if (jsonResponse.operation == "error") {
+        var html = '';
+
+        for (let i in jsonResponse.message) {
+          for (let j of jsonResponse.message[i]) {
+             html += j + '<br />';
+          }
+        }
+        
+        //failer text
         let prompt = this._alertCtrl.create({
-          message: JSON.stringify(jsonResponse.message),
+          message: html,
           buttons: ["Ok"]
         });
         prompt.present();
