@@ -28,6 +28,11 @@ export class BankViewPage {
     let modal = this._modalCtrl.create(BankFormPage, {
       model: this.bank
     });
+    modal.onDidDismiss(data => {
+      if (data.model) {
+        this.bank = data.model; //  load data on update close
+      }
+    });
     modal.present();
   }
 
