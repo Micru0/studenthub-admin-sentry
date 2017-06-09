@@ -85,7 +85,7 @@ export class CompanyViewPage {
   create(parent_company_id: number,subcompany: number = 0){
     var company = new Company();
 
-    company.parent = parent_company_id;
+    company.parent_company_id = parent_company_id;
 
     let modal = this._modalCtrl.create(CompanyFormPage, {
       model: company,

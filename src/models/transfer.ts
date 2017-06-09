@@ -2,15 +2,15 @@
 import { TransferCandidate } from './transfer-candidate';
 
 export class Transfer {
-    invoice_id: number; 
+	transfer_id: number;
+	parent_transfer_id: number;
 	company_id: number; 
-	company_name: string;
-	company_email: string;
 	total: number;
 	company_total: number;
-	invoice_status: number;
-	invoice_created_at: string;
-	invoice_updated_at: string;
+	payment_received_on: string;
+	transfer_status: number;
+	transfer_created_at: string;
+	transfer_updated_at: string;
 	profit: number;
 	candidates: TransferCandidate[];
 	invoices: Invoice[];
