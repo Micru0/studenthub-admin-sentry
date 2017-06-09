@@ -36,7 +36,7 @@ export class CompanyFormPage {
     console.log('subcompany='+this.isSubCompany);
 
     if (this.model.parent_company_id){
-      this.model.parent = this.model.parent_company_id;
+      this.model.parent_company_id = this.model.parent_company_id;
       this.isSubCompany = 1;
     }
     // Init Form
