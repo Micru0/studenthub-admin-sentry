@@ -75,6 +75,15 @@ export class TransferListPage {
     );
   }
 
+  delete(transfer_id: number) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.delete(transfer_id).subscribe(response => {
+      this.loadData(1);
+      loader.dismiss();
+    });
+  }
+
   pageLinkColor(page: number) {
 
     if(page == this.currentPage) 
