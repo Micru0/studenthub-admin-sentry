@@ -185,4 +185,14 @@ export class TransferService {
     let url = `${this._transferEndpoint}/lock/${invoice_id}`;
     return this._authhttp.patch(url, '');
   }
+
+  /**
+   * Delete Transfer 
+   * @param {number} transfer_id
+   * @returns {Observable<any>}
+   */
+  delete(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/${transfer_id}`;
+    return this._authhttp.delete(url);
+  }
 }
