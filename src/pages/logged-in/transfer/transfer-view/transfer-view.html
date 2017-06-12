@@ -157,9 +157,12 @@
 
   <!-- mark as complete only if transfer status = in progress -->
 
-  <button *ngIf="transfer.transfer_status === '3'" ion-button full (click)="markComplete(transfer.transfer_id)">
+  <!--
+    Commenting this button as now we are now making transfer complete on complete payment of all candidates
+    REf ID : #146919789
+    <button *ngIf="transfer.transfer_status === '3'" ion-button full (click)="markComplete(transfer.transfer_id)">
     Mark as complete
-  </button>
+  </button>-->
 
   <button *ngIf="transfer.transfer_status === '1'" ion-button full (click)="revertBackToUnlock(transfer.transfer_id)">
     Revert Back To Locked
