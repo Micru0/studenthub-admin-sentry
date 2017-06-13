@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content>
-	<ion-list>
+	<!--<ion-list>
 	    <ion-item-sliding *ngFor="let candidate of candidates">
 	      <button ion-item>
 	        {{ candidate.candidate.candidate_name }}
@@ -23,7 +23,25 @@
 	      </ion-item-options>
 
 	    </ion-item-sliding>
-	</ion-list>
+	</ion-list>-->
+
+<div>
+    <ion-list *ngIf="candidates" >
+      <div *ngFor="let transfer of candidates">
+        <ion-item-divider color="light"><b>Transfer ID : {{transfer.transfer_id}}</b></ion-item-divider>
+        <ion-item-sliding *ngFor="let candidate of transfer.candidates">
+          <ion-item> 
+              <ion-label>
+								<ion-icon *ngIf="candidate.paid == 1" class="green" name="checkmark-circle"></ion-icon>
+								<ion-icon *ngIf="candidate.paid == 0" class="orange" name="information-circle"></ion-icon>
+								{{candidate.candidate.candidate_name}} 
+								</ion-label>
+              <ion-badge item-right>KWD {{candidate.total_amount}}</ion-badge>
+          </ion-item>
+        </ion-item-sliding>  
+      </div>
+    </ion-list>
+  </div>
 
 	<ion-row text-center>
 	  <div class="pagination-wrapper">

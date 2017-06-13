@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController, AlertController,ToastController } from 'ionic-angular';
 
-import { TransferPaidPage } from '../transfer-paid/transfer-paid';
-
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
 
