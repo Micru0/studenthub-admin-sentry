@@ -8,6 +8,8 @@ import { IonicStorageModule } from '@ionic/storage';
 // Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
+import { File } from '@ionic-native/file';
 
 // App Imports
 import { MyApp } from './app.component';
@@ -177,6 +179,9 @@ const cloudSettings: CloudSettings = {
       // Ionic Native 
       StatusBar,
       SplashScreen,
+      Transfer, 
+      TransferObject,
+      File,
       {provide: ErrorHandler, useClass: IonicErrorHandler},
       // Custom
       AuthService, // Handles all Authorization

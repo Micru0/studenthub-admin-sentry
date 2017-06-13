@@ -46,6 +46,27 @@ export class AuthHttpService {
   /**
   * Requests via Excel GET verb
   * @param {string} endpointUrl
+  * @param {string} filename
+  * @returns {Observable<any>}
+  */
+  downloadTextFile(endpointUrl: string): Observable<any> {
+    const url = this._config.apiBaseUrl + endpointUrl;
+    const bearerToken = this._auth.getAccessToken();
+    return this._http.get(url, {
+      responseType: ResponseContentType.Blob,
+      headers: new Headers({ 'Content-Type': 'text/plain', 'Authorization': 'Bearer ' + bearerToken })
+    }).map(
+      (response) => { // download file        
+        var filename = response.headers.get('filename');
+        var blob = new Blob([response.blob()], { type: 'text/plain' });
+        //file name to dowanload/generate invoice 
+        saveAs(blob, filename);
+      });
+  }
+
+  /**
+  * Requests via Excel GET verb
+  * @param {string} endpointUrl
   * @param {number} invoice_id
   * @returns {Observable<any>}
   */
