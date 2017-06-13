@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ModalController, AlertController } from 'ionic-angular';
+import { saveAs } from 'file-saver';
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';

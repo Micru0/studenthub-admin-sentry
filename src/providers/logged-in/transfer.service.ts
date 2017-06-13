@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+//import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
+//import { File } from '@ionic-native/file';
+
 // Services
 import { AuthHttpService } from './authhttp.service';
 
@@ -11,7 +14,11 @@ export class TransferService {
 
   private _transferEndpoint: string = "/transfers";
 
-  constructor(private _authhttp: AuthHttpService) { }
+  constructor(
+    //private transfer: Transfer, 
+    //private file: File,    
+    private _authhttp: AuthHttpService
+  ) { }
 
   /**
    * List of all payable candidates
@@ -172,8 +179,23 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   downloadTxt() {
-    let url = `${this._transferEndpoint}/text-file`;
-    return this._authhttp.get(url);
+    let url = `${this._transferEndpoint}/text`;
+    
+    /*
+    let fileTransfer: TransferObject = this.transfer.create();
+    
+    return fileTransfer.download(
+      url, 
+      this.file.dataDirectory + 'test.txt',
+      true,
+      {
+          headers: {
+              "Authorization": "Bearer "+ bearerToken
+          }
+      }
+    );*/
+
+    return this._authhttp.downloadTextFile(url);
   }
 
   /**
