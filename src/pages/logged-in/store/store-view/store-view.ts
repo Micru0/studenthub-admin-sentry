@@ -78,19 +78,6 @@ export class StoreViewPage {
     });
   }
 
-   /**
-   * Delete the provided model
-   */
-  deleteCandidate(candidate: Candidate){
-    let loader = this._loadingCtrl.create();
-    loader.present();
-
-    this.candidateService.delete(candidate).subscribe(jsonResp => {
-      loader.dismiss();
-      this.loadData(this.currentPage);
-    });
-  }
-
   pageLinkColor(page: number) {
 
     if(page == this.currentPage) 

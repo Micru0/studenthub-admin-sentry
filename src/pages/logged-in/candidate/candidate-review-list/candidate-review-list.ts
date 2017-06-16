@@ -88,44 +88,22 @@ export class CandidateReviewListPage {
 
     this.candidateService.approve(candidate).subscribe(response => {
       loader.dismiss();
-
-      if(response.operation == 'error') {
-        
+      
+      if (response.operation == 'error') {
         var html = '';
-
         for (let i in response.message) {
-          
           for (let j of response.message[i]) {
-             
              html += j;
           }
         }
-
         let toast = this.toastCtrl.create({
           message: html,
           duration: 3000
         });
-        
         toast.present();
-      
       } else {
         this.loadData(this.currentPage);
       }
-
-    });
-  } 
-
-  /**
-   * Delete the provided model
-   */
-  delete(candidate: Candidate){
-    let loader = this._loadingCtrl.create();
-    loader.present();
-
-    this.candidateService.delete(candidate).subscribe(jsonResp => {
-      loader.dismiss();
-      this.loadData(this.currentPage);
     });
   }
-
 }
