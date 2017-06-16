@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController, LoadingController } from 'ionic-angular';
 // Pages
 import { CompanyFormPage } from '../company-form/company-form';
 import { StoreFormPage } from '../../store/store-form/store-form';
@@ -27,6 +27,7 @@ export class CompanyViewPage {
     public navCtrl: NavController,
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
+    private _alertCtrl: AlertController,
     public companyService: CompanyService,
     public storeService: StoreService,
     params: NavParams
@@ -63,19 +64,6 @@ export class CompanyViewPage {
      // Load Detail Page
     this.navCtrl.push(CompanyViewPage, {
       'model': model
-    });
-  }
-
-  /**
-   * Delete the provided model
-   */
-  delete(company: Company){
-    let loader = this._loadingCtrl.create();
-    loader.present();
-
-    this.companyService.delete(company).subscribe(jsonResp => {
-      loader.dismiss();
-      this.loadData();
     });
   }
 
@@ -141,9 +129,89 @@ export class CompanyViewPage {
     let loader = this._loadingCtrl.create();
     loader.present();
 
-    this.storeService.delete(store).subscribe(jsonResp => {
-      loader.dismiss();
-      this.loadData();
+      let confirm = this._alertCtrl.create({
+      title: 'Delete Store?',
+      message: 'Do you want to delete this store?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.storeService.delete(store).subscribe(jsonResp => {
+              loader.dismiss();
+              // On Success
+              this.loadData();
+
+              // On Failure
+              if (jsonResp.operation == "error") {
+                //failer text
+                let prompt = this._alertCtrl.create({
+                  title: 'Delete Error!',
+                  message: jsonResp.message,
+                  buttons: ["Ok"]
+                });
+                prompt.present();
+              }
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no',
+          handler: () => {
+            loader.dismiss();
+            this.loadData();
+          }
+        }
+      ]
     });
+    confirm.present();
+  }
+
+  /**
+   * Delete the provided model
+   */
+  delete(company: Company){
+    let loader = this._loadingCtrl.create();
+    loader.present();
+
+    let confirm = this._alertCtrl.create({
+      title: 'Delete Company?',
+      message: 'Do you want to delete this Company?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.companyService.delete(company).subscribe(jsonResp => {
+              loader.dismiss();
+              // On Success
+              if (jsonResp.operation == "success") {
+                // Close the page
+                this.loadData();
+              }
+
+              // On Failure
+              if (jsonResp.operation == "error") {
+                //failer text
+                let prompt = this._alertCtrl.create({
+                  title: 'Deletion Error!',
+                  message: jsonResp.message,
+                  buttons: ["Ok"]
+                });
+                prompt.present();
+              }
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no',
+          handler: () => {
+            loader.dismiss();
+            this.loadData();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }
