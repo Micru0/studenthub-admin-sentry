@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ModalController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, ModalController } from 'ionic-angular';
 
 // Pages
 import { CompanyViewPage } from '../company-view/company-view';
@@ -26,6 +26,7 @@ export class CompanyListPage {
     public companyService: CompanyService,
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
+    private _alertCtrl: AlertController,
   ) {}
 
   ionViewDidLoad() {
@@ -94,11 +95,40 @@ export class CompanyListPage {
   delete(company: Company){
     let loader = this._loadingCtrl.create();
     loader.present();
-
-    this.companyService.delete(company).subscribe(jsonResp => {
-      loader.dismiss();
-      this.loadData(this.currentPage);
+    let confirm = this._alertCtrl.create({
+      title: 'Delete Company?',
+      message: 'Do you want to delete this Company?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.companyService.delete(company).subscribe(jsonResp => {
+              loader.dismiss();
+              this.loadData(this.currentPage);
+            
+              // On Failure
+              if (jsonResp.operation == "error") {
+                //failer text
+                let prompt = this._alertCtrl.create({
+                  title: 'Deletion Error!',
+                  message: jsonResp.message,
+                  buttons: ["Ok"]
+                });
+                prompt.present();
+              }
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no',
+          handler: () => {
+            loader.dismiss();
+            this.loadData(this.currentPage);
+          }
+        }
+      ]
     });
+    confirm.present();
   }
-
 }
