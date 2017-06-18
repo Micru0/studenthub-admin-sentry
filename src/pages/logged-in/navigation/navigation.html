@@ -10,7 +10,7 @@
 
 
         <ion-list>
-          <ion-list-header>Personal</ion-list-header>
+          <ion-list-header>Action Points</ion-list-header>
 
           <button ion-item (click)="loadPage('summary')">
             <ion-icon name="stats" item-left></ion-icon>
@@ -32,6 +32,8 @@
             Payable Candidates
           </button>
 
+          <ion-list-header>Accounts</ion-list-header>
+
           <button ion-item (click)="loadPage('companies')">
             <ion-icon name="briefcase" item-left></ion-icon>
             Companies
@@ -42,20 +44,24 @@
             Staff
           </button>
 
+          <ion-list-header>Entities</ion-list-header>
+
           <button ion-item (click)="loadPage('bank')">
             <ion-icon name="cash" item-left></ion-icon>
-            Bank
+            Banks
           </button>
 
           <button ion-item (click)="loadPage('university')">
             <ion-icon name="school" item-left></ion-icon>
-            University
+            Universities
           </button>
 
           <button ion-item (click)="loadPage('country')">
             <ion-icon name="paper-plane" item-left></ion-icon>
-            Country
+            Countries
           </button>
+
+          <ion-list-header>Personal</ion-list-header>
 
           <button ion-item (click)="logout()">
             <ion-icon name="ios-log-out" item-left></ion-icon>
