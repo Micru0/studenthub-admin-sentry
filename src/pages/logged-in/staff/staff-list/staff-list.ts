@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ModalController } from 'ionic-angular';
+import { NavController, LoadingController, ModalController, AlertController, ToastController } from 'ionic-angular';
 
 // Pages
 import { StaffViewPage } from '../staff-view/staff-view';
@@ -26,7 +26,9 @@ export class StaffListPage {
     public staffService: StaffService,
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
-  ) {}
+    private _alertCtrl: AlertController,
+    private _toastCtrl: ToastController
+  ) { }
 
   ionViewDidLoad() {
     this.loadData(this.currentPage);
@@ -43,26 +45,26 @@ export class StaffListPage {
 
       this.pages = [];
 
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
+      for (var i = 1; i <= this.pageCount; i++) {
+        this.pages.push(i);
       }
 
       //hide if no page = 1 
 
-      if(this.pageCount == 1)
+      if (this.pageCount == 1)
         this.pages = [];
 
       this.staff = response.json();
     },
-    error => {},
-    () => {loader.dismiss();}
+      error => { },
+      () => { loader.dismiss(); }
     );
   }
 
   /**
    * When its selected
    */
-  rowSelected(model){
+  rowSelected(model) {
     // Load Detail Page
     this.navCtrl.push(StaffViewPage, {
       'model': model
@@ -72,14 +74,14 @@ export class StaffListPage {
   /**
    * Loads the create page
    */
-  create(){
+  create() {
     let modal = this._modalCtrl.create(StaffFormPage, {
       model: new Staff()
     });
     // Refresh List if required
     modal.onDidDismiss(data => {
-      if(data){
-        if(data.refresh){
+      if (data) {
+        if (data.refresh) {
           this.loadData(this.currentPage);
         }
       }
@@ -90,14 +92,62 @@ export class StaffListPage {
   /**
    * Delete the provided model
    */
-  delete(staff: Staff){
+  // delete(staff: Staff) {
+  //   let loader = this._loadingCtrl.create();
+  //   loader.present();
+
+  //   this.staffService.delete(staff).subscribe(jsonResp => {
+  //     loader.dismiss();
+  //     this.loadData(this.currentPage);
+  //   });
+  // }
+
+
+  /**
+   * Delete the provided model
+   */
+  delete(staff: Staff) {
     let loader = this._loadingCtrl.create();
     loader.present();
+    let confirm = this._alertCtrl.create({
+      title: 'Delete Staff?',
+      message: 'Are you sure you want to delete this Staff?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.staffService.delete(staff).subscribe(jsonResp => {
+              loader.dismiss();
 
-    this.staffService.delete(staff).subscribe(jsonResp => {
-      loader.dismiss();
-      this.loadData(this.currentPage);
+              if (jsonResp.operation == 'error') {
+                let alert = this._alertCtrl.create({
+                  title: 'Deletion Error!',
+                  subTitle: jsonResp.message,
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+
+              if (jsonResp.operation == 'success') {
+                let toast = this._toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
+              }
+              this.loadData(this.currentPage);
+            });
+          }
+        },
+        {
+          text: 'No',
+          handler: () => {
+            this.loadData(this.currentPage);
+            loader.dismiss();
+          }
+        }
+      ]
     });
+    confirm.present();
   }
-
 }

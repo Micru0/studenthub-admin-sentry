@@ -31,6 +31,7 @@ import { CompanyFormPage } from '../pages/logged-in/company/company-form/company
 // Staff CRUD
 import { StaffListPage } from '../pages/logged-in/staff/staff-list/staff-list';
 import { StaffViewPage } from '../pages/logged-in/staff/staff-view/staff-view';
+import { StaffFormPage } from '../pages/logged-in/staff/staff-form/staff-form';
 
 // Transfer
 import { TransferListPage } from '../pages/logged-in/transfer/transfer-list/transfer-list';
@@ -94,7 +95,6 @@ const cloudSettings: CloudSettings = {
     NavigationPage,
     DefaultPage,
     //Store Crud
-    StoreFormPage,
     StoreViewPage,
     //Transfer Crud
     TransferListPage,
@@ -111,6 +111,7 @@ const cloudSettings: CloudSettings = {
     // Staff Crud
     StaffListPage,
     StaffViewPage,
+    StaffFormPage,
     // Bank
     BankListPage,
     BankViewPage,
@@ -134,7 +135,6 @@ const cloudSettings: CloudSettings = {
     NavigationPage,
     DefaultPage,
     //Store Crud
-    StoreFormPage,
     StoreViewPage,
     //Transfer Crud
     TransferListPage,
@@ -151,6 +151,7 @@ const cloudSettings: CloudSettings = {
     // Staff Crud
     StaffListPage,
     StaffViewPage,
+    StaffFormPage,
     // Bank
     BankListPage,
     BankViewPage,

@@ -24,11 +24,10 @@ export class StaffViewPage {
   /**
    * Loads Form in modal to update
    */
-  update(){
+  update() {
     let modal = this._modalCtrl.create(StaffFormPage, {
       model: this.staff
     });
     modal.present();
   }
-
 }
