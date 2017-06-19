@@ -18,7 +18,7 @@
           {{ university.total_candidates }} candidates
         </ion-badge>
 
-      </button>  
+      </button>
 
       <ion-item-options side="right">
         <button ion-button color="danger" (click)="delete(university)">
@@ -28,15 +28,15 @@
       </ion-item-options>
 
     </ion-item-sliding>
-</ion-list>
+  </ion-list>
 
-<ion-row text-center>
-  <div class="pagination-wrapper">
-    <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+  <ion-row text-center>
+    <div class="pagination-wrapper">
+      <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
       {{ page }}
     </button>
-  </div>
-</ion-row>
+    </div>
+  </ion-row>
 
 </ion-content>
 

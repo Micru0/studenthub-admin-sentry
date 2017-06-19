@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ModalController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController, LoadingController, ToastController } from 'ionic-angular';
 // Pages
 import { CompanyFormPage } from '../company-form/company-form';
-import { StoreFormPage } from '../../store/store-form/store-form';
 import { StoreViewPage } from '../../store/store-view/store-view';
 
 // Providers
@@ -30,6 +29,7 @@ export class CompanyViewPage {
     private _alertCtrl: AlertController,
     public companyService: CompanyService,
     public storeService: StoreService,
+    private _toastCtrl: ToastController,
     params: NavParams
   ) {
     this.company = params.get('model');
@@ -116,10 +116,14 @@ export class CompanyViewPage {
               loader.dismiss();
               // On Success
               if (jsonResp.operation == "success") {
+                let toast = this._toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
                 // Close the page
-                this.loadData();
               }
-
+              this.loadData();
               // On Failure
               if (jsonResp.operation == "error") {
                 //failer text
@@ -130,6 +134,7 @@ export class CompanyViewPage {
                 });
                 prompt.present();
               }
+
             });
           }
         },

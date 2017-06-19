@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController, ModalController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, ModalController, ToastController } from 'ionic-angular';
 
 // Pages
 import { CompanyViewPage } from '../company-view/company-view';
@@ -27,7 +27,8 @@ export class CompanyListPage {
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
-  ) {}
+    private _toastCtrl: ToastController
+  ) { }
 
   ionViewDidLoad() {
     this.loadData(this.currentPage);
@@ -44,26 +45,26 @@ export class CompanyListPage {
 
       this.pages = [];
 
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
+      for (var i = 1; i <= this.pageCount; i++) {
+        this.pages.push(i);
       }
 
       //hide if no page = 1 
 
-      if(this.pageCount == 1)
+      if (this.pageCount == 1)
         this.pages = [];
 
       this.companies = response.json();
     },
-    error => {},
-    () => {loader.dismiss();}
+      error => { },
+      () => { loader.dismiss(); }
     );
   }
 
   /**
    * When its selected
    */
-  rowSelected(model){
+  rowSelected(model) {
     // Load Detail Page
     this.navCtrl.push(CompanyViewPage, {
       'model': model
@@ -73,15 +74,15 @@ export class CompanyListPage {
   /**
    * Loads the create page
    */
-  create(){
+  create() {
     let modal = this._modalCtrl.create(CompanyFormPage, {
       model: new Company(),
       subcompany: 0
     });
     // Refresh List if required
     modal.onDidDismiss(data => {
-      if(data){
-        if(data.refresh){
+      if (data) {
+        if (data.refresh) {
           this.loadData(this.currentPage);
         }
       }
@@ -92,7 +93,7 @@ export class CompanyListPage {
   /**
    * Delete the provided model
    */
-  delete(company: Company){
+  delete(company: Company) {
     let loader = this._loadingCtrl.create();
     loader.present();
     let confirm = this._alertCtrl.create({
@@ -104,8 +105,18 @@ export class CompanyListPage {
           handler: () => {
             this.companyService.delete(company).subscribe(jsonResp => {
               loader.dismiss();
+              // On Success
+              if (jsonResp.operation == "success") {
+                let toast = this._toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
+                // Close the page
+              }
               this.loadData(this.currentPage);
-            
+
+
               // On Failure
               if (jsonResp.operation == "error") {
                 //failer text
