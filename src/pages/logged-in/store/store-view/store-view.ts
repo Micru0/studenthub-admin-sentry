@@ -5,7 +5,6 @@ import { NavController, NavParams, ModalController, LoadingController } from 'io
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
 
 // Pages
-import { StoreFormPage } from '../store-form/store-form';
 import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 
 // Models
@@ -59,16 +58,6 @@ export class StoreViewPage {
       this.candidates = response.json();
       loader.dismiss();
     });
-  }
-
-  /**
-   * Loads Form in modal to update
-   */
-  update(){
-    let modal = this._modalCtrl.create(StoreFormPage, {
-      model: this.store
-    });
-    modal.present();
   }
 
   candidateSelected(model) {
