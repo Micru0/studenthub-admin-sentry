@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ModalController, ToastController } from 'ionic-angular';
+import { Events, NavController, LoadingController, ModalController, ToastController } from 'ionic-angular';
 
 // Pages
 import { CandidateViewPage } from '../candidate-view/candidate-view';
@@ -27,6 +27,7 @@ export class CandidateReviewListPage {
     public candidateService: CandidateService,
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
+    private _events: Events,
     public toastCtrl: ToastController
   ) {}
 
@@ -103,6 +104,9 @@ export class CandidateReviewListPage {
         toast.present();
       } else {
         this.loadData(this.currentPage);
+
+        //update review count 
+        this._events.publish('navigation:totalCandidateToReview');
       }
     });
   }

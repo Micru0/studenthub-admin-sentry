@@ -8,7 +8,6 @@
       </ion-header>
       <ion-content>
 
-
         <ion-list>
           <ion-list-header>Action Points</ion-list-header>
 
@@ -20,6 +19,9 @@
            <button ion-item (click)="loadPage('candidate-review')">
             <ion-icon name="person" item-left></ion-icon>
             Candidate Review 
+            <ion-badge item-right>
+              {{ totalCandidateToReview }}
+            </ion-badge>
           </button>
 
           <button ion-item (click)="loadPage('transfers')">

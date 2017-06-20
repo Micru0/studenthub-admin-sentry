@@ -59,6 +59,15 @@ export class CandidateService {
   }
 
   /**
+   * No. of all candidate to review changes 
+   * @returns {Observable<any>}
+   */
+  totalToReview(): Observable<any>{
+    let url = this._candidateEndpoint + '/total-to-review';
+    return this._authhttp.get(url);
+  }
+  
+  /**
    * List of all candidate to review changes 
    * @returns {Observable<any>}
    */
