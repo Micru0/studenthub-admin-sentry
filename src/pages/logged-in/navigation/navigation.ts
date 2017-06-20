@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MenuController, NavController } from 'ionic-angular';
+import { MenuController, NavController, Events } from 'ionic-angular';
 
 // Page Imports
 import { DefaultPage } from '../default/default';
@@ -9,12 +9,12 @@ import { BankListPage } from '../bank/bank-list/bank-list';
 import { UniversityListPage } from '../university/university-list/university-list';
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
 import { PayableCandidatesPage } from '../transfer/payable-candidates/payable-candidates';
-
 import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
 import { CountryListPage } from '../country/country-list/country-list';
 
 // Services
 import { AuthService } from '../../../providers/auth.service';
+import { CandidateService } from '../../../providers/logged-in/candidate.service';
 
 @Component({
   selector: 'page-navigation',
@@ -22,14 +22,20 @@ import { AuthService } from '../../../providers/auth.service';
 })
 export class NavigationPage {
 
+  public totalCandidateToReview: number = 0;
+
   rootPage: any = DefaultPage;
 
   @ViewChild('loggedInContent') nav: NavController
 
   constructor(
     private _auth: AuthService,
-    private _menuCtrl: MenuController
-  ){}
+    private _menuCtrl: MenuController,
+    private _events: Events,
+    public candidateService: CandidateService
+  ){
+    this.totalToReview();
+  }
 
   loadPage(pageName: string){
     switch(pageName){
@@ -66,10 +72,25 @@ export class NavigationPage {
   }
 
   /**
+   * Using Ng2 Lifecycle hooks because view lifecycle events don't trigger for Bootstrapped MyApp Component
+   */
+  ngOnInit(){
+      // Check for network connection
+      this._events.subscribe('navigation:totalCandidateToReview', (userEventData) => {
+        this.totalToReview();
+      });
+  }
+
+  totalToReview() {
+    this.candidateService.totalToReview().subscribe(result => {
+      this.totalCandidateToReview = result.total;
+    });
+  }
+
+  /**
    * Log Agent out of the app
    */
   logout(){
     this._auth.logout();
   }
-
 }
