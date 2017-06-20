@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, AlertController, ToastController, NavParams } from 'ionic-angular';
+import { NavController, ViewController, LoadingController, AlertController, ToastController, NavParams,Events } from 'ionic-angular';
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
@@ -23,7 +23,8 @@ export class TransferPaidPage  {
     private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
     private transferService: TransferService,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private _events: Events
   ) {}
 
 
@@ -91,6 +92,10 @@ export class TransferPaidPage  {
         message: response.message,
         duration: 3000
       });
+
+      //update review count 
+      this._events.publish('navigation:updatePayable',response.totalPayableCandidate);
+
       toast.present();
       this.navCtrl.pop();
       loader.dismiss();

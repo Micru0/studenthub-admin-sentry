@@ -23,6 +23,7 @@ import { CandidateService } from '../../../providers/logged-in/candidate.service
 export class NavigationPage {
 
   public totalCandidateToReview: number = 0;
+  public totalPayableCandidate: number = 0;
 
   rootPage: any = DefaultPage;
 
@@ -79,11 +80,17 @@ export class NavigationPage {
       this._events.subscribe('navigation:totalCandidateToReview', (userEventData) => {
         this.totalToReview();
       });
+    
+      this._events.subscribe('navigation:updatePayable', (ramainPayableCandidate) => {
+        this.totalPayableCandidate = ramainPayableCandidate;
+        console.log('remain payable candidate:'+ramainPayableCandidate)
+      });
   }
 
   totalToReview() {
     this.candidateService.totalToReview().subscribe(result => {
       this.totalCandidateToReview = result.total;
+      this.totalPayableCandidate = result.payable;
     });
   }
 
