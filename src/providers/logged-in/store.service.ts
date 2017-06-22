@@ -63,6 +63,4 @@ export class StoreService {
     let url = `${this._storeEndpoint}/${model.store_id}`;
     return this._authhttp.delete(url);
   }
-
-
 }

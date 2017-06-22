@@ -64,6 +64,4 @@ export class StaffService {
     let url = `${this._staffEndpoint}/${model.staff_id}`;
     return this._authhttp.delete(url);
   }
-
-
 }
