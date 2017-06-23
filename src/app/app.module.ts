@@ -59,7 +59,6 @@ import { UniversityFormPage } from '../pages/logged-in/university/university-for
 
 //Stpre CRUD 
 import { StoreViewPage } from '../pages/logged-in/store/store-view/store-view';
-import { StoreFormPage } from '../pages/logged-in/store/store-form/store-form';
 
 // Generic Services
 import { AuthService } from '../providers/auth.service';

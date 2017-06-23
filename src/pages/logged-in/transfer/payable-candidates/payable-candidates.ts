@@ -81,7 +81,7 @@ export class PayableCandidatesPage {
     candidate_ids.push(candidate_id);
 
     this.transferService.markPaid(transfer_id, candidate_ids).subscribe(response => {
-      
+
       let prompt = this._alertCtrl.create({
           message: 'Candidate marked as paid!',
           buttons: ["Ok"]

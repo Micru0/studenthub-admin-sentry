@@ -32,6 +32,9 @@
           <button ion-item (click)="loadPage('payable-candidates')">
             <ion-icon name="people" item-left></ion-icon>
             Payable Candidates
+            <ion-badge item-right>
+              {{ totalPayableCandidate }}
+            </ion-badge>
           </button>
 
           <ion-list-header>Accounts</ion-list-header>

@@ -180,21 +180,6 @@ export class TransferService {
    */
   downloadTxt() {
     let url = `${this._transferEndpoint}/text`;
-    
-    /*
-    let fileTransfer: TransferObject = this.transfer.create();
-    
-    return fileTransfer.download(
-      url, 
-      this.file.dataDirectory + 'test.txt',
-      true,
-      {
-          headers: {
-              "Authorization": "Bearer "+ bearerToken
-          }
-      }
-    );*/
-
     return this._authhttp.downloadTextFile(url);
   }
 
