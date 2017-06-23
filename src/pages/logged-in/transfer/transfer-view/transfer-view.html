@@ -42,12 +42,12 @@
         <button *ngFor="let resource of group.resources" ion-item>        
           <ion-row>
               <ion-col > Candidate Name:</ion-col>
-              <ion-col >{{resource.candidate_name}}</ion-col>
+              <ion-col >{{resource.candidate.candidate_name}}</ion-col>
           </ion-row>
 
         <ion-row>
         <ion-col > Candidate Email:</ion-col>
-          <ion-col >{{resource.candidate_email}}</ion-col>
+          <ion-col >{{resource.candidate.candidate_email}}</ion-col>
       </ion-row>
 
       <ion-row>
@@ -95,12 +95,12 @@
 
       <ion-row>
         <ion-col > IBAN Code:</ion-col>
-          <ion-col >{{ resource.candidate_iban }}</ion-col>
+          <ion-col >{{ resource.candidate.candidate_iban }}</ion-col>
       </ion-row>
 
       <ion-row>
         <ion-col > Bank:</ion-col>
-          <ion-col >{{ resource.bank_name }}</ion-col>
+          <ion-col >{{ resource.candidate.bank_name }}</ion-col>
       </ion-row> 
 
         </button>
