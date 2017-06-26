@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController, AlertController,ToastController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, LoadingController, AlertController,ToastController,Events } from 'ionic-angular';
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
@@ -25,7 +25,8 @@ export class TransferViewPage {
     private _loadingCtrl: LoadingController,
     public params: NavParams,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private _events: Events
   ) {
     this.transfer_id = params.get('transfer_id');
   }
@@ -65,6 +66,15 @@ export class TransferViewPage {
     let loader = this._loadingCtrl.create();
     loader.present();
     this.transferService.markReceived(invoice_id).subscribe(response => {
+      
+      let toast = this.toastCtrl.create({
+        message: response.message,
+        duration: 3000
+      });
+
+      //update review count 
+      this._events.publish('navigation:updatePayable',response.totalPayableCandidate);
+      
       this.navCtrl.pop();
       loader.dismiss();
     });
