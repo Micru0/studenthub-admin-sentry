@@ -64,7 +64,7 @@ export class TransferPaidPage  {
     let candidate_ids = [];
 
     this.candidateList.forEach((value, index) => {
-        if(value === true) {
+        if(value != false) {
           candidate_ids.push({
               'candidate_id':this.candidatesData[index].candidate_id,
               'transfer_id':this.candidatesData[index].transfer_id,
