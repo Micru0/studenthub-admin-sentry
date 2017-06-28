@@ -114,7 +114,7 @@
     <ion-list>
       <ion-item-sliding *ngFor="let invoice of invoices">
         <button ion-item (click)="downloadInvoice(invoice.invoice_id)">
-          Download Invoice #{{ invoice.invoice_id }}
+          Download Invoice #{{ invoice.invoice_id }} - KWD {{invoice.total_amount}}
         </button>
       </ion-item-sliding>
     </ion-list>
@@ -124,7 +124,7 @@
     <ion-list>
       <ion-item-sliding *ngFor="let receipt of receipts">
         <button ion-item (click)="downloadReceipt(receipt.invoice_id)">
-          Download Receipt #{{ receipt.invoice_id }}
+          Download Receipt #{{ receipt.invoice_id }} - KWD {{receipt.total_amount}}
         </button>
       </ion-item-sliding>
     </ion-list>
@@ -138,20 +138,19 @@
 <ion-footer *ngIf="transfer">
   
   <!-- unlock transfer only if transfer in lock status -->
-
-  <button *ngIf="transfer.transfer_status === '5'" ion-button full (click)="markUnlock(transfer.transfer_id)">
+  <button *ngIf="transfer.transfer_status == '5'" ion-button full (click)="markUnlock(transfer.transfer_id)">
     Unlock Transfer
   </button>
  
   <!-- mark received only if transfer is payment sent -->
 
-  <button *ngIf="transfer.transfer_status === '1'" ion-button full (click)="markReceived(transfer.transfer_id)">
+  <button *ngIf="transfer.transfer_status == '1'" ion-button full (click)="markReceived(transfer.transfer_id)">
    Mark Received & Distributing Salary
   </button>
 
   <!-- mark in progress only if transfer status = payment received -->
 
-  <button *ngIf="transfer.transfer_status === '2'" ion-button full (click)="markProgress(transfer.transfer_id)">
+  <button *ngIf="transfer.transfer_status == '2'" ion-button full (click)="markProgress(transfer.transfer_id)">
     Mark in progress
   </button>
 
