@@ -115,5 +115,4 @@ export class BankFormPage {
       }
     });
   }
-
 }
