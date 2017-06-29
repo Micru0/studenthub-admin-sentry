@@ -148,12 +148,6 @@
    Mark Received & Distributing Salary
   </button>
 
-  <!-- mark in progress only if transfer status = payment received -->
-
-  <button *ngIf="transfer.transfer_status == '2'" ion-button full (click)="markProgress(transfer.transfer_id)">
-    Mark in progress
-  </button>
-
   <!-- mark as complete only if transfer status = in progress -->
 
   <!--
