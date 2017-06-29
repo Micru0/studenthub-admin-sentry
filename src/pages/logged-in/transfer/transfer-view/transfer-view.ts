@@ -71,6 +71,7 @@ export class TransferViewPage {
         message: response.message,
         duration: 3000
       });
+      toast.present();
 
       //update review count 
       this._events.publish('navigation:updatePayable',response.totalPayableCandidate);
