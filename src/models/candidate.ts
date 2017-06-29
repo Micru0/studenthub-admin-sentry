@@ -1,4 +1,7 @@
 
+import { Store } from './store';
+import { Company } from './company';
+
 export class Candidate {
 	candidate_id: number;
     candidate_uid: string;
@@ -25,4 +28,6 @@ export class Candidate {
     candidate_password_reset_token: string;
     candidate_status: number;
     approved: number;
+    company: Company;
+    store: Store;
 }
