@@ -11,6 +11,13 @@ export class Transfer {
 	transfer_status: number;
 	transfer_created_at: string;
 	transfer_updated_at: string;
+	company_name: string;
+	company_email: string;
+	total_transfer_cost: number;
+	
+	//extra field 
+	total_paid: number;
+	total_unpaid: number;
 	profit: number;
 	candidates: TransferCandidate[];
 	invoices: Invoice[];
@@ -19,6 +26,7 @@ export class Transfer {
 export class Invoice {
     invoice_id: number;
     transfer_id: number;
-    invoice_Date: string;
+    invoice_date: string;
     invoice_status: string;
+	invoice_total: number;
 }
