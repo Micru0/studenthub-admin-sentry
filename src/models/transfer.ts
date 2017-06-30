@@ -1,4 +1,3 @@
-
 import { TransferCandidate } from './transfer-candidate';
 
 export class Transfer {
