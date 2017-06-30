@@ -1,9 +1,8 @@
-
 import { Store } from './store';
 import { Company } from './company';
-import { University } from './University';
-import { Country } from './Country';
-import { Bank } from './Bank';
+import { University } from './university';
+import { Country } from './country';
+import { Bank } from './bank';
 
 export class Candidate {
 	candidate_id: number;
