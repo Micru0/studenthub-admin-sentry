@@ -42,7 +42,7 @@ export class MyApp implements OnInit {
         this._auth.getAccessToken();
     });
   }
-
+ 
   /**
    * Using Ng2 Lifecycle hooks because view lifecycle events don't trigger for Bootstrapped MyApp Component
    */
