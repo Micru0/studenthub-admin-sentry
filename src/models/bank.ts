@@ -1,5 +1,4 @@
-
-export class Bank{
+export class Bank {
 	bank_id: number;
     bank_name: string;
     bank_swift_code: string;

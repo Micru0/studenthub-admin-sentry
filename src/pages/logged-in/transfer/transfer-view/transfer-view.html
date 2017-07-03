@@ -31,13 +31,13 @@
         <br>
 
         <span *ngIf="transfer.transfer_status=='3'">
-        Total Candidates Paid : {{ transfer.total_paid }} <br />
-        Total Candidates Unpaid : {{ transfer.total_unpaid }}
+        Total Candidates Paid : {{ transfer.totalPaid }} <br />
+        Total Candidates Unpaid : {{ transfer.totalUnpaid }}
         </span>
 
       </button>
 
-      <ion-item-group *ngFor="let group of transfer.candidates | store_name">
+      <ion-item-group *ngFor="let group of transfer.transferCandidates | store_name">
         <ion-item-divider><b>{{group.name}}</b></ion-item-divider>
         <button *ngFor="let resource of group.resources" ion-item>        
           <ion-row>
