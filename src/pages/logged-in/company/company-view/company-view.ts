@@ -56,8 +56,6 @@ export class CompanyViewPage {
       subcompany: 0
     });
     modal.present();
-
-    this.loadData();
   }
 
   rowSelected(model) {
