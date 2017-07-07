@@ -37,7 +37,8 @@
       {{ candidate.candidate_address_line1 }}
     </p>
 
-    <ion-item-divider color="light">Status: {{ candidate.candidate_status }}</ion-item-divider>
+    <ion-item-divider color="light">Work</ion-item-divider>
+
     <ion-item *ngIf="candidate.store_id">
       <h5>Currently assigned work at</h5>
       <p *ngIf="candidate.store_id > 0" >{{ candidate.store.store_name }} @ {{ candidate.company.company_name }}</p>
