@@ -103,10 +103,9 @@ export class CandidateReviewListPage {
         });
         toast.present();
       } else {
-        this.loadData(this.currentPage);
-
         //update review count 
         this._events.publish('navigation:totalCandidateToReview');
+        this.loadData(this.currentPage);
       }
     });
   }
