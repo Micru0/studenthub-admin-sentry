@@ -82,9 +82,8 @@ export class NavigationPage {
         this.totalToReview();
       });
     
-      this._events.subscribe('navigation:updatePayable', (ramainPayableCandidate) => {
-        this.totalPayableCandidate = ramainPayableCandidate;
-        console.log('remain payable candidate:'+ramainPayableCandidate)
+      this._events.subscribe('navigation:updatePayable', (userEventData) => {
+        this.totalToReview();
       });
   }
 
