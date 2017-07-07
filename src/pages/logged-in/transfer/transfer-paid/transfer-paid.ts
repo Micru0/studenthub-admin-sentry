@@ -94,7 +94,7 @@ export class TransferPaidPage  {
       });
 
       //update review count 
-      this._events.publish('navigation:updatePayable',response.totalPayableCandidate);
+      this._events.publish('navigation:updatePayable');
 
       toast.present();
       this.navCtrl.pop();
