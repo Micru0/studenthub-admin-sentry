@@ -17,7 +17,7 @@
       <div *ngFor="let transfer of candidatelistData">
         <ion-item-divider color="light"><b>Transfer ID : {{transfer.transfer_id}}</b></ion-item-divider>
         <ion-item-sliding *ngFor="let candidate of transfer.candidates">
-          <ion-item> 
+          <ion-item *ngIf="candidate.paid == '0'" > 
             <ion-checkbox [(ngModel)]="candidateList[candidate.tc_id]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
               <ion-label>{{candidate.candidate.candidate_name}}</ion-label>
               <ion-badge item-right>KWD {{candidate.total_amount}}</ion-badge>
