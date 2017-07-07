@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
+import {Events,  NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
 
 // Providers
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
@@ -23,6 +23,7 @@ export class CandidateViewPage {
     private _loadingCtrl: LoadingController,
     public candidateService: CandidateService,
     params: NavParams,
+    private _events: Events,
     public toastCtrl: ToastController
   ) {
     this.candidate = params.get('model');
@@ -59,6 +60,9 @@ export class CandidateViewPage {
         toast.present();
       
       } else {
+        //update review count 
+        this._events.publish('navigation:totalCandidateToReview');
+
         //back to listing
         this.navCtrl.pop();
       }      

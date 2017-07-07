@@ -78,6 +78,7 @@ export class NavigationPage {
   ngOnInit(){
       // Check for network connection
       this._events.subscribe('navigation:totalCandidateToReview', (userEventData) => {
+        console.log('total Review remains checking...');
         this.totalToReview();
       });
     
@@ -89,6 +90,7 @@ export class NavigationPage {
 
   totalToReview() {
     this.candidateService.totalToReview().subscribe(result => {
+      console.log('total Review remains:'+result.total);
       this.totalCandidateToReview = result.total;
       this.totalPayableCandidate = result.payable;
     });
