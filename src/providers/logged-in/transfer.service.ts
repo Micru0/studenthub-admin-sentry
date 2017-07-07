@@ -129,16 +129,6 @@ export class TransferService {
   }
 
   /**
-   * Get all unpaid candidates in transfer
-   * @param {number} transfer_id
-   * @returns {Observable<any>}
-   */
-  listUnpaidCandidates(transfer_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/unpaid-candidates/${transfer_id}`;
-    return this._authhttp.get(url);
-  }
-
-  /**
    * Mark candidates as paid 
    * @param {number} transfer_id
    * @param {array} candidates
