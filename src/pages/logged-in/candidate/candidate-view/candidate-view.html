@@ -42,9 +42,6 @@
       <h5>Currently assigned work at</h5>
       <p *ngIf="candidate.store_id > 0" >{{ candidate.store.store_name }} @ {{ candidate.company.company_name }}</p>
     </ion-item>
-    <ion-item *ngIf="!candidate.store_id">
-      <button ion-button full (click)="assignToStoreButtonClicked()">Assign Candidate to Store</button>
-    </ion-item>
     <ion-item>
       <h5>Hourly Rate</h5>
       <p>{{ candidate.candidate_hourly_rate }}</p>
