@@ -53,17 +53,26 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full (click)="export()">
+  <!--<button ion-button full (click)="export()">
     Download as Excel
-  </button>
-
+  </button>-->
 	<!-- mark candidates as paid only if transfer status = in progress -->
 
   <button *ngIf="candidates && candidates.length > '0'" ion-button full (click)="markAllPaid(candidates)">
     Mark candidates as paid
   </button>
-
-  <button ion-button full (click)="exportText()">
+  <ion-grid>
+  <ion-row>
+    <ion-col col-6>
+      <button ion-button full (click)="export()">
+    Download as Excel
+  </button>
+    </ion-col>
+    <ion-col col-6>
+      <button ion-button full (click)="exportText()">
     Download as Text
   </button>
+    </ion-col>
+  </ion-row>
+  </ion-grid>
 </ion-footer>

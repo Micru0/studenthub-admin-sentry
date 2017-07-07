@@ -38,7 +38,7 @@ export class TransferPaidPage  {
     let loader = this._loadingCtrl.create();
     loader.present();
     
-    this.transferService.listAllPayableCandidates().subscribe(response => {
+    this.transferService.listPayableCandidates(0).subscribe(response => {
 
       this.candidatelistData = response.json();
       this.candidatelistData.forEach((value, index) => {

@@ -28,15 +28,6 @@ export class TransferService {
     let url = `${this._transferEndpoint}/payable-candidates?page=${page}`;
     return this._authhttp.getRaw(url);
   }
-  
-  /**
-   * List of all payable candidates
-   * @returns {Observable<any>}
-   */
-  listAllPayableCandidates(): Observable<any> {
-    let url = `${this._transferEndpoint}/all-payable-candidates`;
-    return this._authhttp.getRaw(url);
-  }
 
   /**
    * List of all staff
