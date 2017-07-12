@@ -28,7 +28,7 @@
 <div>
     <ion-list *ngIf="candidates" >
       <div *ngFor="let transfer of candidates">
-        <ion-item-divider color="light"><b>Transfer ID : {{transfer.transfer_id}}</b></ion-item-divider>
+        <ion-item-divider (click)="transferDetails(transfer.transfer_id)" color="light"><b>Transfer ID : {{transfer.transfer_id}}</b></ion-item-divider>
         <ion-item-sliding *ngFor="let candidate of transfer.candidates">
           <ion-item> 
               <ion-label>
