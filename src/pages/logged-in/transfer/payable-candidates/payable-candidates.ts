@@ -6,6 +6,7 @@ import { TransferService } from '../../../../providers/logged-in/transfer.servic
 
 //page 
 import { TransferPaidPage } from '../transfer-paid/transfer-paid';
+import { TransferViewPage } from '../transfer-view/transfer-view';
 
 @Component({
   selector: 'page-payable-candidates',
@@ -122,6 +123,14 @@ export class PayableCandidatesPage {
     this.transferService.markComplete(invoice_id).subscribe(response => {
       this.navCtrl.pop();
       loader.dismiss();
+    });
+  }
+
+  //Transfers details for each transfer_id
+  transferDetails(transfer_id: number) {
+    // Transfers  Detail Page
+    this.navCtrl.push(TransferViewPage, {
+      'transfer_id': transfer_id
     });
   }
 }
