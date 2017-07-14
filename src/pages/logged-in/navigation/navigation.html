@@ -19,7 +19,7 @@
           <button ion-item (click)="loadPage('payable-candidates')">
             <ion-icon name="people" item-left></ion-icon>
             Payable Candidates
-            <ion-badge item-right>
+            <ion-badge item-right *ngIf="totalPayableCandidate > 0">
               {{ totalPayableCandidate }}
             </ion-badge>
           </button>
@@ -27,7 +27,7 @@
           <button ion-item (click)="loadPage('candidate-review')">
             <ion-icon name="person" item-left></ion-icon>
             Candidate Review 
-            <ion-badge item-right>
+            <ion-badge item-right *ngIf="totalCandidateToReview > 0">
               {{ totalCandidateToReview }}
             </ion-badge>
           </button>

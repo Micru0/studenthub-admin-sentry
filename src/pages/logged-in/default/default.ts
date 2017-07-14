@@ -6,6 +6,7 @@ import { StatisticService } from '../../../providers/logged-in/statistic.service
 
 //page 
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
+import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
 
 @Component({
   selector: 'page-default',
@@ -27,22 +28,34 @@ export class DefaultPage {
     this.loadData();
   }
 
+  /**
+   * Load Stats for display
+   */
   loadData() {
-    // Load list of country
     let loader = this._loadingCtrl.create();
     loader.present();
     
     this.statisticService.get().subscribe(response => {
-		this.statistics = response;
-	},
-    error => {},
-    () => {loader.dismiss();}
+        this.statistics = response;
+      },
+      error => {},
+      () => {loader.dismiss();}
     );
   }
 
+  /**
+   * Load Transfer List Page for a specific status
+   */
   showTransfers(transfer_status:number) {
-    this.navCtrl.push(TransferListPage,{
+    this.navCtrl.push(TransferListPage, {
       'status' : transfer_status
-    })
+    });
+  }
+
+  /**
+   * Load Candidate Review Page
+   */
+  loadCandidateReviewPage(){
+    this.navCtrl.push(CandidateReviewListPage);
   }
 }

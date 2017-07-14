@@ -9,40 +9,64 @@
 </ion-header>
 
 <ion-content padding>
-  
-  <ion-card *ngIf="statistics && statistics.transfers">
-    <ion-card-header>
-      Transfers
-    </ion-card-header>
 
-    <ion-list>
-      <button ion-item *ngFor="let transfer of statistics.transfers"  (click)=showTransfers(transfer.status_code)>
-        <span class="status_{{transfer.status_code}}"> {{ transfer.count }}</span> - {{ transfer.transfer_status }}
-      </button>
-    </ion-list>
-  </ion-card>
+  <ion-grid *ngIf="statistics">
+    <ion-row>
+      <!-- Payment Sent Notification Card -->
+      <ion-col col-12 col-md-6 *ngIf="statistics.transfers.paymentSent.total > 0">
+        <ion-card (click)="showTransfers(statistics.transfers.paymentSent.code)">
+          <ion-card-header>
+            {{ statistics.transfers.locked.total }} {{ statistics.transfers.locked.total == 1? "Transfer has" : "Transfers have"  }} been marked as payment sent
+          </ion-card-header>
+          <ion-card-content>
+            Check if bank received and process their transfer
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
 
-  <ion-card *ngIf="statistics && statistics.candidates">
-    <ion-card-header>
-      Candidate
-    </ion-card-header>
-    <ion-list>
-        <button ion-item>
-          <ion-badge item-left>{{statistics.candidates.total_candidate}} </ion-badge>: Total Candidate
-        </button>
-        <button ion-item>
-          <ion-badge item-left>{{statistics.candidates.total_approved}} </ion-badge>: Total Approved
-        </button>
-        <button ion-item>
-          <ion-badge item-left>{{statistics.candidates.total_unapproved}} </ion-badge>: Total UnApproved
-        </button>
-        <button ion-item>
-          <ion-badge item-left>{{statistics.candidates.total_assign}} </ion-badge>: Total Assigned
-        </button>
-        <button ion-item>
-          <ion-badge item-left>{{statistics.candidates.total_unassign}} </ion-badge>: Total UnAssigned
-        </button>
-    </ion-list>
-  </ion-card>
+      <!-- Transfer Locked Notification Card -->
+      <ion-col col-12 col-md-6 *ngIf="statistics.transfers.locked.total > 0">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.transfers.locked.total }} Locked {{ statistics.transfers.locked.total == 1? "Transfer" : "Transfers"  }} Available
+          </ion-card-header>
+          <ion-card-content>
+            <p>Company will need to mark as payment sent soon</p>
+            <button ion-button (click)="showTransfers(statistics.transfers.locked.code)">
+              Show Locked Transfers
+            </button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Review Requirements Card -->
+      <ion-col col-12 col-md-6 *ngIf="statistics.candidates.total_unapproved > 0">
+        <ion-card>
+          <ion-card-header>
+            Candidates Require Review
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{statistics.candidates.total_unapproved}} remaining</p>
+            <button ion-button (click)="loadCandidateReviewPage()">
+              Review Candidates
+            </button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Candidate Count Card -->
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-card-header>
+            {{statistics.candidates.total_assigned}} candidates currently working
+          </ion-card-header>
+          <ion-card-content>
+            <p>from a total of {{statistics.candidates.total_candidate}} registered candidates</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
