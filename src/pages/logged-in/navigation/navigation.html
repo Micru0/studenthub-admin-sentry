@@ -16,7 +16,15 @@
             Summary
           </button>
 
-           <button ion-item (click)="loadPage('candidate-review')">
+          <button ion-item (click)="loadPage('payable-candidates')">
+            <ion-icon name="people" item-left></ion-icon>
+            Payable Candidates
+            <ion-badge item-right>
+              {{ totalPayableCandidate }}
+            </ion-badge>
+          </button>
+
+          <button ion-item (click)="loadPage('candidate-review')">
             <ion-icon name="person" item-left></ion-icon>
             Candidate Review 
             <ion-badge item-right>
@@ -27,14 +35,6 @@
           <button ion-item (click)="loadPage('transfers')">
             <ion-icon name="globe" item-left></ion-icon>
             Transfers
-          </button>
-
-          <button ion-item (click)="loadPage('payable-candidates')">
-            <ion-icon name="people" item-left></ion-icon>
-            Payable Candidates
-            <ion-badge item-right>
-              {{ totalPayableCandidate }}
-            </ion-badge>
           </button>
 
           <ion-list-header>Accounts</ion-list-header>
