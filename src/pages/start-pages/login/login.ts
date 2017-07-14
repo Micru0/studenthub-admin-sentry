@@ -1,6 +1,6 @@
 // Core
 import { Component } from '@angular/core';
-import { NavController, AlertController, Events } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 // Services
 import { AuthService } from '../../../providers/auth.service';
 // Forms
@@ -32,8 +32,7 @@ export class LoginPage {
     public navCtrl: NavController,
     private _fb: FormBuilder,
     private _auth: AuthService,
-    private _alertCtrl: AlertController,
-    private _events: Events
+    private _alertCtrl: AlertController
     ){
       // Initialize the Login Form
       this.loginForm = this._fb.group({
