@@ -28,17 +28,15 @@ export class PayableCandidatesPage {
     private _alertCtrl: AlertController
   ) { }
 
-  ionViewDidLoad() {
-    // this.loadData();   
-  }
-
   ionViewWillEnter() {
-    this.loadData(this.currentPage);
+    this.loadPayableCandidatesList(this.currentPage);
   }
 
-  loadData(page: number) {
-
-    // Load list of transfer
+  /**
+   * Load List of Payable Candidates
+   * @param page 
+   */
+  loadPayableCandidatesList(page: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
     
@@ -54,7 +52,6 @@ export class PayableCandidatesPage {
       }
 
       //hide if no page = 1 
-
       if(this.pageCount == 1)
         this.pages = [];
 
@@ -65,16 +62,12 @@ export class PayableCandidatesPage {
     );
   }
 
-  pageLinkColor(page: number) {
-
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
-  }
-
+  /**
+   * Mark Candidate as Paid
+   * @param transfer_id 
+   * @param candidate_id 
+   */
   markPaid(transfer_id: number, candidate_id: number) {
-    
     let loader = this._loadingCtrl.create();
     loader.present();
 
@@ -91,10 +84,13 @@ export class PayableCandidatesPage {
 
       loader.dismiss();
 
-      this.loadData(1);
+      this.loadPayableCandidatesList(1);
     });
   }
 
+  /**
+   * Export Payable Candidates as Excel
+   */
   export() {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -103,6 +99,9 @@ export class PayableCandidatesPage {
     });
   }
 
+  /**
+   * Export Payable Candidates as Text
+   */
   exportText() {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -111,12 +110,20 @@ export class PayableCandidatesPage {
     });
   }
 
+  /**
+   * Mark all supplied candidates as paid
+   * @param candidates 
+   */
   markAllPaid(candidates) {
-      this.navCtrl.push(TransferPaidPage, {
-        'candidates': candidates,
-      });
+    this.navCtrl.push(TransferPaidPage, {
+      'candidates': candidates,
+    });
   }
 
+  /**
+   * Mark Complete?
+   * @param invoice_id 
+   */
   markComplete(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -126,11 +133,24 @@ export class PayableCandidatesPage {
     });
   }
 
-  //Transfers details for each transfer_id
+  /**
+   * Load Transfer Detail Page
+   * @param transfer_id 
+   */
   transferDetails(transfer_id: number) {
-    // Transfers  Detail Page
     this.navCtrl.push(TransferViewPage, {
       'transfer_id': transfer_id
     });
+  }
+
+  /**
+   * Page link color for pagination
+   * @param page 
+   */
+  pageLinkColor(page: number) {
+    if(page == this.currentPage) 
+      return 'light';
+    
+    return '';
   }
 }

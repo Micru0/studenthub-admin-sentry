@@ -15,7 +15,6 @@ import { Transfer } from '../../../../models/transfer';
   templateUrl: 'transfer-list.html'
 })
 export class TransferListPage {
-
   public transferStatus:number = 0;
   public companyName: string = '';
   
@@ -27,30 +26,30 @@ export class TransferListPage {
 
   constructor(
     public navCtrl: NavController,
-    public _params: NavParams,
+    params: NavParams,
     public transferService: TransferService,
     private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
     private alertCtrl: AlertController
-  ) { }
-
-  ionViewDidLoad() {
-    // this.loadData();   
+  ) { 
+    // Passed from Dashboard to show filtered status results
+    if (params.get('status')) {
+      this.transferStatus = params.get('status');
+    }
   }
 
   ionViewWillEnter() {
-    // coming from dashboad to show filter status results
-    if (this._params.get('status')) {
-      this.transferStatus = this._params.get('status');
-    }
     this.loadData(this.currentPage);  
   }
 
+  /**
+   * Load Transfer List
+   * @param page 
+   */
   loadData(page: number) {
-
-    // Load list of transfer
     let loader = this._loadingCtrl.create();
     loader.present();
+
     //subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
     this.transferService.list(this.companyName, this.transferStatus, page).subscribe(response => {
 
@@ -64,7 +63,6 @@ export class TransferListPage {
       }
 
       //hide if no page = 1 
-
       if(this.pageCount == 1)
         this.pages = [];
 
@@ -75,6 +73,10 @@ export class TransferListPage {
     );
   }
 
+  /**
+   * Delete a transfer
+   * @param transfer_id 
+   */
   delete(transfer_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -84,17 +86,22 @@ export class TransferListPage {
     });
   }
 
+  /**
+   * Page link color for pagination
+   * @param page 
+   */
   pageLinkColor(page: number) {
-
     if(page == this.currentPage) 
       return 'light';
     
     return '';
   }
 
-  //Transfers details for each transfer_id
+  /**
+   * Load Transfer Detail Page
+   * @param transfer_id 
+   */
   transferDetails(transfer_id: number) {
-    // Transfers  Detail Page
     this.navCtrl.push(TransferViewPage, {
       'transfer_id': transfer_id
     });
