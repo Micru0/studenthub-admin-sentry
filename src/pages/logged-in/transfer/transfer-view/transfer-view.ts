@@ -31,17 +31,16 @@ export class TransferViewPage {
     this.transfer_id = params.get('transfer_id');
   }
 
-  ionViewWillLoad() {
-    this.loadData();
-  }
-
-  // load data after paid to user
+  // Reload data when page is entering
+  // Also used to reload data after paid to user
   ionViewWillEnter() {
     this.loadData();
   }
 
+  /**
+   * Load Transfer Detail from Server
+   */
   loadData() {
-    // Load list of transfer
     let loader = this._loadingCtrl.create();
     loader.present();
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
@@ -62,6 +61,10 @@ export class TransferViewPage {
     });
   }
 
+  /**
+   * Mark as Payment Received and Distribution in Progress
+   * @param invoice_id 
+   */
   markReceived(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -81,6 +84,10 @@ export class TransferViewPage {
     });
   }
 
+  /**
+   * Mark as Payment Received and Distribution in Progress
+   * @param invoice_id 
+   */
   markProgress(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -90,6 +97,10 @@ export class TransferViewPage {
     });
   }
 
+  /**
+   * Mark as Complete
+   * @param invoice_id 
+   */
   markComplete(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -99,6 +110,10 @@ export class TransferViewPage {
     });
   }
 
+  /**
+   * Unlock the transfer
+   * @param invoice_id 
+   */
   markUnlock(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -108,6 +123,10 @@ export class TransferViewPage {
     });
   }
 
+  /**
+   * Export as Excel
+   * @param invoice_id 
+   */
   export(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -117,42 +136,53 @@ export class TransferViewPage {
     });
   }
   
-  /** 
-   * Donwload Receipt
+  /**
+   * Download Receipt
+   * @param invoice_id 
    */
   downloadReceipt(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
     this.transferService.downloadReceipt(invoice_id).subscribe(response => {
-      //this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
-  /** 
-   * Donwload invoice
-   */
-  downloadInvoice(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.downloadInvoice(invoice_id).subscribe(response => {
-      //this.navCtrl.pop();
       loader.dismiss();
     });
   }
 
   /**
-   * Calculating Total per Candidate
-   */     
+   * Download Invoice
+   * @param invoice_id 
+   */
+  downloadInvoice(invoice_id: number) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.downloadInvoice(invoice_id).subscribe(response => {
+      loader.dismiss();
+    });
+  }
+
+  /**
+   * Calculating Total Price for a Candidate
+   * based on the company hourly rate
+   * @param candidate 
+   */
   total(candidate) {
     return (Number(candidate.company_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
   }
 
+  /**
+   * Calculating Total Cost for a Candidate
+   * based on the candidate hourly rate
+   * @param candidate 
+   */
   totalCandidate(candidate) {
     return (Number(candidate.candidate_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
   }
 
-  revertBackToUnlock (invoice_id) {
+  /**
+   * Revert back to locked.
+   * @param invoice_id 
+   */
+  revertBackToUnlock(invoice_id) {
     let alert = this.alertCtrl.create({
       title: 'Locked Status?',
       message: 'Do you want to revert back status to Locked?',
