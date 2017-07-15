@@ -20,12 +20,12 @@
       </ion-item-divider>
 
       <!-- Loop Through Candidates within that Transfer -->
-      <button ion-item *ngFor="let candidate of transfer.candidates" (click)="candidateSelected(candidate)"> 
+      <button ion-item *ngFor="let tc of transfer.candidates" (click)="candidateSelected(tc.candidate)"> 
         <ion-avatar item-left>
-            <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{candidate.candidate.candidate_personal_photo_thumb}}">
+            <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{tc.candidate.candidate_personal_photo_thumb}}">
         </ion-avatar>
-        {{candidate.candidate.candidate_name}} 
-        <ion-badge item-right>KWD {{candidate.total_amount}}</ion-badge>
+        {{tc.candidate.candidate_name}} 
+        <ion-badge item-right>KWD {{tc.total_amount}}</ion-badge>
       </button>
 
     </section>

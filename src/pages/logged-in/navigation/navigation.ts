@@ -38,6 +38,10 @@ export class NavigationPage {
     this.totalToReview();
   }
 
+  /**
+   * Load Page as supplied in param
+   * @param pageName 
+   */
   loadPage(pageName: string){
     switch(pageName){
       case "summary":
@@ -76,20 +80,20 @@ export class NavigationPage {
    * Using Ng2 Lifecycle hooks because view lifecycle events don't trigger for Bootstrapped MyApp Component
    */
   ngOnInit(){
-      // Check for network connection
-      this._events.subscribe('navigation:totalCandidateToReview', (userEventData) => {
-        console.log('total Review remains checking...');
-        this.totalToReview();
-      });
-    
-      this._events.subscribe('navigation:updatePayable', (userEventData) => {
-        this.totalToReview();
-      });
+    this._events.subscribe('navigation:totalCandidateToReview', (userEventData) => {
+      this.totalToReview();
+    });
+  
+    this._events.subscribe('navigation:updatePayable', (userEventData) => {
+      this.totalToReview();
+    });
   }
 
+  /**
+   * Get total required to review
+   */
   totalToReview() {
     this.candidateService.totalToReview().subscribe(result => {
-      console.log('total Review remains:'+result.total);
       this.totalCandidateToReview = result.total;
       this.totalPayableCandidate = result.payable;
     });
