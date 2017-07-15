@@ -32,17 +32,16 @@ export class TransferPaidPage  {
     this.loadData();
   }
 
+  /**
+   * Load List of Payable Candidates
+   */
   loadData() {
-
-    // Load list of transfer
     let loader = this._loadingCtrl.create();
     loader.present();
     
     this.transferService.listPayableCandidates(0).subscribe(response => {
-
       this.candidatelistData = response.json();
       this.candidatelistData.forEach((value, index) => {
-        
         value.candidates.forEach((innervalue, innerindex) => {
           this.candidateList[innervalue.tc_id] = innervalue.candidate_id;  
           this.candidatesData[innervalue.tc_id] = {
@@ -52,15 +51,16 @@ export class TransferPaidPage  {
           }
         });
       });
-      console.log(this.candidatesData);
     },
     error => {},
     () => {loader.dismiss();}
     );
   }
   
+  /**
+   * Mark Paid
+   */
   markPaid() {
-  
     let candidate_ids = [];
 
     this.candidateList.forEach((value, index) => {
@@ -71,7 +71,7 @@ export class TransferPaidPage  {
               'child_transfer_id':this.candidatesData[index].child_transfer_id,
             }
           );
-        } 
+        }
     });
     if (candidate_ids.length == 0) {
 

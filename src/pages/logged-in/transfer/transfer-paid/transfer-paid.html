@@ -11,20 +11,18 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-  <div>
-    <ion-list *ngIf="candidatelistData" >
-      <div *ngFor="let transfer of candidatelistData">
-        <ion-item-divider color="light"><b>Transfer ID : {{transfer.transfer_id}}</b></ion-item-divider>
-        <ion-item-sliding *ngFor="let candidate of transfer.candidates">
-          <ion-item *ngIf="candidate.paid == '0'" > 
-            <ion-checkbox [(ngModel)]="candidateList[candidate.tc_id]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
-              <ion-label>{{candidate.candidate.candidate_name}}</ion-label>
-              <ion-badge item-right>KWD {{candidate.total_amount}}</ion-badge>
-          </ion-item>
-        </ion-item-sliding>  
-      </div>
-    </ion-list>
-  </div>
+<ion-content>
+  <ion-list *ngIf="candidatelistData">
+    <section *ngFor="let transfer of candidatelistData">
+      <ion-item-divider color="light"><b>Transfer #{{transfer.transfer_id}}</b></ion-item-divider>
+      <article *ngFor="let tc of transfer.candidates">
+        <ion-item *ngIf="tc.paid == '0'"> 
+          <ion-checkbox [(ngModel)]="candidateList[tc.tc_id]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+          <ion-label>{{tc.candidate.candidate_name}}</ion-label>
+          <ion-badge item-right>KWD {{tc.total_amount}}</ion-badge>
+        </ion-item>
+      </article>
+    </section>
+  </ion-list>
 </ion-content>
  
