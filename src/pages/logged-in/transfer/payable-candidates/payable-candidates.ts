@@ -7,6 +7,7 @@ import { TransferService } from '../../../../providers/logged-in/transfer.servic
 //page 
 import { TransferPaidPage } from '../transfer-paid/transfer-paid';
 import { TransferViewPage } from '../transfer-view/transfer-view';
+import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 
 @Component({
   selector: 'page-payable-candidates',
@@ -140,6 +141,16 @@ export class PayableCandidatesPage {
   transferDetails(transfer_id: number) {
     this.navCtrl.push(TransferViewPage, {
       'transfer_id': transfer_id
+    });
+  }
+
+  /**
+   * When candidate row is selected, load detail page
+   * @param model 
+   */
+  candidateSelected(model) {
+    this.navCtrl.push(CandidateViewPage, {
+      'model': model
     });
   }
 

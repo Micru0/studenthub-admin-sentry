@@ -35,8 +35,11 @@ export class StoreViewPage {
     this.loadData(this.currentPage);
   }
 
+  /**
+   * Load data required by page
+   * @param page 
+   */
   loadData(page: number){
-    // Load list of companies
     let loader = this._loadingCtrl.create();
     loader.present();
     this.candidateService.listByStore(this.store.store_id, page).subscribe(response => {
@@ -51,7 +54,6 @@ export class StoreViewPage {
       }
 
       //hide if no page = 1 
-
       if(this.pageCount == 1)
         this.pages = [];
 
@@ -60,15 +62,21 @@ export class StoreViewPage {
     });
   }
 
+  /**
+   * When candidate row is selected, load detail page
+   * @param model 
+   */
   candidateSelected(model) {
-    // Load Detail Page
     this.navCtrl.push(CandidateViewPage, {
       'model': model
     });
   }
 
+  /**
+   * Define page link color for pagination
+   * @param page 
+   */
   pageLinkColor(page: number) {
-
     if(page == this.currentPage) 
       return 'light';
     

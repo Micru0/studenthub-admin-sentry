@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-//import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
-//import { File } from '@ionic-native/file';
-
 // Services
 import { AuthHttpService } from './authhttp.service';
 
@@ -15,8 +12,6 @@ export class TransferService {
   private _transferEndpoint: string = "/transfers";
 
   constructor(
-    //private transfer: Transfer, 
-    //private file: File,    
     private _authhttp: AuthHttpService
   ) { }
 
@@ -30,7 +25,7 @@ export class TransferService {
   }
 
   /**
-   * List of all staff
+   * List of all Transfers
    * @returns {Observable<any>}
    */
   list(company_name: string, transfer_status: number, page: number): Observable<any> {

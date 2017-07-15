@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import {Events,  NavController, NavParams, ModalController, LoadingController, ToastController } from 'ionic-angular';
-
+import { Events, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 // Providers
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
-
 // Models
 import { Candidate } from '../../../../models/candidate';
 
@@ -14,12 +12,10 @@ import { Candidate } from '../../../../models/candidate';
 export class CandidateViewPage {
 
   public candidate: Candidate;
-  // public bucketUrl = "https://bawes-public.s3.eu-west-2.amazonaws.com/";
   public permanentBucketUrl = "https://sh-payroll.s3.eu-west-2.amazonaws.com/";
 
   constructor(
     public navCtrl: NavController,
-    private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
     public candidateService: CandidateService,
     params: NavParams,
@@ -37,17 +33,12 @@ export class CandidateViewPage {
     loader.present();
 
     this.candidateService.approve(candidate).subscribe(response => {
-       
       loader.dismiss();
        
       if(response.operation == 'error') {
-
         var html = '';
-
         for (let i in response.message) {
-          
           for (let j of response.message[i]) {
-             
              html += j;
           }
         }
@@ -56,9 +47,7 @@ export class CandidateViewPage {
           message: html,
           duration: 3000
         });
-        
         toast.present();
-      
       } else {
         //update review count 
         this._events.publish('navigation:totalCandidateToReview');
