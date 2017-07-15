@@ -7,20 +7,26 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h5>ID</h5>
-  <p>{{ store.store_id }}</p>
-
-  <h5>Store Name</h5>
-  <p>{{ store.store_name }}</p>
-
-  <h5 *ngIf="candidates && candidates.length > 0">Candidates</h5>
+<ion-content>
+  
   <ion-list>
-    <ion-item-sliding *ngFor="let candidate of candidates">
-      <button ion-item (click)="candidateSelected(candidate)">
+    <ion-item-divider color="light">Employees working at {{ store.store_name }}</ion-item-divider>
+
+    <!-- If No Candidates Working at this Store -->
+    <ion-item *ngIf="candidates && candidates.length == 0">
+      This store has no employees assigned.
+    </ion-item>
+
+    <!-- If Candidates Available -->
+    <section *ngIf="candidates && candidates.length > 0">
+      <button ion-item *ngFor="let candidate of candidates" (click)="candidateSelected(candidate)">
+        <ion-avatar item-left>
+            <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{candidate.candidate_personal_photo_thumb}}">
+        </ion-avatar>
         {{ candidate.candidate_name }}
       </button>
-    </ion-item-sliding>
+    </section>
+
   </ion-list>
 
   <ion-row text-center>
