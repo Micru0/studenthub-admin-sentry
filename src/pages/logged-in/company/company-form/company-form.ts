@@ -33,7 +33,7 @@ export class CompanyFormPage {
     // this.isSubCompany = 0;
     this.model = this.params.get('model');
     this.isSubCompany = this.params.get('subcompany');
-    console.log('subcompany='+this.isSubCompany);
+    // console.log('subcompany='+this.isSubCompany);
 
     if (this.model.parent_company_id){
       this.model.parent_company_id = this.model.parent_company_id;
@@ -43,7 +43,7 @@ export class CompanyFormPage {
   
     if(!this.model.company_id){ // Show Create Form
       
-      this.operation  = (this.isSubCompany) ? "Create Sub Company" : "Create Company";
+      this.operation  = (this.isSubCompany) ? "Create Sub-company" : "Create Company";
       if (this.isSubCompany) {
         this.form = this._fb.group({
           name: ["", Validators.required],
@@ -56,7 +56,7 @@ export class CompanyFormPage {
         });
       }
     } else { // Show Update Form
-      this.operation  = (this.isSubCompany) ? "Update  Sub Company" : "Update Company";
+      this.operation  = (this.isSubCompany) ? "Update  Sub-company" : "Update Company";
       if (this.isSubCompany) {
         this.form = this._fb.group({
             name: [this.model.company_name, Validators.required],

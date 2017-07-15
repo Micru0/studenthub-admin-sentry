@@ -14,51 +14,52 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h5>ID</h5>
-  <p>{{ company.company_id }}</p>
-
-  <h5>Company</h5>
-  <p>{{ company.company_name }}</p>
-
-  <div>
-    <h5>Email</h5>
-    <p>{{ company.company_email }}</p>
-  </div>
-  <h5>Status</h5>
-  <p>{{ company.company_status }}</p>
-
-
-  <h5 *ngIf="subcompanies && subcompanies.length > 0">Sub Companies</h5>
+<ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let company of subcompanies">
-      <button ion-item (click)="rowSelected(company)">
-        {{ company.company_name }}
-      </button>  
+    <!-- Contact -->
+    <section *ngIf="company.company_email">
+      <ion-item-divider color="light">Contact</ion-item-divider>
+      <a ion-item href='mailto:{{ company.company_email }}'>
+        <ion-icon name="mail" item-left></ion-icon>
+        {{ company.company_email }}
+      </a>
+    </section>
 
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="delete(company)">
-          <ion-icon name="trash"></ion-icon>
-          Delete
-        </button>
-      </ion-item-options>
+    <!-- Subcompany List -->
+    <section *ngIf="subcompanies && subcompanies.length > 0">
+      <ion-item-divider color="light">Companies under this company</ion-item-divider>
+      <ion-item-sliding *ngFor="let company of subcompanies">
+        <button ion-item (click)="rowSelected(company)">
+          {{ company.company_name }}
+        </button>  
 
-    </ion-item-sliding>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="delete(company)">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+
+      </ion-item-sliding>
+    </section>
+
+    <!-- Store List -->
+    <section *ngIf="stores && stores.length > 0">
+      <ion-item-divider color="light">Stores</ion-item-divider>
+      <ion-list>
+        <ion-item-sliding *ngFor="let store of stores">
+          <button ion-item (click)="storeSelected(store)">
+            {{ store.store_name }}
+          </button>
+        </ion-item-sliding>
+      </ion-list>
+    </section>
   </ion-list>
-
-  <h5 *ngIf="stores && stores.length > 0">Stores</h5>
-  <ion-list>
-    <ion-item-sliding *ngFor="let store of stores">
-      <button ion-item (click)="storeSelected(store)">
-        {{ store.store_name }}
-      </button>
-    </ion-item-sliding>
-  </ion-list>
-
 </ion-content>
 
 <ion-footer>
-  <button *ngIf="!stores || stores.length == 0" ion-button full  (click)="create(company.company_id,1)">
+  <button ion-button full *ngIf="!stores || stores.length == 0" 
+    (click)="create(company.company_id, true)">
     Create Sub Company
   </button>
 </ion-footer>

@@ -58,24 +58,29 @@ export class CompanyViewPage {
     modal.present();
   }
 
+  /**
+   * Load company detail page when its selected from the list
+   * @param model 
+   */
   rowSelected(model) {
-     // Load Detail Page
     this.navCtrl.push(CompanyViewPage, {
       'model': model
     });
   }
 
   /**
-   * Loads the create page
+   * Create a new company
+   * @param parent_company_id 
+   * @param subcompany 
    */
-  create(parent_company_id: number,subcompany: number = 0){
+  create(parent_company_id: number, isSubcompany: boolean = false){
     var company = new Company();
 
     company.parent_company_id = parent_company_id;
 
     let modal = this._modalCtrl.create(CompanyFormPage, {
       model: company,
-      subcompany : subcompany
+      subcompany : isSubcompany
     });
     
     // Refresh List if required
