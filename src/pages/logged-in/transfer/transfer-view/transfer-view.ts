@@ -3,9 +3,10 @@ import { NavController, NavParams, ModalController, LoadingController, AlertCont
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
-
 // Models
 import { Transfer, Invoice } from '../../../../models/transfer';
+// Pages
+import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 
 @Component({
   selector: 'page-transfer-view',
@@ -245,6 +246,16 @@ export class TransferViewPage {
       ]
     });
     alert.present();   
+  }
+
+  /**
+   * On Candidate Selected
+   * @param model 
+   */
+  loadCandidateDetail(model) {
+    this.navCtrl.push(CandidateViewPage, {
+      'model': model
+    });
   }
 }
 
