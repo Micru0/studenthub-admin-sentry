@@ -111,70 +111,49 @@
 
       <button ion-item *ngFor="let resource of group.resources"
         (click)="loadCandidateDetail(resource.candidate)"
-        [class.zeroHours] = "resource.hours == 0">        
-        
-        <ion-row>
-          <ion-col > Candidate Name:</ion-col>
-          <ion-col >{{resource.candidate.candidate_name}}</ion-col>
-        </ion-row>
+        [class.zeroHours] = "resource.hours == 0">
 
-        <ion-row>
-          <ion-col > Candidate Email:</ion-col>
-          <ion-col >{{resource.candidate.candidate_email}}</ion-col>
-        </ion-row>
+        <ion-avatar item-left *ngIf="resource.candidate.candidate_personal_photo_thumb">
+          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{resource.candidate.candidate_personal_photo_thumb}}"/>
+        </ion-avatar>
 
-        <ion-row>
-          <ion-col > Hourly Rate:</ion-col>
-          <ion-col>{{resource.candidate_hourly_rate}}</ion-col>
-        </ion-row>
+        <h2>{{resource.candidate.candidate_name}}</h2>
 
-        <ion-row>
-          <ion-col > Hourly Rate Company Paying:</ion-col>
-          <ion-col>{{resource.company_hourly_rate}}</ion-col>
-        </ion-row>
+        <p>
+          We pay for {{resource.hours}} hours @ KWD {{ resource.candidate_hourly_rate }}/hr
+        </p>
 
-        <ion-row>
-          <ion-col > Hours:</ion-col>
-          <ion-col>{{resource.hours}}</ion-col>
-        </ion-row>
+        <p>
+          Company pays for {{resource.hours}} hours @ KWD {{ resource.company_hourly_rate }}/hr
+        </p>
 
-        <ion-row>
-          <ion-col > Bonus:</ion-col>
-          <ion-col>{{resource.bonus}}</ion-col>
-        </ion-row>
+        <p>
+          Company also wishes to give them KWD {{resource.bonus}} as bonus
+        </p>
 
-        <ion-row>
-          <ion-col > Transfer Cost:</ion-col>
-          <ion-col>{{resource.transfer_cost}}</ion-col>
-        </ion-row>
+        <p>
+          This candidates transfer will cost us KWD {{resource.transfer_cost}}
+        </p>
 
-        <ion-row>
-          <ion-col> Paid to Candidate? :</ion-col>
-          <ion-col>
-            <span *ngIf="resource.paid=='1'"> Yes </span>
-            <span *ngIf="resource.paid=='0'"> No </span>
-          </ion-col>
-        </ion-row>
+        <p>
+          Total company pays us for this candidate KWD {{ totalCompanyPaysForCandidate(resource) }}
+        </p>
+        <p>
+          Total we pay to candidate KWD {{ totalPaidToCandidate(resource) }}
+        </p>
+        <p>
+          Profit KWD {{ totalCompanyPaysForCandidate(resource) - totalPaidToCandidate(resource) }}
+        </p>
 
-        <ion-row>
-          <ion-col > Company Total:</ion-col>
-          <ion-col >{{ total(resource) }}</ion-col>
-        </ion-row>
+        <p *ngIf="(transfer.transfer_status=='3') && (resource.hours > 0)">
+          <b *ngIf="resource.paid=='1'">
+            Payment has been made
+          </b>
+          <b *ngIf="resource.paid=='0'">
+            This candidate is pending payment
+          </b>
+        </p>
 
-        <ion-row>
-          <ion-col > Candidate Total:</ion-col>
-          <ion-col >{{ totalCandidate(resource) }}</ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col > IBAN Code:</ion-col>
-          <ion-col >{{ resource.candidate.candidate_iban }}</ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col > Bank:</ion-col>
-          <ion-col >{{ resource.candidate.bank.bank_name }}</ion-col>
-        </ion-row> 
       </button>
     </ion-item-group>
 

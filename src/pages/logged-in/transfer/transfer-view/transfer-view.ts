@@ -198,7 +198,7 @@ export class TransferViewPage {
    * based on the company hourly rate
    * @param candidate 
    */
-  total(candidate) {
+  totalCompanyPaysForCandidate(candidate) {
     return (Number(candidate.company_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
   }
 
@@ -207,7 +207,7 @@ export class TransferViewPage {
    * based on the candidate hourly rate
    * @param candidate 
    */
-  totalCandidate(candidate) {
+  totalPaidToCandidate(candidate) {
     return (Number(candidate.candidate_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
   }
 
