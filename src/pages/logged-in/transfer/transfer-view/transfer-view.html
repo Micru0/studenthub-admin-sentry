@@ -79,6 +79,28 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
+
+  <!-- Invoices -->
+  <div class="invoices" *ngIf="invoices.length > 0" padding>
+    <h3>Invoices</h3>
+    <ion-list>
+      <button ion-item *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice.invoice_id)">
+        Download Invoice #{{ invoice.invoice_id }} - KWD {{invoice.invoice_total}}
+        <small>{{ invoice.company.company_name }}</small>
+      </button>
+    </ion-list>
+  </div>
+
+  <!-- Receipts -->
+  <div class="receipts" *ngIf="receipts.length > 0" padding>
+    <h3>Receipts</h3>
+    <ion-list>
+      <button ion-item *ngFor="let receipt of receipts" (click)="downloadReceipt(receipt.invoice_id)">
+        Download Receipt #{{ receipt.invoice_id }} - KWD {{receipt.invoice_total}}
+        <small>{{ receipt.company.company_name }}</small>
+      </button>
+    </ion-list>
+  </div>
   
   <ion-list *ngIf="transfer">
     <ion-item-group *ngFor="let group of transfer.transferCandidates | store_name">
@@ -149,22 +171,6 @@
       </button>
     </ion-item-group>
 
-  </ion-list>
-
-  <!-- Invoices -->
-  <h3 *ngIf="invoices.length > 0">Invoices</h3>
-  <ion-list>
-    <button ion-item *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice.invoice_id)">
-      Download Invoice #{{ invoice.invoice_id }} - KWD {{invoice.invoice_total}}
-    </button>
-  </ion-list>
-
-  <!-- Receipts -->
-  <h3 *ngIf="receipts.length > 0">Receipts</h3>
-  <ion-list>
-    <button ion-item *ngFor="let receipt of receipts" (click)="downloadReceipt(receipt.invoice_id)">
-      Download Receipt #{{ receipt.invoice_id }} - KWD {{receipt.invoice_total}}
-    </button>
   </ion-list>
   
 </ion-content>
