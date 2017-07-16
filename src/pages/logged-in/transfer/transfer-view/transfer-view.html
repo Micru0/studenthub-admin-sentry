@@ -16,8 +16,18 @@
   <ion-toolbar padding text-center *ngIf="transfer">
     <ion-title>
       {{transferStatus}}
+      <span *ngIf="transfer.transfer_status=='3'">
+        [ {{ (transfer.totalPaid / (transfer.totalUnpaid + transfer.totalPaid)) | percent }} complete ]
+      </span>
     </ion-title>
-    <div>{{transferStatusDescription}}</div>
+
+    <div>
+      {{transferStatusDescription}}
+      <span *ngIf="transfer.transfer_status=='3'">
+        <br/>{{ transfer.totalPaid }} out of {{ transfer.totalUnpaid + transfer.totalPaid }} paid.
+      </span>
+    </div>
+    
 
     <!-- If Transfer Locked -->
     <button ion-button outline icon-left
@@ -41,29 +51,31 @@
     </button>
 
   </ion-toolbar>
+
+  <ion-toolbar *ngIf="transfer">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6 col-md-3>
+          <b>Transfer ID</b> <br/> {{ transfer.transfer_id}}
+        </ion-col>
+        <ion-col col-6 col-md-3>
+          <b>Total Paid</b> <br/> KWD {{ transfer.company_total}}
+        </ion-col>
+        <ion-col col-6 col-md-3>
+          <b>Created on</b> <br/> {{ transfer.transfer_created_at}}
+        </ion-col>
+        <ion-col col-6 col-md-3>
+          <b>Updated on</b> <br/> {{ transfer.transfer_updated_at}}
+        </ion-col>
+        <ion-col col-6 col-md-3>
+          <b>Total to Distribute</b> <br/> KWD {{ transfer.total}}
+        </ion-col>
+        
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
   
   <ion-list *ngIf="transfer">
-    <button ion-item>
-      Transfer Created : {{ transfer.transfer_created_at}}<br> 
-      Transfer Updated :{{ transfer.transfer_updated_at}}<br>    
-      Company Total:{{ transfer.company_total}}<br> 
-      Total:{{ transfer.total}}<br> 
-
-      Invoice Status:
-      <span *ngIf="transfer.transfer_status=='10'"> Transfer Initiated </span>
-      <span *ngIf="transfer.transfer_status=='1'"> Payment Sent </span>
-      <span *ngIf="transfer.transfer_status=='2'"> Payment Received </span>
-      <span *ngIf="transfer.transfer_status=='3'"> Salary distribution in progress </span>
-      <span *ngIf="transfer.transfer_status=='4'"> Transfer Completed </span>
-      <span *ngIf="transfer.transfer_status=='5'"> Transfer Locked </span>
-      <br>
-
-      <span *ngIf="transfer.transfer_status=='3'">
-      Total Candidates Paid : {{ transfer.totalPaid }} <br />
-      Total Candidates Unpaid : {{ transfer.totalUnpaid }}
-      </span>
-    </button>
-
     <ion-item-group *ngFor="let group of transfer.transferCandidates | store_name">
       <ion-item-divider><b>{{group.name}}</b></ion-item-divider>
       <button ion-item *ngFor="let resource of group.resources">        
