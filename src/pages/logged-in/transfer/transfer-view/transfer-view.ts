@@ -18,6 +18,9 @@ export class TransferViewPage {
   public invoices: Invoice[] = []; //unpaid invoices 
   public receipts: Invoice[] = []; //paid invoices 
 
+  public transferStatus = "";
+  public transferStatusDescription = "";
+
   constructor(
     public navCtrl: NavController,
     public transferService: TransferService,
@@ -45,6 +48,7 @@ export class TransferViewPage {
     loader.present();
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
       this.transfer = response;
+      this._updateTransferStatus();
     
       this.receipts = [];
       this.invoices = [];
@@ -59,6 +63,34 @@ export class TransferViewPage {
 
       loader.dismiss();
     });
+  }
+
+  /**
+   * Update transfer status and description based on return value from API
+   */
+  private _updateTransferStatus(){
+    switch(this.transfer.transfer_status){
+      case 10: // Draft
+        this.transferStatus = "Transfer Draft";
+        this.transferStatusDescription = "Company needs to lock once hours are input.";
+        break;
+      case 5: // Transfer Locked
+        this.transferStatus = "Transfer Locked";
+        this.transferStatusDescription = "Invoices have been sent. Waiting for company to be mark as payment sent.";
+        break;
+      case 1: // Payment Sent
+        this.transferStatus = "Payment has been marked as Sent by Company";
+        this.transferStatusDescription = "We need to verify that payment received to start distribution.";
+        break;
+      case 3: // Distribution in Progress
+        this.transferStatus = "Distribution in Progress";
+        this.transferStatusDescription = "Payments are being distributed to candidates as specified.";
+        break;
+      case 4: // Transfer Complete
+        this.transferStatus = "Transfer Complete";
+        this.transferStatusDescription = "All done!";
+        break;
+    }
   }
 
   /**
