@@ -119,12 +119,16 @@
 
         <h2>{{resource.candidate.candidate_name}}</h2>
 
-        <ion-grid no-padding>
+        <!-- If no hours worked by candidate -->
+        <p *ngIf="resource.hours == 0">Candidate hasn't worked any hours</p>
+
+        <!-- If hours have been worked -->
+        <ion-grid no-padding *ngIf="resource.hours > 0">
           <ion-row>
             <ion-col col-12>
               <b>Hours Worked</b> <br/> {{resource.hours}}
             </ion-col>
-            <ion-col col-6 *ngIf="resource.hours > 0">
+            <ion-col col-6>
               <b>Company Pays</b> <br/> 
               KWD {{ resource.company_hourly_rate }}/hr <br/>
               <u>
@@ -134,7 +138,7 @@
                 </span>
               </u>
             </ion-col>
-            <ion-col col-6 *ngIf="resource.hours > 0">
+            <ion-col col-6>
               <b>We Distribute</b> <br/> 
               KWD {{ resource.candidate_hourly_rate }}/hr <br/>
               <u>
@@ -144,10 +148,10 @@
                 </span>
               </u>
             </ion-col>
-            <ion-col col-6 *ngIf="resource.hours > 0">
+            <ion-col col-6>
               <b>Transfer Cost</b> <br/> KWD {{resource.transfer_cost}}
             </ion-col>
-            <ion-col col-6 *ngIf="resource.hours > 0">
+            <ion-col col-6>
               <b>Profit</b> <br/> KWD {{ (totalCompanyPaysForCandidate(resource) - totalPaidToCandidate(resource)) | number:'1.3-3' }}
             </ion-col>
           </ion-row>
