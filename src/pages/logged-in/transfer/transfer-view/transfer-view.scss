@@ -13,5 +13,10 @@ page-transfer-view{
     .candidateList{
         ion-grid{font-size:0.8em;}
         h2{font-size: 1.2em}
+
+        .hoursWorked{
+            font-size:1.2em;
+            margin-bottom:8px;
+        }
     }
 }
