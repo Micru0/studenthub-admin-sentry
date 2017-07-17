@@ -39,6 +39,21 @@
         </ion-card>
       </ion-col>
 
+      <!-- Transfer payable Notification Card -->
+      <ion-col col-12 col-md-6 *ngIf="statistics.payable.total > 0">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.payable.total }} Payable Candidates
+          </ion-card-header>
+          <ion-card-content>
+            <p>Total Amount KWD {{statistics.payable.amount}} need to pay</p>
+            <button ion-button (click)="loadPayableCandidatesPage()">
+              Payable Candidates
+            </button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
       <!-- Review Requirements Card -->
       <ion-col col-12 col-md-6 *ngIf="statistics.candidates.total_unapproved > 0">
         <ion-card>
@@ -65,8 +80,6 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
-
     </ion-row>
   </ion-grid>
-
 </ion-content>

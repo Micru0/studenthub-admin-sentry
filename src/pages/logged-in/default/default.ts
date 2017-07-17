@@ -7,6 +7,7 @@ import { StatisticService } from '../../../providers/logged-in/statistic.service
 //page 
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
 import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
+import { PayableCandidatesPage } from '../transfer/payable-candidates/payable-candidates';
 
 @Component({
   selector: 'page-default',
@@ -57,5 +58,12 @@ export class DefaultPage {
    */
   loadCandidateReviewPage(){
     this.navCtrl.push(CandidateReviewListPage);
+  }
+
+  /**
+   * Load Payable Candidate Page
+   */
+  loadPayableCandidatesPage(){
+    this.navCtrl.push(PayableCandidatesPage);
   }
 }
