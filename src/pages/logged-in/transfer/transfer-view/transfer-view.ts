@@ -5,6 +5,8 @@ import { NavController, NavParams, ModalController, LoadingController, AlertCont
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
 // Models
 import { Transfer, Invoice } from '../../../../models/transfer';
+import { Candidate } from '../../../../models/candidate';
+import { TransferCandidate } from '../../../../models/transfer-candidate';
 // Pages
 import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 
@@ -95,13 +97,12 @@ export class TransferViewPage {
   }
 
   /**
-   * Mark as Payment Received and Distribution in Progress
-   * @param transfer_id 
+   * Mark as Payment Received and Distribution in Progress for current transfer
    */
-  markReceivedAndDistribute(transfer_id: number) {
+  markReceivedAndDistribute() {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.markReceivedDistributing(transfer_id).subscribe(response => {
+    this.transferService.markReceivedDistributing(this.transfer).subscribe(response => {
       
       let toast = this.toastCtrl.create({
         message: response.message,
@@ -118,14 +119,12 @@ export class TransferViewPage {
   }
 
   /**
-   * Unlock the transfer
-   * Unlock Transfer, revert to draft
-   * @param transfer_id 
+   * Unlock the current Transfer, revert to draft
    */
-  markUnlock(transfer_id: number) {
+  markUnlock() {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.markUnlock(transfer_id).subscribe(response => {
+    this.transferService.markUnlock(this.transfer).subscribe(response => {
       this.navCtrl.pop();
       loader.dismiss();
     });
@@ -133,9 +132,8 @@ export class TransferViewPage {
 
   /**
    * Payment Sent. Revert back to locked.
-   * @param transfer_id 
    */
-  revertBackToLock(transfer_id) {
+  revertBackToLock() {
     let alert = this.alertCtrl.create({
       title: 'Locked Status?',
       message: 'Do you want to revert back status to Locked?',
@@ -149,7 +147,7 @@ export class TransferViewPage {
           handler: () => {
             let loader = this._loadingCtrl.create();
             loader.present();
-            this.transferService.marklock(transfer_id).subscribe(response => {
+            this.transferService.markLocked(this.transfer).subscribe(response => {
               let result = response;
               
               let toast = this.toastCtrl.create({
@@ -170,12 +168,11 @@ export class TransferViewPage {
 
   /**
    * Export as Excel
-   * @param transfer_id 
    */
-  export(transfer_id: number) {
+  exportExcel() {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.export(transfer_id).subscribe(response => {
+    this.transferService.export(this.transfer).subscribe(response => {
       this.navCtrl.pop();
       loader.dismiss();
     });
@@ -210,24 +207,24 @@ export class TransferViewPage {
    * based on the company hourly rate
    * @param candidate 
    */
-  totalCompanyPaysForCandidate(candidate) {
-    return (Number(candidate.company_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
+  totalCompanyPaysForCandidate(transferCandidate: TransferCandidate) {
+    return (Number(transferCandidate.company_hourly_rate) * Number(transferCandidate.hours)) + Number(transferCandidate.bonus);
   }
 
   /**
    * Calculating Total Cost for a Candidate
    * based on the candidate hourly rate
-   * @param candidate 
+   * @param transferCandidate 
    */
-  totalPaidToCandidate(candidate) {
-    return (Number(candidate.candidate_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
+  totalPaidToCandidate(transferCandidate: TransferCandidate) {
+    return (Number(transferCandidate.candidate_hourly_rate) * Number(transferCandidate.hours)) + Number(transferCandidate.bonus);
   }
 
   /**
    * On Candidate Selected
    * @param model 
    */
-  loadCandidateDetail(model) {
+  loadCandidateDetail(model: Candidate) {
     this.navCtrl.push(CandidateViewPage, {
       'model': model
     });
