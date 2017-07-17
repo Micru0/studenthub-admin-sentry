@@ -96,12 +96,12 @@ export class TransferViewPage {
 
   /**
    * Mark as Payment Received and Distribution in Progress
-   * @param invoice_id 
+   * @param transfer_id 
    */
-  markReceivedAndDistribute(invoice_id: number) {
+  markReceivedAndDistribute(transfer_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.markReceivedDistributing(invoice_id).subscribe(response => {
+    this.transferService.markReceivedDistributing(transfer_id).subscribe(response => {
       
       let toast = this.toastCtrl.create({
         message: response.message,
@@ -120,12 +120,12 @@ export class TransferViewPage {
   /**
    * Unlock the transfer
    * Unlock Transfer, revert to draft
-   * @param invoice_id 
+   * @param transfer_id 
    */
-  markUnlock(invoice_id: number) {
+  markUnlock(transfer_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.markUnlock(invoice_id).subscribe(response => {
+    this.transferService.markUnlock(transfer_id).subscribe(response => {
       this.navCtrl.pop();
       loader.dismiss();
     });
@@ -133,9 +133,9 @@ export class TransferViewPage {
 
   /**
    * Payment Sent. Revert back to locked.
-   * @param invoice_id 
+   * @param transfer_id 
    */
-  revertBackToLock(invoice_id) {
+  revertBackToLock(transfer_id) {
     let alert = this.alertCtrl.create({
       title: 'Locked Status?',
       message: 'Do you want to revert back status to Locked?',
@@ -149,7 +149,7 @@ export class TransferViewPage {
           handler: () => {
             let loader = this._loadingCtrl.create();
             loader.present();
-            this.transferService.marklock(invoice_id).subscribe(response => {
+            this.transferService.marklock(transfer_id).subscribe(response => {
               let result = response;
               
               let toast = this.toastCtrl.create({
@@ -170,12 +170,12 @@ export class TransferViewPage {
 
   /**
    * Export as Excel
-   * @param invoice_id 
+   * @param transfer_id 
    */
-  export(invoice_id: number) {
+  export(transfer_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.export(invoice_id).subscribe(response => {
+    this.transferService.export(transfer_id).subscribe(response => {
       this.navCtrl.pop();
       loader.dismiss();
     });
@@ -233,4 +233,3 @@ export class TransferViewPage {
     });
   }
 }
-

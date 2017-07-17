@@ -45,12 +45,12 @@ export class TransferService {
 
   /**
    * Download excel
-   * @param {number} invoice_id
+   * @param {number} transfer_id
    * @returns {Observable<any>}
    */
-  export(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/export/${invoice_id}`;
-    return this._authhttp.excelget(url, `Invoice ${invoice_id}.xlsx`);
+  export(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/export/${transfer_id}`;
+    return this._authhttp.excelget(url, `Invoice ${transfer_id}.xlsx`);
   }
 
   /**
@@ -74,32 +74,32 @@ export class TransferService {
   }
 
   /**
-   * Details of each invoice_id
-   * @param {number} invoice_id
+   * Details of each transfer_id
+   * @param {number} transfer_id
    * @returns {Observable<any>}
    */
-  transferIdDetails(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${invoice_id}?expand=invoices,transferCandidates,totalPaid,totalUnpaid,profit`;
+  transferIdDetails(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/${transfer_id}?expand=invoices,transferCandidates,totalPaid,totalUnpaid,profit`;
     return this._authhttp.get(url);
   }
 
   /**
    * Mark as Payment Received 
-   * @param {number} invoice_id
+   * @param {number} transfer_id
    * @returns {Observable<any>}
    */
-  markReceivedDistributing(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payment-received-distributing/${invoice_id}`;
+  markReceivedDistributing(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/payment-received-distributing/${transfer_id}`;
     return this._authhttp.patch(url, '');
   }
 
   /**
    * Mark as Unlocked
-   * @param {number} invoice_id
+   * @param {number} transfer_id
    * @returns {Observable<any>}
    */
-  markUnlock(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/unlock/${invoice_id}`;
+  markUnlock(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/unlock/${transfer_id}`;
     return this._authhttp.patch(url, '');
   }
 
@@ -144,8 +144,8 @@ export class TransferService {
    * @param {number} invoice_id
    * @returns {Observable<any>}
    */
-  marklock(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/lock/${invoice_id}`;
+  marklock(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/lock/${transfer_id}`;
     return this._authhttp.patch(url, '');
   }
 
