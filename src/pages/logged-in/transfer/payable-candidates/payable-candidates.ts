@@ -3,8 +3,9 @@ import { NavController, LoadingController, ModalController, AlertController } fr
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
-
-//page 
+// Models
+import { Transfer } from '../../../../models/transfer';
+// Pages
 import { TransferPaidPage } from '../transfer-paid/transfer-paid';
 import { TransferViewPage } from '../transfer-view/transfer-view';
 import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
@@ -65,17 +66,17 @@ export class PayableCandidatesPage {
 
   /**
    * Mark Candidate as Paid
-   * @param transfer_id 
-   * @param candidate_id 
+   * @param {Transfer} transfer
+   * @param {number} candidate_id 
    */
-  markPaid(transfer_id: number, candidate_id: number) {
+  markPaid(transfer: Transfer, candidate_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
 
     let candidate_ids = [];
     candidate_ids.push(candidate_id);
 
-    this.transferService.markPaid(transfer_id, candidate_ids).subscribe(response => {
+    this.transferService.markPaid(transfer, candidate_ids).subscribe(response => {
 
       let prompt = this._alertCtrl.create({
           message: 'Candidate marked as paid!',

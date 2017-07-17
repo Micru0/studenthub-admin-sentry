@@ -20,5 +20,6 @@ export class TransferCandidate {
     total_paid: number;
     total_amount: number;
     profit: number;
+    
     candidate: Candidate;
 }
