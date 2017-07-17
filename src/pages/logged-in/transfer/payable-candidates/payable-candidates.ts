@@ -19,7 +19,7 @@ export class PayableCandidatesPage {
   public pageCount = 0;
   public currentPage = 1;
   public pages: number[] = [];
-
+  public payableAmount:number = 0.0;
   public candidates: any[];
 
   constructor(
@@ -58,6 +58,7 @@ export class PayableCandidatesPage {
         this.pages = [];
 
       this.candidates = response.json();
+      this.totalPayableAmount(this.candidates); // calculate total payable amount
     },
     error => {},
     () => {loader.dismiss();}
@@ -150,5 +151,17 @@ export class PayableCandidatesPage {
       return 'light';
     
     return '';
+  }
+
+  /**
+  * calculating total payable amount.
+  * @param candidates
+  */
+  totalPayableAmount (candidates) {
+    if (candidates) {
+      candidates.forEach(element => {
+        this.payableAmount = this.payableAmount + element.total;
+      });
+    }
   }
 }
