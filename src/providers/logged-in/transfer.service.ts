@@ -85,20 +85,6 @@ export class TransferService {
   }
 
   /**
-   * Mark candidates as paid 
-   * @param {Transfer} transfer
-   * @param {array} candidates
-   * @returns {Observable<any>}
-   */
-  markPaid(transfer: Transfer, candidates: any): Observable<any> {
-    let url = `${this._transferEndpoint}/mark-paid/${transfer.transfer_id}`;
-    let params = {
-      "candidates": candidates,
-    };
-    return this._authhttp.patch(url, params);
-  }
-
-  /**
    * Mark All candidates as paid 
    * @param {array} candidates
    * @returns {Observable<any>}
