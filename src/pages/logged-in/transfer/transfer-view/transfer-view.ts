@@ -119,6 +119,7 @@ export class TransferViewPage {
 
   /**
    * Unlock the transfer
+   * Unlock Transfer, revert to draft
    * @param invoice_id 
    */
   markUnlock(invoice_id: number) {
@@ -128,6 +129,43 @@ export class TransferViewPage {
       this.navCtrl.pop();
       loader.dismiss();
     });
+  }
+
+  /**
+   * Payment Sent. Revert back to locked.
+   * @param invoice_id 
+   */
+  revertBackToLock(invoice_id) {
+    let alert = this.alertCtrl.create({
+      title: 'Locked Status?',
+      message: 'Do you want to revert back status to Locked?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            let loader = this._loadingCtrl.create();
+            loader.present();
+            this.transferService.marklock(invoice_id).subscribe(response => {
+              let result = response;
+              
+              let toast = this.toastCtrl.create({
+                message: result.message,
+                duration: 3000
+              });
+              toast.present();
+
+              this.navCtrl.pop();
+              loader.dismiss();
+            });
+          }
+        }
+      ]
+    });
+    alert.present();   
   }
 
   /**
@@ -183,43 +221,6 @@ export class TransferViewPage {
    */
   totalPaidToCandidate(candidate) {
     return (Number(candidate.candidate_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
-  }
-
-  /**
-   * Revert back to locked.
-   * @param invoice_id 
-   */
-  revertBackToUnlock(invoice_id) {
-    let alert = this.alertCtrl.create({
-      title: 'Locked Status?',
-      message: 'Do you want to revert back status to Locked?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel'
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            let loader = this._loadingCtrl.create();
-            loader.present();
-            this.transferService.marklock(invoice_id).subscribe(response => {
-              let result = response;
-              
-              let toast = this.toastCtrl.create({
-                message: result.message,
-                duration: 3000
-              });
-              toast.present();
-
-              this.navCtrl.pop();
-              loader.dismiss();
-            });
-          }
-        }
-      ]
-    });
-    alert.present();   
   }
 
   /**
