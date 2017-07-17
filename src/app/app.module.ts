@@ -76,8 +76,8 @@ import { StoreService } from '../providers/logged-in/store.service';
 import { CountryService } from '../providers/logged-in/country.service';
 import { StatisticService } from '../providers/logged-in/statistic.service';
 
-import { GroupByPipe } from '../pages/logged-in/transfer/groupby-pipe';
-import { SortPipe } from '../pages/logged-in/transfer/timestamp-pipe';
+import { GroupByPipe } from '../pipes/groupby-pipe';
+import { SortPipe } from '../pipes/timestamp-pipe';
 
 const cloudSettings: CloudSettings = {
   'core': {
