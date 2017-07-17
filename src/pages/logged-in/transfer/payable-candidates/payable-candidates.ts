@@ -66,32 +66,6 @@ export class PayableCandidatesPage {
   }
 
   /**
-   * Mark Candidate as Paid
-   * @param {Transfer} transfer
-   * @param {number} candidate_id 
-   */
-  markPaid(transfer: Transfer, candidate_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-
-    let candidate_ids = [];
-    candidate_ids.push(candidate_id);
-
-    this.transferService.markPaid(transfer, candidate_ids).subscribe(response => {
-
-      let prompt = this._alertCtrl.create({
-          message: 'Candidate marked as paid!',
-          buttons: ["Ok"]
-        });
-      prompt.present();
-
-      loader.dismiss();
-
-      this.loadPayableCandidatesList(1);
-    });
-  }
-
-  /**
    * Export Payable Candidates as Excel
    */
   export() {
