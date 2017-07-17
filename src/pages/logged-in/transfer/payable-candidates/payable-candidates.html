@@ -3,7 +3,6 @@
     <button ion-button menuToggle="left">
       <ion-icon name="menu"></ion-icon>
     </button>
-
     <ion-title>Payable Candidates</ion-title>
   </ion-navbar>
 </ion-header>
@@ -17,6 +16,7 @@
         style='cursor: pointer'
         (click)="transferDetails(transfer.transfer_id)">
         Transfer #{{transfer.transfer_id}}
+        <ion-badge item-right class="blank_bg">KWD {{transfer.total}}</ion-badge>
       </ion-item-divider>
 
       <!-- Loop Through Candidates within that Transfer -->
