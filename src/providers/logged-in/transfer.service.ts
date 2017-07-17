@@ -88,28 +88,8 @@ export class TransferService {
    * @param {number} invoice_id
    * @returns {Observable<any>}
    */
-  markReceived(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payment-received/${invoice_id}`;
-    return this._authhttp.patch(url, '');
-  }
- 
-  /**
-   * Mark as Payment Distribution in progress
-   * @param {number} invoice_id
-   * @returns {Observable<any>}
-   */
-  markProgress(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payment-in-process/${invoice_id}`;
-    return this._authhttp.patch(url, '');
-  }
-
-  /**
-   * Mark as Payment Complete
-   * @param {number} invoice_id
-   * @returns {Observable<any>}
-   */
-  markComplete(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payment-completed/${invoice_id}`;
+  markReceivedDistributing(invoice_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/payment-received-distributing/${invoice_id}`;
     return this._authhttp.patch(url, '');
   }
 
