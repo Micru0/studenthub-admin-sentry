@@ -20,7 +20,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   listSubCompanies(company_id: number): Observable<any>{
-    let url = this._companyEndpoint + '/subcompanies/' + company_id;
+    let url = this._companyEndpoint + '/sub-companies/' + company_id;
     return this._authhttp.get(url);
   }
 
