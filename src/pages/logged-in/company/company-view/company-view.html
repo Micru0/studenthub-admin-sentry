@@ -31,6 +31,17 @@
       <ion-item-sliding *ngFor="let company of subcompanies">
         <button ion-item (click)="rowSelected(company)">
           {{ company.company_name }}
+          <ion-badge item-right *ngIf="company.total_candidates > 0">
+          {{ company.total_candidates }} candidates
+          </ion-badge>
+
+          <ion-badge item-right *ngIf="company.subcompanies.length > 0">
+            {{ company.subcompanies.length }} sub-companies
+          </ion-badge>
+          
+          <ion-badge item-right *ngIf="company.stores.length > 0">
+            {{ company.stores.length }} stores
+          </ion-badge>
         </button>  
 
         <ion-item-options side="right">
@@ -39,7 +50,6 @@
             Delete
           </button>
         </ion-item-options>
-
       </ion-item-sliding>
     </section>
 
@@ -50,6 +60,9 @@
         <ion-item-sliding *ngFor="let store of stores">
           <button ion-item (click)="storeSelected(store)">
             {{ store.store_name }}
+            <ion-badge item-right *ngIf="store.candidates.length > 0">
+              {{ store.candidates.length }} candidates
+            </ion-badge>
           </button>
         </ion-item-sliding>
       </ion-list>
