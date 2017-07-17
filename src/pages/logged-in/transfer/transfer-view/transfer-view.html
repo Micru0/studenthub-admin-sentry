@@ -44,7 +44,7 @@
       Mark Received & Distributing Salary
     </button>
     <button ion-button outline icon-left
-      (click)="revertBackToUnlock(transfer.transfer_id)" 
+      (click)="revertBackToLock(transfer.transfer_id)" 
       *ngIf="transfer.transfer_status === '1'">
       <ion-icon name="lock"></ion-icon>
       Revert Back To Locked
