@@ -98,10 +98,10 @@ export class TransferViewPage {
    * Mark as Payment Received and Distribution in Progress
    * @param invoice_id 
    */
-  markReceived(invoice_id: number) {
+  markReceivedAndDistribute(invoice_id: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.markReceived(invoice_id).subscribe(response => {
+    this.transferService.markReceivedDistributing(invoice_id).subscribe(response => {
       
       let toast = this.toastCtrl.create({
         message: response.message,
@@ -112,32 +112,6 @@ export class TransferViewPage {
       //update review count 
       this._events.publish('navigation:updatePayable');
       
-      this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
-  /**
-   * Mark as Payment Received and Distribution in Progress
-   * @param invoice_id 
-   */
-  markProgress(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.markProgress(invoice_id).subscribe(response => {
-      this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
-  /**
-   * Mark as Complete
-   * @param invoice_id 
-   */
-  markComplete(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.markComplete(invoice_id).subscribe(response => {
       this.navCtrl.pop();
       loader.dismiss();
     });

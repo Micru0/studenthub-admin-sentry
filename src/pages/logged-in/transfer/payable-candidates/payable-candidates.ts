@@ -120,20 +120,6 @@ export class PayableCandidatesPage {
       'candidates': candidates,
     });
   }
-
-  /**
-   * Mark Complete?
-   * @param invoice_id 
-   */
-  markComplete(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.markComplete(invoice_id).subscribe(response => {
-      this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
   /**
    * Load Transfer Detail Page
    * @param transfer_id 
