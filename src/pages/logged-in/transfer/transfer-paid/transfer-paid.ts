@@ -25,23 +25,10 @@ export class TransferPaidPage  {
     private transferService: TransferService,
     public toastCtrl: ToastController,
     private _events: Events
-  ) {}
+  ) {
+    this.candidatelistData = params.get('candidates');
 
-
-  ionViewWillEnter() {
-    this.loadData();
-  }
-
-  /**
-   * Load List of Payable Candidates
-   */
-  loadData() {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    
-    this.transferService.listPayableCandidates(0).subscribe(response => {
-      this.candidatelistData = response.json();
-      this.candidatelistData.forEach((value, index) => {
+    this.candidatelistData.forEach((value, index) => {
         value.candidates.forEach((innervalue, innerindex) => {
           this.candidateList[innervalue.tc_id] = innervalue.candidate_id;  
           this.candidatesData[innervalue.tc_id] = {
@@ -51,10 +38,6 @@ export class TransferPaidPage  {
           }
         });
       });
-    },
-    error => {},
-    () => {loader.dismiss();}
-    );
   }
   
   /**
