@@ -132,6 +132,7 @@ export class PayableCandidatesPage {
   * @param candidates
   */
   totalPayableAmount (candidates) {
+    this.payableAmount = 0.0;
     if (candidates) {
       candidates.forEach(element => {
         this.payableAmount = this.payableAmount + element.total;
