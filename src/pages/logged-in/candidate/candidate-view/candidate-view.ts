@@ -12,6 +12,7 @@ import { Candidate } from '../../../../models/candidate';
 export class CandidateViewPage {
 
   public candidate: Candidate;
+  public salaryTransfers: any[] = [];
   public permanentBucketUrl = "https://sh-payroll.s3.eu-west-2.amazonaws.com/";
 
   constructor(
@@ -23,6 +24,16 @@ export class CandidateViewPage {
     public toastCtrl: ToastController
   ) {
     this.candidate = params.get('model');
+    this.loadTransfersData();
+  }
+  
+  /**
+   * Load list of all salary transfers
+   */
+  loadTransfersData() {
+    this.candidateService.transfers(this.candidate.candidate_id).subscribe(response => {
+      this.salaryTransfers = response;
+    });
   }
 
   /**

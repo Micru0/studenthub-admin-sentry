@@ -35,6 +35,15 @@ export class CandidateService {
     let url = `${this._candidateEndpoint}/${model.candidate_id}`;
     return this._authhttp.delete(url);
   }
+  
+  /**
+   * candidate salary transfer list 
+   * @returns {Observable<any>}
+   */
+  transfers(id:number): Observable<any> {
+    let url = this._candidateEndpoint + '/transfers/' + id;
+    return this._authhttp.get(url);
+  }
 
   /**
    * Deletes a comment
