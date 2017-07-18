@@ -3,8 +3,7 @@ import { Observable } from 'rxjs/Observable';
 // Services
 import { AuthHttpService } from './authhttp.service';
 // Models
-import { Transfer } from '../../models/transfer';
-
+import { Transfer, Invoice } from '../../models/transfer';
 /**
  * Manages Staff Functionality on the server
  */
@@ -128,21 +127,21 @@ export class TransferService {
 
   /**
    * Generating Invoice copy
-   * @param {number} invoice_id
+   * @param {number} invoice
    * @returns {Observable<any>}
    */
-  downloadInvoice(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/pdf/${invoice_id}`;
-    return this._authhttp.pdfget(url, 'Invoice ' + invoice_id + '.pdf');
+  downloadInvoice(invoice: Invoice): Observable<any> {
+    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}`;
+    return this._authhttp.pdfget(url, 'Invoice ' + invoice.invoice_id + '.pdf');
   }
 
   /**
    * Generating Invoice copy
-   * @param {number} invoice_id
+   * @param {number} invoice
    * @returns {Observable<any>}
    */
-  downloadReceipt(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/pdf/${invoice_id}`;
-    return this._authhttp.pdfget(url, 'Receipt ' + invoice_id + '.pdf');
+  downloadReceipt(invoice: Invoice): Observable<any> {
+    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}`;
+    return this._authhttp.pdfget(url, 'Receipt ' + invoice.invoice_id + '.pdf');
   }
 }

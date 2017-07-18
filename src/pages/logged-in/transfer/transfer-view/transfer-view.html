@@ -83,7 +83,7 @@
   <div class="invoices" *ngIf="invoices.length > 0" padding>
     <h3>Invoices</h3>
     <ion-list>
-      <button ion-item *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice.invoice_id)">
+      <button ion-item *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice)">
         Download Invoice #{{ invoice.invoice_id }} - KWD {{invoice.invoice_total}}
         <small>{{ invoice.company.company_name }}</small>
       </button>
@@ -94,7 +94,7 @@
   <div class="receipts" *ngIf="receipts.length > 0" padding>
     <h3>Receipts</h3>
     <ion-list>
-      <button ion-item *ngFor="let receipt of receipts" (click)="downloadReceipt(receipt.invoice_id)">
+      <button ion-item *ngFor="let receipt of receipts" (click)="downloadReceipt(receipt)">
         Download Receipt #{{ receipt.invoice_id }} - KWD {{receipt.invoice_total}}
         <small>{{ receipt.company.company_name }}</small>
       </button>

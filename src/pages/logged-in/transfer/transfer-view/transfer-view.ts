@@ -180,24 +180,24 @@ export class TransferViewPage {
   
   /**
    * Download Receipt
-   * @param invoice_id 
+   * @param invoice 
    */
-  downloadReceipt(invoice_id: number) {
+  downloadReceipt(invoice: Invoice) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.downloadReceipt(invoice_id).subscribe(response => {
+    this.transferService.downloadReceipt(invoice).subscribe(response => {
       loader.dismiss();
     });
   }
 
   /**
    * Download Invoice
-   * @param invoice_id 
+   * @param invoice
    */
-  downloadInvoice(invoice_id: number) {
+  downloadInvoice(invoice: Invoice) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.downloadInvoice(invoice_id).subscribe(response => {
+    this.transferService.downloadInvoice(invoice).subscribe(response => {
       loader.dismiss();
     });
   }
