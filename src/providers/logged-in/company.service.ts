@@ -19,15 +19,6 @@ export class CompanyService {
    * List of all companies
    * @returns {Observable<any>}
    */
-  listSubCompanies(company_id: number): Observable<any>{
-    let url = this._companyEndpoint + '/sub-companies/' + company_id;
-    return this._authhttp.get(url);
-  }
-
-  /**
-   * List of all companies
-   * @returns {Observable<any>}
-   */
   list(page: number): Observable<any>{
     let url = this._companyEndpoint + '?page=' + page;
     return this._authhttp.getRaw(url);
