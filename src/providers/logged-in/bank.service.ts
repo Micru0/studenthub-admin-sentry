@@ -68,6 +68,4 @@ export class BankService {
     let url = `${this._bankEndpoint}/${model.bank_id}`;
     return this._authhttp.delete(url);
   }
-
-
 }
