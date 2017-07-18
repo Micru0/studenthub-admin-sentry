@@ -4,7 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { AuthHttpService } from './authhttp.service';
 // Models
 import { Candidate } from '../../models/candidate';
-
+import { Store } from '../../models/store';
+import { Country } from '../../models/country';
+import { University } from '../../models/university';
 /**
  * Manages Staff Functionality on the server
  */
@@ -44,8 +46,13 @@ export class CandidateService {
     return this._authhttp.patch(url, {});
   }
   
-  listByCountry(country_id: number, page: number): Observable<any>{
-    let url = this._candidateEndpoint + '/search?by=country_id&country_id=' + country_id + '&page=' + page;
+  /**
+   * Filter data by country
+   * @param country 
+   * @param page 
+   */
+  listByCountry(country: Country, page: number): Observable<any>{
+    let url = `${this._candidateEndpoint}/search?by=country_id&country_id=${country.country_id} &page=$page`;
     return this._authhttp.getRaw(url);
   }
 
@@ -53,8 +60,8 @@ export class CandidateService {
    * List of all candidate to review changes 
    * @returns {Observable<any>}
    */
-  listByStore(store_id: number, page: number): Observable<any>{
-    let url = this._candidateEndpoint + '/search?by=store_id&store_id=' + store_id + '&page=' + page;
+  listByStore(store: Store, page: number): Observable<any>{
+    let url = `${this._candidateEndpoint}/search?by=store_id&store_id=${store.store_id}&page=${page}`;
     return this._authhttp.getRaw(url);
   }
 
@@ -76,8 +83,13 @@ export class CandidateService {
     return this._authhttp.getRaw(url);
   }
 
-  listByUniversity(university_id: number, page: number): Observable<any>{
-    let url = this._candidateEndpoint + '/search?by=university_id&university_id=' + university_id + '&page=' + page;
+  /**
+   * filter data by university
+   * @param university 
+   * @param page 
+   */
+  listByUniversity(university: University, page: number): Observable<any>{
+    let url = `${this._candidateEndpoint}/search?by=university_id&university_id= ${university.university_id}&page=${page}`;
     return this._authhttp.getRaw(url);
   }
 }

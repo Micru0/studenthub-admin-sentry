@@ -29,7 +29,7 @@ export class UniversityViewPage {
     private _loadingCtrl: LoadingController,
   ) {
     this.university = params.get('model');
-    this.loadUniversityCandidate(this.university.university_id,this.currentPage);
+    this.loadUniversityCandidate(this.university,this.currentPage);
   }
 
   /**
@@ -42,10 +42,10 @@ export class UniversityViewPage {
     modal.present();
   }
 
-  loadUniversityCandidate(university_id:number,page: number) {
+  loadUniversityCandidate(university:University,page: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
-      this.candidateService.listByUniversity(university_id,page).subscribe(response => {
+      this.candidateService.listByUniversity(university,page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
