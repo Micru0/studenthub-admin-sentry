@@ -36,6 +36,9 @@ export class CompanyViewPage {
     this.loadData();
   }
 
+  /**
+   * load compay data
+   */
   loadData(){
     // Load list of companies
     let loader = this._loadingCtrl.create();
@@ -94,6 +97,10 @@ export class CompanyViewPage {
     modal.present();
   }
 
+  /**
+   * push select company data to store view
+   * @param model 
+   */
   storeSelected(model) {
      // Load Detail Page
     this.navCtrl.push(StoreViewPage, {

@@ -14,7 +14,7 @@ export class StatisticService {
   constructor(private _authhttp: AuthHttpService) { }
 
   /**
-   * Return statistics
+   * list statistics
    * @returns {Observable<any>}
    */
   get(): Observable<any>{

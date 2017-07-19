@@ -25,7 +25,7 @@ export class StaffService {
   }
 
   /**
-   * Create
+   * Create staff
    * @param {Staff} model
    * @returns {Observable<any>}
    */
@@ -41,7 +41,7 @@ export class StaffService {
   }
 
   /**
-   * Update
+   * Update staff
    * @param {Staff} model
    * @returns {Observable<any>}
    */
@@ -56,7 +56,7 @@ export class StaffService {
   }
 
   /**
-   * Deletes a comment
+   * Deletes staff
    * @param {Staff} model
    * @returns {Observable<any>}
    */

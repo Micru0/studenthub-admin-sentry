@@ -3,8 +3,7 @@ import { NavController, LoadingController, ModalController, AlertController } fr
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
-// Models
-import { Transfer } from '../../../../models/transfer';
+
 // Pages
 import { TransferPaidPage } from '../transfer-paid/transfer-paid';
 import { TransferViewPage } from '../transfer-view/transfer-view';
