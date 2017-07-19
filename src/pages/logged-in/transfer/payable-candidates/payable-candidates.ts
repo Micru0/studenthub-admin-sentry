@@ -4,7 +4,7 @@ import { NavController, LoadingController, ModalController, AlertController } fr
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
 
-//page 
+// Pages
 import { TransferPaidPage } from '../transfer-paid/transfer-paid';
 import { TransferViewPage } from '../transfer-view/transfer-view';
 import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
@@ -18,7 +18,7 @@ export class PayableCandidatesPage {
   public pageCount = 0;
   public currentPage = 1;
   public pages: number[] = [];
-
+  public payableAmount:number = 0.0;
   public candidates: any[];
 
   constructor(
@@ -57,36 +57,11 @@ export class PayableCandidatesPage {
         this.pages = [];
 
       this.candidates = response.json();
+      this.totalPayableAmount(this.candidates); // calculate total payable amount
     },
     error => {},
     () => {loader.dismiss();}
     );
-  }
-
-  /**
-   * Mark Candidate as Paid
-   * @param transfer_id 
-   * @param candidate_id 
-   */
-  markPaid(transfer_id: number, candidate_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-
-    let candidate_ids = [];
-    candidate_ids.push(candidate_id);
-
-    this.transferService.markPaid(transfer_id, candidate_ids).subscribe(response => {
-
-      let prompt = this._alertCtrl.create({
-          message: 'Candidate marked as paid!',
-          buttons: ["Ok"]
-        });
-      prompt.present();
-
-      loader.dismiss();
-
-      this.loadPayableCandidatesList(1);
-    });
   }
 
   /**
@@ -120,20 +95,6 @@ export class PayableCandidatesPage {
       'candidates': candidates,
     });
   }
-
-  /**
-   * Mark Complete?
-   * @param invoice_id 
-   */
-  markComplete(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.markComplete(invoice_id).subscribe(response => {
-      this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
   /**
    * Load Transfer Detail Page
    * @param transfer_id 
@@ -163,5 +124,18 @@ export class PayableCandidatesPage {
       return 'light';
     
     return '';
+  }
+
+  /**
+  * calculating total payable amount.
+  * @param candidates
+  */
+  totalPayableAmount (candidates) {
+    this.payableAmount = 0.0;
+    if (candidates) {
+      candidates.forEach(element => {
+        this.payableAmount = this.payableAmount + element.total;
+      });
+    }
   }
 }

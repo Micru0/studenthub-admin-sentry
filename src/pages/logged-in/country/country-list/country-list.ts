@@ -31,6 +31,10 @@ export class CountryListPage {
     this.loadData(this.currentPage);
   }
 
+  /**
+   * load country list
+   * @param page 
+   */
   loadData(page: number) {
     // Load list of country
     let loader = this._loadingCtrl.create();
@@ -68,6 +72,10 @@ export class CountryListPage {
     });
   }
 
+  /**
+   * pagination current page color
+   * @param page 
+   */
   pageLinkColor(page: number) {
 
     if(page == this.currentPage) 

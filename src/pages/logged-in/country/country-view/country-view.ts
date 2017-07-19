@@ -36,11 +36,15 @@ export class CountryViewPage {
     this.loadData(this.currentPage);
   }
 
+  /**
+   * load country data
+   * @param page 
+   */
   loadData(page: number) {
     // Load list of candidates
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.candidateService.listByCountry(this.country.country_id, page).subscribe(response => {
+    this.candidateService.listByCountry(this.country, page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
@@ -62,6 +66,10 @@ export class CountryViewPage {
     });
   }
   
+  /**
+   * selected candidate
+   * @param candidate 
+   */
   candidateSelected(candidate) {
     // Load Detail Page
     this.navCtrl.push(CandidateViewPage, {
@@ -69,6 +77,10 @@ export class CountryViewPage {
     });
   }
 
+  /**
+   * delete candidate
+   * @param candidate 
+   */
   deleteCandidates(candidate) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -79,6 +91,10 @@ export class CountryViewPage {
     });
   }
 
+  /**
+   * current page link color
+   * @param page 
+   */
   pageLinkColor(page: number) {
 
     if(page == this.currentPage) 

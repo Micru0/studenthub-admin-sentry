@@ -5,6 +5,8 @@ import { NavController, NavParams, ModalController, LoadingController, AlertCont
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
 // Models
 import { Transfer, Invoice } from '../../../../models/transfer';
+import { Candidate } from '../../../../models/candidate';
+import { TransferCandidate } from '../../../../models/transfer-candidate';
 // Pages
 import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 
@@ -95,13 +97,12 @@ export class TransferViewPage {
   }
 
   /**
-   * Mark as Payment Received and Distribution in Progress
-   * @param invoice_id 
+   * Mark as Payment Received and Distribution in Progress for current transfer
    */
-  markReceived(invoice_id: number) {
+  markReceivedAndDistribute() {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.markReceived(invoice_id).subscribe(response => {
+    this.transferService.markReceivedDistributing(this.transfer).subscribe(response => {
       
       let toast = this.toastCtrl.create({
         message: response.message,
@@ -118,104 +119,21 @@ export class TransferViewPage {
   }
 
   /**
-   * Mark as Payment Received and Distribution in Progress
-   * @param invoice_id 
+   * Unlock the current Transfer, revert to draft
    */
-  markProgress(invoice_id: number) {
+  markUnlock() {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.markProgress(invoice_id).subscribe(response => {
+    this.transferService.markUnlock(this.transfer).subscribe(response => {
       this.navCtrl.pop();
       loader.dismiss();
     });
   }
 
   /**
-   * Mark as Complete
-   * @param invoice_id 
+   * Payment Sent. Revert back to locked.
    */
-  markComplete(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.markComplete(invoice_id).subscribe(response => {
-      this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
-  /**
-   * Unlock the transfer
-   * @param invoice_id 
-   */
-  markUnlock(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.markUnlock(invoice_id).subscribe(response => {
-      this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-
-  /**
-   * Export as Excel
-   * @param invoice_id 
-   */
-  export(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.export(invoice_id).subscribe(response => {
-      this.navCtrl.pop();
-      loader.dismiss();
-    });
-  }
-  
-  /**
-   * Download Receipt
-   * @param invoice_id 
-   */
-  downloadReceipt(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.downloadReceipt(invoice_id).subscribe(response => {
-      loader.dismiss();
-    });
-  }
-
-  /**
-   * Download Invoice
-   * @param invoice_id 
-   */
-  downloadInvoice(invoice_id: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-    this.transferService.downloadInvoice(invoice_id).subscribe(response => {
-      loader.dismiss();
-    });
-  }
-
-  /**
-   * Calculating Total Price for a Candidate
-   * based on the company hourly rate
-   * @param candidate 
-   */
-  totalCompanyPaysForCandidate(candidate) {
-    return (Number(candidate.company_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
-  }
-
-  /**
-   * Calculating Total Cost for a Candidate
-   * based on the candidate hourly rate
-   * @param candidate 
-   */
-  totalPaidToCandidate(candidate) {
-    return (Number(candidate.candidate_hourly_rate) * Number(candidate.hours)) + Number(candidate.bonus);
-  }
-
-  /**
-   * Revert back to locked.
-   * @param invoice_id 
-   */
-  revertBackToUnlock(invoice_id) {
+  revertBackToLock() {
     let alert = this.alertCtrl.create({
       title: 'Locked Status?',
       message: 'Do you want to revert back status to Locked?',
@@ -229,7 +147,7 @@ export class TransferViewPage {
           handler: () => {
             let loader = this._loadingCtrl.create();
             loader.present();
-            this.transferService.marklock(invoice_id).subscribe(response => {
+            this.transferService.markLocked(this.transfer).subscribe(response => {
               let result = response;
               
               let toast = this.toastCtrl.create({
@@ -249,13 +167,66 @@ export class TransferViewPage {
   }
 
   /**
+   * Export as Excel
+   */
+  exportExcel() {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.export(this.transfer).subscribe(response => {
+      this.navCtrl.pop();
+      loader.dismiss();
+    });
+  }
+  
+  /**
+   * Download Receipt
+   * @param invoice 
+   */
+  downloadReceipt(invoice: Invoice) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.downloadReceipt(invoice).subscribe(response => {
+      loader.dismiss();
+    });
+  }
+
+  /**
+   * Download Invoice
+   * @param invoice
+   */
+  downloadInvoice(invoice: Invoice) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+    this.transferService.downloadInvoice(invoice).subscribe(response => {
+      loader.dismiss();
+    });
+  }
+
+  /**
+   * Calculating Total Price for a Candidate
+   * based on the company hourly rate
+   * @param candidate 
+   */
+  totalCompanyPaysForCandidate(transferCandidate: TransferCandidate) {
+    return (Number(transferCandidate.company_hourly_rate) * Number(transferCandidate.hours)) + Number(transferCandidate.bonus);
+  }
+
+  /**
+   * Calculating Total Cost for a Candidate
+   * based on the candidate hourly rate
+   * @param transferCandidate 
+   */
+  totalPaidToCandidate(transferCandidate: TransferCandidate) {
+    return (Number(transferCandidate.candidate_hourly_rate) * Number(transferCandidate.hours)) + Number(transferCandidate.bonus);
+  }
+
+  /**
    * On Candidate Selected
    * @param model 
    */
-  loadCandidateDetail(model) {
+  loadCandidateDetail(model: Candidate) {
     this.navCtrl.push(CandidateViewPage, {
       'model': model
     });
   }
 }
-

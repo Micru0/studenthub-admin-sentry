@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 // Services
 import { AuthHttpService } from './authhttp.service';
-
+// Models
+import { Transfer, Invoice } from '../../models/transfer';
 /**
  * Manages Staff Functionality on the server
  */
@@ -25,6 +26,15 @@ export class TransferService {
   }
 
   /**
+   * Download excel containing payable canidates info 
+   * @returns {Observable<any>}
+   */
+  exportPayableCandidates(): Observable<any> {
+    let url = `${this._transferEndpoint}/export-payable-candidates`;
+    return this._authhttp.excelget(url, `Payable Candidates.xlsx`);
+  }
+
+  /**
    * List of all Transfers
    * @returns {Observable<any>}
    */
@@ -34,107 +44,43 @@ export class TransferService {
   }
 
   /**
-   * Download excel containing payable canidates' info 
-   * @param {number} invoice_id
-   * @returns {Observable<any>}
-   */
-  exportPayableCandidates(): Observable<any> {
-    let url = `${this._transferEndpoint}/export-payable-candidates`;
-    return this._authhttp.excelget(url, `Payable Candidates.xlsx`);
-  }
-
-  /**
    * Download excel
-   * @param {number} invoice_id
+   * @param {Transfer} transfer
    * @returns {Observable<any>}
    */
-  export(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/export/${invoice_id}`;
-    return this._authhttp.excelget(url, `Invoice ${invoice_id}.xlsx`);
+  export(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/export/${transfer.transfer_id}`;
+    return this._authhttp.excelget(url, `Transfer ${transfer.transfer_id}.xlsx`);
   }
 
   /**
-   * Generating Invoice copy
-   * @param {number} invoice_id
+   * Details of each transfer_id
+   * @param {number} transfer
    * @returns {Observable<any>}
    */
-  downloadInvoice(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/pdf/${invoice_id}`;
-    return this._authhttp.pdfget(url, 'Invoice ' + invoice_id + '.pdf');
-  }
-
-  /**
-   * Generating Invoice copy
-   * @param {number} invoice_id
-   * @returns {Observable<any>}
-   */
-  downloadReceipt(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/pdf/${invoice_id}`;
-    return this._authhttp.pdfget(url, 'Receipt ' + invoice_id + '.pdf');
-  }
-
-  /**
-   * Details of each invoice_id
-   * @param {number} invoice_id
-   * @returns {Observable<any>}
-   */
-  transferIdDetails(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${invoice_id}?expand=invoices,transferCandidates,totalPaid,totalUnpaid,profit`;
+  transferIdDetails(transfer_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}/${transfer_id}?expand=invoices,transferCandidates,totalPaid,totalUnpaid,profit`;
     return this._authhttp.get(url);
   }
 
   /**
-   * Mark as Payment Received 
-   * @param {number} invoice_id
+   * Mark as Payment Received and distributing 
+   * @param {Transfer} transfer
    * @returns {Observable<any>}
    */
-  markReceived(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payment-received/${invoice_id}`;
-    return this._authhttp.patch(url, '');
-  }
- 
-  /**
-   * Mark as Payment Distribution in progress
-   * @param {number} invoice_id
-   * @returns {Observable<any>}
-   */
-  markProgress(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payment-in-process/${invoice_id}`;
-    return this._authhttp.patch(url, '');
-  }
-
-  /**
-   * Mark as Payment Complete
-   * @param {number} invoice_id
-   * @returns {Observable<any>}
-   */
-  markComplete(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payment-completed/${invoice_id}`;
+  markReceivedDistributing(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/payment-received-distributing/${transfer.transfer_id}`;
     return this._authhttp.patch(url, '');
   }
 
   /**
    * Mark as Unlocked
-   * @param {number} invoice_id
+   * @param {Transfer} transfer
    * @returns {Observable<any>}
    */
-  markUnlock(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/unlock/${invoice_id}`;
+  markUnlock(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/unlock/${transfer.transfer_id}`;
     return this._authhttp.patch(url, '');
-  }
-
-  /**
-   * Mark candidates as paid 
-   * @param {number} transfer_id
-   * @param {array} candidates
-   * @returns {Observable<any>}
-   */
-  markPaid(transfer_id: number, candidates: any): Observable<any> {
-    let url = `${this._transferEndpoint}/mark-paid/${transfer_id}`;
-    let params = {
-      "candidates": candidates,
-    };
-    return this._authhttp.patch(url, params);
   }
 
   /**
@@ -142,7 +88,7 @@ export class TransferService {
    * @param {array} candidates
    * @returns {Observable<any>}
    */
-  markPaidAll( candidates: any): Observable<any> {
+  markPaidAll(candidates: any): Observable<any> {
     let url = `${this._transferEndpoint}/mark-paid-all`;
     let params = {
       "candidates": candidates,
@@ -160,22 +106,42 @@ export class TransferService {
   }
 
   /**
-   * Mark as Lock
+   * Mark the passed transfer as locked
    * @param {number} invoice_id
    * @returns {Observable<any>}
    */
-  marklock(invoice_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/lock/${invoice_id}`;
+  markLocked(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/lock/${transfer.transfer_id}`;
     return this._authhttp.patch(url, '');
   }
 
   /**
    * Delete Transfer 
-   * @param {number} transfer_id
+   * @param {Transfer} transfer
    * @returns {Observable<any>}
    */
-  delete(transfer_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${transfer_id}`;
+  delete(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/${transfer.transfer_id}`;
     return this._authhttp.delete(url);
+  }
+
+  /**
+   * Generating and download Invoice copy
+   * @param {number} invoice
+   * @returns {Observable<any>}
+   */
+  downloadInvoice(invoice: Invoice): Observable<any> {
+    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}`;
+    return this._authhttp.pdfget(url, 'Invoice ' + invoice.invoice_id + '.pdf');
+  }
+
+  /**
+   * Generating and download Invoice copy
+   * @param {number} invoice
+   * @returns {Observable<any>}
+   */
+  downloadReceipt(invoice: Invoice): Observable<any> {
+    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}`;
+    return this._authhttp.pdfget(url, 'Receipt ' + invoice.invoice_id + '.pdf');
   }
 }

@@ -25,7 +25,7 @@ export class BankService {
   }
 
   /**
-   * Create
+   * Create Bank
    * @param {Bank} model
    * @returns {Observable<any>}
    */
@@ -42,7 +42,7 @@ export class BankService {
   }
 
   /**
-   * Update
+   * Update Bank
    * @param {Bank} model
    * @returns {Observable<any>}
    */
@@ -60,7 +60,7 @@ export class BankService {
   }
 
   /**
-   * Deletes a comment
+   * Delete Bank
    * @param {Bank} model
    * @returns {Observable<any>}
    */
@@ -68,6 +68,4 @@ export class BankService {
     let url = `${this._bankEndpoint}/${model.bank_id}`;
     return this._authhttp.delete(url);
   }
-
-
 }

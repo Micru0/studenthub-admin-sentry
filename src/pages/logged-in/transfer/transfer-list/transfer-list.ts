@@ -75,12 +75,12 @@ export class TransferListPage {
 
   /**
    * Delete a transfer
-   * @param transfer_id 
+   * @param transfer
    */
-  delete(transfer_id: number) {
+  delete(transfer: Transfer) {
     let loader = this._loadingCtrl.create();
     loader.present();
-    this.transferService.delete(transfer_id).subscribe(response => {
+    this.transferService.delete(transfer).subscribe(response => {
       this.loadData(1);
       loader.dismiss();
     });
