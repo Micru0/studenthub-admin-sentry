@@ -25,7 +25,7 @@ export class CompanyService {
   }
 
   /**
-   * Create
+   * Create company
    * @param {Company} model
    * @returns {Observable<any>}
    */
@@ -42,7 +42,7 @@ export class CompanyService {
   }
   
   /**
-   * Update
+   * Update company
    * @param {Company} model
    * @returns {Observable<any>}
    */
@@ -58,7 +58,7 @@ export class CompanyService {
   }
 
   /**
-   * Deletes a comment
+   * Deletes company
    * @param {Company} model
    * @returns {Observable<any>}
    */
@@ -68,7 +68,7 @@ export class CompanyService {
   }
 
   /**
-   * View company
+   * View company detail
    * @param {Company} model
    * @returns {Observable<any>}
    */

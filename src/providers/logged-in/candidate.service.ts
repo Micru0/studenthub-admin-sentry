@@ -27,7 +27,7 @@ export class CandidateService {
   }
 
   /**
-   * Deletes a comment
+   * Deletes Candidate
    * @param {Candidate} model
    * @returns {Observable<any>}
    */
@@ -37,7 +37,7 @@ export class CandidateService {
   }
   
   /**
-   * candidate salary transfer list 
+   * candidate transfer list 
    * @returns {Observable<any>}
    */
   transfers(id:number): Observable<any> {
@@ -46,7 +46,7 @@ export class CandidateService {
   }
 
   /**
-   * Deletes a comment
+   * approve candidate
    * @param {Candidate} model
    * @returns {Observable<any>}
    */
@@ -66,7 +66,7 @@ export class CandidateService {
   }
 
  /**
-   * List of all candidate to review changes 
+   * List of all candidate by store
    * @returns {Observable<any>}
    */
   listByStore(store: Store, page: number): Observable<any>{

@@ -26,7 +26,7 @@ export class TransferService {
   }
 
   /**
-   * Download excel containing payable canidates' info 
+   * Download excel containing payable canidates info 
    * @returns {Observable<any>}
    */
   exportPayableCandidates(): Observable<any> {
@@ -64,7 +64,7 @@ export class TransferService {
   }
 
   /**
-   * Mark as Payment Received 
+   * Mark as Payment Received and distributing 
    * @param {Transfer} transfer
    * @returns {Observable<any>}
    */
@@ -126,7 +126,7 @@ export class TransferService {
   }
 
   /**
-   * Generating Invoice copy
+   * Generating and download Invoice copy
    * @param {number} invoice
    * @returns {Observable<any>}
    */
@@ -136,7 +136,7 @@ export class TransferService {
   }
 
   /**
-   * Generating Invoice copy
+   * Generating and download Invoice copy
    * @param {number} invoice
    * @returns {Observable<any>}
    */

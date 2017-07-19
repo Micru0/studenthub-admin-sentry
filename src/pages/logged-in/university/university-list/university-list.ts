@@ -34,6 +34,10 @@ export class UniversityListPage {
     this.loadData(this.currentPage);
   }
 
+  /**
+   * load university data
+   * @param page 
+   */
   loadData(page: number) {
     // Load list of university
     let loader = this._loadingCtrl.create();

@@ -34,6 +34,10 @@ export class CompanyListPage {
     this.loadData(this.currentPage);
   }
 
+  /**
+   * load company data
+   * @param page 
+   */
   loadData(page: number) {
     // Load list of companies
     let loader = this._loadingCtrl.create();

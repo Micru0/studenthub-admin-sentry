@@ -92,20 +92,6 @@ export class StaffListPage {
   /**
    * Delete the provided model
    */
-  // delete(staff: Staff) {
-  //   let loader = this._loadingCtrl.create();
-  //   loader.present();
-
-  //   this.staffService.delete(staff).subscribe(jsonResp => {
-  //     loader.dismiss();
-  //     this.loadData(this.currentPage);
-  //   });
-  // }
-
-
-  /**
-   * Delete the provided model
-   */
   delete(staff: Staff) {
     let loader = this._loadingCtrl.create();
     loader.present();

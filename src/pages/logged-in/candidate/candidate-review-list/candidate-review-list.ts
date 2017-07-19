@@ -62,6 +62,7 @@ export class CandidateReviewListPage {
 
   /**
    * When a candidate is selected
+   * @param model 
    */
   rowSelected(model){
     this.navCtrl.push(CandidateViewPage, {
@@ -69,6 +70,10 @@ export class CandidateReviewListPage {
     });
   }
 
+  /**
+   * pagination color
+   * @param page 
+   */
   pageLinkColor(page: number) {
     if(page == this.currentPage) 
       return 'light';
