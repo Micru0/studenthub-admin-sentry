@@ -14,7 +14,7 @@ export class CountryService {
   constructor(private _authhttp: AuthHttpService) { }
 
   /**
-   * List of all staff
+   * List countries
    * @returns {Observable<any>}
    */
   list(page: number): Observable<any>{

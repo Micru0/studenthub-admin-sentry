@@ -16,7 +16,7 @@ export class StoreService {
   constructor(private _authhttp: AuthHttpService) { }
 
   /**
-   * List of all staff
+   * List of all store
    * @returns {Observable<any>}
    */
   list(): Observable<any>{
@@ -25,7 +25,7 @@ export class StoreService {
   }
 
   /**
-   * Create
+   * Create store
    * @param {Store} model
    * @returns {Observable<any>}
    */
@@ -40,7 +40,7 @@ export class StoreService {
   }
 
   /**
-   * Update
+   * Update store
    * @param {Store} model
    * @returns {Observable<any>}
    */
@@ -55,7 +55,7 @@ export class StoreService {
   }
 
   /**
-   * Deletes a comment
+   * Deletes store
    * @param {Store} model
    * @returns {Observable<any>}
    */

@@ -16,7 +16,7 @@ export class UniversityService {
   constructor(private _authhttp: AuthHttpService) { }
 
   /**
-   * List of all staff
+   * List of all university
    * @returns {Observable<any>}
    */
   list(page: number): Observable<any>{
@@ -25,7 +25,7 @@ export class UniversityService {
   }
 
   /**
-   * Create
+   * Create university
    * @param {University} model
    * @returns {Observable<any>}
    */
@@ -40,7 +40,7 @@ export class UniversityService {
   }
 
   /**
-   * Update
+   * Update university
    * @param {University} model
    * @returns {Observable<any>}
    */
@@ -55,7 +55,7 @@ export class UniversityService {
   }
 
   /**
-   * Deletes a comment
+   * Deletes university
    * @param {University} model
    * @returns {Observable<any>}
    */
@@ -63,6 +63,4 @@ export class UniversityService {
     let url = `${this._universityEndpoint}/${model.university_id}`;
     return this._authhttp.delete(url);
   }
-
-
 }

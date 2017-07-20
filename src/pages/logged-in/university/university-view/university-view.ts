@@ -42,6 +42,11 @@ export class UniversityViewPage {
     modal.present();
   }
 
+  /**
+   * load university candidate
+   * @param university 
+   * @param page 
+   */
   loadUniversityCandidate(university:University,page: number) {
     let loader = this._loadingCtrl.create();
     loader.present();
@@ -67,11 +72,14 @@ export class UniversityViewPage {
     });
   }
 
+  /**
+   * candidate detail
+   * @param candidate 
+   */
   candidateDetail(candidate:Candidate) {
     // Load Detail Page
     this.navCtrl.push(CandidateViewPage, {
       'model': candidate
     });
   }
-
 }
