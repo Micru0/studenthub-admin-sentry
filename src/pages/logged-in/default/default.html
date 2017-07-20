@@ -14,12 +14,15 @@
     <ion-row>
       <!-- Payment Sent Notification Card -->
       <ion-col col-12 col-md-6 *ngIf="statistics.transfers.paymentSent.total > 0">
-        <ion-card (click)="showTransfers(statistics.transfers.paymentSent.code)">
+        <ion-card>
           <ion-card-header>
             {{ statistics.transfers.paymentSent.total }} {{ statistics.transfers.paymentSent.total == 1? "Transfer has" : "Transfers have"  }} been marked as payment sent
           </ion-card-header>
           <ion-card-content>
-            Check if bank received and process their transfer
+            <p>Check if bank received and process their transfer</p>
+            <button ion-button (click)="showTransfers(statistics.transfers.paymentSent.code)">
+              Show Transfers
+            </button>
           </ion-card-content>
         </ion-card>
       </ion-col>
