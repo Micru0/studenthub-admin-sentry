@@ -90,8 +90,9 @@
         </a>
       </p>
     </ion-item>    
+
     <ion-item-divider color="light">Bank Info</ion-item-divider>
-    <ion-item>
+    <ion-item *ngIf="candidate.bank">
       <h5>Bank</h5>
       <p>{{ candidate.bank.bank_name }}</p>
     </ion-item>
