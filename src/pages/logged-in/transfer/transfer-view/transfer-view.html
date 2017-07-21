@@ -127,24 +127,24 @@
             <ion-col col-12 class='hoursWorked'>
               {{resource.hours}} hours worked
             </ion-col>
-            <ion-col col-6 col-md-4 col-lg-3>
+            <ion-col col-12 col-sm-6 col-md-4 col-lg-3>
               <b>Company Pays {{ resource.company_hourly_rate }} KD/hr</b> <br/>
               KWD {{ totalCompanyPaysForCandidateWithoutBonus(resource) | number:'1.3-3' }}
               <div *ngIf="resource.bonus > 0">
                 + Bonus KWD {{ resource.bonus | number:'1.3-3' }}
               </div>
             </ion-col>
-            <ion-col col-6 col-md-4 col-lg-3>
+            <ion-col col-12 col-sm-6 col-md-4 col-lg-3>
               <b>We Distribute {{ resource.candidate_hourly_rate }} KD/hr</b> <br/> 
               KWD {{ totalPaidToCandidateWithoutBonus(resource) | number:'1.3-3' }}
               <div *ngIf="resource.bonus > 0">
                 + Bonus KWD {{ resource.bonus | number:'1.3-3' }}
               </div>
             </ion-col>
-            <ion-col col-6 col-md-4 col-lg-3 *ngIf="resource.transfer_cost > 0">
+            <ion-col col-12 col-sm-6 col-md-4 col-lg-3 *ngIf="resource.transfer_cost > 0">
               <b>Transfer Cost</b> <br/> KWD {{ resource.transfer_cost | number:'1.3-3' }}
             </ion-col>
-            <ion-col col-6 col-md-4 col-lg-3>
+            <ion-col col-12 col-sm-6 col-md-4 col-lg-3>
               <b>Profit</b> <br/> KWD {{ (totalCompanyPaysForCandidateWithBonus(resource) - totalPaidToCandidateWithBoth(resource) - resource.transfer_cost) | number:'1.3-3' }}
             </ion-col>
           </ion-row>
