@@ -101,4 +101,13 @@ export class CandidateService {
     let url = `${this._candidateEndpoint}/search?by=university_id&university_id= ${university.university_id}&page=${page}`;
     return this._authhttp.getRaw(url);
   }
+
+  /**
+   * return work history
+   * @param candidate 
+   */
+  workHistory(candidate:Candidate): Observable<any> {
+    let url = this._candidateEndpoint +'/work-history/'+ candidate.candidate_id;
+    return this._authhttp.get(url);
+  }
 }

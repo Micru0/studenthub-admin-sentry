@@ -13,6 +13,7 @@ export class CandidateViewPage {
 
   public candidate: Candidate;
   public salaryTransfers: any[] = [];
+  public workHistory: any[] = [];
   public permanentBucketUrl = "https://sh-payroll.s3.eu-west-2.amazonaws.com/";
 
   constructor(
@@ -25,6 +26,7 @@ export class CandidateViewPage {
   ) {
     this.candidate = params.get('model');
     this.loadTransfersData();
+    this.loadWorkHistoryData();
   }
   
   /**
@@ -33,6 +35,15 @@ export class CandidateViewPage {
   loadTransfersData() {
     this.candidateService.transfers(this.candidate.candidate_id).subscribe(response => {
       this.salaryTransfers = response;
+    });
+  }
+
+  /**
+   * Load candidate work history data
+   */
+  loadWorkHistoryData() {
+    this.candidateService.workHistory(this.candidate).subscribe(response => {
+      this.workHistory = response;
     });
   }
 
