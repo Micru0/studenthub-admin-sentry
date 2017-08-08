@@ -8,6 +8,7 @@ import { StaffListPage } from '../staff/staff-list/staff-list';
 import { BankListPage } from '../bank/bank-list/bank-list';
 import { UniversityListPage } from '../university/university-list/university-list';
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
+import { CandidateTransferListPage } from '../transfer/candidate-transfer-list/candidate-transfer-list';
 import { PayableCandidatesPage } from '../transfer/payable-candidates/payable-candidates';
 import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
 import { CountryListPage } from '../country/country-list/country-list';
@@ -49,6 +50,9 @@ export class NavigationPage {
         break;
       case "candidate-review":
         this.rootPage = CandidateReviewListPage;
+        break;
+      case "candidate-transfers":
+        this.rootPage = CandidateTransferListPage;
         break;
       case "transfers":
         this.rootPage = TransferListPage;

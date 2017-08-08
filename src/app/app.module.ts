@@ -39,6 +39,10 @@ import { TransferViewPage } from '../pages/logged-in/transfer/transfer-view/tran
 import { TransferPaidPage } from '../pages/logged-in/transfer/transfer-paid/transfer-paid';
 import { PayableCandidatesPage } from '../pages/logged-in/transfer/payable-candidates/payable-candidates';
 
+// Candidate Transfer
+import { CandidateTransferListPage } from '../pages/logged-in/transfer/candidate-transfer-list/candidate-transfer-list';
+
+
 // Candidate 
 import { CandidateViewPage } from '../pages/logged-in/candidate/candidate-view/candidate-view';
 import { CandidateReviewListPage } from '../pages/logged-in/candidate/candidate-review-list/candidate-review-list';
@@ -71,6 +75,7 @@ import { StaffService } from '../providers/logged-in/staff.service';
 import { BankService } from '../providers/logged-in/bank.service';
 import { UniversityService } from '../providers/logged-in/university.service';
 import { TransferService } from '../providers/logged-in/transfer.service';
+import { CandidateTransferService } from '../providers/logged-in/candidate.transfer.service';
 import { CandidateService } from '../providers/logged-in/candidate.service';
 import { StoreService } from '../providers/logged-in/store.service';
 import { CountryService } from '../providers/logged-in/country.service';
@@ -100,6 +105,8 @@ const cloudSettings: CloudSettings = {
     TransferViewPage,
     TransferPaidPage,
     PayableCandidatesPage,
+    // candidate transfer crud
+    CandidateTransferListPage,
     //candidate Crud
     CandidateReviewListPage,
     CandidateViewPage,
@@ -140,6 +147,8 @@ const cloudSettings: CloudSettings = {
     TransferViewPage,
     TransferPaidPage,
     PayableCandidatesPage,
+    // candidate transfer crud
+    CandidateTransferListPage,
     //candidate Crud
     CandidateReviewListPage,
     CandidateViewPage,    
@@ -188,6 +197,7 @@ const cloudSettings: CloudSettings = {
       StaffService,
       BankService,
       TransferService,
+      CandidateTransferService,
       CandidateService,
       StoreService,
       UniversityService,
