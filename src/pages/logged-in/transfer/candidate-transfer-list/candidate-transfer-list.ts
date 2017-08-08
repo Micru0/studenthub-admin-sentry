@@ -15,7 +15,7 @@ import { TransferCandidate } from '../../../../models/transfer-candidate';
   templateUrl: 'candidate-transfer-list.html'
 })
 export class CandidateTransferListPage {
-  public transferStatus:number = 0;
+  public transferStatus:number = 1;
   public transferID: number = 0;
   public candidate_id: number = 0;
   
@@ -96,5 +96,32 @@ export class CandidateTransferListPage {
     this.navCtrl.push(TransferViewPage, {
       'transfer_id': transfer_id
     });
+  }
+
+  markUnPaid (Transfer:TransferCandidate) {
+   let alert = this.alertCtrl.create({
+    title: 'Mark Unpaid',
+    message: 'Are you sure you want to mark this transfer candidate as unpaid?',
+    buttons: [
+      {
+        text: 'No',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Yes',
+        handler: () => {
+          let loader = this._loadingCtrl.create();
+          loader.present();
+          this._candidateTransferService.unpaid(Transfer).subscribe(response => {
+            loader.dismiss();
+            this.loadData(this.currentPage);  
+          });
+        }
+      }
+    ]
+    }).present(); 
   }
 }
