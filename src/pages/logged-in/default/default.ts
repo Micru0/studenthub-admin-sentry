@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, Events } from 'ionic-angular';
 
 import { StatisticService } from '../../../providers/logged-in/statistic.service';
 
@@ -20,13 +20,23 @@ export class DefaultPage {
   constructor(
   	public navCtrl: NavController,
   	public statisticService: StatisticService,
-  	private _loadingCtrl: LoadingController,
-  ) {
-
-  }
+    private _loadingCtrl: LoadingController,
+    private _events: Events,
+  ) {}
 
   ionViewDidLoad() {
     this.loadData();
+  }
+
+  ngOnInit(){
+    this._events.subscribe('navigation:updatePayable', (userEventData) => {
+      this.statisticService.get().subscribe(response => {
+        this.statistics = response;
+        },
+        error => {},
+        () => {}
+      );
+    });
   }
 
   /**

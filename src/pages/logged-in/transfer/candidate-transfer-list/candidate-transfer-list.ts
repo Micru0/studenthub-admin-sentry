@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController,NavParams } from 'ionic-angular';
+import { NavController, LoadingController, AlertController,NavParams,ToastController,Events } from 'ionic-angular';
 
 //Pages
 import { TransferViewPage } from '../transfer-view/transfer-view';
@@ -30,7 +30,9 @@ export class CandidateTransferListPage {
     params: NavParams,
     public _candidateTransferService: CandidateTransferService,
     private _loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    public toastCtrl: ToastController,
+    private _events: Events
   ) { 
     // Passed from Dashboard to show filtered status results
     if (params.get('candidate_transfer_id')) {
@@ -116,6 +118,17 @@ export class CandidateTransferListPage {
           let loader = this._loadingCtrl.create();
           loader.present();
           this._candidateTransferService.unpaid(Transfer).subscribe(response => {
+            
+            let toast = this.toastCtrl.create({
+              message: response.message,
+              duration: 3000
+            });
+
+            //update review count 
+            this._events.publish('navigation:updatePayable');
+
+            toast.present();
+
             loader.dismiss();
             this.loadData(this.currentPage);  
           });
