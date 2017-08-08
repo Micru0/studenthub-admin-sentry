@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+
 // Providers
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
+
 // Models
 import { Candidate } from '../../../../models/candidate';
 
-import {CandidateTransferListPage} from '../../transfer/candidate-transfer-list/candidate-transfer-list';
+// Pages
+import { CandidateTransferListPage } from '../../transfer/candidate-transfer-list/candidate-transfer-list';
+
 @Component({
   selector: 'page-candidate-view',
   templateUrl: 'candidate-view.html'

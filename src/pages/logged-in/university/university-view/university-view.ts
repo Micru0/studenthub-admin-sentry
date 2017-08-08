@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController, NavParams, ModalController } from 'ionic-angular';
+
 // Pages
 import { UniversityFormPage } from '../university-form/university-form';
 import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
+
 // Providers
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
+
 // Models
 import { University } from '../../../../models/university';
 import { Candidate } from '../../../../models/candidate';

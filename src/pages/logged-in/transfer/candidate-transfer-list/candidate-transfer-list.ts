@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController,NavParams } from 'ionic-angular';
+import { NavController, LoadingController, NavParams } from 'ionic-angular';
 
 //Pages
 import { TransferViewPage } from '../transfer-view/transfer-view';
@@ -29,8 +29,7 @@ export class CandidateTransferListPage {
     public navCtrl: NavController,
     params: NavParams,
     public _candidateTransferService: CandidateTransferService,
-    private _loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private _loadingCtrl: LoadingController
   ) { 
     // Passed from Dashboard to show filtered status results
     if (params.get('candidate_transfer_id')) {

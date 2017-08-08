@@ -4,8 +4,10 @@ import { NavController, LoadingController, ModalController, AlertController, Toa
 // Pages
 import { BankViewPage } from '../bank-view/bank-view';
 import { BankFormPage } from '../bank-form/bank-form';
+
 // Providers
 import { BankService } from '../../../../providers/logged-in/bank.service';
+
 // Models
 import { Bank } from '../../../../models/bank';
 

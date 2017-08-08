@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, AlertController, ToastController, NavParams,Events } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, ToastController, NavParams, Events } from 'ionic-angular';
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
@@ -19,7 +19,6 @@ export class TransferPaidPage  {
   constructor(
     params: NavParams,
     public navCtrl: NavController,
-    private _viewCtrl: ViewController,
     private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
     private transferService: TransferService,

@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, AlertController, NavParams } from 'ionic-angular';
+import { ViewController, LoadingController, AlertController, NavParams } from 'ionic-angular';
+
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 // Providers
 import { UniversityService } from '../../../../providers/logged-in/university.service';
+
 // Models
 import { University } from '../../../../models/university';
 
@@ -20,7 +23,6 @@ export class UniversityFormPage {
 
   constructor(
     params: NavParams,
-    public navCtrl: NavController,
     public universityService: UniversityService,
     private _fb: FormBuilder,
     private _viewCtrl: ViewController,

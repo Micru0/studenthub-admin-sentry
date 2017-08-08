@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController, AlertController,ToastController,Events } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController, ToastController, Events } from 'ionic-angular';
 
 // Providers
 import { TransferService } from '../../../../providers/logged-in/transfer.service';
+
 // Models
 import { Transfer, Invoice } from '../../../../models/transfer';
 import { Candidate } from '../../../../models/candidate';
 import { TransferCandidate } from '../../../../models/transfer-candidate';
+
 // Pages
 import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 
@@ -27,7 +29,6 @@ export class TransferViewPage {
   constructor(
     public navCtrl: NavController,
     public transferService: TransferService,
-    private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
     public params: NavParams,
     public alertCtrl: AlertController,

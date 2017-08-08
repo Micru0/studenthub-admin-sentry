@@ -1,15 +1,17 @@
 // Core
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
+
 // Services
 import { AuthService } from '../../../providers/auth.service';
+
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../../../validators/custom.validator';
 
-/*
-  Login Page
-*/
+/**
+ * Login Page
+ */
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -29,7 +31,6 @@ export class LoginPage {
   private _numberOfLoginAttempts = 0;
 
   constructor(
-    public navCtrl: NavController,
     private _fb: FormBuilder,
     private _auth: AuthService,
     private _alertCtrl: AlertController

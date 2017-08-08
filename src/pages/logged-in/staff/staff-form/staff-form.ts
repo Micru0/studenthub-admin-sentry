@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, AlertController, NavParams, ToastController } from 'ionic-angular';
+import { ViewController, LoadingController, AlertController, NavParams, ToastController } from 'ionic-angular';
+
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../../../../validators/custom.validator';
+
 // Providers
 import { StaffService } from '../../../../providers/logged-in/staff.service';
+
 // Models
 import { Staff } from '../../../../models/staff';
 
@@ -21,7 +24,6 @@ export class StaffFormPage {
 
   constructor(
     params: NavParams,
-    public navCtrl: NavController,
     public staffService: StaffService,
     private _fb: FormBuilder,
     private _viewCtrl: ViewController,

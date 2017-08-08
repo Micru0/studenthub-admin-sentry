@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 
 // Providers
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
@@ -26,7 +26,6 @@ export class StoreViewPage {
 
   constructor(
     public navCtrl: NavController,
-    private _modalCtrl: ModalController,
     private _loadingCtrl: LoadingController,
     private candidateService: CandidateService,
     params: NavParams

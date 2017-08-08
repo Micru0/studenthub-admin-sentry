@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-
 import { NavController, LoadingController } from 'ionic-angular';
 
+// Services 
 import { StatisticService } from '../../../providers/logged-in/statistic.service';
 
-//page 
+// page 
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
 import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
 import { PayableCandidatesPage } from '../transfer/payable-candidates/payable-candidates';
