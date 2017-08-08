@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>Transfer List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Transfer Filter -->
+  <ion-card>
+    <ion-list>
+      <ion-list-header>
+        Filter by
+      </ion-list-header>
+      <!-- Filter by Company Name -->
+      <ion-item>
+        <ion-label color="primary" stacked>Candidate Transfer ID</ion-label>
+        <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="transferID" (change)="loadData(1)"></ion-input>
+      </ion-item>
+      <!-- Filter by Transfer Status -->
+      <ion-item>
+        <ion-label color="primary" stacked>Transfer Status</ion-label>
+        <ion-select [(ngModel)]="transferStatus" (ionChange)="loadData(1)">
+          <ion-option value="">All</ion-option>
+          <ion-option value="1">Paid</ion-option>
+          <ion-option value="0">Un Paid</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <!-- Transfer List -->
+  <ion-list>
+    <button ion-item *ngFor="let transfer of transfersCandidate">
+      <ion-grid>
+        <ion-row>
+          <ion-col text-center>
+            <p>Candidate Transfer ID #{{ transfer.tc_id}}</p>
+            <h2>KWD {{ transfer.total_amount | number:'1.3-3' }}</h2>
+            <b>{{ transfer.store_name }} <small> @ {{ transfer.company_name }}</small></b>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12 class='status'>
+            <span class="status_{{transfer.paid}}" *ngIf="transfer.paid=='0'"> Payment Status : Un paid </span>
+            <span class="status_{{transfer.paid}}" *ngIf="transfer.paid=='1'"> Payment Status : Paid </span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12 col-sm-6>
+            <p>Total hours</p>
+            {{ transfer.hours }}<br>
+          </ion-col>
+          <ion-col col-12 col-sm-6>
+            <p>Total bonus</p>
+            KWD {{ transfer.bonus }}<br>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12 col-sm-6>
+            <p>Created</p>
+            {{ transfer.tc_created_at}}
+          </ion-col>
+          <ion-col col-12 col-sm-6>
+            <p>Updated</p>
+            {{ transfer.tc_updated_at}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </button>
+  </ion-list>
+
+  <ion-row text-center>
+    <div class="pagination-wrapper">
+      <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+        {{ page }}
+      </button>
+    </div>
+  </ion-row>
+
+</ion-content>
