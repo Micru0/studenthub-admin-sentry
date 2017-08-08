@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController,NavParams,ToastController,Events } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, NavParams, ToastController,Events } from 'ionic-angular';
 
 //Pages
 import { TransferViewPage } from '../transfer-view/transfer-view';
@@ -88,16 +88,6 @@ export class CandidateTransferListPage {
       return 'light';
     
     return '';
-  }
-
-  /**
-   * Load Transfer Detail Page
-   * @param transfer_id 
-   */
-  transferDetails(transfer_id: number) {
-    this.navCtrl.push(TransferViewPage, {
-      'transfer_id': transfer_id
-    });
   }
 
   markUnPaid (Transfer:TransferCandidate) {

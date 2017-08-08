@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavParams, ModalController } from 'ionic-angular';
+
 // Pages
 import { BankFormPage } from '../bank-form/bank-form';
+
 // Models
 import { Bank } from '../../../../models/bank';
 
@@ -14,7 +16,6 @@ export class BankViewPage {
   public bank: Bank;
 
   constructor(
-    public navCtrl: NavController,
     private _modalCtrl: ModalController,
     params: NavParams
   ) {

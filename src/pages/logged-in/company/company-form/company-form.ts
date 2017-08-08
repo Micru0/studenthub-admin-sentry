@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController, AlertController, NavParams, ToastController } from 'ionic-angular';
+import { ViewController, LoadingController, AlertController, NavParams, ToastController } from 'ionic-angular';
+
 // Forms
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../../../../validators/custom.validator';
+
 // Providers
 import { CompanyService } from '../../../../providers/logged-in/company.service';
+
 // Models
 import { Company } from '../../../../models/company';
 
@@ -21,7 +24,6 @@ export class CompanyFormPage {
 
   constructor(
     public params: NavParams,
-    public navCtrl: NavController,
     public companyService: CompanyService,
     private _fb: FormBuilder,
     private _viewCtrl: ViewController,

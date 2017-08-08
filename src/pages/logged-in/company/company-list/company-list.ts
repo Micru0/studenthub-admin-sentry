@@ -4,8 +4,10 @@ import { NavController, LoadingController, AlertController, ModalController, Toa
 // Pages
 import { CompanyViewPage } from '../company-view/company-view';
 import { CompanyFormPage } from '../company-form/company-form';
+
 // Providers
 import { CompanyService } from '../../../../providers/logged-in/company.service';
+
 // Models
 import { Company } from '../../../../models/company';
 
