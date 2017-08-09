@@ -11,10 +11,10 @@ import { CandidateTransferService } from '../../../../providers/logged-in/candid
 import { TransferCandidate } from '../../../../models/transfer-candidate';
 
 @Component({
-    selector: 'page-candidate-transfer-list',
-    templateUrl: 'candidate-transfer-list.html'
+    selector: 'page-candidate-payment-search',
+    templateUrl: 'candidate-payment-search.html'
 })
-export class CandidateTransferListPage {
+export class CandidatePaymentSearchPage {
     public transferID: number = 0;
     public candidate_id: number = 0;
 
