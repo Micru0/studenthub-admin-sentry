@@ -12,13 +12,15 @@
 
   <!-- Transfer Filter -->
   <ion-card>
-    <ion-list>
-      <ion-list-header> Filter by </ion-list-header>
-      <ion-item>
-        <ion-label color="primary" stacked>Candidate Transfer ID</ion-label>
-        <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="transferID" (change)="loadData(1)"></ion-input>
-      </ion-item>
-    </ion-list>
+    <ion-item>
+      <ion-label color="primary" stacked>Candidate Transfer ID</ion-label>
+      <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="transferID"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button block (click)="loadData(1)">
+        Search
+      </button>
+    </ion-item>
   </ion-card>
   <!-- Transfer List -->
 </ion-content>
