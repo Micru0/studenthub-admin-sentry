@@ -108,7 +108,7 @@
     </ion-item>
 
     <ion-item-divider color="light" *ngIf="salaryTransfers.length > 0">Salary Transfers</ion-item-divider>
-    <ion-item *ngFor="let salary of salaryTransfers" (click)="candidateTransferDetails(salary.tc_id,salary.paid)">
+    <ion-item *ngFor="let salary of salaryTransfers" (click)="candidateTransferDetails(salary)">
         {{ salary.tc_created_at }}
         <p>KWD {{salary.total | number:'1.3-3' }}</p>
         <p *ngIf="(salary.bonus | number) > 0">Bonus:<b>KWD {{salary.bonus | number:'1.3-3' }}</b></p>
