@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>Candidate Transfer detail</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="transfersCandidate && transfersCandidate.length > 0">
+    <ion-item-sliding *ngFor="let transfer of transfersCandidate">
+      <ion-item>
+        <ion-avatar item-left *ngIf="transfer.candidate">
+          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfer.candidate.candidate_personal_photo_thumb}}"> 
+        </ion-avatar>
+        <ion-label class="label label-ios" *ngIf="transfer.candidate" >
+          <h2>{{transfer.candidate.candidate_name}}</h2> 
+          <p> KWD : {{ transfer.total_amount }} </p>
+          <small>{{ transfer.store_name }} @ {{ transfer.company_name }}</small>
+        </ion-label>
+        <ion-note item-end="" class="note note-ios">{{transfer.status}}</ion-note>
+      </ion-item>
+      <ion-item-options side="right" *ngIf="transfer.paid == '1'" >
+        <button ion-button (click)="markUnPaid(transfer)">Mark As UnPaid</button>
+      </ion-item-options>
+      <ion-item-options side="right" *ngIf="transfer.paid == '0'">
+        <button ion-button (click)="markPaid(transfer)">Mark As Paid</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-list *ngIf="transfersCandidate && !transfersCandidate.length">
+    <ion-item-sliding>
+      <ion-item>
+        <ion-avatar item-left *ngIf="transfersCandidate.candidate">
+          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfersCandidate.candidate.candidate_personal_photo_thumb}}"> 
+        </ion-avatar>
+        <ion-label class="label label-ios" *ngIf="transfersCandidate.candidate" >
+          <h2>{{transfersCandidate.candidate.candidate_name}}</h2> 
+          <p> KWD : {{ transfersCandidate.total_amount }} </p>
+          <small>{{ transfersCandidate.store_name }} @ {{ transfersCandidate.company_name }}</small>
+        </ion-label>
+        <ion-note item-end="" class="note note-ios">{{transfersCandidate.status}}</ion-note>
+      </ion-item>
+      <ion-item-options side="right" *ngIf="transfersCandidate.paid == '1'" >
+        <button ion-button (click)="markUnPaid(transfersCandidate)">Mark As UnPaid</button>
+      </ion-item-options>
+      <ion-item-options side="right" *ngIf="transfersCandidate.paid == '0'">
+        <button ion-button (click)="markPaid(transfersCandidate)">Mark As Paid</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

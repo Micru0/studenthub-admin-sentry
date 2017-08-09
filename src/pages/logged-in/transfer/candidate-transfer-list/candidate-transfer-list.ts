@@ -48,7 +48,7 @@ export class CandidateTransferListPage {
                     this.candidateTransferDetails(responsedata);
                 } else {
                     let toast = this.toastCtrl.create({
-                        message: 'No Data Found',
+                        message: 'No transfercandidate record with id '+this.transferID,
                         duration: 3000
                     });
                     toast.present();
