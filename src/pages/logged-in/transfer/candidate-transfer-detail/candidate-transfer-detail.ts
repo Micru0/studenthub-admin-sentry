@@ -6,6 +6,10 @@ import { CandidateTransferService } from '../../../../providers/logged-in/candid
 
 // Models
 import { TransferCandidate } from '../../../../models/transfer-candidate';
+import { Candidate } from '../../../../models/candidate';
+
+// Pages
+import { CandidateViewPage } from '../../candidate/candidate-view/candidate-view';
 
 @Component({
   selector: 'page-candidate-transfer-detail',
@@ -100,5 +104,15 @@ export class CandidateTransferDetailPage {
       }
     ]
     }).present(); 
+  }
+
+  /**
+   * On Candidate Selected
+   * @param model 
+   */
+  loadCandidateDetail(model: Candidate) {
+    this.navCtrl.push(CandidateViewPage, {
+      'model': model
+    });
   }
 }

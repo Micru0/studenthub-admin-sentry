@@ -4,51 +4,35 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title>Candidate Transfer detail</ion-title>
+    <ion-title>{{ transfersCandidate && transfersCandidate[0]? "KWD " + transfersCandidate[0].total_amount + " " + transfersCandidate[0].status + " for " + transfersCandidate[0].candidate.candidate_name : "Candidate Transfer Detail" }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list *ngIf="transfersCandidate && transfersCandidate.length > 0">
-    <ion-item-sliding *ngFor="let transfer of transfersCandidate">
-      <ion-item>
-        <ion-avatar item-left *ngIf="transfer.candidate">
+
+  <section *ngIf="transfersCandidate && transfersCandidate.length > 0">
+    <div *ngFor="let transfer of transfersCandidate">
+      <button ion-item *ngIf="transfer.candidate" (click)="loadCandidateDetail(transfer.candidate)">
+        <ion-avatar item-left>
           <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfer.candidate.candidate_personal_photo_thumb}}"> 
         </ion-avatar>
         <ion-label class="label label-ios" *ngIf="transfer.candidate" >
-          <h2>{{transfer.candidate.candidate_name}}</h2> 
-          <p> KWD : {{ transfer.total_amount }} </p>
+          <h2>{{transfer.candidate.candidate_name}}</h2>
           <small>{{ transfer.store_name }} @ {{ transfer.company_name }}</small>
         </ion-label>
-        <ion-note item-end="" class="note note-ios">{{transfer.status}}</ion-note>
-      </ion-item>
-      <ion-item-options side="right" *ngIf="transfer.paid == '1'" >
-        <button ion-button (click)="markUnPaid(transfer)">Mark As UnPaid</button>
-      </ion-item-options>
-      <ion-item-options side="right" *ngIf="transfer.paid == '0'">
-        <button ion-button (click)="markPaid(transfer)">Mark As Paid</button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+      </button>
 
-  <ion-list *ngIf="transfersCandidate && !transfersCandidate.length">
-    <ion-item-sliding>
-      <ion-item>
-        <ion-avatar item-left *ngIf="transfersCandidate.candidate">
-          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfersCandidate.candidate.candidate_personal_photo_thumb}}"> 
-        </ion-avatar>
-        <ion-label class="label label-ios" *ngIf="transfersCandidate.candidate" >
-          <h2>{{transfersCandidate.candidate.candidate_name}}</h2> 
-          <p> KWD : {{ transfersCandidate.total_amount }} </p>
-          <small>{{ transfersCandidate.store_name }} @ {{ transfersCandidate.company_name }}</small>
-        </ion-label>
-        <ion-note item-end="" class="note note-ios">{{transfersCandidate.status}}</ion-note>
-      </ion-item>
-      <ion-item-options side="right" *ngIf="transfersCandidate.paid == '1'" >
-        <button ion-button (click)="markUnPaid(transfersCandidate)">Mark As UnPaid</button>
-      </ion-item-options>
-      <ion-item-options side="right" *ngIf="transfersCandidate.paid == '0'">
-        <button ion-button (click)="markPaid(transfersCandidate)">Mark As Paid</button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+      <div text-center>
+        <h1>KWD  {{ transfer.total_amount | number }}</h1>
+        <h2 ion-text [color]="transfer.paid == '1'?'primary':'danger'">{{transfer.status}}</h2>
+
+        <button ion-button *ngIf="transfer.paid == '1'" (click)="markUnPaid(transfer)">
+          Mark Unpaid
+        </button>
+        <button ion-button *ngIf="transfer.paid == '0'" (click)="markPaid(transfer)">
+          Mark As Paid
+        </button>
+      </div>
+    </div>
+  </section>
+
 </ion-content>
