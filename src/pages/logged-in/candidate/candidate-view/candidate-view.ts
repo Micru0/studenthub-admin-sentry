@@ -8,7 +8,7 @@ import { CandidateService } from '../../../../providers/logged-in/candidate.serv
 import { Candidate } from '../../../../models/candidate';
 
 // Pages
-import { CandidateTransferListPage } from '../../transfer/candidate-transfer-list/candidate-transfer-list';
+import { CandidateTransferDetailPage } from '../../transfer/candidate-transfer-detail/candidate-transfer-detail';
 
 @Component({
   selector: 'page-candidate-view',
@@ -85,10 +85,9 @@ export class CandidateViewPage {
     });
   }
   
-  candidateTransferDetails(candidate_transfer_id: number,status:number) {
-    this.navCtrl.push(CandidateTransferListPage, {
-      'candidate_transfer_id': candidate_transfer_id,
-      'status':status
+  candidateTransferDetails(transfer:any) {
+    this.navCtrl.push(CandidateTransferDetailPage, {
+      'transfers': transfer
     });
   }
 }

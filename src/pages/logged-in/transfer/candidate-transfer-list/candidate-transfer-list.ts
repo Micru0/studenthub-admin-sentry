@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController, NavParams, ToastController,Events } from 'ionic-angular';
+import { NavController, LoadingController, NavParams,ToastController } from 'ionic-angular';
 
 //Pages
-import { TransferViewPage } from '../transfer-view/transfer-view';
+import {CandidateTransferDetailPage} from '../../transfer/candidate-transfer-detail/candidate-transfer-detail';
 
 // Providers
 import { CandidateTransferService } from '../../../../providers/logged-in/candidate.transfer.service';
@@ -11,120 +11,71 @@ import { CandidateTransferService } from '../../../../providers/logged-in/candid
 import { TransferCandidate } from '../../../../models/transfer-candidate';
 
 @Component({
-  selector: 'page-candidate-transfer-list',
-  templateUrl: 'candidate-transfer-list.html'
+    selector: 'page-candidate-transfer-list',
+    templateUrl: 'candidate-transfer-list.html'
 })
 export class CandidateTransferListPage {
-  public transferStatus:number = 1;
-  public transferID: number = 0;
-  public candidate_id: number = 0;
-  
-  public pageCount = 0;
-  public currentPage = 1;
-  public pages: number[] = [];
+    public transferID: number = 0;
+    public candidate_id: number = 0;
 
-  public transfersCandidate: TransferCandidate[];
+    public pageCount = 0;
+    public currentPage = 1;
+    public pages: number[] = [];
 
-  constructor(
-    public navCtrl: NavController,
-    params: NavParams,
-    public _candidateTransferService: CandidateTransferService,
-    private _loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
-    public toastCtrl: ToastController,
-    private _events: Events
-  ) { 
-    // Passed from Dashboard to show filtered status results
-    if (params.get('candidate_transfer_id')) {
-      this.transferID = params.get('candidate_transfer_id');
+    public transfersCandidate: TransferCandidate[];
+
+    constructor(
+        public navCtrl: NavController,
+        params: NavParams,
+        public _candidateTransferService: CandidateTransferService,
+        private _loadingCtrl: LoadingController,
+        public toastCtrl: ToastController
+    ) {
     }
-    
-    if (params.get('status')) {
-      this.transferStatus = params.get('status');
+    ionViewWillEnter() {}
+
+    /**
+     * Load Transfer List
+     * @param page
+     */
+    loadData(page: number) {
+        let loader = this._loadingCtrl.create();
+        loader.present();
+
+        this._candidateTransferService.list(this.transferID,this.candidate_id, page).subscribe(response => {
+                let responsedata = response.json();
+                if (responsedata.length> 0 ) {
+                    this.candidateTransferDetails(responsedata);
+                } else {
+                    let toast = this.toastCtrl.create({
+                        message: 'No Data Found',
+                        duration: 3000
+                    });
+                    toast.present();
+                }
+            },
+            error => {},
+            () => {loader.dismiss();}
+        );
     }
-  }
 
-  ionViewWillEnter() {
-    this.loadData(this.currentPage);  
-  }
+    /**
+     * Page link color for pagination
+     * @param page
+     */
+    pageLinkColor(page: number) {
+        if(page == this.currentPage)
+            return 'light';
 
-  /**
-   * Load Transfer List
-   * @param page 
-   */
-  loadData(page: number) {
-    let loader = this._loadingCtrl.create();
-    loader.present();
-
-    //subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
-    this._candidateTransferService.list(this.transferID, this.transferStatus,this.candidate_id, page).subscribe(response => {
-
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
-
-      this.pages = [];
-
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-      if(this.pageCount == 1)
-        this.pages = [];
-
-      this.transfersCandidate = response.json();
-    },
-    error => {},
-    () => {loader.dismiss();}
-    );
-  }
-
-  /**
-   * Page link color for pagination
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
-  }
-
-  markUnPaid (Transfer:TransferCandidate) {
-   let alert = this.alertCtrl.create({
-    title: 'Mark Unpaid',
-    message: 'Are you sure you want to mark this transfer candidate as unpaid?',
-    buttons: [
-      {
-        text: 'No',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      },
-      {
-        text: 'Yes',
-        handler: () => {
-          let loader = this._loadingCtrl.create();
-          loader.present();
-          this._candidateTransferService.unpaid(Transfer).subscribe(response => {
-            
-            let toast = this.toastCtrl.create({
-              message: response.message,
-              duration: 3000
-            });
-
-            //update review count 
-            this._events.publish('navigation:updatePayable');
-
-            toast.present();
-
-            loader.dismiss();
-            this.loadData(this.currentPage);  
-          });
-        }
-      }
-    ]
-    }).present(); 
-  }
+        return '';
+    }
+    /**
+     *
+     * @param transferDetail
+     */
+    candidateTransferDetails(transferDetail: any) {
+        this.navCtrl.push(CandidateTransferDetailPage, {
+            'transfers': transferDetail
+        });
+    }
 }

@@ -13,58 +13,12 @@
   <!-- Transfer Filter -->
   <ion-card>
     <ion-list>
-      <ion-list-header>
-        Filter by
-      </ion-list-header>
-      <!-- Filter by Company Name -->
+      <ion-list-header> Filter by </ion-list-header>
       <ion-item>
         <ion-label color="primary" stacked>Candidate Transfer ID</ion-label>
         <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="transferID" (change)="loadData(1)"></ion-input>
       </ion-item>
-      <!-- Filter by Transfer Status -->
-      <ion-item>
-        <ion-label color="primary" stacked>Transfer Status</ion-label>
-        <ion-select [(ngModel)]="transferStatus" (ionChange)="loadData(1)">
-          <ion-option value="">All</ion-option>
-          <ion-option value="1">Paid</ion-option>
-          <ion-option value="0">Un Paid</ion-option>
-        </ion-select>
-      </ion-item>
     </ion-list>
   </ion-card>
-
   <!-- Transfer List -->
-  <ion-list>
-    <ion-item-sliding *ngFor="let transfer of transfersCandidate">    
-      <ion-item>
-        <ion-avatar item-left *ngIf="transfer.candidate">
-             <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfer.candidate.candidate_personal_photo_thumb}}"> 
-        </ion-avatar>
-        <ion-label class="label label-ios" *ngIf="transfer.candidate" >
-           <h2>{{transfer.candidate.candidate_name}}</h2> 
-          <p>
-            KWD : {{ transfer.total_amount }}
-          </p>
-          <small>{{ transfer.store_name }} @ {{ transfer.company_name }}</small>
-        </ion-label>
-        <ion-note item-end="" class="note note-ios">
-          <span class="status_{{transfer.paid}}" *ngIf="transfer.paid=='0'"> Un paid </span>
-          <span class="status_{{transfer.paid}}" *ngIf="transfer.paid=='1'"> Paid </span>
-        </ion-note>
-      </ion-item>
-
-      <ion-item-options side="right" *ngIf="transfer.paid=='1'">
-        <button ion-button (click)="markUnPaid(transfer)">Mark As UnPaid</button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-
-  <ion-row text-center>
-    <div class="pagination-wrapper">
-      <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-        {{ page }}
-      </button>
-    </div>
-  </ion-row>
-
 </ion-content>
