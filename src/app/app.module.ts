@@ -41,6 +41,7 @@ import { PayableCandidatesPage } from '../pages/logged-in/transfer/payable-candi
 
 // Candidate Transfer
 import { CandidatePaymentSearchPage } from '../pages/logged-in/transfer/candidate-payment-search/candidate-payment-search';
+import { CandidateTransferListPage } from '../pages/logged-in/transfer/candidate-transfer-list/candidate-transfer-list';
 import { CandidateTransferDetailPage } from '../pages/logged-in/transfer/candidate-transfer-detail/candidate-transfer-detail';
 
 
@@ -108,6 +109,7 @@ const cloudSettings: CloudSettings = {
     PayableCandidatesPage,
     // candidate transfer crud
     CandidatePaymentSearchPage,
+    CandidateTransferListPage,
     CandidateTransferDetailPage,
     //candidate Crud
     CandidateReviewListPage,
@@ -151,6 +153,7 @@ const cloudSettings: CloudSettings = {
     PayableCandidatesPage,
     // candidate transfer crud
     CandidatePaymentSearchPage,
+    CandidateTransferListPage,
     CandidateTransferDetailPage,
     //candidate Crud
     CandidateReviewListPage,

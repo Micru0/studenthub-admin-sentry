@@ -18,8 +18,8 @@ export class CandidateTransferService {
    * List of all Candidate Transfers
    * @returns {Observable<any>}
    */
-  list(transferID: number, candidate_id:number, page: number): Observable<any> {
-    let url = `${this._transferEndpoint}?tc_id=${transferID}&candidate_id=${candidate_id}&page=${page}`;
+  list(transferID: number, page: number): Observable<any> {
+    let url = `${this._transferEndpoint}?tc_id=${transferID}&page=${page}`;
     return this._authhttp.getRaw(url);
   }
 
@@ -41,5 +41,29 @@ export class CandidateTransferService {
   paid(model: TransferCandidate): Observable<any>{
     let url = `${this._transferEndpoint}/paid/${model.tc_id}`;
     return this._authhttp.patch(url, {});
+  }
+  /**
+   * Mark All transfer as paid 
+   * @param {array} candidates
+   * @returns {Observable<any>}
+   */
+  markPaidAll(transfers: any): Observable<any> {
+    let url = `${this._transferEndpoint}/mark-paid-all`;
+    let params = {
+      "transfers": transfers,
+    };
+    return this._authhttp.patch(url, params);
+  }
+  /**
+   * Mark All transfer as unpaid 
+   * @param {array} candidates
+   * @returns {Observable<any>}
+   */
+  markUnPaidAll(transfers: any): Observable<any> {
+    let url = `${this._transferEndpoint}/mark-unpaid-all`;
+    let params = {
+      "transfers": transfers,
+    };
+    return this._authhttp.patch(url, params);
   }
 }

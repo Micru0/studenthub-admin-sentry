@@ -9,26 +9,26 @@
 </ion-header>
 <ion-content>
 
-  <section *ngIf="transfersCandidate && transfersCandidate.length > 0">
-    <div *ngFor="let transfer of transfersCandidate">
-      <button ion-item *ngIf="transfer.candidate" (click)="loadCandidateDetail(transfer.candidate)">
+  <section *ngIf="transfersCandidate">
+    <div>
+      <button ion-item *ngIf="transfersCandidate.candidate" (click)="loadCandidateDetail(transfersCandidate.candidate)">
         <ion-avatar item-left>
-          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfer.candidate.candidate_personal_photo_thumb}}"> 
+          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfersCandidate.candidate.candidate_personal_photo_thumb}}"> 
         </ion-avatar>
-        <ion-label class="label label-ios" *ngIf="transfer.candidate" >
-          <h2>{{transfer.candidate.candidate_name}}</h2>
-          <small>{{ transfer.store_name }} @ {{ transfer.company_name }}</small>
+        <ion-label class="label label-ios" *ngIf="transfersCandidate.candidate" >
+          <h2>{{transfersCandidate.candidate.candidate_name}}</h2>
+          <small>{{ transfersCandidate.store_name }} @ {{ transfersCandidate.company_name }}</small>
         </ion-label>
       </button>
 
       <div text-center>
-        <h1>KWD  {{ transfer.total_amount | number }}</h1>
-        <h2 ion-text [color]="transfer.paid == '1'?'primary':'danger'">{{transfer.status}}</h2>
+        <h1>KWD  {{ transfersCandidate.total_amount | number }}</h1>
+        <h2 ion-text [color]="transfersCandidate.paid == '1'?'primary':'danger'">{{transfersCandidate.status}}</h2>
 
-        <button ion-button *ngIf="transfer.paid == '1'" (click)="markUnPaid(transfer)">
+        <button ion-button [disabled] = "transfersCandidate.total_amount == '0'" *ngIf="transfersCandidate.paid == '1'" (click)="markUnPaid(transfersCandidate)">
           Mark Unpaid
         </button>
-        <button ion-button *ngIf="transfer.paid == '0'" (click)="markPaid(transfer)">
+        <button ion-button *ngIf="transfersCandidate.paid == '0'" (click)="markPaid(transfersCandidate)">
           Mark As Paid
         </button>
       </div>
