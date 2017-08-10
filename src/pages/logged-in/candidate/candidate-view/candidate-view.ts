@@ -85,6 +85,10 @@ export class CandidateViewPage {
     });
   }
   
+  /**
+   * transfer to candidate transfer detail page
+   * @param transfer 
+   */
   candidateTransferDetails(transfer:any) {
     this.navCtrl.push(CandidateTransferDetailPage, {
       'transfers': transfer

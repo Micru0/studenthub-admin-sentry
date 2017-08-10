@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, NavParams,ToastController } from 'ionic-angular';
 
 //Pages
-import {CandidateTransferDetailPage} from '../../transfer/candidate-transfer-detail/candidate-transfer-detail';
+import { CandidateTransferDetailPage } from '../../transfer/candidate-transfer-detail/candidate-transfer-detail';
+import { CandidateTransferListPage } from '../../transfer/candidate-transfer-list/candidate-transfer-list';
 
 // Providers
 import { CandidateTransferService } from '../../../../providers/logged-in/candidate.transfer.service';
@@ -14,9 +15,9 @@ import { TransferCandidate } from '../../../../models/transfer-candidate';
     selector: 'page-candidate-payment-search',
     templateUrl: 'candidate-payment-search.html'
 })
+
 export class CandidatePaymentSearchPage {
     public transferID: number = 0;
-    public candidate_id: number = 0;
 
     public pageCount = 0;
     public currentPage = 1;
@@ -30,8 +31,8 @@ export class CandidatePaymentSearchPage {
         public _candidateTransferService: CandidateTransferService,
         private _loadingCtrl: LoadingController,
         public toastCtrl: ToastController
-    ) {
-    }
+    ) {}
+
     ionViewWillEnter() {}
 
     /**
@@ -42,10 +43,14 @@ export class CandidatePaymentSearchPage {
         let loader = this._loadingCtrl.create();
         loader.present();
 
-        this._candidateTransferService.list(this.transferID,this.candidate_id, page).subscribe(response => {
+        this._candidateTransferService.list(this.transferID, page).subscribe(response => {
                 let responsedata = response.json();
-                if (responsedata.length> 0 ) {
-                    this.candidateTransferDetails(responsedata);
+                if (responsedata.length > 0 ) {
+                    if (responsedata.length > 1 ) {
+                        this.candidateTransferList(responsedata);
+                    } else {
+                        this.candidateTransferDetails(responsedata[0]);
+                    }
                 } else {
                     let toast = this.toastCtrl.create({
                         message: 'No transfercandidate record with id '+this.transferID,
@@ -75,6 +80,15 @@ export class CandidatePaymentSearchPage {
      */
     candidateTransferDetails(transferDetail: any) {
         this.navCtrl.push(CandidateTransferDetailPage, {
+            'transfers': transferDetail
+        });
+    }
+    /**
+     *
+     * @param transferDetail
+     */
+    candidateTransferList(transferDetail: any) {
+        this.navCtrl.push(CandidateTransferListPage, {
             'transfers': transferDetail
         });
     }
