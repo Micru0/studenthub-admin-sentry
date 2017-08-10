@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Candidate Transfer List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <section *ngIf="transfersCandidate && transfersCandidate.length > 0">
+    <div *ngFor="let transfer of transfersCandidate">
+      <button ion-item *ngIf="transfer.candidate" (click)="loadTransferDetail(transfer)">
+        <ion-avatar item-left>
+          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfer.candidate.candidate_personal_photo_thumb}}"> 
+        </ion-avatar>
+        <ion-label class="label label-ios" *ngIf="transfer.candidate" >
+          <h2>{{transfer.candidate.candidate_name}}</h2>
+          <small>{{ transfer.store_name }} @ {{ transfer.company_name }}</small><br/>
+          <small>Amount : KWD {{ transfer.total_amount }}</small>
+        </ion-label>
+        <ion-note item-end>{{ transfer.status }}</ion-note>
+      </button>
+    </div>
+  </section>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button class="background-color" full (click)="markAllPaid()">
+          Mark as Paid
+        </button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button class="background-color" full (click)="markAllUnpaid()">
+          Mark as Unpaid
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
