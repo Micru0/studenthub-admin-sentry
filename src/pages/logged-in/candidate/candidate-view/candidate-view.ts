@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+
 // Providers
 import { CandidateService } from '../../../../providers/logged-in/candidate.service';
+
 // Models
 import { Candidate } from '../../../../models/candidate';
+
+// Pages
+import { CandidateTransferDetailPage } from '../../transfer/candidate-transfer-detail/candidate-transfer-detail';
 
 @Component({
   selector: 'page-candidate-view',
@@ -77,6 +82,16 @@ export class CandidateViewPage {
         //back to listing
         this.navCtrl.pop();
       }      
+    });
+  }
+  
+  /**
+   * transfer to candidate transfer detail page
+   * @param transfer 
+   */
+  candidateTransferDetails(transfer:any) {
+    this.navCtrl.push(CandidateTransferDetailPage, {
+      'transfers': transfer
     });
   }
 }

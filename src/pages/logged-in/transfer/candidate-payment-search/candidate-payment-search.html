@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle="left">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>Candidate Payment Search</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Transfer Filter -->
+  <ion-card>
+    <ion-item>
+      <ion-label color="primary" stacked>Candidate Transfer ID</ion-label>
+      <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="transferID"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button block (click)="loadData(1)">
+        Search
+      </button>
+    </ion-item>
+  </ion-card>
+  <!-- Transfer List -->
+</ion-content>

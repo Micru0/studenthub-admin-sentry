@@ -9,21 +9,12 @@
       <ion-content>
 
         <ion-list>
+          <!-- Main Action Points -->
           <ion-list-header>Action Points</ion-list-header>
 
           <button ion-item (click)="loadPage('summary')">
             <ion-icon name="stats" item-left></ion-icon>
             Summary
-          </button>
-
-          <button ion-item 
-            *ngIf="totalPayableCandidate > 0"
-            (click)="loadPage('payable-candidates')">
-            <ion-icon name="people" item-left></ion-icon>
-            Payable Candidates
-            <ion-badge item-right>
-              {{ totalPayableCandidate }}
-            </ion-badge>
           </button>
 
           <button ion-item 
@@ -41,6 +32,25 @@
             Transfers
           </button>
 
+          <!-- Process Payments -->
+          <ion-list-header>Process Payments</ion-list-header>
+
+          <button ion-item 
+            *ngIf="totalPayableCandidate > 0"
+            (click)="loadPage('payable-candidates')">
+            <ion-icon name="people" item-left></ion-icon>
+            Payable Candidates
+            <ion-badge item-right>
+              {{ totalPayableCandidate }}
+            </ion-badge>
+          </button>
+
+          <button ion-item (click)="loadPage('payment-search')">
+            <ion-icon name="search" item-left></ion-icon>
+            Payment Search
+          </button>
+
+          <!-- Accounts Management -->
           <ion-list-header>Accounts</ion-list-header>
 
           <button ion-item (click)="loadPage('companies')">

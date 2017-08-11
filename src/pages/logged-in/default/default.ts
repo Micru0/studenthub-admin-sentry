@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { NavController, LoadingController, Events } from 'ionic-angular';
 
-import { NavController, LoadingController } from 'ionic-angular';
-
+// Services 
 import { StatisticService } from '../../../providers/logged-in/statistic.service';
 
-//page 
+// page 
 import { TransferListPage } from '../transfer/transfer-list/transfer-list';
 import { CandidateReviewListPage } from '../candidate/candidate-review-list/candidate-review-list';
 import { PayableCandidatesPage } from '../transfer/payable-candidates/payable-candidates';
@@ -20,13 +20,23 @@ export class DefaultPage {
   constructor(
   	public navCtrl: NavController,
   	public statisticService: StatisticService,
-  	private _loadingCtrl: LoadingController,
-  ) {
-
-  }
+    private _loadingCtrl: LoadingController,
+    private _events: Events,
+  ) {}
 
   ionViewDidLoad() {
     this.loadData();
+  }
+
+  ngOnInit(){
+    this._events.subscribe('navigation:updatePayable', (userEventData) => {
+      this.statisticService.get().subscribe(response => {
+        this.statistics = response;
+        },
+        error => {},
+        () => {}
+      );
+    });
   }
 
   /**

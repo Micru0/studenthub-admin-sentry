@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ModalController, LoadingController, ToastController } from 'ionic-angular';
+
 // Pages
 import { CompanyFormPage } from '../company-form/company-form';
 import { StoreViewPage } from '../../store/store-view/store-view';

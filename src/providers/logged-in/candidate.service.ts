@@ -18,7 +18,7 @@ export class CandidateService {
   constructor(private _authhttp: AuthHttpService) { }
 
   /**
-   * List of all staff
+   * List of all candidates
    * @returns {Observable<any>}
    */
   list(page: number): Observable<any>{

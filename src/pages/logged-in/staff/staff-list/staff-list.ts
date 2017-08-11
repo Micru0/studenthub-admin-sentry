@@ -4,8 +4,10 @@ import { NavController, LoadingController, ModalController, AlertController, Toa
 // Pages
 import { StaffViewPage } from '../staff-view/staff-view';
 import { StaffFormPage } from '../staff-form/staff-form';
+
 // Providers
 import { StaffService } from '../../../../providers/logged-in/staff.service';
+
 // Models
 import { Staff } from '../../../../models/staff';
 
