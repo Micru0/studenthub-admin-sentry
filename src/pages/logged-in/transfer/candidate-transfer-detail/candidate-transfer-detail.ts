@@ -29,18 +29,17 @@ export class CandidateTransferDetailPage {
     private _events: Events
   ) { 
     // Passed from Dashboard to show filtered status results
-    if (params.get('TransferCandidate')) {
-      this.transfersCandidate = params.get('TransferCandidate');
+    if (params.get('transferCandidate')) {
+      this.transfersCandidate = params.get('transferCandidate');
     }
   }
 
   ionViewWillEnter() {}
 
   /**
-   * mark individual as unpai
-   * @param TransferCandidate 
+   * mark individual as unpaid
    */
-  markUnPaid (TransferCandidate:TransferCandidate) {
+  markUnPaid () {
    this.alertCtrl.create({
     title: 'Mark Unpaid',
     message: 'Are you sure you want to mark this transfer candidate as unpaid?',
@@ -57,7 +56,7 @@ export class CandidateTransferDetailPage {
         handler: () => {
           let loader = this._loadingCtrl.create();
           loader.present();
-          this._candidateTransferService.unpaid(TransferCandidate).subscribe(response => {
+          this._candidateTransferService.unpaid(this.transfersCandidate).subscribe(response => {
             
             let toast = this.toastCtrl.create({
               message: response.message,
@@ -77,9 +76,8 @@ export class CandidateTransferDetailPage {
 
   /**
    * mark single transfer candiate as paid
-   * @param TransferCandidate 
    */
-  markPaid (TransferCandidate:TransferCandidate) {
+  markPaid () {
    this.alertCtrl.create({
     title: 'Mark Paid',
     message: 'Are you sure you want to mark this transfer candidate as Paid?',
@@ -96,7 +94,7 @@ export class CandidateTransferDetailPage {
         handler: () => {
           let loader = this._loadingCtrl.create();
           loader.present();
-          this._candidateTransferService.paid(TransferCandidate).subscribe(response => {
+          this._candidateTransferService.paid(this.transfersCandidate).subscribe(response => {
             
             let toast = this.toastCtrl.create({
               message: response.message,

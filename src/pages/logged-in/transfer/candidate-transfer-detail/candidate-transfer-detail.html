@@ -14,7 +14,9 @@
       <button ion-item *ngIf="transfersCandidate.candidate" (click)="loadCandidateDetail(transfersCandidate.candidate)">
         <ion-label class="label label-ios" *ngIf="transfersCandidate.candidate" >
           <h2>{{transfersCandidate.candidate.candidate_name}}</h2>
-          <small>{{ transfersCandidate.store_name }} @ {{ transfersCandidate.company_name }}</small>
+          <small>{{ transfersCandidate.store_name }} @ {{ transfersCandidate.company_name }}</small><br/>
+          <small>Transfer ID {{ transfersCandidate.transfer_id }}</small><br/>
+          <small>Candiadte Transfer ID {{ transfersCandidate.tc_id }}</small>
         </ion-label>
       </button>
 
@@ -23,10 +25,10 @@
         <h2 ion-text  *ngIf="transfersCandidate.paid == '1'" color="primary">Paid</h2>
         <h2 ion-text  *ngIf="transfersCandidate.paid == '0'"  color="danger">UnPaid</h2>
 
-        <button ion-button [disabled] = "transfersCandidate.total_amount == '0'" *ngIf="transfersCandidate.paid == '1'" (click)="markUnPaid(transfersCandidate)">
+        <button ion-button [disabled] = "candidatePayableAmount(transfersCandidate) == '0'" *ngIf="transfersCandidate.paid == '1'" (click)="markUnPaid()">
           Mark Unpaid
         </button>
-        <button ion-button *ngIf="transfersCandidate.paid == '0'" (click)="markPaid(transfersCandidate)">
+        <button ion-button *ngIf="transfersCandidate.paid == '0'" (click)="markPaid()">
           Mark As Paid
         </button>
       </div>
