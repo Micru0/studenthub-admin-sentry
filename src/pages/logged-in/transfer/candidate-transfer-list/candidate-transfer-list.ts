@@ -16,7 +16,7 @@ import { TransferCandidate } from '../../../../models/transfer-candidate';
 })
 export class CandidateTransferListPage {
 
-  public transfersCandidate: TransferCandidate[];
+  public TransfersCandidate: TransferCandidate[];
 
   constructor(
     public navCtrl: NavController,
@@ -28,27 +28,38 @@ export class CandidateTransferListPage {
     private _events: Events
   ) { 
     // Passed from Dashboard to show filtered status results
-    if (params.get('transfers')) {
-      this.transfersCandidate = params.get('transfers');
+    if (params.get('TransferCandidateList')) {
+      this.TransfersCandidate = params.get('TransferCandidateList');
     }
   }
 
   ionViewWillEnter() {}
 
-  markAllUnpaid (Transfer:TransferCandidate) {
-    let candidateTransferList = []; 
-        this.transfersCandidate.forEach((value, index) => {
-          candidateTransferList.push({
-            'tc_id':this.transfersCandidate[index].tc_id,
-            'candidate_id':this.transfersCandidate[index].candidate_id,
-            'transfer_id':this.transfersCandidate[index].transfer_id,
-            }
-          );
-        });
+  /**
+   * mark all unpaid
+   * @param TransferCandidate 
+   */
+  markAllUnpaid (TransferCandidate:TransferCandidate) {
+    let TransferCandidateList = []; 
+        
+    this.TransfersCandidate.forEach((value, index) => {
+        TransferCandidateList.push({
+          'transfer_id':this.TransfersCandidate[index].transfer_id
+          }
+        );
+    });
+
+    console.log(TransferCandidateList);
+    // this.TransfersCandidate.forEach((value, index) => {
+    //       TransferCandidateList.push({
+    //         'tc_id':this.TransfersCandidate[index].tc_id
+    //         }
+    //       );
+    //     });
 
     this.alertCtrl.create({
     title: 'Mark All Unpaid',
-    message: 'Are you sure you want to unmark '+candidateTransferList.length+' transfers as unPaid?',
+    message: 'Are you sure you want to unmark '+TransferCandidateList.length+' transfers as unPaid?',
     buttons: [
       {
         text: 'No',
@@ -62,7 +73,7 @@ export class CandidateTransferListPage {
         handler: () => {
           let loader = this._loadingCtrl.create();
           loader.present();
-          this._candidateTransferService.markUnPaidAll(candidateTransferList).subscribe(response => {
+          this._candidateTransferService.markUnPaidAll(TransferCandidateList).subscribe(response => {
             
             let toast = this.toastCtrl.create({
               message: response.message,
@@ -80,13 +91,15 @@ export class CandidateTransferListPage {
     }).present(); 
   }
 
-  markAllPaid (Transfer:TransferCandidate) {
+  /**
+   * mark all paid
+   * @param TransferCandidate 
+   */
+  markAllPaid (TransferCandidate:TransferCandidate) {
     let candidateTransferList = []; 
-    this.transfersCandidate.forEach((value, index) => {
+    this.TransfersCandidate.forEach((value, index) => {
       candidateTransferList.push({
-        'tc_id':this.transfersCandidate[index].tc_id,
-        'candidate_id':this.transfersCandidate[index].candidate_id,
-        'transfer_id':this.transfersCandidate[index].transfer_id,
+        'tc_id':this.TransfersCandidate[index].tc_id
         }
       );
     });
@@ -124,9 +137,20 @@ export class CandidateTransferListPage {
     }).present(); 
   }
 
-  loadTransferDetail(model: TransferCandidate) {
+  /**
+   * @param model 
+   */
+  loadTransferDetail(TransferCandidate: TransferCandidate) {
     this.navCtrl.push(CandidateTransferDetailPage, {
-      'transfers': model
+      'TransferCandidate': TransferCandidate
     });
+  }
+
+  /**
+   * candidate payable amount
+   * @param transfersCandidate 
+   */
+  candidatePayableAmount(transfersCandidate) {
+    return  ((parseFloat(transfersCandidate.candidate_hourly_rate) * parseFloat(transfersCandidate.hours)) + parseFloat(transfersCandidate.bonus));
   }
 }

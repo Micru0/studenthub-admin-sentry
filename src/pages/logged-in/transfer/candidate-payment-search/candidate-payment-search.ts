@@ -47,9 +47,9 @@ export class CandidatePaymentSearchPage {
                 let responsedata = response.json();
                 if (responsedata.length > 0 ) {
                     if (responsedata.length > 1 ) {
-                        this.candidateTransferList(responsedata);
+                        this.TransferCandidateList(responsedata);
                     } else {
-                        this.candidateTransferDetails(responsedata[0]);
+                        this.TransferCandidateDetails(responsedata[0]);
                     }
                 } else {
                     let toast = this.toastCtrl.create({
@@ -76,20 +76,20 @@ export class CandidatePaymentSearchPage {
     }
     /**
      *
-     * @param transferDetail
+     * @param TransferCandidate
      */
-    candidateTransferDetails(transferDetail: any) {
+    TransferCandidateDetails(TransferCandidate: TransferCandidate) {
         this.navCtrl.push(CandidateTransferDetailPage, {
-            'transfers': transferDetail
+            'TransferCandidate': TransferCandidate
         });
     }
     /**
      *
-     * @param transferDetail
+     * @param TransferCandidateList
      */
-    candidateTransferList(transferDetail: any) {
+    TransferCandidateList(TransferCandidateList: TransferCandidate[]) {
         this.navCtrl.push(CandidateTransferListPage, {
-            'transfers': transferDetail
+            'TransferCandidateList': TransferCandidateList
         });
     }
 }

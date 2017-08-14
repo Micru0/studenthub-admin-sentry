@@ -12,9 +12,6 @@
   <section *ngIf="transfersCandidate">
     <div>
       <button ion-item *ngIf="transfersCandidate.candidate" (click)="loadCandidateDetail(transfersCandidate.candidate)">
-        <ion-avatar item-left>
-          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfersCandidate.candidate.candidate_personal_photo_thumb}}"> 
-        </ion-avatar>
         <ion-label class="label label-ios" *ngIf="transfersCandidate.candidate" >
           <h2>{{transfersCandidate.candidate.candidate_name}}</h2>
           <small>{{ transfersCandidate.store_name }} @ {{ transfersCandidate.company_name }}</small>
@@ -22,8 +19,9 @@
       </button>
 
       <div text-center>
-        <h1>KWD  {{ transfersCandidate.total_amount | number }}</h1>
-        <h2 ion-text [color]="transfersCandidate.paid == '1'?'primary':'danger'">{{transfersCandidate.status}}</h2>
+        <h1>KWD  {{ candidatePayableAmount(transfersCandidate) | number }}</h1>
+        <h2 ion-text  *ngIf="transfersCandidate.paid == '1'" color="primary">Paid</h2>
+        <h2 ion-text  *ngIf="transfersCandidate.paid == '0'"  color="danger">UnPaid</h2>
 
         <button ion-button [disabled] = "transfersCandidate.total_amount == '0'" *ngIf="transfersCandidate.paid == '1'" (click)="markUnPaid(transfersCandidate)">
           Mark Unpaid
