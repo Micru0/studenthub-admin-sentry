@@ -6,7 +6,7 @@ import { CandidateService } from '../../../../providers/logged-in/candidate.serv
 
 // Models
 import { Candidate } from '../../../../models/candidate';
-
+import { TransferCandidate } from '../../../../models/transfer-candidate';
 // Pages
 import { CandidateTransferDetailPage } from '../../transfer/candidate-transfer-detail/candidate-transfer-detail';
 
@@ -89,9 +89,9 @@ export class CandidateViewPage {
    * transfer to candidate transfer detail page
    * @param transfer 
    */
-  candidateTransferDetails(transfer:any) {
+  candidateTransferDetails(transferCandidate:TransferCandidate) {
     this.navCtrl.push(CandidateTransferDetailPage, {
-      'transfers': transfer
+      'transferCandidate': transferCandidate
     });
   }
 }

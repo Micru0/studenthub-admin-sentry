@@ -75,21 +75,21 @@ export class CandidatePaymentSearchPage {
         return '';
     }
     /**
-     *
-     * @param TransferCandidate
+     * transfer detail page redirect
+     * @param transferCandidate
      */
-    TransferCandidateDetails(TransferCandidate: TransferCandidate) {
+    TransferCandidateDetails(transferCandidate: TransferCandidate) {
         this.navCtrl.push(CandidateTransferDetailPage, {
-            'TransferCandidate': TransferCandidate
+            'transferCandidate': transferCandidate
         });
     }
     /**
-     *
-     * @param TransferCandidateList
+     * transfer list page redirect
+     * @param transferCandidateList
      */
-    TransferCandidateList(TransferCandidateList: TransferCandidate[]) {
+    TransferCandidateList(transferCandidateList: TransferCandidate[]) {
         this.navCtrl.push(CandidateTransferListPage, {
-            'TransferCandidateList': TransferCandidateList
+            'transferCandidateList': transferCandidateList
         });
     }
 }
