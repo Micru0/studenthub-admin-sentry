@@ -29,14 +29,17 @@ export class CandidateTransferDetailPage {
     private _events: Events
   ) { 
     // Passed from Dashboard to show filtered status results
-    if (params.get('transfers')) {
-      this.transfersCandidate = params.get('transfers');
+    if (params.get('transferCandidate')) {
+      this.transfersCandidate = params.get('transferCandidate');
     }
   }
 
   ionViewWillEnter() {}
 
-  markUnPaid (Transfer:TransferCandidate) {
+  /**
+   * mark individual as unpaid
+   */
+  markUnPaid () {
    this.alertCtrl.create({
     title: 'Mark Unpaid',
     message: 'Are you sure you want to mark this transfer candidate as unpaid?',
@@ -53,7 +56,7 @@ export class CandidateTransferDetailPage {
         handler: () => {
           let loader = this._loadingCtrl.create();
           loader.present();
-          this._candidateTransferService.unpaid(Transfer).subscribe(response => {
+          this._candidateTransferService.unpaid(this.transfersCandidate).subscribe(response => {
             
             let toast = this.toastCtrl.create({
               message: response.message,
@@ -71,7 +74,10 @@ export class CandidateTransferDetailPage {
     }).present(); 
   }
 
-  markPaid (Transfer:TransferCandidate) {
+  /**
+   * mark single transfer candiate as paid
+   */
+  markPaid () {
    this.alertCtrl.create({
     title: 'Mark Paid',
     message: 'Are you sure you want to mark this transfer candidate as Paid?',
@@ -88,7 +94,7 @@ export class CandidateTransferDetailPage {
         handler: () => {
           let loader = this._loadingCtrl.create();
           loader.present();
-          this._candidateTransferService.paid(Transfer).subscribe(response => {
+          this._candidateTransferService.paid(this.transfersCandidate).subscribe(response => {
             
             let toast = this.toastCtrl.create({
               message: response.message,
@@ -114,5 +120,13 @@ export class CandidateTransferDetailPage {
     this.navCtrl.push(CandidateViewPage, {
       'model': model
     });
+  }
+  
+  /**
+   * candidate payable amount
+   * @param transfersCandidate 
+   */
+  candidatePayableAmount(transfersCandidate) {
+    return  ((parseFloat(transfersCandidate.candidate_hourly_rate) * parseFloat(transfersCandidate.hours)) + parseFloat(transfersCandidate.bonus));
   }
 }

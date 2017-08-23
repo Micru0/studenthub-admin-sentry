@@ -47,9 +47,9 @@ export class CandidatePaymentSearchPage {
                 let responsedata = response.json();
                 if (responsedata.length > 0 ) {
                     if (responsedata.length > 1 ) {
-                        this.candidateTransferList(responsedata);
+                        this.TransferCandidateList(responsedata);
                     } else {
-                        this.candidateTransferDetails(responsedata[0]);
+                        this.TransferCandidateDetails(responsedata[0]);
                     }
                 } else {
                     let toast = this.toastCtrl.create({
@@ -75,21 +75,21 @@ export class CandidatePaymentSearchPage {
         return '';
     }
     /**
-     *
-     * @param transferDetail
+     * transfer detail page redirect
+     * @param transferCandidate
      */
-    candidateTransferDetails(transferDetail: any) {
+    TransferCandidateDetails(transferCandidate: TransferCandidate) {
         this.navCtrl.push(CandidateTransferDetailPage, {
-            'transfers': transferDetail
+            'transferCandidate': transferCandidate
         });
     }
     /**
-     *
-     * @param transferDetail
+     * transfer list page redirect
+     * @param transferCandidateList
      */
-    candidateTransferList(transferDetail: any) {
+    TransferCandidateList(transferCandidateList: TransferCandidate[]) {
         this.navCtrl.push(CandidateTransferListPage, {
-            'transfers': transferDetail
+            'transferCandidateList': transferCandidateList
         });
     }
 }

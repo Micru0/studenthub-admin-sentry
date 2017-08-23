@@ -11,15 +11,14 @@
   <section *ngIf="transfersCandidate && transfersCandidate.length > 0">
     <div *ngFor="let transfer of transfersCandidate">
       <button ion-item *ngIf="transfer.candidate" (click)="loadTransferDetail(transfer)">
-        <ion-avatar item-left>
-          <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{transfer.candidate.candidate_personal_photo_thumb}}"> 
-        </ion-avatar>
         <ion-label class="label label-ios" *ngIf="transfer.candidate" >
           <h2>{{transfer.candidate.candidate_name}}</h2>
           <small>{{ transfer.store_name }} @ {{ transfer.company_name }}</small><br/>
-          <small>Amount : KWD {{ transfer.total_amount }}</small>
+          <small>Amount : KWD {{ candidatePayableAmount(transfer) | number }}</small><br/>
+          <small>Transfer Candidate ID : {{transfer.tc_id}}</small>
         </ion-label>
-        <ion-note item-end>{{ transfer.status }}</ion-note>
+        <ion-note item-end *ngIf="transfer.paid == '1'" >Paid</ion-note>
+        <ion-note item-end *ngIf="transfer.paid == '0'" >Unpaid</ion-note>
       </button>
     </div>
   </section>

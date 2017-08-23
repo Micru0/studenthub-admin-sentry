@@ -47,10 +47,10 @@ export class CandidateTransferService {
    * @param {array} candidates
    * @returns {Observable<any>}
    */
-  markPaidAll(transfers: any): Observable<any> {
+  markPaidAll(TransferCandidate: any): Observable<any> {
     let url = `${this._transferEndpoint}/mark-paid-all`;
     let params = {
-      "transfers": transfers,
+      "transferCandidate": TransferCandidate,
     };
     return this._authhttp.patch(url, params);
   }
@@ -59,10 +59,10 @@ export class CandidateTransferService {
    * @param {array} candidates
    * @returns {Observable<any>}
    */
-  markUnPaidAll(transfers: any): Observable<any> {
+  markUnPaidAll(TransferCandidateList: any): Observable<any> {
     let url = `${this._transferEndpoint}/mark-unpaid-all`;
     let params = {
-      "transfers": transfers,
+      "transferCandidate": TransferCandidateList,
     };
     return this._authhttp.patch(url, params);
   }
