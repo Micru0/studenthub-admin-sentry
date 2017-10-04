@@ -75,5 +75,15 @@ export class CompanyService {
   view(model: Company): Observable<any>{
     let url = `${this._companyEndpoint}/${model.company_id}`;
     return this._authhttp.get(url);
+  }  
+
+  /**
+   * Reset Password
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  resetPassword(model: Company): Observable<any> {
+    let url = `${this._companyEndpoint}/reset-password/${model.company_id}`;
+    return this._authhttp.patch(url, {});
   }
 }
