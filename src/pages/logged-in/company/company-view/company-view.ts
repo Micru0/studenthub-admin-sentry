@@ -108,6 +108,62 @@ export class CompanyViewPage {
       'model': model
     });
   }
+  
+  /**
+   * Show confirm alert to reset password 
+   */
+  resetPassword() {
+    let alert = this._alertCtrl.create({
+      title: 'Confirm password reset',
+      message: 'Do you want to send new password to company?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.sendNewPassword();
+          }
+        }
+      ]
+    });
+    alert.present();    
+  }
+
+
+  /**
+   * Reset and email the candidate a new password
+   */
+  sendNewPassword() {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+
+    this.companyService.resetPassword(this.company).subscribe(response => {
+      loader.dismiss();
+
+      if(response.operation == 'error')
+      {
+        let toast = this._toastCtrl.create({
+          message: response.message,
+          duration: 3000
+        });
+        
+        toast.present();
+      } 
+      else 
+      {
+        let alert = this._alertCtrl.create({
+            title: 'Reset Password',
+            subTitle: 'New password sent to company',
+            buttons: ['Okay']
+          });
+          alert.present();
+      }      
+    });
+  }
+  
 
   /**
    * Delete the provided model
