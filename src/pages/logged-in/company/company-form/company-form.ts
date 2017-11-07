@@ -49,12 +49,16 @@ export class CompanyFormPage {
       if (this.isSubCompany) {
         this.form = this._fb.group({
           name: ["", Validators.required],
+          bonus_commission: [""],
+          hourly_rate: ["", Validators.required]
         });
       } else {
         this.form = this._fb.group({
           name: ["", Validators.required],
           email: ["", [Validators.required, CustomValidator.emailValidator]],
-          password: ["", Validators.required]
+          password: ["", Validators.required],
+          bonus_commission: [""],
+          hourly_rate: ["", Validators.required]
         });
       }
     } else { // Show Update Form
@@ -62,12 +66,16 @@ export class CompanyFormPage {
       if (this.isSubCompany) {
         this.form = this._fb.group({
             name: [this.model.company_name, Validators.required],
+            bonus_commission: [this.model.company_bonus_commission],
+            hourly_rate: [this.model.company_hourly_rate, Validators.required]
         });
       } else {
         this.form = this._fb.group({
             name: [this.model.company_name, Validators.required],
             email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
-            password: [this.model.company_password_hash] //not required
+            password: [this.model.company_password_hash], //not required
+            bonus_commission: [this.model.company_bonus_commission],
+            hourly_rate: [this.model.company_hourly_rate, Validators.required]
         });
       }
     }
@@ -80,6 +88,8 @@ export class CompanyFormPage {
     this.model.company_name = this.form.value.name;
     this.model.company_email = this.form.value.email;
     this.model.company_password_hash = this.form.value.password;
+    this.model.company_bonus_commission = this.form.value.bonus_commission;
+    this.model.company_hourly_rate = this.form.value.hourly_rate;
   }
 
   /**

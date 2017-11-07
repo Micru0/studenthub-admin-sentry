@@ -36,6 +36,8 @@ export class CompanyService {
       "name": model.company_name,
       "email": model.company_email,
       "password": model.company_password_hash,
+      "bonus_commission": model.company_bonus_commission,
+      "hourly_rate": model.company_hourly_rate
     };
 
     return this._authhttp.post(postUrl, params);
@@ -51,7 +53,9 @@ export class CompanyService {
     let params = {
       "parent": model.parent_company_id,
       "name": model.company_name,
-      "email": model.company_email
+      "email": model.company_email,
+      "bonus_commission": model.company_bonus_commission,
+      "hourly_rate": model.company_hourly_rate
     };
 
     return this._authhttp.patch(url, params);
