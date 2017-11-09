@@ -127,6 +127,6 @@ export class CandidateTransferDetailPage {
    * @param transfersCandidate 
    */
   candidatePayableAmount(transfersCandidate) {
-    return  ((parseFloat(transfersCandidate.candidate_hourly_rate) * parseFloat(transfersCandidate.hours)) + parseFloat(transfersCandidate.bonus));
+    return  ((parseFloat(transfersCandidate.candidate_hourly_rate) * parseFloat(transfersCandidate.hours)) + parseFloat(transfersCandidate.candidate_bonus));
   }
 }
