@@ -223,13 +223,12 @@ export class TransferViewPage {
    * @param transferCandidate 
    */
   totalPaidToCandidateWithBoth(transferCandidate: TransferCandidate) {
-    return this.totalPaidToCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.bonus);
+    return this.totalPaidToCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.candidate_bonus);
   }
 
   totalPaidToCandidateWithoutBonus(transferCandidate: TransferCandidate) {
     return (Number(transferCandidate.candidate_hourly_rate) * Number(transferCandidate.hours));
   }
-
 
   /**
    * On Candidate Selected

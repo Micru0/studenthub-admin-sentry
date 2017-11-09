@@ -137,8 +137,8 @@
             <ion-col col-12 col-sm-6 col-md-4 col-lg-3>
               <b>We Distribute {{ resource.candidate_hourly_rate }} KD/hr</b> <br/> 
               KWD {{ totalPaidToCandidateWithoutBonus(resource) | number:'1.3-3' }}
-              <div *ngIf="resource.bonus > 0">
-                + Bonus KWD {{ resource.bonus | number:'1.3-3' }}
+              <div *ngIf="resource.candidate_bonus > 0">
+                + Bonus KWD {{ resource.candidate_bonus | number:'1.3-3' }}
               </div>
             </ion-col>
             <ion-col col-12 col-sm-6 col-md-4 col-lg-3 *ngIf="resource.transfer_cost > 0">
