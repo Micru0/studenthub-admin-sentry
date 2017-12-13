@@ -77,7 +77,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(model: Company): Observable<any>{
-    let url = `${this._companyEndpoint}/${model.company_id}`;
+    let url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores`;
     return this._authhttp.get(url);
   }  
 
