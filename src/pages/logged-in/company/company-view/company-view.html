@@ -16,7 +16,7 @@
 
 <ion-content>
   <ion-list>
-    <!-- Contact -->
+    <!-- If Main Company -->
     <section *ngIf="company.company_email">
       <ion-item-divider color="light">Contact</ion-item-divider>
       <a ion-item href='mailto:{{ company.company_email }}'>
@@ -27,24 +27,37 @@
       <ion-item>
         <button ion-button full color="danger" (click)="resetPassword()">Send new password to company</button>
       </ion-item>
+      
+      <ion-item-divider color="light">Payment</ion-item-divider>
+
+      <ion-item>Bonus Commission(%) - {{ company.company_bonus_commission }}</ion-item>
+      <ion-item>Hourly Rate - {{ company.company_hourly_rate }} KWD</ion-item>
+
     </section>
 
+    <!-- If Subcompany -->
+    <section *ngIf="!company.company_email">
+      <ion-item-divider color="light">Payment</ion-item-divider>
+      <ion-item>Bonus Commission(%) - {{ company.company_bonus_commission }}</ion-item>
+      <ion-item>Hourly Rate - {{ company.company_hourly_rate }} KWD</ion-item>
+    </section>
+      
     <!-- Subcompany List -->
-    <section *ngIf="subcompanies && subcompanies.length > 0">
+    <section *ngIf="subCompanies && subCompanies.length > 0">
       <ion-item-divider color="light">Companies under this company</ion-item-divider>
-      <ion-item-sliding *ngFor="let company of subcompanies">
+      <ion-item-sliding *ngFor="let company of subCompanies">
         <button ion-item (click)="rowSelected(company)">
           {{ company.company_name }}
           <ion-badge item-right *ngIf="company.total_candidates > 0">
           {{ company.total_candidates }} candidates
           </ion-badge>
 
-          <ion-badge item-right *ngIf="company.subcompanies.length > 0">
-            {{ company.subcompanies.length }} sub-companies
+          <ion-badge item-right *ngIf="company.total_subcompanies > 0">
+            {{ company.total_subcompanies }} sub-companies
           </ion-badge>
           
-          <ion-badge item-right *ngIf="company.stores.length > 0">
-            {{ company.stores.length }} stores
+          <ion-badge item-right *ngIf="company.total_stores > 0">
+            {{ company.total_stores }} stores
           </ion-badge>
         </button>  
 

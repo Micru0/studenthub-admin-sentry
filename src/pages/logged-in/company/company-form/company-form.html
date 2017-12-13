@@ -27,6 +27,16 @@
           <ion-input type="text" formControlName="name"></ion-input>
         </ion-item>
 
+        <ion-item>
+          <ion-label floating>Hourly Rate</ion-label>
+          <ion-input type="text" formControlName="hourly_rate"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label floating>Bonus Commission(%)</ion-label>
+          <ion-input type="text" formControlName="bonus_commission"></ion-input>
+        </ion-item>
+        
         <ion-item *ngIf="!isSubCompany">
           <ion-label floating>Email</ion-label>
           <ion-input type="text" formControlName="email"></ion-input>

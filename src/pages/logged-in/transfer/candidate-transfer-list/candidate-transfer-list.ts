@@ -48,38 +48,37 @@ export class CandidateTransferListPage {
       }
     });
 
-    console.log(transferCandidateList);
     this.alertCtrl.create({
-    title: 'Mark All Unpaid',
-    message: 'Are you sure you want to unmark '+transferCandidateList.length+' transfers as unPaid?',
-    buttons: [
-      {
-        text: 'No',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      },
-      {
-        text: 'Yes',
-        handler: () => {
-          let loader = this._loadingCtrl.create();
-          loader.present();
-          this._candidateTransferService.markUnPaidAll(transferCandidateList).subscribe(response => {
-            
-            let toast = this.toastCtrl.create({
-              message: response.message,
-              duration: 3000
+      title: 'Mark All Unpaid',
+      message: 'Are you sure you want to unmark '+transferCandidateList.length+' transfers as unPaid?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            let loader = this._loadingCtrl.create();
+            loader.present();
+            this._candidateTransferService.markUnPaidAll(transferCandidateList).subscribe(response => {
+              
+              let toast = this.toastCtrl.create({
+                message: response.message,
+                duration: 3000
+              });
+              //update review count 
+              this._events.publish('navigation:updatePayable');
+              toast.present();
+              loader.dismiss();
+              this.navCtrl.pop();
             });
-            //update review count 
-            this._events.publish('navigation:updatePayable');
-            toast.present();
-            loader.dismiss();
-            this.navCtrl.pop();
-          });
+          }
         }
-      }
-    ]
+      ]
     }).present(); 
   }
 
