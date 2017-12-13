@@ -20,8 +20,8 @@ import { Store } from '../../../../models/store';
 export class CompanyViewPage {
 
   public company: Company;
-  public subcompanies: Company[];
-  public stores: Store[];
+  public subCompanies: Company[] = [];
+  public stores: Store[] = [];
 
   constructor(
     public navCtrl: NavController,
@@ -45,7 +45,7 @@ export class CompanyViewPage {
     let loader = this._loadingCtrl.create();
     loader.present();
     this.companyService.view(this.company).subscribe(response => {
-      this.subcompanies = response.subcompanies;
+      this.subCompanies = response.subCompanies;
       this.stores = response.stores; 
       loader.dismiss();
     });

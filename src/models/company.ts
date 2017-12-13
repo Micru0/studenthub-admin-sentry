@@ -8,5 +8,5 @@ export class Company {
     company_hourly_rate: number;
     company_status: string;
     total_candidates: number;
-    subcompanies: Company[];
+    subCompanies: Company[];
 }
