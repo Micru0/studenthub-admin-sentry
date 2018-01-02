@@ -92,6 +92,61 @@ export class StaffListPage {
   }
 
   /**
+   * Confirm password reset and send new password 
+   * @param staffMember 
+   */
+  resetPassword(staffMember: Staff) {
+    let confirm = this._alertCtrl.create({
+      title: 'Confirm password reset',
+      message: 'Do you want to send new password to staff?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.sendNewPassword(staffMember);
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  /**
+   * Reset and email the staff a new password
+   */
+  sendNewPassword(staffMember: Staff) {
+    let loader = this._loadingCtrl.create();
+    loader.present();
+
+    this.staffService.resetPassword(staffMember).subscribe(response => {
+      loader.dismiss();
+
+      if(response.operation == 'error')
+      {
+        let toast = this._toastCtrl.create({
+          message: response.message,
+          duration: 3000
+        });
+        
+        toast.present();
+      } 
+      else 
+      {
+        let alert = this._alertCtrl.create({
+            title: 'Reset Password',
+            subTitle: 'New password sent to candidate',
+            buttons: ['Okay']
+          });
+          alert.present();
+      }      
+    });
+  }
+
+  /**
    * Delete the provided model
    */
   delete(staff: Staff) {

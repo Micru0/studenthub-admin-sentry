@@ -56,6 +56,15 @@ export class StaffService {
   }
 
   /**
+   * Send new password to staff
+   * @param model 
+   */
+  resetPassword(model: Staff): Observable<any>{
+    let url = `${this._staffEndpoint}/reset-password/${model.staff_id}`;
+    return this._authhttp.patch(url, {});
+  }
+
+  /**
    * Deletes staff
    * @param {Staff} model
    * @returns {Observable<any>}
