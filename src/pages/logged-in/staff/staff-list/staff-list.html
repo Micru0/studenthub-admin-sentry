@@ -16,6 +16,11 @@
       </button>  
 
       <ion-item-options side="right">
+        <button ion-button (click)="resetPassword(staffMember)">
+          <ion-icon name="key"></ion-icon>
+          Send Password
+        </button>
+
         <button ion-button color="danger" (click)="delete(staffMember)">
           <ion-icon name="trash"></ion-icon>
           Delete
