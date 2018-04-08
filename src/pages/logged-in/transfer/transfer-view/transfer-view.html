@@ -31,7 +31,7 @@
     <!-- If Transfer Locked -->
     <button ion-button outline icon-left
       (click)="markUnlock()" 
-      *ngIf="transfer.transfer_status == '5'">
+      *ngIf="transfer.transfer_status == '5' || transfer.transfer_status == '1'">
       <ion-icon name="unlock"></ion-icon>
       Unlock Transfer, revert to draft
     </button>
