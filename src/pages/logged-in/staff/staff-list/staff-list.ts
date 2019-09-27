@@ -64,6 +64,18 @@ export class StaffListPage {
   }
 
   /**
+   * pagination current page color
+   * @param page 
+   */
+  pageLinkColor(page: number) {
+
+    if(page == this.currentPage) 
+      return 'light';
+    
+    return '';
+  }
+  
+  /**
    * When its selected
    */
   rowSelected(model) {

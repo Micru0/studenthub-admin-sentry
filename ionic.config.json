@@ -1,8 +1,8 @@
 {
   "name": "Payroll Admin",
-  "app_id": "dfb10dee",
-  "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "ionic-angular",
+  "id": "dfb10dee"
 }
