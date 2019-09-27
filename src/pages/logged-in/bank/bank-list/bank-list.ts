@@ -36,6 +36,18 @@ export class BankListPage {
     this.loadData(this.currentPage);
   }
 
+  /**
+   * pagination current page color
+   * @param page 
+   */
+  pageLinkColor(page: number) {
+
+    if(page == this.currentPage) 
+      return 'light';
+    
+    return '';
+  }
+  
   loadData(page: number) {
     // Load list of bank
     let loader = this._loadingCtrl.create();
