@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="transfer-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Unpaid Candidates</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button clear color="primary" (click)="markPaid()">
+        Mark paid
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="candidatelistData">
+    <section *ngFor="let transfer of candidatelistData">
+      <ion-item-divider color="light">
+        <ion-label>
+          <b>Transfer #{{transfer.transfer_id}}</b>
+        </ion-label>
+        <ion-badge slot="end" class="blank_bg">KWD {{transfer.total}}</ion-badge>
+      </ion-item-divider>
+      <article *ngFor="let tc of transfer.candidates">
+        <ion-item *ngIf="tc.paid == '0'"> 
+          <ion-checkbox [(ngModel)]="candidateList[tc.tc_id]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+          <ion-label>{{tc.candidate.candidate_name}}</ion-label>
+          <ion-badge slot="end">KWD {{tc.total_amount}}</ion-badge>
+        </ion-item>
+      </article>
+    </section>
+  </ion-list>
+</ion-content>
+ 

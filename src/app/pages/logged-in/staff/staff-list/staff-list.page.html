@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Staff Members</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let staffMember of staff">
+      <ion-item tappable (click)="rowSelected(staffMember)">
+        <ion-label>{{ staffMember.staff_name }}</ion-label>
+      </ion-item>  
+
+      <ion-item-options side="end">
+        <ion-button (click)="resetPassword(staffMember)">
+          <ion-icon name="key-outline"></ion-icon>
+          Send Password
+        </ion-button>
+
+        <ion-button color="danger" (click)="delete(staffMember)">
+          <ion-icon name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+</ion-list>
+
+<ion-row class="ion-text-center">
+  <div class="pagination-wrapper">
+    <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+      {{ page }}
+    </ion-button>
+  </div>
+</ion-row>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

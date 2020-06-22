@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="transfer-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Candidate Transfer Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <section *ngIf="transferCandidate">
+    <div>
+      <ion-item tappable *ngIf="transferCandidate.candidate" (click)="loadCandidateDetail(transferCandidate.candidate)">
+        <ion-label class="label label-ios" *ngIf="transferCandidate.candidate" >
+          <h2>{{transferCandidate.candidate.candidate_name}}</h2>
+          <small>{{ transferCandidate.store_name }} @ {{ transferCandidate.company_name }}</small><br/>
+          <small>Transfer ID {{ transferCandidate.transfer_id }}</small><br/>
+          <small>Candiadte Transfer ID {{ transferCandidate.tc_id }}</small>
+        </ion-label>
+      </ion-item>
+
+      <div class="ion-text-center">
+        <h1>KWD  {{ candidatePayableAmount(transferCandidate) | number }}</h1>
+        <h2 ion-text  *ngIf="transferCandidate.paid == '1'" color="primary">Paid</h2>
+        <h2 ion-text  *ngIf="transferCandidate.paid == '0'"  color="danger">UnPaid</h2>
+
+        <ion-button [disabled] = "candidatePayableAmount(transferCandidate) == '0'" *ngIf="transferCandidate.paid == '1'" (click)="markUnPaid()">
+          Mark Unpaid
+        </ion-button>
+
+        <ion-button *ngIf="transferCandidate.paid == '0'" (click)="markPaid()">
+          Mark As Paid
+        </ion-button>
+      </div>
+    </div>
+  </section>
+
+</ion-content>

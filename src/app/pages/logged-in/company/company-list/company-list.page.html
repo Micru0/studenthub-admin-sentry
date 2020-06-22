@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Companies</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let company of companies">
+      <ion-item tappable (click)="rowSelected(company)">
+        
+        <ion-label>
+          {{ company.company_name }}
+        </ion-label>
+
+        <ion-badge slot="end" *ngIf="company.total_candidates > 0">
+          {{ company.total_candidates }} candidates
+        </ion-badge>
+
+        <ion-badge slot="end" *ngIf="company.total_subcompanies > 0">
+          {{ company.total_subcompanies }} sub-companies
+        </ion-badge>
+        
+        <ion-badge slot="end" *ngIf="company.total_stores > 0">
+          {{ company.total_stores }} stores
+        </ion-badge>
+
+      </ion-item>  
+
+      <ion-item-options side="end">
+        <ion-button color="danger" (click)="delete(company)">
+          <ion-icon name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+</ion-list>
+
+<ion-row class="ion-text-center">
+  <div class="pagination-wrapper">
+    <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+      {{ page }}
+    </ion-button>
+  </div>
+</ion-row>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,147 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+
+    <ion-menu contentId="main-content" type="overlay" [disabled]="!authService.isLogin">
+      <ion-content>
+
+        <ion-list id="inbox-list">
+          <ion-list-header>Welcome,</ion-list-header>
+          <ion-note>{{ authService.name }}!</ion-note>
+
+          <!-- Main Action Points -->
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Action Points</ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'/dashboard'">
+                <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Summary
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item *ngIf="totalCandidateToReview > 0" [routerLink]="'candidate-review-list'">
+                <ion-icon name="person-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Candidate Review
+                </ion-label>
+
+                <ion-badge slot="end">
+                  {{ totalCandidateToReview }}
+                </ion-badge>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'transfer-list'">
+                <ion-icon name="globe-outline" slot="start"></ion-icon>
+                <ion-label>Transfers</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+
+          <!-- Process Payments -->
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Process Payments</ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" *ngIf="totalPayableCandidate > 0" [routerLink]="'payable-candidates'">
+                <ion-icon name="people-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Payable Candidates
+                </ion-label>
+
+                <ion-badge slot="end">
+                  {{ totalPayableCandidate }}
+                </ion-badge>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'candidate-payment-search'">
+                <ion-icon name="search-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Payment Search
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+
+          <!-- Accounts Management -->
+
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Accounts </ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'company-list'">
+                <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Companies
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'staff-list'">
+                <ion-icon name="people-outline" slot="start"></ion-icon>
+                <ion-label>Staff</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Entities </ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'bank-list'">
+                <ion-icon name="cash-outline" slot="start"></ion-icon>
+                <ion-label>Banks</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'university-list'">
+                <ion-icon name="school-outline" slot="start"></ion-icon>
+                <ion-label>Universities</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'country-list'">
+                <ion-icon name="paper-plane-outline" slot="start"></ion-icon>
+                <ion-label>Countries</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+
+
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Personal </ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item tappable lines="none" class="ion-activatable ion-focusable" (click)="authService.logout()">
+                <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                <ion-label>Logout</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+        </ion-list>
+
+      </ion-content>
+    </ion-menu>
+
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>
