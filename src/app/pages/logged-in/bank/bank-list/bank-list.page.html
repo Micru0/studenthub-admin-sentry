@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Bank</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let bankMember of bank">
+      <ion-item tappable (click)="rowSelected(bankMember)">
+        {{ bankMember.bank_name }}
+      </ion-item>
+
+      <ion-item-options side="end">
+        <button ion-button color="danger" (click)="delete(bankMember)">
+          <ion-icon name="trash-outline"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-row text-center>
+    <div class="pagination-wrapper">
+      <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+        {{ page }}
+      </button>
+    </div>
+  </ion-row>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

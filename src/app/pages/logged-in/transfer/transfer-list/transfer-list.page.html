@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Transfer List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Transfer Filter -->
+  <ion-card>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>
+          Filter by
+        </ion-label>
+      </ion-list-header>
+      <!-- Filter by Company Name -->
+      <ion-item>
+        <ion-label color="primary" position="stacked">Company name</ion-label>
+        <ion-input type="text" placeholder="Enter Company Name" [(ngModel)]="companyName" (change)="loadData(1)"></ion-input>
+      </ion-item>
+
+      <!-- Filter by Transfer Status -->
+      <ion-item>
+        <ion-label color="primary" position="stacked">Transfer Status</ion-label>
+        <ion-select [(ngModel)]="transferStatus" (ionChange)="loadData(1)">
+          <ion-select-option value="0">All</ion-select-option>
+          <ion-select-option value="10">Draft</ion-select-option>
+          <ion-select-option value="5">Locked, Pending Payment</ion-select-option>
+          <ion-select-option value="1">Payment Sent, Confirm Received</ion-select-option>
+          <ion-select-option value="3">Received & Distribution in Progress</ion-select-option>
+          <ion-select-option value="4">Transfer Completed</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <!-- Transfer List -->
+  <ion-list>
+    <ion-item tappable *ngFor="let transfer of transfers" (click)="transferDetails(transfer.transfer_id)">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <p>Transfer #{{ transfer.transfer_id}}</p>
+            <h2>KWD {{ transfer.company_total | number:'1.3-3' }}</h2>
+            <b>{{ transfer.company_name }}</b>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" class='status'>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='10'"> Draft </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='5'"> Locked, Pending Payment </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='1'"> Payment Sent, Confirm Received </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='3'"> Received & Distribution in Progress </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='4'"> Completed </span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="6">
+            <p>Employee Distribution</p> 
+            KWD {{ transfer.total - transfer.total_transfer_cost | number:'1.3-3' }}
+          </ion-col>
+          <ion-col size="12" size-sm="6" *ngIf="transfer.total_transfer_cost > 0">
+            <p>Transfer Cost</p>
+            KWD {{ transfer.total_transfer_cost | number:'1.3-3' }}<br>
+          </ion-col>
+          <ion-col size="12" size-sm="6">
+            <p>Profit</p>
+            KWD {{ transfer.profit | number:'1.3-3' }}<br>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="6">
+            <p>Created</p>
+            {{ transfer.transfer_created_at}}
+          </ion-col>
+          <ion-col size="12" size-sm="6">
+            <p>Updated</p>
+            {{ transfer.transfer_updated_at}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <ion-row class="ion-text-center">
+    <div class="pagination-wrapper">
+      <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+        {{ page }}
+      </ion-button>
+    </div>
+  </ion-row>
+
+</ion-content>

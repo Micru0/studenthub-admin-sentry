@@ -1,8 +1,7 @@
 {
   "name": "Payroll Admin",
   "integrations": {
-    "cordova": {}
+    "capacitor": {}
   },
-  "type": "ionic-angular",
-  "id": "dfb10dee"
+  "type": "angular"
 }
