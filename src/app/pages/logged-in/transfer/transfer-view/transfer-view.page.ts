@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 //services
 import { EventService } from 'src/app/providers/event.service';
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
+import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 //models
 import { Transfer, Invoice } from 'src/app/models/transfer';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
@@ -25,11 +26,17 @@ export class TransferViewPage implements OnInit {
   public transferStatus = "";
   public transferStatusDescription = "";
 
+  public loadingCandidates = false;
+
+  public candidatePageCount: number;
+  public candidatePage: number;
+
   constructor(
     public navCtrl: NavController,
     public router: Router,
     public activatedRoute: ActivatedRoute,
     public transferService: TransferService,
+    public transferCandidateService: CandidateTransferService,
     private _loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
@@ -55,7 +62,10 @@ export class TransferViewPage implements OnInit {
 
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
       this.transfer = response;
+
       this._updateTransferStatus();
+
+      this.listTransferCandidates();
 
       this.receipts = [];
       this.invoices = [];
@@ -69,6 +79,52 @@ export class TransferViewPage implements OnInit {
       });
 
       loader.dismiss();
+    });
+  }
+
+  /**
+   * load transfer candidate
+   */
+  listTransferCandidates() {
+
+    this.loadingCandidates = true; 
+
+    this.candidatePage = 1; 
+
+    this.transferCandidateService.listTransferCandidates(this.transfer_id, this.candidatePage).subscribe(response => {
+
+      this.loadingCandidates = false;
+
+      this.transfer.transferCandidates = response.body;
+
+      this.candidatePageCount = response.headers.get('X-Pagination-Page-Count');
+      this.candidatePage = response.headers.get('X-Pagination-Current-Page');
+
+    }, () => {
+      this.loadingCandidates = false;
+    });
+  }
+
+  /**
+   * load more candidate on scroll to bottom 
+   * @param event 
+   */
+  infiniteTransferCandidates(event) {
+    this.loadingCandidates = true; 
+
+    this.candidatePage++; 
+
+    this.transferCandidateService.listTransferCandidates(this.transfer_id, this.candidatePage).subscribe(response => {
+
+      event.target.complete();
+
+      this.loadingCandidates = false;
+
+      this.transfer.transferCandidates = this.transfer.transferCandidates.concat(response.body);
+      
+    }, () => {
+      event.target.complete();
+      this.loadingCandidates = false;
     });
   }
 

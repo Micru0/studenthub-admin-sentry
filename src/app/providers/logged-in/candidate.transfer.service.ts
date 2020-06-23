@@ -20,6 +20,16 @@ export class CandidateTransferService {
   ) { }
 
   /**
+   * list transfer candidates 
+   * sort by store_id? check default in transfer relation 
+   * @param transfer_id 
+   */
+  listTransferCandidates(transfer_id: number, page: number): Observable<any> {
+    let url = `${this._transferEndpoint}/by-transfer/${transfer_id}?page=${page}&expand=candidate`;
+    return this._authhttp.get(url, true);
+  }
+
+  /**
    * List of all Candidate Transfers
    * @returns {Observable<any>}
    */

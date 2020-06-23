@@ -133,8 +133,8 @@
               {{ store.store_name }}
             </ion-label>
 
-            <ion-badge slot="end" *ngIf="store.candidates.length > 0">
-              {{ store.candidates.length }} candidates
+            <ion-badge slot="end" *ngIf="store.store_total_candidates > 0">
+              {{ store.store_total_candidates }} candidates
             </ion-badge>
           </ion-item>
         </ion-item-sliding>
