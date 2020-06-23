@@ -63,8 +63,6 @@ export class StoreViewPage implements OnInit {
 
       this.loading = false;
     });
- 
-    
   }
 
   /**

@@ -43,7 +43,12 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   list(company_name: string, transfer_status: number, page: number): Observable<any> {
-    let url = `${this._transferEndpoint}?company_name=${company_name}&transfer_status=${transfer_status}&page=${page}&expand=profit`;
+    let url = `${this._transferEndpoint}?company_name=${company_name}&page=${page}&expand=profit`;
+
+    if(transfer_status) {
+      url += `&transfer_status=${transfer_status}`;
+    }
+
     return this._authhttp.get(url, true);
   }
 
@@ -63,7 +68,7 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   transferIdDetails(transfer_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${transfer_id}?expand=invoices,transferCandidates,totalPaid,totalUnpaid,profit`;
+    let url = `${this._transferEndpoint}/${transfer_id}?expand=invoices,totalPaid,totalUnpaid,profit`;
     return this._authhttp.get(url);
   }
 
