@@ -49,12 +49,19 @@ export class CandidateViewPage implements OnInit {
     this.candidate_id = this.activateRoute.snapshot.paramMap.get('candidate_id');
   
     this.loadData();
+
+    this.eventService.updatePayable$.subscribe((userEventData) => {
+      if(this.candidate && userEventData['candidate_id'] == this.candidate_id) {
+        this.loadTransfersData();
+      }
+    });
   }
   
   loadData() {
     this.loading = true; 
 
     this.candidateService.view(this.candidate_id).subscribe(bank => {
+      
       this.candidate = bank; 
 
       this.loadTransfersData();

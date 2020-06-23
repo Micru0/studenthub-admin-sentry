@@ -23,7 +23,7 @@ export class StoreViewPage implements OnInit {
   public pages: number[] = [];
 
   public store: Store;
-  public candidates: Candidate;
+  public candidates: Candidate[] = [];
 
   store_id;
 

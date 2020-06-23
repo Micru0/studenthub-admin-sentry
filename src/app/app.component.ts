@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 //services
 import { EventService } from './providers/event.service';
 import { AuthService } from './providers/auth.service';
+import { CandidateService } from './providers/logged-in/candidate.service';
 
 
 @Component({
@@ -15,6 +16,9 @@ import { AuthService } from './providers/auth.service';
 })
 export class AppComponent implements OnInit {
   
+  public totalCandidateToReview: number = 0;
+  public totalPayableCandidate: number = 0;
+
   constructor(
     private platform: Platform,
     //public deploy: Deploy,
@@ -23,6 +27,7 @@ export class AppComponent implements OnInit {
     public _alertCtrl: AlertController,
     public authService: AuthService,
     public eventService: EventService,
+    public candidateService: CandidateService,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
   ) {
@@ -37,6 +42,8 @@ export class AppComponent implements OnInit {
         this.splashScreen.hide();
       }
 
+      this.totalToReview();
+
       // Check for App update via Ionic Deploy
       //this._checkForUpdate();
     });
@@ -46,6 +53,21 @@ export class AppComponent implements OnInit {
    * Using Ng2 Lifecycle hooks because view lifecycle events don't trigger for Bootstrapped MyApp Component
    */
   async ngOnInit() {
+    this.eventService.totalCandidateToReview$.subscribe(() =>  {
+      this.totalToReview();
+    });
+  
+    this.eventService.updatePayable$.subscribe(() =>  {
+      this.totalToReview();
+    });
+
+    this.eventService.error404$.subscribe(data => {
+      this.navCtrl.navigateForward(['not-found']);
+    });
+    
+    this.eventService.error500$.subscribe(data => {
+        this.navCtrl.navigateForward(['server-error']);
+    });
 
     // Check for network connection
     this.eventService.internetOffline$.subscribe(async () => {
@@ -55,6 +77,8 @@ export class AppComponent implements OnInit {
         buttons: ['Dismiss']
       });
       alert.present();
+
+      this.navCtrl.navigateForward(['/no-internet']);
     });
 
     // On Login Event, set root to Internal app page
@@ -72,6 +96,16 @@ export class AppComponent implements OnInit {
         console.log(logoutReason);
         console.log('Invalid Access');
       }
+    });
+  }
+
+  /**
+   * Get total required to review
+   */
+  totalToReview() {
+    this.candidateService.totalToReview().subscribe(result => {
+      this.totalCandidateToReview = result.total;
+      this.totalPayableCandidate = result.payable;
     });
   }
 

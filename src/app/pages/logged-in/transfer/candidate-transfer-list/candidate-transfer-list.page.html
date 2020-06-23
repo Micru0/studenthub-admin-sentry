@@ -22,8 +22,8 @@
           <small>Amount : KWD {{ candidatePayableAmount(transfer) | number }}</small><br/>
           <small>Transfer Candidate ID : {{transfer.tc_id}}</small>
         </ion-label>
-        <ion-note slot="end" *ngIf="transfer.paid == '1'" >Paid</ion-note>
-        <ion-note slot="end" *ngIf="transfer.paid == '0'" >Unpaid</ion-note>
+        <ion-note slot="end" *ngIf="transfer.paid == 1" >Paid</ion-note>
+        <ion-note slot="end" *ngIf="transfer.paid == 0" >Unpaid</ion-note>
       </ion-item>
     </div>
   </section>

@@ -36,10 +36,7 @@ export function startupServiceFactory(authService) {
 
 @NgModule({
   declarations: [
-    AppComponent,
-     // Pipes
-     GroupByPipe,
-     SortPipe
+    AppComponent
   ],
   entryComponents: [],
   imports: [

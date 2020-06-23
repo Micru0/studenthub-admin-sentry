@@ -92,7 +92,7 @@ export class CandidateTransferDetailPage implements OnInit {
             toast.present();
 
             //update review count 
-            this._eventService.updatePayable$.next();
+            this._eventService.updatePayable$.next(this.transferCandidate);
             
             loader.dismiss();
 
@@ -135,7 +135,7 @@ export class CandidateTransferDetailPage implements OnInit {
             toast.present();
 
             //update review count 
-            this._eventService.updatePayable$.next();
+            this._eventService.updatePayable$.next(this.transferCandidate);
             
             loader.dismiss();
 

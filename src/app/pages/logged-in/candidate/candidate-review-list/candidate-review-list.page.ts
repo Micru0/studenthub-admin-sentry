@@ -66,7 +66,6 @@ export class CandidateReviewListPage implements OnInit {
    * @param model 
    */
   rowSelected(model) {
-    console.log(model);
     
     this.router.navigate(['/candidate-view', model.candidate_id], {
       state: {

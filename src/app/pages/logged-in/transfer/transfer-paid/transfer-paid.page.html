@@ -24,7 +24,7 @@
         <ion-badge slot="end" class="blank_bg">KWD {{transfer.total}}</ion-badge>
       </ion-item-divider>
       <article *ngFor="let tc of transfer.candidates">
-        <ion-item *ngIf="tc.paid == '0'"> 
+        <ion-item *ngIf="tc.paid == 0"> 
           <ion-checkbox [(ngModel)]="candidateList[tc.tc_id]" [ngModelOptions]="{standalone: true}"></ion-checkbox>
           <ion-label>{{tc.candidate.candidate_name}}</ion-label>
           <ion-badge slot="end">KWD {{tc.total_amount}}</ion-badge>
