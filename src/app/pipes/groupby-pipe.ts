@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-@Pipe({name: 'store_name'})
+
+@Pipe({
+  name: 'store_name'
+})
 export class GroupByPipe implements PipeTransform {
   transform(value, args:string[]) : any {
     var groups = {};

@@ -1,4 +1,5 @@
 import { TransferCandidate } from './transfer-candidate';
+import { Candidate } from './candidate';
 
 export class Transfer {
 	transfer_id: number;
@@ -15,10 +16,11 @@ export class Transfer {
 	total_transfer_cost: number;
 	
 	//extra field 
-	total_paid: number;
-	total_unpaid: number;
+	totalPaid: number;
+	totalUnpaid: number;
 	profit: number;
-	candidates: TransferCandidate[];
+	candidates: Candidate[];
+	transferCandidates: TransferCandidate[];
 	invoices: Invoice[];
 }
 

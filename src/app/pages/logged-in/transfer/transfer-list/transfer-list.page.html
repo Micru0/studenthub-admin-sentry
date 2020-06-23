@@ -57,11 +57,11 @@
         </ion-row>
         <ion-row>
           <ion-col size="12" class='status'>
-            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='10'"> Draft </span>
-            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='5'"> Locked, Pending Payment </span>
-            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='1'"> Payment Sent, Confirm Received </span>
-            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='3'"> Received & Distribution in Progress </span>
-            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status=='4'"> Completed </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==10"> Draft </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==5"> Locked, Pending Payment </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==1"> Payment Sent, Confirm Received </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==3"> Received & Distribution in Progress </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==4"> Completed </span>
           </ion-col>
         </ion-row>
         <ion-row>

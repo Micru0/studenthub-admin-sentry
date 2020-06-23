@@ -18,33 +18,33 @@
   <ion-toolbar class="ion-padding ion-text-center" *ngIf="transfer">
     <ion-title>
       {{transferStatus}}
-      <span *ngIf="transfer.transfer_status=='3'">
+      <span *ngIf="transfer.transfer_status==3">
         [ {{ (transfer.totalPaid / (transfer.totalUnpaid + transfer.totalPaid)) | percent }} complete ]
       </span>
     </ion-title>
 
     <div>
       {{transferStatusDescription}}
-      <span *ngIf="transfer.transfer_status=='3'">
+      <span *ngIf="transfer.transfer_status==3">
         <br/>{{ transfer.totalPaid }} out of {{ transfer.totalUnpaid + transfer.totalPaid }} paid.
       </span>
     </div>
 
     <!-- If Transfer Locked -->
     <ion-button fill="outline"(click)="markUnlock()" 
-      *ngIf="transfer.transfer_status == '5' || transfer.transfer_status == '1'">
+      *ngIf="transfer.transfer_status == 5 || transfer.transfer_status == 1">
       <ion-icon name="lock-open-outline" slot="start"></ion-icon>
       Unlock Transfer, revert to draft
     </ion-button>
 
     <!-- If Transfer Payment Sent, You can either Mark Received or Revert Back to Locked -->
     <ion-button fill="outline" (click)="markReceivedAndDistribute()" 
-      *ngIf="transfer.transfer_status == '1'">
+      *ngIf="transfer.transfer_status == 1">
       Mark Received & Distributing Salary
     </ion-button>
 
     <ion-button fill="outline" (click)="revertBackToLock()" 
-      *ngIf="transfer.transfer_status === '1'">
+      *ngIf="transfer.transfer_status === 1">
       <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
       Revert Back To Locked
     </ion-button>
@@ -124,10 +124,10 @@
         </ion-avatar>
 
         <h2>{{resource.candidate.candidate_name}}</h2>
-
+      
         <!-- If no hours worked by candidate -->
         <p *ngIf="resource.hours == 0">Candidate hasn't worked any hours</p>
-
+        
         <!-- If hours have been worked -->
         <ion-grid no-padding *ngIf="resource.hours > 0">
           <ion-row>
@@ -158,10 +158,10 @@
         </ion-grid>
 
         <ion-badge slot="end"
-          [color]="resource.paid=='1'?'secondary':'dark'"
-          *ngIf="(transfer.transfer_status=='3' || transfer.transfer_status=='4') && (resource.hours > 0)">
-          <ion-icon name="checkmark-circle-outline" *ngIf="resource.paid=='1'"></ion-icon>
-          <span *ngIf="resource.paid=='0'"> Transfer in progress </span>
+          [color]="resource.paid==1?'secondary':'dark'"
+          *ngIf="(transfer.transfer_status==3 || transfer.transfer_status==4) && (resource.hours > 0)">
+          <ion-icon name="checkmark-circle-outline" *ngIf="resource.paid==1"></ion-icon>
+          <span *ngIf="resource.paid==0"> Transfer in progress </span>
         </ion-badge>
 
       </ion-item>

@@ -7,13 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { TransferViewPageRoutingModule } from './transfer-view-routing.module';
 
 import { TransferViewPage } from './transfer-view.page';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule,
     TransferViewPageRoutingModule
+  ],
+  exports: [
+    PipesModule
   ],
   declarations: [TransferViewPage]
 })

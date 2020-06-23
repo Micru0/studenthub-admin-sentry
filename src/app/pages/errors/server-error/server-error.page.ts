@@ -34,9 +34,9 @@ export class ServerErrorPage implements OnInit {
   }
 
   /**
-   * Open homepage
+   * Open dashboard
    */
-  home() {
+  dashboard() {
     this.router.navigate(['view']);
   }
 }

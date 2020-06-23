@@ -31,9 +31,9 @@
 
   <ion-row text-center>
     <div class="pagination-wrapper">
-      <button *ngFor="let page of pages" ion-button small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
+      <ion-button *ngFor="let page of pages" small color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
         {{ page }}
-      </button>
+      </ion-button>
     </div>
   </ion-row>
 

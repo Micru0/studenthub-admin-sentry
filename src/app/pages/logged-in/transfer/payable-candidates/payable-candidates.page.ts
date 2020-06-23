@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
+import { Candidate } from 'src/app/models/candidate';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class PayableCandidatesPage  {
   public currentPage = 1;
   public pages: number[] = [];
   public payableAmount:number = 0.0;
-  public candidates: any[];
+  public candidates: Candidate[] = [];
 
   constructor(
     public router: Router,
@@ -25,14 +26,14 @@ export class PayableCandidatesPage  {
   ) { }
 
   ngOnInit() {
-    this.loadPayableCandidatesList(this.currentPage);
+    this.loadData(this.currentPage);
   }
 
   /**
    * Load List of Payable Candidates
    * @param page 
    */
-  async loadPayableCandidatesList(page: number) {
+  async loadData(page: number) {
 
     let loader = await this._loadingCtrl.create();
     loader.present();
