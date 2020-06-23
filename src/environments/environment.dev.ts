@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  serviceWorker: true,
   envName: 'dev',
   apiEndpoint: 'http://payroll-admin.dev.studenthub.co/v1'
 };

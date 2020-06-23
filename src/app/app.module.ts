@@ -23,6 +23,7 @@ import { BankFormPageModule } from './pages/logged-in/bank/bank-form/bank-form.m
 import { CompanyFormPageModule } from './pages/logged-in/company/company-form/company-form.module';
 import { StaffFormPageModule } from './pages/logged-in/staff/staff-form/staff-form.module';
 import { UniversityFormPageModule } from './pages/logged-in/university/university-form/university-form.module';
+import { UpdateAlertModule } from './components/update-alert/update-alert.module';
 
 /*const cloudSettings: CloudSettings = {
   'core': {
@@ -47,12 +48,13 @@ export function startupServiceFactory(authService) {
       name: '__payroll_admin'
     }),
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     //CloudModule.forRoot(cloudSettings),
     BankFormPageModule,
     CompanyFormPageModule,
     StaffFormPageModule,
-    UniversityFormPageModule
+    UniversityFormPageModule,
+    UpdateAlertModule,
   ],
   providers: [
     {

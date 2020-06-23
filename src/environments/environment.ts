@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  serviceWorker: false,
   envName: 'krushn',
   apiEndpoint: 'http://localhost:8888/payroll/admin/web/v1'
 };
