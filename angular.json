@@ -105,6 +105,7 @@
                 }
               ],
               "aot": false,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             },
             "ci": {
