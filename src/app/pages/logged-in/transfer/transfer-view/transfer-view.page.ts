@@ -18,6 +18,8 @@ import { Candidate } from 'src/app/models/candidate';
 })
 export class TransferViewPage implements OnInit {
 
+  public loadingInvoice: boolean = false;
+
   public transfer: Transfer;
   public transfer_id: number;
   public invoices: Invoice[] = []; //unpaid invoices 
@@ -51,6 +53,10 @@ export class TransferViewPage implements OnInit {
   // Also used to reload data after paid to user
   ionViewWillEnter() {
     this.loadData();
+
+    this.listTransferCandidates();
+
+    this.listInvoices();
   }
 
   /**
@@ -65,12 +71,24 @@ export class TransferViewPage implements OnInit {
 
       this._updateTransferStatus();
 
-      this.listTransferCandidates();
+      loader.dismiss();
+    });
+  }
+
+  /**
+   * load transfer invoices
+   */
+  listInvoices() {
+    this.loadingInvoice = true; 
+
+    this.transferService.listInvoices(this.transfer_id).subscribe(data => {
+
+      this.loadingInvoice = false; 
 
       this.receipts = [];
       this.invoices = [];
 
-      response.invoices.forEach((value, index) => {
+      data.forEach((value, index) => {
         if (value.invoice_status == 'paid') {
           this.receipts.push(value);
         } else {
@@ -78,7 +96,9 @@ export class TransferViewPage implements OnInit {
         }
       });
 
-      loader.dismiss();
+    }, () => {
+
+      this.loadingInvoice = false; 
     });
   }
 

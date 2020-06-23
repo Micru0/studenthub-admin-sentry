@@ -63,12 +63,21 @@ export class TransferService {
   }
 
   /**
+   * list transfer invoices
+   * @param transfer_id 
+   */
+  listInvoices(transfer_id): Observable<any> {
+    let url = `${this._transferEndpoint}/invoices/${transfer_id}?expand=company`;
+    return this._authhttp.get(url);
+  }
+
+  /**
    * Details of each transfer_id
    * @param {number} transfer
    * @returns {Observable<any>}
    */
   transferIdDetails(transfer_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${transfer_id}?expand=invoices,totalPaid,totalUnpaid,profit`;
+    let url = `${this._transferEndpoint}/${transfer_id}?expand=totalPaid,totalUnpaid,profit`;
     return this._authhttp.get(url);
   }
 
