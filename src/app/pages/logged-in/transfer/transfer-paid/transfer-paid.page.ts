@@ -19,6 +19,10 @@ export class TransferPaidPage implements OnInit {
   public transfer_id: number;
   public count: number = 0;
 
+  public pageCount = 0;
+  public currentPage = 1;
+  public pages: number[] = [];
+
   constructor(
     public activatedRoute: ActivatedRoute,
     public router: Router,
@@ -37,18 +41,59 @@ export class TransferPaidPage implements OnInit {
       this.candidatelistData = window['state']['candidatelistData'];
     }
 
+    if(!this.candidatelistData) {
+      this.loadData(1);
+    } else {
+      this._initForm();
+    }
+  }
+
+  _initForm() {
     this.candidatelistData.forEach((value, index) => {
-        value.candidates.forEach((innervalue, innerindex) => {
-          this.candidateList[innervalue.tc_id] = innervalue.candidate_id;  
-          this.candidatesData[innervalue.tc_id] = {
-            'candidate_id' : innervalue.candidate_id,
-            'child_transfer_id' : innervalue.transfer_id,
-            'transfer_id' : value.transfer_id,
-          }
-        });
+      value.unPaidTransferCandidates.forEach((innervalue, innerindex) => {
+        this.candidateList[innervalue.tc_id] = innervalue.candidate_id;  
+        this.candidatesData[innervalue.tc_id] = {
+          'candidate_id' : innervalue.candidate_id,
+          'child_transfer_id' : innervalue.transfer_id,
+          'transfer_id' : value.transfer_id,
+        }
       });
+    });
   }
   
+  /**
+   * Load List of Payable Candidates
+   * @param page 
+   */
+  async loadData(page: number) {
+
+    let loader = await this._loadingCtrl.create();
+    loader.present();
+    
+    this.transferService.listPayableCandidates(page).subscribe(response => {
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.pages = [];
+
+      for(var i = 1; i <= this.pageCount; i++){
+         this.pages.push(i);
+      }
+
+      //hide if no page = 1 
+      if(this.pageCount == 1)
+        this.pages = [];
+
+      this.candidatelistData = response.body;
+    
+      this._initForm();
+    },
+    error => {},
+    () => {loader.dismiss();}
+    );
+  }
+
   /**
    * Mark Paid
    */
@@ -94,5 +139,16 @@ export class TransferPaidPage implements OnInit {
 
       loader.dismiss();
     });
+  }
+
+  /**
+   * Page link color for pagination
+   * @param page 
+   */
+  pageLinkColor(page: number) {
+    if(page == this.currentPage) 
+      return 'light';
+    
+    return '';
   }
 }
