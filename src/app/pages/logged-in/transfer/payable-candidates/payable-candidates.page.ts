@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
+//models
 import { Candidate } from 'src/app/models/candidate';
 
 
@@ -92,7 +93,7 @@ export class PayableCandidatesPage  {
   markAllPaid(candidates) {
     this.router.navigate(['transfer-paid'], {
       state: {
-        'candidates': candidates,
+        'candidatelistData': candidates,
       }
     });
   }

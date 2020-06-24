@@ -25,11 +25,11 @@
           Transfer #{{transfer.transfer_id}}
         </ion-label>
 
-        <ion-badge slot="end" class="blank_bg">KWD {{transfer.total}}</ion-badge>
+        <ion-badge slot="end" class="blank_bg">KWD {{transfer.remainingPaymentTransferTotal}}</ion-badge>
       </ion-item-divider>
 
       <!-- Loop Through Candidates within that Transfer -->
-      <ion-item tappable *ngFor="let tc of transfer.candidates" (click)="candidateSelected(tc.candidate)"> 
+      <ion-item tappable *ngFor="let tc of transfer.unPaidTransferCandidates" (click)="candidateSelected(tc.candidate)"> 
         <ion-avatar slot="start">
             <img src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{tc.candidate.candidate_personal_photo_thumb}}">
         </ion-avatar>
