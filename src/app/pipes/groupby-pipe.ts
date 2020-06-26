@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'store_name'
 })
 export class GroupByPipe implements PipeTransform {
-  transform(value, args:string[]) : any {
+
+  transform(value) : any {
     var groups = {};
 
     value.forEach(function(o) {

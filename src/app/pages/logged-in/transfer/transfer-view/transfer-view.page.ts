@@ -208,6 +208,7 @@ export class TransferViewPage implements OnInit {
     loader.present();
 
     this.transferService.markUnlock(this.transfer).subscribe(response => {
+      
       this.navCtrl.pop();
       loader.dismiss();
     });
@@ -217,6 +218,7 @@ export class TransferViewPage implements OnInit {
    * Payment Sent. Revert back to locked.
    */
   async revertBackToLock() {
+
     let alert = await this.alertCtrl.create({
       header: 'Locked Status?',
       message: 'Do you want to revert back status to Locked?',
@@ -282,8 +284,10 @@ export class TransferViewPage implements OnInit {
    * @param invoice
    */
   async downloadInvoice(invoice: Invoice) {
+
     let loader = await this._loadingCtrl.create();
     loader.present();
+
     this.transferService.downloadInvoice(invoice).subscribe(response => {
       loader.dismiss();
     });
