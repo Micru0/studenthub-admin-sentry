@@ -14,12 +14,13 @@
 
 <ion-content>
   <!-- When No Candidates left for Review -->
-  <section class="ion-padding ion-text-center" *ngIf="candidates && (candidates.length == 0)">
+  <section class="ion-padding ion-text-center" *ngIf="!loading && candidates.length == 0">
     <h1>All done!</h1>
     <h2>No more candidates to review</h2>
   </section>
+
   <!-- When Candidates are Available to Review -->
-  <section *ngIf="candidates && (candidates.length > 0)">
+  <section>
     <ion-list>
       <ion-item *ngFor="let candidate of candidates" tappable (click)="rowSelected(candidate)">
         <ion-avatar slot="start" *ngIf="candidate.candidate_personal_photo_thumb">

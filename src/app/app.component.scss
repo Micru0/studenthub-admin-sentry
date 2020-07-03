@@ -11,6 +11,7 @@ ion-menu.md ion-content {
 
 ion-menu.md ion-list {
   padding: 20px 0;
+  position: relative;
 }
 
 ion-menu.md ion-note {
@@ -112,4 +113,10 @@ ion-note {
 
 ion-item.selected {
   --color: var(--ion-color-primary);
+}
+
+.btn-theme {
+  position: absolute;
+  right: 0;
+  top: 21px;
 }
