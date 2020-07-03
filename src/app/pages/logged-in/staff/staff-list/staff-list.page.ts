@@ -43,9 +43,10 @@ export class StaffListPage implements OnInit {
    * Load list of staff
    * @param page 
    */
-  async loadData(page: number) {
+  async loadData(page: number, silent: boolean = false) {
     
-    this.loading = true;
+    if(silent)
+      this.loading = true;
 
     this.staffService.list(page).subscribe(response => {
 
@@ -108,7 +109,7 @@ export class StaffListPage implements OnInit {
     // Refresh List if required
     modal.onDidDismiss().then(e => {
       if (e && e.data && e.data.refresh) {
-        this.loadData(this.currentPage);
+        this.loadData(this.currentPage, true);
       }
     });
     modal.present();
@@ -215,7 +216,7 @@ export class StaffListPage implements OnInit {
                 });
                 toast.present();
 
-                this.loadData(1);
+                this.loadData(1, true);
               }              
             }, () => {
               this.deleting = false; 

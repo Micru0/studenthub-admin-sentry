@@ -49,11 +49,11 @@ export class TransferListPage implements OnInit {
    * Load Transfer List
    * @param page 
    */
-  async loadData(page: number) {
+  async loadData(page: number, silent: boolean  = false) {
 
-    this.loading = true;
+    if(silent)
+      this.loading = true;
 
-    //subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
     this.transferService.list(this.companyName, this.transferStatus, page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
@@ -99,7 +99,7 @@ export class TransferListPage implements OnInit {
     this.deleting = true;
 
     this.transferService.delete(transfer).subscribe(response => {
-      this.loadData(1);
+      this.loadData(1, true);
       
       this.deleting = false;
     });
