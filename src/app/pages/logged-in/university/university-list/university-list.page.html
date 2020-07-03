@@ -30,17 +30,17 @@
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768">
 
-          <button ion-button color="danger" (click)="delete($event, university)">
-            <ion-icon name="trash-outline"></ion-icon>
+          <ion-button color="danger" (click)="delete($event, university)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
             Delete
-          </button>
+          </ion-button>
         </ion-buttons>
 
       </ion-item>
 
       <ion-item-options side="end">
         <ion-button color="danger" (click)="delete($event, university)">
-          <ion-icon name="trash-outline"></ion-icon>
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
           Delete
         </ion-button>
       </ion-item-options>
@@ -51,13 +51,10 @@
     
   </ion-list>
 
-  <ion-row class="ion-text-center">
-    <div class="pagination-wrapper">
-      <ion-button *ngFor="let page of pages" expand="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-        {{ page }}
-      </ion-button>
-    </div>
-  </ion-row>
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+    (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
 

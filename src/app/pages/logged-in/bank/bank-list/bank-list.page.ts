@@ -22,9 +22,8 @@ export class BankListPage implements OnInit {
 
   public pageCount = 0;
   public currentPage = 1;
-  public pages: number[] = [];
 
-  public bank: Bank[];
+  public banks: Bank[];
 
   constructor(
     public platform: Platform,
@@ -37,18 +36,6 @@ export class BankListPage implements OnInit {
 
   ngOnInit() {
     this.loadData(this.currentPage);
-  }
-
-  /**
-   * pagination current page color
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
   }
   
   /**
@@ -68,21 +55,32 @@ export class BankListPage implements OnInit {
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.pages = [];
-
-      for (var i = 1; i <= this.pageCount; i++) {
-        this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-
-      if (this.pageCount == 1)
-        this.pages = [];
-
-      this.bank = response.body;
+      this.banks = response.body;
     }, () => { 
       this.loading = false; 
       this.deleting = false; 
+    });
+  }
+  
+  doInfinite(event) {
+
+    this.loading = true; 
+
+    this.currentPage++;
+
+    this.bankService.list(this.currentPage).subscribe(response => {
+
+      this.loading = false;  
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.banks = this.banks.concat(response.body);
+
+      event.target.complete();
+      
+    }, () => { 
+      this.loading = false;  
     });
   }
 

@@ -142,7 +142,7 @@
             
             <ion-badge slot="end" [color]="resource.paid==1?'secondary':'dark'"
               *ngIf="(transfer.transfer_status==3 || transfer.transfer_status==4) && (resource.hours > 0)">
-              <ion-icon name="checkmark-circle-outline" *ngIf="resource.paid==1"></ion-icon>
+              <ion-icon slot="start" name="checkmark-circle-outline" *ngIf="resource.paid==1"></ion-icon>
               <span *ngIf="resource.paid==0"> Transfer in progress </span>
             </ion-badge>
   

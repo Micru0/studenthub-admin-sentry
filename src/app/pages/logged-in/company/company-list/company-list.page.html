@@ -19,7 +19,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let company of companies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
-        
+
         <ion-label>
           {{ company.company_name }}
         </ion-label>
@@ -31,24 +31,24 @@
         <ion-badge slot="end" *ngIf="company.total_subcompanies > 0">
           {{ company.total_subcompanies }} sub-companies
         </ion-badge>
-        
+
         <ion-badge slot="end" *ngIf="company.total_stores > 0">
           {{ company.total_stores }} stores
         </ion-badge>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768">
 
-          <button ion-button color="danger" (click)="delete($event, company)">
-            <ion-icon name="trash-outline"></ion-icon>
+          <ion-button color="danger" (click)="delete($event, company)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
             Delete
-          </button>
+          </ion-button>
         </ion-buttons>
 
-      </ion-item>  
+      </ion-item>
 
       <ion-item-options side="end">
         <ion-button color="danger" (click)="delete($event, company)">
-          <ion-icon name="trash-outline"></ion-icon>
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
           Delete
         </ion-button>
       </ion-item-options>
@@ -56,16 +56,13 @@
     </ion-item-sliding>
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
-    
-</ion-list>
 
-<ion-row class="ion-text-center">
-  <div class="pagination-wrapper">
-    <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-      {{ page }}
-    </ion-button>
-  </div>
-</ion-row>
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+    (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
 

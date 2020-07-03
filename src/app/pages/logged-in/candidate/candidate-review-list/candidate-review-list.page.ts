@@ -17,7 +17,6 @@ export class CandidateReviewListPage implements OnInit {
   
   public pageCount = 0;
   public currentPage = 1;
-  public pages: number[] = [];
 
   public candidates: Candidate[];
 
@@ -45,17 +44,33 @@ export class CandidateReviewListPage implements OnInit {
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.pages = [];
-
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-      if(this.pageCount == 1)
-        this.pages = [];
-
       this.candidates = response.body;
+    }, () => {
+      this.loading = false; 
+    });
+  }
+
+  /**
+   * load more on scroll to bottom 
+   * @param event 
+   */
+  doInfinite(event) {
+
+    this.loading = true; 
+
+    this.currentPage++; 
+
+    this.candidateService.listToReview(this.currentPage).subscribe(response => {
+      
+      this.loading = false; 
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.candidates = this.candidates.concat(response.body);
+
+      event.target.complete(); 
+
     }, () => {
       this.loading = false; 
     });
@@ -72,16 +87,5 @@ export class CandidateReviewListPage implements OnInit {
         'model': model
       }
     });
-  }
-
-  /**
-   * pagination color
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
   }
 }

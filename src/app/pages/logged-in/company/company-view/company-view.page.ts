@@ -50,9 +50,10 @@ export class CompanyViewPage implements OnInit {
   /**
    * load compay data
    */
-  async loadData() {
+  async loadData(silent = false) {
     
-    this.loading = true;
+    if(silent)
+      this.loading = true;
 
     if(!this.company) {
       this.company = new Company; 
@@ -123,7 +124,7 @@ export class CompanyViewPage implements OnInit {
     // Refresh List if required
     modal.onDidDismiss().then(e => {
       if(e && e.data && e.data.refresh) {
-        this.loadData();
+        this.loadData(true);
       }
     });
     modal.present();
@@ -226,7 +227,7 @@ export class CompanyViewPage implements OnInit {
                 });
                 toast.present();
                 
-                this.loadData();
+                this.loadData(true);
               }
               
               // On Failure
