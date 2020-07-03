@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
+   
     this.platform.ready().then(() => {
 
       if (this.platform.is('hybrid')) {
@@ -100,6 +101,19 @@ export class AppComponent implements OnInit {
         console.log('Invalid Access');
       }
     });
+  }
+
+  /**
+   * change theme
+   */
+  changeTheme() {
+    if (!this.authService.theme || this.authService.theme == 'day') {
+      console.log(1);
+      this.authService.setTheme('night');
+    } else {
+      console.log(2);
+      this.authService.setTheme('day');
+    }
   }
 
   setServiceWorker() {

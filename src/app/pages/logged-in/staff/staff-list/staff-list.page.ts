@@ -45,7 +45,7 @@ export class StaffListPage implements OnInit {
    */
   async loadData(page: number, silent: boolean = false) {
     
-    if(silent)
+    if(!silent)
       this.loading = true;
 
     this.staffService.list(page).subscribe(response => {

@@ -51,7 +51,7 @@ export class TransferListPage implements OnInit {
    */
   async loadData(page: number, silent: boolean  = false) {
 
-    if(silent)
+    if(!silent)
       this.loading = true;
 
     this.transferService.list(this.companyName, this.transferStatus, page).subscribe(response => {

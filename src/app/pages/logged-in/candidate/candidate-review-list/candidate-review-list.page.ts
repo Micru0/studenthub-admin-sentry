@@ -18,7 +18,7 @@ export class CandidateReviewListPage implements OnInit {
   public pageCount = 0;
   public currentPage = 1;
 
-  public candidates: Candidate[];
+  public candidates: Candidate[] = [];
 
   constructor(
     public router: Router,

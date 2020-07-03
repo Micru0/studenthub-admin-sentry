@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, RendererFactory2 } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { catchError, first, take, map, retryWhen } from 'rxjs/operators';
@@ -14,23 +14,28 @@ import { EventService } from './event.service';
 })
 export class AuthService {
 
-  public isLogin: boolean = false; 
+  public renderer;
+
+  public isLogin: boolean = false;
 
   // Logged in agent details
   private _accessToken;
   public id: number;
   public name: string;
   public email: string;
+  public theme: string;
 
   private _urlBasicAuth: string = "/auth/login";
 
   constructor(
+    public rendererFactory: RendererFactory2,
     public _http: HttpClient,
     private _storage: Storage,
     public router: Router,
     private _eventService: EventService
-  ) { }
-
+  ) {
+    this.renderer = this.rendererFactory.createRenderer(null, null);
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -47,31 +52,33 @@ export class AuthService {
      */
     return new Promise(resolve => {
 
+      const promises = [
+        this._storage.get('bearer'),
+        this._storage.get('id'),
+        this._storage.get('name'),
+        this._storage.get('email'),
+        this._storage.get('theme')
+      ];
 
-    const promises = [
-      this._storage.get('bearer'),
-      this._storage.get('id'),
-      this._storage.get('name'),
-      this._storage.get('email')
-    ];
- 
-    return Promise.all(promises)
-      .then(results => {
+      return Promise.all(promises)
+        .then(results => {
 
-        if (results[0] && results[1] && results[2] && results[3]) {
-          
-          this.isLogin = true;
-          this._accessToken = results[0];
-          this.id = results[1];
-          this.name = results[2];
-          this.email = results[3];
+          if (results[0] && results[1] && results[2] && results[3]) {
 
-          resolve(true);
-        } else {
-          resolve(false);
-          this.router.navigate(['login']);
-        }
-      });
+            this.isLogin = true;
+            this._accessToken = results[0];
+            this.id = results[1];
+            this.name = results[2];
+            this.email = results[3];
+
+            this.setTheme(results[4]);
+
+            resolve(true);
+          } else {
+            resolve(false);
+            this.router.navigate(['login']);
+          }
+        });
     });
   }
 
@@ -82,11 +89,16 @@ export class AuthService {
       this._storage.get('bearer'),
       this._storage.get('id'),
       this._storage.get('name'),
-      this._storage.get('email')
+      this._storage.get('email'),
+      this._storage.get('theme')
     ];
- 
+
     return Promise.all(promises)
       .then(results => {
+
+        if (results[4]) {
+          this.setTheme(results[4]);
+        }
 
         if (results[0] && results[1] && results[2] && results[3]) {
           this.setAccessToken(results[0], results[1], results[2], results[3]);
@@ -107,22 +119,42 @@ export class AuthService {
   logout(reason?: string) {
     // Remove from Storage then process logout
     this._accessToken = null;
-    this.id = null; 
-    this.name = null; 
-    this.email =  null;
+    this.id = null;
+    this.name = null;
+    this.email = null;
 
-    this.isLogin = false; 
-    
-    this._storage.clear();
+    this.isLogin = false;
+
+    this._storage.remove('bearer');
+    this._storage.remove('id');
+    this._storage.remove('name');
+    this._storage.remove('email');
 
     this._eventService.userLogout$.next(reason ? reason : false);
+  }
+
+  /**
+   * set app theme
+   * @param theme 
+   */
+  setTheme(theme) {
+    this._storage.set('theme', theme);
+    this.theme = theme;
+
+    if (theme == 'night') {
+      this.renderer.removeClass(document.body, 'day');
+      this.renderer.addClass(document.body, 'night');
+    } else {
+      this.renderer.addClass(document.body, 'day');
+      this.renderer.removeClass(document.body, 'night');
+    }
   }
 
   /**
    * Set the access token
    */
   setAccessToken(token: string, id: number, name: string, email: string) {
-    this.isLogin = true; 
+    this.isLogin = true;
 
     this._accessToken = token;
     this.id = id;
@@ -155,6 +187,7 @@ export class AuthService {
     const p2 = this._storage.get('id');
     const p3 = this._storage.get('name');
     const p4 = this._storage.get('email');
+
     Promise.all([p1, p2, p3, p4]).then(results => {
       if (results[0] && results[1] && results[2] && results[3]) {
         this.setAccessToken(results[0], results[1], results[2], results[3]);

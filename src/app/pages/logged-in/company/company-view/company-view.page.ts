@@ -52,7 +52,7 @@ export class CompanyViewPage implements OnInit {
    */
   async loadData(silent = false) {
     
-    if(silent)
+    if(!silent)
       this.loading = true;
 
     if(!this.company) {
