@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController, AlertController, LoadingController, NavController } from '@ionic/angular';
+import { ToastController, AlertController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 //services
 import { EventService } from 'src/app/providers/event.service';
@@ -18,6 +18,8 @@ import { Candidate } from 'src/app/models/candidate';
 })
 export class TransferViewPage implements OnInit {
 
+  public loading: boolean = false;
+
   public loadingInvoice: boolean = false;
 
   public transfer: Transfer;
@@ -25,10 +27,14 @@ export class TransferViewPage implements OnInit {
   public invoices: Invoice[] = []; //unpaid invoices 
   public receipts: Invoice[] = []; //paid invoices 
 
+  public transferCandidates = [];
+  
   public transferStatus = "";
   public transferStatusDescription = "";
 
   public loadingCandidates = false;
+
+  public processing: boolean = false;
 
   public candidatePageCount: number;
   public candidatePage: number;
@@ -39,7 +45,6 @@ export class TransferViewPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public transferService: TransferService,
     public transferCandidateService: CandidateTransferService,
-    private _loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     private _eventService: EventService
@@ -63,15 +68,18 @@ export class TransferViewPage implements OnInit {
    * Load Transfer Detail from Server
    */
   async loadData() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+
+    this.loading = true;
 
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
       this.transfer = response;
 
       this._updateTransferStatus();
 
-      loader.dismiss();
+      this.loading = false;
+
+    }, () => {
+      this.loading = false;
     });
   }
 
@@ -115,7 +123,7 @@ export class TransferViewPage implements OnInit {
 
       this.loadingCandidates = false;
 
-      this.transfer.transferCandidates = response.body;
+      this.transferCandidates = response.body;
 
       this.candidatePageCount = response.headers.get('X-Pagination-Page-Count');
       this.candidatePage = response.headers.get('X-Pagination-Current-Page');
@@ -140,7 +148,7 @@ export class TransferViewPage implements OnInit {
 
       this.loadingCandidates = false;
 
-      this.transfer.transferCandidates = this.transfer.transferCandidates.concat(response.body);
+      this.transferCandidates = this.transferCandidates.concat(response.body);
       
     }, () => {
       event.target.complete();
@@ -180,8 +188,8 @@ export class TransferViewPage implements OnInit {
    * Mark as Payment Received and Distribution in Progress for current transfer
    */
   async markReceivedAndDistribute() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    
+    this.processing = true;
 
     this.transferService.markReceivedDistributing(this.transfer).subscribe(async response => {
 
@@ -196,7 +204,7 @@ export class TransferViewPage implements OnInit {
 
       this.navCtrl.pop();
 
-      loader.dismiss();
+      this.processing = false;
     });
   }
 
@@ -204,13 +212,13 @@ export class TransferViewPage implements OnInit {
    * Unlock the current Transfer, revert to draft
    */
   async markUnlock() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.processing = true;
 
     this.transferService.markUnlock(this.transfer).subscribe(response => {
       
       this.navCtrl.pop();
-      loader.dismiss();
+      
+      this.processing = false;
     });
   }
 
@@ -230,8 +238,8 @@ export class TransferViewPage implements OnInit {
         {
           text: 'Yes',
           handler: async () => {
-            let loader = await this._loadingCtrl.create();
-            loader.present();
+            
+            this.processing = true;
 
             this.transferService.markLocked(this.transfer).subscribe(async response => {
               let result = response;
@@ -244,7 +252,7 @@ export class TransferViewPage implements OnInit {
 
               this.navCtrl.pop();
 
-              loader.dismiss();
+              this.processing = false;
             });
           }
         }
@@ -257,12 +265,12 @@ export class TransferViewPage implements OnInit {
    * Export as Excel
    */
   async exportExcel() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    
+    this.processing = true;
 
     this.transferService.export(this.transfer).subscribe(response => {
       this.navCtrl.pop();
-      loader.dismiss();
+      this.processing = false;
     });
   }
 
@@ -271,11 +279,11 @@ export class TransferViewPage implements OnInit {
    * @param invoice 
    */
   async downloadReceipt(invoice: Invoice) {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+
+    this.processing = true;
 
     this.transferService.downloadReceipt(invoice).subscribe(response => {
-      loader.dismiss();
+      this.processing = false;
     });
   }
 
@@ -285,11 +293,10 @@ export class TransferViewPage implements OnInit {
    */
   async downloadInvoice(invoice: Invoice) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.processing = true;
 
     this.transferService.downloadInvoice(invoice).subscribe(response => {
-      loader.dismiss();
+      this.processing = false;
     });
   }
 

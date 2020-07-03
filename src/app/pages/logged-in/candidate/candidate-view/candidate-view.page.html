@@ -8,9 +8,13 @@
 
     <ion-buttons slot="end">
       <ion-button *ngIf="candidate && !candidate.approved" (click)="approve(candidate)">
-        Approve
+        <span *ngIf="!approving">Approve</span>
+        <ion-spinner *ngIf="approving"></ion-spinner>
       </ion-button>
     </ion-buttons>
+
+    <ion-progress-bar type="indeterminate" *ngIf="approving"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
@@ -190,4 +194,6 @@
       <ion-badge slot="end" *ngIf="salary.status =='Unpaid'">In Progress</ion-badge>
     </ion-item>
   </ion-item-group>
+
+  <loading-modal [loading]="loading" type="university-view"></loading-modal>
 </ion-content>

@@ -10,6 +10,9 @@
     </ion-buttons>
 
     <ion-title>Payable Candidates  - KWD {{payableAmount}} </ion-title>
+    
+    <ion-progress-bar type="indeterminate" *ngIf="processing"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
@@ -41,15 +44,11 @@
       </ion-item>
 
     </section>
+
+    <loading-modal [loading]="loading" type="review-list"></loading-modal>
+
   </ion-list>
 
-	<ion-row class="ion-text-center">
-	  <div class="pagination-wrapper">
-	    <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-	      {{ page }}
-	    </ion-button>
-	  </div>
-	</ion-row>
 </ion-content>
 
 <ion-footer>

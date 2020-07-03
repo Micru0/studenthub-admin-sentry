@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 //services
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 //models
@@ -22,11 +22,12 @@ export class CandidatePaymentSearchPage implements OnInit {
 
     public transfersCandidate: TransferCandidate[];
 
+    public loading: boolean = false; 
+
     constructor(
         public router: Router,
         public activatedRoute: ActivatedRoute,
         public _candidateTransferService: CandidateTransferService,
-        private _loadingCtrl: LoadingController,
         public toastCtrl: ToastController
     ) { }
 
@@ -39,10 +40,11 @@ export class CandidatePaymentSearchPage implements OnInit {
      */
     async loadData(page: number) {
 
-        let loader = await this._loadingCtrl.create();
-        loader.present();
+        this.loading = true;
 
         this._candidateTransferService.list(this.tc_id).subscribe(async response => {
+
+            this.loading = false;
 
             let responsedata = response.body;
             
@@ -59,22 +61,12 @@ export class CandidatePaymentSearchPage implements OnInit {
                 });
                 toast.present();
             }
-        },
-            error => { },
-            () => { loader.dismiss(); }
-        );
+        }, 
+        () => { 
+            this.loading = false;
+        });
     }
 
-    /**
-     * Page link color for pagination
-     * @param page
-     */
-    pageLinkColor(page: number) {
-        if (page == this.currentPage)
-            return 'light';
-
-        return '';
-    }
     /**
      * transfer detail page redirect
      * @param transferCandidate

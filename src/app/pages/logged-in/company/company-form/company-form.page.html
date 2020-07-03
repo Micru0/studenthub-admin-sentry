@@ -10,7 +10,8 @@
       <ion-button clear color="primary" 
         [disabled]="!form.valid"
         (click)="save()">
-        Save
+        <span *ngIf="!saving">Save</span>
+        <ion-spinner *ngIf="saving"></ion-spinner>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

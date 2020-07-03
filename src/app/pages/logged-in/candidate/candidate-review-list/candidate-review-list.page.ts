@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router'; 
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 //models
@@ -14,6 +13,8 @@ import { Candidate } from 'src/app/models/candidate';
 })
 export class CandidateReviewListPage implements OnInit {
 
+  public loading: boolean = false; 
+  
   public pageCount = 0;
   public currentPage = 1;
   public pages: number[] = [];
@@ -22,8 +23,7 @@ export class CandidateReviewListPage implements OnInit {
 
   constructor(
     public router: Router,
-    public candidateService: CandidateService,
-    private _loadingCtrl: LoadingController
+    public candidateService: CandidateService
   ) {}
 
   ngOnInit() {
@@ -36,10 +36,11 @@ export class CandidateReviewListPage implements OnInit {
    */
   async loadData(page: number) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loading = true; 
 
     this.candidateService.listToReview(page).subscribe(response => {
+      
+      this.loading = false; 
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
@@ -55,10 +56,9 @@ export class CandidateReviewListPage implements OnInit {
         this.pages = [];
 
       this.candidates = response.body;
-    },
-    error => {},
-    () => {loader.dismiss();}
-    );
+    }, () => {
+      this.loading = false; 
+    });
   }
 
   /**

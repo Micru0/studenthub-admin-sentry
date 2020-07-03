@@ -9,6 +9,9 @@
         Candidate Transfer List
       </ion-label>
     </ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="processing"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
@@ -25,6 +28,9 @@
         <ion-note slot="end" *ngIf="transfer.paid == 1" >Paid</ion-note>
         <ion-note slot="end" *ngIf="transfer.paid == 0" >Unpaid</ion-note>
       </ion-item>
+
+      <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    
     </div>
   </section>
 </ion-content>

@@ -7,11 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { StaffListPageRoutingModule } from './staff-list-routing.module';
 
 import { StaffListPage } from './staff-list.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    LoadingModalModule,
     IonicModule,
     StaffListPageRoutingModule
   ],

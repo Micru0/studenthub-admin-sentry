@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Company } from 'src/app/models/company';
 import { Store } from 'src/app/models/store';
-import { ToastController, AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, Platform } from '@ionic/angular';
 import { StoreService } from 'src/app/providers/logged-in/store.service';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -20,11 +20,15 @@ export class CompanyViewPage implements OnInit {
   public subCompanies: Company[] = [];
   public stores: Store[] = [];
 
+  public deleting: boolean = false;
+  public loading: boolean = false;
+  public sendingNewPassword: boolean = false; 
+
   constructor(
+    public platform: Platform,
     public router: Router,
     public activatedRoute: ActivatedRoute,
     private _modalCtrl: ModalController,
-    private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
     public companyService: CompanyService,
     public storeService: StoreService,
@@ -47,9 +51,8 @@ export class CompanyViewPage implements OnInit {
    * load compay data
    */
   async loadData() {
-    // Load list of companies
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    
+    this.loading = true;
 
     if(!this.company) {
       this.company = new Company; 
@@ -58,12 +61,16 @@ export class CompanyViewPage implements OnInit {
 
     this.companyService.view(this.company).subscribe(response => {
 
+      this.loading = false;
+      this.deleting = false;
+
       this.company = response;
 
       this.subCompanies = response.subCompanies;
       this.stores = response.stores; 
-
-      loader.dismiss();
+    }, () => {
+      this.loading = false;
+      this.deleting = false;
     });
   }
 
@@ -162,12 +169,11 @@ export class CompanyViewPage implements OnInit {
    */
   async sendNewPassword() {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.sendingNewPassword = true;
 
     this.companyService.resetPassword(this.company).subscribe(async response => {
 
-      loader.dismiss();
+      this.sendingNewPassword = false;
 
       if(response.operation == 'error')
       {
@@ -187,16 +193,18 @@ export class CompanyViewPage implements OnInit {
           });
           alert.present();
       }      
+    }, () => {
+      this.sendingNewPassword = false;
     });
   }
   
   /**
    * Delete the provided model
    */
-  async delete(company: Company) {
+  async delete(ev, company: Company) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    ev.preventDefault(); 
+    ev.stopPropagation();;
 
     let confirm = await this._alertCtrl.create({
       header: 'Delete Company?',
@@ -205,8 +213,11 @@ export class CompanyViewPage implements OnInit {
         {
           text: 'Yes',
           handler: () => {
+
+            this.deleting = true;
+
             this.companyService.delete(company).subscribe(async jsonResp => {
-              loader.dismiss();
+             
               // On Success
               if (jsonResp.operation == "success") {
                 let toast = await this._toastCtrl.create({
@@ -214,13 +225,15 @@ export class CompanyViewPage implements OnInit {
                   duration: 3000
                 });
                 toast.present();
-                // Close the page
+                
+                this.loadData();
               }
               
-              this.loadData();
-
               // On Failure
               if (jsonResp.operation == "error") {
+
+                this.deleting = false;
+            
                 //failer text
                 let prompt = await this._alertCtrl.create({
                   header: 'Deletion Error!',
@@ -234,12 +247,7 @@ export class CompanyViewPage implements OnInit {
           }
         },
         {
-          text: 'No',
-          role: 'no',
-          handler: () => {
-            loader.dismiss();
-            this.loadData();
-          }
+          text: 'No'
         }
       ]
     });

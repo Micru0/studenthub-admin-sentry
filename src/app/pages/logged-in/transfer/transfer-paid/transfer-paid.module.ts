@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { TransferPaidPageRoutingModule } from './transfer-paid-routing.module';
 
 import { TransferPaidPage } from './transfer-paid.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    LoadingModalModule,
     TransferPaidPageRoutingModule
   ],
   declarations: [TransferPaidPage]

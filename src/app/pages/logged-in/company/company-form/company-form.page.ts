@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, AlertController, ToastController, ModalController } from '@ionic/angular';
+import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { CustomValidator } from 'src/app/validators/custom.validator';
 //services
 import { AuthService } from 'src/app/providers/auth.service';
@@ -19,6 +19,8 @@ export class CompanyFormPage implements OnInit {
  
   public loading: boolean = false; 
   
+  public saving: boolean = false; 
+  
   public company_id;
 
   public model: Company;
@@ -30,8 +32,7 @@ export class CompanyFormPage implements OnInit {
     public activateRoute: ActivatedRoute,
     public authService: AuthService,
     public companyService: CompanyService,
-    private _fb: FormBuilder,
-    private _loadingCtrl: LoadingController,
+    private _fb: FormBuilder, 
     private _alertCtrl: AlertController,
     public modalCtrl: ModalController,
     private _toastCtrl: ToastController
@@ -146,8 +147,7 @@ export class CompanyFormPage implements OnInit {
    */
   async save() {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.saving = true;
 
     this.updateModelDataFromForm();
 
@@ -162,7 +162,8 @@ export class CompanyFormPage implements OnInit {
     }
 
     action.subscribe(async jsonResponse => {
-      loader.dismiss();
+      
+      this.saving = false;
 
       // On Success
       if(jsonResponse.operation == "success") {
@@ -187,6 +188,8 @@ export class CompanyFormPage implements OnInit {
         });
         prompt.present();
       }
+    }, () => {
+      this.saving = false;
     });
   }
 }

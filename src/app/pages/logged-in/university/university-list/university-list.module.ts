@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { UniversityListPageRoutingModule } from './university-list-routing.module';
 
 import { UniversityListPage } from './university-list.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    LoadingModalModule,
     UniversityListPageRoutingModule
   ],
   declarations: [UniversityListPage]

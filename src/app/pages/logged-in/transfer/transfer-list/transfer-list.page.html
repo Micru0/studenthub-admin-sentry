@@ -10,6 +10,9 @@
     </ion-buttons>
 
     <ion-title>Transfer List</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
@@ -90,14 +93,13 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+
+    <loading-modal [loading]="loading" type="transfer-list"></loading-modal>
   </ion-list>
 
-  <ion-row class="ion-text-center">
-    <div class="pagination-wrapper">
-      <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-        {{ page }}
-      </ion-button>
-    </div>
-  </ion-row>
+  <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>

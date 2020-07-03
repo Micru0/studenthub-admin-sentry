@@ -9,38 +9,53 @@
     </ion-buttons>
 
     <ion-title>Staff Members</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let staffMember of staff">
+    <ion-item-sliding *ngFor="let staffMember of staff" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(staffMember)">
         <ion-label>{{ staffMember.staff_name }}</ion-label>
+
+        <ion-buttons slot="end" *ngIf="platform.width() > 768">
+          <ion-button (click)="resetPassword($event, staffMember)">
+            <ion-icon name="key-outline"></ion-icon>
+            Send Password
+          </ion-button>
+  
+          <ion-button color="danger" (click)="delete($event, staffMember)">
+            <ion-icon name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-buttons>
+
       </ion-item>  
 
       <ion-item-options side="end">
-        <ion-button (click)="resetPassword(staffMember)">
+        <ion-button (click)="resetPassword($event, staffMember)">
           <ion-icon name="key-outline"></ion-icon>
           Send Password
         </ion-button>
 
-        <ion-button color="danger" (click)="delete(staffMember)">
+        <ion-button color="danger" (click)="delete($event, staffMember)">
           <ion-icon name="trash-outline"></ion-icon>
           Delete
         </ion-button>
       </ion-item-options>
 
     </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
 </ion-list>
 
-<ion-row class="ion-text-center">
-  <div class="pagination-wrapper">
-    <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-      {{ page }}
-    </ion-button>
-  </div>
-</ion-row>
+<ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content>
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
 
 </ion-content>
 

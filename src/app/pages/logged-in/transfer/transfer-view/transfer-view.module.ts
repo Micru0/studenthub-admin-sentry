@@ -8,6 +8,7 @@ import { TransferViewPageRoutingModule } from './transfer-view-routing.module';
 
 import { TransferViewPage } from './transfer-view.page';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     FormsModule,
     IonicModule,
     PipesModule,
+    LoadingModalModule,
     TransferViewPageRoutingModule
   ],
   exports: [

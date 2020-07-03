@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Candidate } from 'src/app/models/candidate';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
-import { LoadingController, AlertController, ToastController, NavController } from '@ionic/angular';
+import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { EventService } from 'src/app/providers/event.service';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
 
@@ -19,12 +19,15 @@ export class CandidateTransferDetailPage implements OnInit {
 
   public loading: boolean = false;
 
+  public markingPaid: boolean = false;
+  
+  public markingUnPaid: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public router: Router,
     public activatedRoute: ActivatedRoute,
     public _candidateTransferService: CandidateTransferService,
-    private _loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     public toastCtrl: ToastController,
     private _eventService: EventService
@@ -80,8 +83,8 @@ export class CandidateTransferDetailPage implements OnInit {
       {
         text: 'Yes',
         handler: async () => {
-          let loader = await this._loadingCtrl.create();
-          loader.present();
+          
+          this.markingUnPaid = true;
 
           this._candidateTransferService.unpaid(this.transferCandidate).subscribe(async response => {
             
@@ -94,9 +97,12 @@ export class CandidateTransferDetailPage implements OnInit {
             //update review count 
             this._eventService.updatePayable$.next(this.transferCandidate);
             
-            loader.dismiss();
+            this.markingUnPaid = false;
 
             this.navCtrl.pop();
+
+          }, () => {
+            this.markingUnPaid = false;
           });
         }
       }
@@ -123,8 +129,8 @@ export class CandidateTransferDetailPage implements OnInit {
       {
         text: 'Yes',
         handler: async () => {
-          let loader = await this._loadingCtrl.create();
-          loader.present();
+          
+          this.markingPaid = true;
 
           this._candidateTransferService.paid(this.transferCandidate).subscribe(async response => {
             
@@ -137,9 +143,11 @@ export class CandidateTransferDetailPage implements OnInit {
             //update review count 
             this._eventService.updatePayable$.next(this.transferCandidate);
             
-            loader.dismiss();
+            this.markingPaid = false;
 
             this.navCtrl.pop();
+          }, () => {
+            this.markingPaid = false;
           });
         }
       }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { University } from 'src/app/models/university';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UniversityService } from 'src/app/providers/logged-in/university.service';
-import { ModalController, LoadingController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-university-form',
@@ -10,6 +10,8 @@ import { ModalController, LoadingController, AlertController } from '@ionic/angu
   styleUrls: ['./university-form.page.scss'],
 })
 export class UniversityFormPage implements OnInit {
+
+  public saving: boolean = false;
 
   public model: University;
   public operation: string;
@@ -19,8 +21,7 @@ export class UniversityFormPage implements OnInit {
   constructor(
     public universityService: UniversityService,
     private _fb: FormBuilder,
-    private modalCtrl: ModalController,
-    private _loadingCtrl: LoadingController,
+    private modalCtrl: ModalController, 
     private _alertCtrl: AlertController
   ) { }
 
@@ -62,8 +63,7 @@ export class UniversityFormPage implements OnInit {
    */
   async save() {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.saving = true;
 
     this.updateModelDataFromForm();
 
@@ -77,7 +77,8 @@ export class UniversityFormPage implements OnInit {
     }
 
     action.subscribe(async jsonResponse => {
-      loader.dismiss();
+      
+      this.saving = false;
 
       // On Success
       if (jsonResponse.operation == "success") {
@@ -94,6 +95,10 @@ export class UniversityFormPage implements OnInit {
         });
         prompt.present();
       }
+    }, () => {
+
+      this.saving = false;
+
     });
   }
 }

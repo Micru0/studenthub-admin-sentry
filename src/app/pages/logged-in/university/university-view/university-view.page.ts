@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { UniversityService } from 'src/app/providers/logged-in/university.service';
@@ -20,21 +20,22 @@ export class UniversityViewPage implements OnInit {
 
   private university_id; 
 
+  public loadingCandidates: boolean = false; 
+
   public loading: boolean = false; 
 
   public university: University;
   public currentPage = 1;
   public pageCount = 0;
   public pages: number[] = [];
-  public candidates: Candidate[];
+  public candidates: Candidate[] = [];
 
   constructor(
     public activateRoute: ActivatedRoute,
     public router: Router,
     public universityService: UniversityService,
     public candidateService: CandidateService,
-    private _modalCtrl: ModalController,
-    private _loadingCtrl: LoadingController,
+    private _modalCtrl: ModalController
   ) {
   }
 
@@ -90,10 +91,11 @@ export class UniversityViewPage implements OnInit {
    */
   async loadUniversityCandidate(university: University, page: number) {
     
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loadingCandidates = true;
 
     this.candidateService.listByUniversity(university, page).subscribe(response => {
+
+      this.loadingCandidates = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
@@ -111,7 +113,8 @@ export class UniversityViewPage implements OnInit {
 
       this.candidates = response.body;
 
-      loader.dismiss();
+    }, () => {
+      this.loadingCandidates = false;
     });
   }
 

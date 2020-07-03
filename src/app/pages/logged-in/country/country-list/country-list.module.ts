@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { CountryListPageRoutingModule } from './country-list-routing.module';
 
 import { CountryListPage } from './country-list.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    LoadingModalModule,
     CountryListPageRoutingModule
   ],
   declarations: [CountryListPage]

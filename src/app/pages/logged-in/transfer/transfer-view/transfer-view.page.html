@@ -6,11 +6,15 @@
     </ion-buttons>
 
     <ion-title>Transfer {{ transfer?.company_total? "- KWD "+transfer.company_total : "" }}</ion-title>
+    
     <ion-buttons slot="end">
       <ion-button (click)="exportExcel()">
         Download as Excel
       </ion-button>
     </ion-buttons>
+
+    <ion-progress-bar type="indeterminate" *ngIf="processing"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
@@ -77,6 +81,8 @@
     </ion-grid>
   </ion-toolbar>
 
+  <loading-modal [loading]="loading && !transfer" type="transfer"></loading-modal>
+
   <!-- Invoices -->
   <div class="invoices ion-padding" *ngIf="invoices.length > 0">
     <h3>Invoices</h3>
@@ -104,10 +110,10 @@
   </div>
 
   <!-- Transfer Details made to each Candidate -->
-  <ion-list *ngIf="transfer && transfer.transferCandidates" class='candidateList'>
+  <ion-list *ngIf="transfer && transferCandidates" class='candidateList'>
     <!-- store_name pipe returns the transferCandidates grouped by store as object of following format: -->
     <!-- {name: string, resources: TransferCandidate[]} -->
-    <ion-item-group *ngFor="let group of transfer.transferCandidates | store_name">
+    <ion-item-group *ngFor="let group of transferCandidates | store_name">
       <ion-item-divider>
         <ion-label>
           <b>{{group.name}}</b>
@@ -119,7 +125,7 @@
  
         <!-- If hours have been worked -->
 
-        <ion-card-content *ngIf="resource.hours > 0" class="ion-no-padding">
+        <ion-card-content class="ion-no-padding">
 
           <ion-item lines="none">
             <ion-avatar slot="start" *ngIf="resource.candidate.candidate_personal_photo_thumb">
@@ -142,8 +148,7 @@
   
           </ion-item>
            
-
-          <ion-grid>
+          <ion-grid *ngIf="resource.hours > 0">
             <ion-row>
               <ion-col size="12" class='hoursWorked'>
                 {{resource.hours}} hours worked

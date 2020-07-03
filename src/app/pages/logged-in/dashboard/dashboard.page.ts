@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
 //services
 import { StatisticService } from 'src/app/providers/logged-in/statistics.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -15,10 +14,11 @@ export class DashboardPage implements OnInit {
 
   public statistics: any;
 
+  public loading: boolean = false; 
+  
   constructor(
   	public router: Router,
   	public statisticService: StatisticService,
-    private _loadingCtrl: LoadingController,
     private _eventService: EventService,
   ) {}
 
@@ -39,15 +39,17 @@ export class DashboardPage implements OnInit {
    * Load Stats for display
    */
   async loadData() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    
+    this.loading = true;
     
     this.statisticService.get().subscribe(response => {
-        this.statistics = response;
-      },
-      error => {},
-      () => {loader.dismiss();}
-    );
+      this.loading = false;
+      
+      this.statistics = response;
+    }, 
+    () => {
+      this.loading = false;
+    });
   }
 
   /**

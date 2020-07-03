@@ -7,11 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { CandidateTransferListPageRoutingModule } from './candidate-transfer-list-routing.module';
 
 import { CandidateTransferListPage } from './candidate-transfer-list.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    LoadingModalModule,
     IonicModule,
     CandidateTransferListPageRoutingModule
   ],
