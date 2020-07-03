@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { StaffFormPageRoutingModule } from './staff-form-routing.module';
 
 import { StaffFormPage } from './staff-form.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { StaffFormPage } from './staff-form.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
+    LoadingModalModule,
     StaffFormPageRoutingModule
   ],
   declarations: [StaffFormPage]

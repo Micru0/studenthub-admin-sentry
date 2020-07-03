@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 //services
 import { StaffService } from 'src/app/providers/logged-in/staff.service';
@@ -22,12 +22,13 @@ export class StaffViewPage implements OnInit {
 
   public loading: boolean = false; 
   
+  public sendingNewPassword: boolean = false;
+
   constructor(
     public router: Router,
     public activateRoute: ActivatedRoute,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
-    private _loadingCtrl: LoadingController,
     private _toastCtrl: ToastController,
     public staffService: StaffService
   ) { }
@@ -102,11 +103,11 @@ export class StaffViewPage implements OnInit {
    */
   async sendNewPassword() {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.sendingNewPassword = true;
 
     this.staffService.resetPassword(this.staff).subscribe(async response => {
-      loader.dismiss();
+      
+      this.sendingNewPassword = false;
 
       if(response.operation == 'error')
       {
@@ -126,6 +127,9 @@ export class StaffViewPage implements OnInit {
           });
           alert.present();
       }      
+
+    }, () => {
+      this.sendingNewPassword = false;
     });
   }
 }

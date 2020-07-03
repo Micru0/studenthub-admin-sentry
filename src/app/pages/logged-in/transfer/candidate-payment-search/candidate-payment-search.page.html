@@ -22,8 +22,9 @@
       <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="tc_id"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-button (click)="loadData(1)">
-        Search
+      <ion-button [disabled]="loading" (click)="loadData(1)">
+        <span *ngIf="!loading">Search</span>
+        <ion-spinner *ngIf="loading"></ion-spinner>
       </ion-button>
     </ion-item>
   </ion-card>

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Company } from 'src/app/models/company';
 import { Router } from '@angular/router';
+import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
+//models
+import { Company } from 'src/app/models/company';
+//services
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
-import { ModalController, LoadingController, AlertController, ToastController } from '@ionic/angular';
+//pages
 import { CompanyFormPage } from '../company-form/company-form.page';
-import { async } from '@angular/core/testing';
+
 
 @Component({
   selector: 'app-company-list',
@@ -19,11 +22,15 @@ export class CompanyListPage implements OnInit {
 
   public companies: Company[];
 
+  public deleting: boolean = false; 
+  
+  public loading: boolean = false; 
+
   constructor(
     public router: Router,
+    public platform: Platform,
     public companyService: CompanyService,
     private _modalCtrl: ModalController,
-    private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController
   ) { }
@@ -36,13 +43,16 @@ export class CompanyListPage implements OnInit {
    * load company data
    * @param page 
    */
-  async loadData(page: number) {
-    // Load list of companies
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+  async loadData(page: number, silent = false) {
+   
+    if(!silent)
+      this.loading = true;
 
     this.companyService.list(page).subscribe(response => {
 
+      this.loading = false; 
+      this.deleting = false; 
+                
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
@@ -58,10 +68,10 @@ export class CompanyListPage implements OnInit {
         this.pages = [];
 
       this.companies = response.body;
-    },
-      error => { },
-      () => { loader.dismiss(); }
-    );
+    }, () => { 
+      this.loading = false; 
+      this.deleting = false; 
+    });
   }
 
   /**
@@ -110,9 +120,10 @@ export class CompanyListPage implements OnInit {
   /**
    * Delete the provided model
    */
-  async delete(company: Company) {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+  async delete(ev, company: Company) {
+
+    ev.preventDefault(); 
+    ev.stopPropagation();
 
     let confirm = await this._alertCtrl.create({
       header: 'Delete Company?',
@@ -122,9 +133,10 @@ export class CompanyListPage implements OnInit {
           text: 'Yes',
           handler: () => {
 
+            this.deleting = true; 
+                
             this.companyService.delete(company).subscribe(async jsonResp => {
-              loader.dismiss();
-
+               
               // On Success
               if (jsonResp.operation == "success") {
                 let toast = await this._toastCtrl.create({
@@ -132,14 +144,15 @@ export class CompanyListPage implements OnInit {
                   duration: 3000
                 });
                 toast.present();
-                // Close the page
+                
+                this.loadData(this.currentPage, true);
               }
-
-              this.loadData(this.currentPage);
 
               // On Failure
               if (jsonResp.operation == "error") {
-                //failer text
+                
+                this.deleting = false; 
+
                 let prompt = await this._alertCtrl.create({
                   header: 'Deletion Error!',
                   message: jsonResp.message,
@@ -147,16 +160,14 @@ export class CompanyListPage implements OnInit {
                 });
                 prompt.present();
               }
+            }, () => {
+              this.deleting = false;
             });
           }
         },
         {
           text: 'No',
-          role: 'no',
-          handler: () => {
-            loader.dismiss();
-            this.loadData(this.currentPage);
-          }
+          role: 'no'
         }
       ]
     });

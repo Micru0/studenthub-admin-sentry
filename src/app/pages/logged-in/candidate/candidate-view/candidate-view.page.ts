@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -17,6 +17,8 @@ import { Candidate } from 'src/app/models/candidate';
 })
 export class CandidateViewPage implements OnInit {
 
+  public approving: boolean = false; 
+  
   public loading: boolean = false; 
 
   public candidate_id; 
@@ -33,7 +35,6 @@ export class CandidateViewPage implements OnInit {
     public router: Router,
     public authService: AuthService,
     public activateRoute: ActivatedRoute,
-    private _loadingCtrl: LoadingController,
     public candidateService: CandidateService,
     public eventService: EventService,
     public toastCtrl: ToastController
@@ -98,12 +99,11 @@ export class CandidateViewPage implements OnInit {
    */
   async approve(candidate: Candidate) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.approving = true;
 
     this.candidateService.approve(candidate).subscribe(async response => {
 
-      loader.dismiss();
+      this.approving = false;
        
       if(response.operation == 'error') {
       

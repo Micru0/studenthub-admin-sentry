@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core'; 
 import { ActivatedRoute, Router } from '@angular/router';
 //models
 import { Country } from 'src/app/models/country';
@@ -27,11 +26,14 @@ export class CountryViewPage implements OnInit {
 
   public loading: boolean = false;
 
+  public deletingCandidates: boolean = false; 
+
+  public loadingCandidates: boolean = false;
+
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private candidateService: CandidateService,
-    private _loadingCtrl: LoadingController,
+    private candidateService: CandidateService, 
     private countryService: CountryService
   ) { }
 
@@ -58,7 +60,7 @@ export class CountryViewPage implements OnInit {
 
       this.country = country;
 
-      this.loadCandidates(this.currentPage);
+      this.loadCandidates(1);
 
       this.loading = false;
 
@@ -74,28 +76,44 @@ export class CountryViewPage implements OnInit {
    */
   async loadCandidates(page: number) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loadingCandidates = true;
 
     this.candidateService.listByCountry(this.country, page).subscribe(response => {
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.pages = [];
-
-      for (var i = 1; i <= this.pageCount; i++) {
-        this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-
-      if (this.pageCount == 1)
-        this.pages = [];
-
       this.candidates = response.body;
 
-      loader.dismiss();
+      this.loadingCandidates = false;
+    }, () => {
+      this.loadingCandidates = false;
+    });
+  }
+
+  /**
+   * load more candidates on scroll to bottom 
+   * @param event 
+   */
+  doInfinite(event) {
+
+    this.loadingCandidates = true;
+
+    this.currentPage++; 
+
+    this.candidateService.listByCountry(this.country, this.currentPage).subscribe(response => {
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.candidates = this.candidates.concat(response.body);
+
+      this.loadingCandidates = false;
+
+      event.target.complete();
+
+    }, () => {
+      this.loadingCandidates = false;
     });
   }
 
@@ -117,26 +135,16 @@ export class CountryViewPage implements OnInit {
    */
   async deleteCandidates(candidate) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.deletingCandidates = true;
 
     this.candidateService.delete(candidate).subscribe(jsonResp => {
-      loader.dismiss();
+     
+      this.deletingCandidates = false;
 
       this.currentPage = 1;
       this.loadCandidates(this.currentPage);
+    }, () => {
+      this.deletingCandidates = false;
     });
-  }
-
-  /**
-   * current page link color
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-
-    if (page == this.currentPage)
-      return 'light';
-
-    return '';
   }
 }

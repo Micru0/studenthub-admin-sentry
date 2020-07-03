@@ -9,12 +9,15 @@
     </ion-buttons>
 
     <ion-title>Companies</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let company of companies">
+    <ion-item-sliding *ngFor="let company of companies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
         
         <ion-label>
@@ -33,16 +36,27 @@
           {{ company.total_stores }} stores
         </ion-badge>
 
+        <ion-buttons slot="end" *ngIf="platform.width() > 768">
+
+          <button ion-button color="danger" (click)="delete($event, company)">
+            <ion-icon name="trash-outline"></ion-icon>
+            Delete
+          </button>
+        </ion-buttons>
+
       </ion-item>  
 
       <ion-item-options side="end">
-        <ion-button color="danger" (click)="delete(company)">
+        <ion-button color="danger" (click)="delete($event, company)">
           <ion-icon name="trash-outline"></ion-icon>
           Delete
         </ion-button>
       </ion-item-options>
 
     </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    
 </ion-list>
 
 <ion-row class="ion-text-center">

@@ -9,24 +9,40 @@
     </ion-buttons>
 
     <ion-title>Bank</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let bankMember of bank">
+    <ion-item-sliding *ngFor="let bankMember of bank" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(bankMember)">
-        {{ bankMember.bank_name }}
+        <ion-label>
+          {{ bankMember.bank_name }}
+        </ion-label>
+
+        <ion-buttons slot="end" *ngIf="platform.width() > 768">
+
+          <button ion-button color="danger" (click)="delete($event, bankMember)">
+            <ion-icon name="trash-outline"></ion-icon>
+            Delete
+          </button>
+        </ion-buttons>
+
       </ion-item>
 
       <ion-item-options side="end">
-        <button ion-button color="danger" (click)="delete(bankMember)">
+        <button ion-button color="danger" (click)="delete($event, bankMember)">
           <ion-icon name="trash-outline"></ion-icon>
           Delete
         </button>
       </ion-item-options>
 
     </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
   </ion-list>
 
   <ion-row text-center>

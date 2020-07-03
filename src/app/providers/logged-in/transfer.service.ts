@@ -24,8 +24,8 @@ export class TransferService {
    * List of all payable candidates
    * @returns {Observable<any>}
    */
-  listPayableCandidates(page: number): Observable<any> {
-    let url = `${this._transferEndpoint}/payable-candidates?page=${page}&expand=unPaidTransferCandidates,remainingPaymentTransferTotal,unPaidTransferCandidates.candidate`;
+  listPayableCandidates(): Observable<any> {
+    let url = `${this._transferEndpoint}/payable-candidates?expand=unPaidTransferCandidates,remainingPaymentTransferTotal,unPaidTransferCandidates.candidate`;
     return this._authhttp.get(url, true);
   }
 

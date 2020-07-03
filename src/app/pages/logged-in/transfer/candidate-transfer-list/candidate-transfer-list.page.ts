@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingController, AlertController, ToastController, NavController } from '@ionic/angular';
+import { AlertController, ToastController, NavController } from '@ionic/angular';
 //models
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
 //services
@@ -20,13 +20,14 @@ export class CandidateTransferListPage implements OnInit {
   public tc_id;
 
   public loading: boolean = false; 
+  
+  public processing: boolean = true;
 
   constructor(
     public router: Router,
     public navCtrl: NavController,
     public activatedRoute: ActivatedRoute,
     public _candidateTransferService: CandidateTransferService,
-    private _loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     public toastCtrl: ToastController,
     private _eventService: EventService
@@ -42,7 +43,6 @@ export class CandidateTransferListPage implements OnInit {
 
     this.loadData(1);
   }
-
 
   /**
    * Load Transfer List
@@ -101,10 +101,11 @@ export class CandidateTransferListPage implements OnInit {
           text: 'Yes',
           handler: async () => {
 
-            let loader = await this._loadingCtrl.create();
-            loader.present();
+            this.processing = true;
 
             this._candidateTransferService.markUnPaidAll(transferCandidateList).subscribe(async response => {
+
+              this.processing = false;
 
               let toast = await this.toastCtrl.create({
                 message: response.message,
@@ -114,11 +115,12 @@ export class CandidateTransferListPage implements OnInit {
 
               //update review count 
               this._eventService.updatePayable$.next();;
-
-              loader.dismiss();
-
+ 
               //pop
               this.navCtrl.pop();
+
+            }, () => {
+              this.processing = false;
             });
           }
         }
@@ -157,8 +159,8 @@ export class CandidateTransferListPage implements OnInit {
         {
           text: 'Yes',
           handler: async () => {
-            let loader = await this._loadingCtrl.create();
-            loader.present();
+            
+            this.processing = true;
 
             this._candidateTransferService.markPaidAll(transferCandidateList).subscribe(async response => {
 
@@ -171,10 +173,13 @@ export class CandidateTransferListPage implements OnInit {
               //update review count 
               this._eventService.updatePayable$.next();
 
-              loader.dismiss();
+              this.processing = false;
 
               //pop
               this.navCtrl.pop();
+
+            }, () => {
+              this.processing = false;
             });
           }
         }

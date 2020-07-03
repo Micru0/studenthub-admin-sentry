@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { PayableCandidatesPageRoutingModule } from './payable-candidates-routing.module';
 
 import { PayableCandidatesPage } from './payable-candidates.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    LoadingModalModule,
     PayableCandidatesPageRoutingModule
   ],
   declarations: [PayableCandidatesPage]

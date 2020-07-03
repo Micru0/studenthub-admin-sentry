@@ -12,11 +12,15 @@
         Update
       </ion-button>
     </ion-buttons>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list *ngIf="company">
+
     <!-- If Main Company -->
     <section *ngIf="company.company_email">
       <ion-item-divider color="light">
@@ -33,7 +37,10 @@
       </ion-item>
 
       <ion-item>
-        <ion-button expand="full" color="danger" (click)="resetPassword()">Send new password to company</ion-button>
+        <ion-button expand="full" color="danger" [disabled]="sendingNewPassword" (click)="resetPassword()">
+          <span *ngIf="!sendingNewPassword">Send new password to company</span>
+          <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
+        </ion-button>
       </ion-item>
 
       <ion-item-divider color="light">
@@ -57,6 +64,7 @@
     </section>
 
     <!-- If Subcompany -->
+
     <section *ngIf="!company.company_email">
       <ion-item-divider color="light">
         <ion-label>
@@ -87,7 +95,7 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding *ngFor="let company of subCompanies">
+      <ion-item-sliding *ngFor="let company of subCompanies" [disabled]="platform.width() > 768">
         <ion-item tappable (click)="rowSelected(company)">
 
           <ion-label>
@@ -105,10 +113,18 @@
           <ion-badge slot="end" *ngIf="company.total_stores > 0">
             {{ company.total_stores }} stores
           </ion-badge>
+
+          <ion-buttons slot="end" *ngIf="platform.width() > 768">
+            <ion-button color="danger"  (click)="delete($event, company)">
+              <ion-icon name="trash-outline"></ion-icon>
+              Delete
+            </ion-button>
+          </ion-buttons>
+
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-button color="danger" (click)="delete(company)">
+          <ion-button color="danger" (click)="delete($event, company)">
             <ion-icon name="trash-outline"></ion-icon>
             Delete
           </ion-button>
@@ -127,20 +143,20 @@
       </ion-item-divider>
 
       <ion-list>
-        <ion-item-sliding *ngFor="let store of stores">
-          <ion-item tappable (click)="storeSelected(store)">
-            <ion-label>
-              {{ store.store_name }}
-            </ion-label>
+        <ion-item tappable *ngFor="let store of stores" (click)="storeSelected(store)">
+          <ion-label>
+            {{ store.store_name }}
+          </ion-label>
 
-            <ion-badge slot="end" *ngIf="store.store_total_candidates > 0">
-              {{ store.store_total_candidates }} candidates
-            </ion-badge>
-          </ion-item>
-        </ion-item-sliding>
+          <ion-badge slot="end" *ngIf="store.store_total_candidates > 0">
+            {{ store.store_total_candidates }} candidates
+          </ion-badge>
+        </ion-item> 
       </ion-list>
     </section>
   </ion-list>
+
+  <loading-modal [loading]="loading" type="university-view"></loading-modal>
 </ion-content>
 
 <ion-footer *ngIf="company">

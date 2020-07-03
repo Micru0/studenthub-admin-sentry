@@ -8,13 +8,15 @@
     <ion-title>Unpaid Candidates</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button clear color="primary" (click)="markPaid()">
-        Mark paid
+      <ion-button clear color="primary" [disabled]="markingPaid" (click)="markPaid()">
+        <span *ngIf="!markingPaid">Mark paid</span>
+        <ion-spinner *ngIf="markingPaid"></ion-spinner>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
+
   <ion-list *ngIf="candidatelistData">
     <section *ngFor="let transfer of candidatelistData">
       <ion-item-divider color="light">
@@ -33,12 +35,7 @@
     </section>
   </ion-list>
 
-	<ion-row class="ion-text-center">
-	  <div class="pagination-wrapper">
-	    <ion-button *ngFor="let page of pages" size="small" color="{{ pageLinkColor(page) }}" (click)="loadData(page)">
-	      {{ page }}
-	    </ion-button>
-	  </div>
-	</ion-row>
+  <loading-modal type="text-list" [loading]="loading"></loading-modal>
+
 </ion-content>
  

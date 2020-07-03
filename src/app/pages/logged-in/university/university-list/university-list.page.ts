@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController, AlertController, ToastController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 //models
 import { University } from 'src/app/models/university';
@@ -16,6 +16,9 @@ import { UniversityFormPage } from '../university-form/university-form.page';
 })
 export class UniversityListPage implements OnInit {
 
+  public deleting: boolean = false; 
+  public loading: boolean = false;
+
   public pageCount = 0;
   public currentPage = 1;
   public pages: number[] = [];
@@ -23,10 +26,10 @@ export class UniversityListPage implements OnInit {
   public universities: University[];
 
   constructor(
+    public platform: Platform,
     public router: Router,
     public universityService: UniversityService,
-    private _modalCtrl: ModalController,
-    private _loadingCtrl: LoadingController,
+    private _modalCtrl: ModalController, 
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController
   ) { }
@@ -39,12 +42,15 @@ export class UniversityListPage implements OnInit {
    * load university data
    * @param page 
    */
-  async loadData(page: number) {
+  async loadData(page: number, silent = false) {
     
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    if(!silent)
+      this.loading = true; 
 
     this.universityService.list(page).subscribe(response => {
+
+      this.loading = false; 
+      this.deleting = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
@@ -61,10 +67,10 @@ export class UniversityListPage implements OnInit {
         this.pages = [];
 
       this.universities = response.body;
-    },
-      error => { },
-      () => { loader.dismiss(); }
-    );
+    },() => { 
+      this.loading = false; 
+      this.deleting = false;
+    });
   }
 
   /**
@@ -113,11 +119,11 @@ export class UniversityListPage implements OnInit {
   /**
    * Delete the provided model
    */
-  async delete(university: University) {
+  async delete(ev, university: University) {
     
-    let loader = await this._loadingCtrl.create();
-    loader.present();
-    
+    ev.preventDefault(); 
+    ev.stopPropagation();
+
     let confirm = await this._alertCtrl.create({
       header: 'Delete University?',
       message: 'Are you sure you want to delete this University?',
@@ -126,10 +132,14 @@ export class UniversityListPage implements OnInit {
           text: 'Yes',
           handler: () => {
 
-            this.universityService.delete(university).subscribe(async jsonResp => {
-              loader.dismiss();
+            this.deleting = true; 
 
+            this.universityService.delete(university).subscribe(async jsonResp => {
+               
               if (jsonResp.operation == 'error') {
+              
+                this.deleting = false;
+                
                 let alert = await this._alertCtrl.create({
                   header: 'Deletion Error!',
                   subHeader: jsonResp.message,
@@ -145,16 +155,14 @@ export class UniversityListPage implements OnInit {
                 });
                 toast.present();
               }
-              this.loadData(this.currentPage);
+              this.loadData(this.currentPage, true);
+            }, () => {
+              this.deleting = false;
             });
           }
         },
         {
-          text: 'No',
-          handler: () => {
-            this.loadData(this.currentPage);
-            loader.dismiss();
-          }
+          text: 'No'
         }
       ]
     });

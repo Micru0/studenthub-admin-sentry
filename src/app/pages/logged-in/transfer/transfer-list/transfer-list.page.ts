@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 //models
@@ -21,13 +20,16 @@ export class TransferListPage implements OnInit {
   public currentPage = 1;
   public pages: number[] = [];
 
-  public transfers: Transfer;
+  public transfers: Transfer[] = [];
+
+  public loading: boolean = false;
+
+  public deleting: boolean = false;
 
   constructor(
     private router: Router,
     public activatedRoute: ActivatedRoute,
-    public transferService: TransferService,
-    private _loadingCtrl: LoadingController
+    public transferService: TransferService
   ) { 
   }
 
@@ -49,8 +51,7 @@ export class TransferListPage implements OnInit {
    */
   async loadData(page: number) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loading = true;
 
     //subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
     this.transferService.list(this.companyName, this.transferStatus, page).subscribe(response => {
@@ -58,21 +59,35 @@ export class TransferListPage implements OnInit {
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.pages = [];
-
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-      if(this.pageCount == 1)
-        this.pages = [];
-
       this.transfers = response.body;
-    },
-    error => {},
-    () => {loader.dismiss();}
-    );
+
+      this.loading = false;
+
+    }, () => {
+      this.loading = false;
+    });
+  }
+
+  doInfinite(event) {
+
+    this.loading = true;
+
+    this.currentPage++; 
+    
+    this.transferService.list(this.companyName, this.transferStatus, this.currentPage).subscribe(response => {
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.transfers = this.transfers.concat(response.body);
+
+      event.target.complete();
+
+      this.loading = false;
+
+    }, () => {
+      this.loading = false;
+    });
   }
 
   /**
@@ -80,24 +95,14 @@ export class TransferListPage implements OnInit {
    * @param transfer
    */
   async delete(transfer: Transfer) {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    
+    this.deleting = true;
 
     this.transferService.delete(transfer).subscribe(response => {
       this.loadData(1);
-      loader.dismiss();
+      
+      this.deleting = false;
     });
-  }
-
-  /**
-   * Page link color for pagination
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
   }
 
   /**

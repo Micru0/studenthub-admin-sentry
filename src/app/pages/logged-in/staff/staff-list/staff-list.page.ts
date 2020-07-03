@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Staff } from 'src/app/models/staff';
-import { StaffService } from 'src/app/providers/logged-in/staff.service';
 import { Router } from '@angular/router';
-import { ModalController, LoadingController, AlertController, ToastController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
+//models
+import { Staff } from 'src/app/models/staff';
+//pages
 import { StaffFormPage } from '../staff-form/staff-form.page';
+//services
+import { StaffService } from 'src/app/providers/logged-in/staff.service';
+
 
 @Component({
   selector: 'app-staff-list',
@@ -18,11 +22,15 @@ export class StaffListPage implements OnInit {
 
   public staff: Staff[];
 
+  public loading: boolean = false; 
+  public deleting: boolean = false; 
+  public sendingNewPassword: boolean = false; 
+
   constructor(
+    public platform: Platform,
     public router: Router,
     public staffService: StaffService,
     private _modalCtrl: ModalController,
-    private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController
   ) { }
@@ -37,44 +45,45 @@ export class StaffListPage implements OnInit {
    */
   async loadData(page: number) {
     
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loading = true;
 
     this.staffService.list(page).subscribe(response => {
+
+      this.loading = false;
+      this.deleting = false; 
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.pages = [];
-
-      for (var i = 1; i <= this.pageCount; i++) {
-        this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-
-      if (this.pageCount == 1)
-        this.pages = [];
-
       this.staff = response.body;
-    },
-      error => { },
-      () => { loader.dismiss(); }
-    );
-  }
-
-  /**
-   * pagination current page color
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
+    },() => { 
+      this.loading = false; 
+      this.deleting = false; 
+    });
   }
   
+  async doInfinite(event) {
+    
+    this.loading = true;
+
+    this.currentPage++; 
+
+    this.staffService.list(this.currentPage).subscribe(response => {
+
+      this.loading = false;
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.staff = this.staff.concat(response.body);
+
+      event.target.complete(); 
+
+    },() => { 
+      this.loading = false; 
+    });
+  }
+
   /**
    * When its selected
    */
@@ -109,7 +118,11 @@ export class StaffListPage implements OnInit {
    * Confirm password reset and send new password 
    * @param staffMember 
    */
-  async resetPassword(staffMember: Staff) {
+  async resetPassword(ev, staffMember: Staff) {
+
+    ev.preventDefault(); 
+    ev.stopPropagation();
+
     let confirm = await this._alertCtrl.create({
       header: 'Confirm password reset',
       message: 'Do you want to send new password to staff?',
@@ -134,11 +147,11 @@ export class StaffListPage implements OnInit {
    */
   async sendNewPassword(staffMember: Staff) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.sendingNewPassword = true;
 
     this.staffService.resetPassword(staffMember).subscribe(async response => {
-      loader.dismiss();
+      
+      this.sendingNewPassword = false;
 
       if(response.operation == 'error')
       {
@@ -157,16 +170,18 @@ export class StaffListPage implements OnInit {
           });
           alert.present();
       }      
+    }, () => {
+      this.sendingNewPassword = false;
     });
   }
 
   /**
    * Delete the provided model
    */
-  async delete(staff: Staff) {
+  async delete(ev, staff: Staff) {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    ev.preventDefault(); 
+    ev.stopPropagation();
 
     let confirm = await this._alertCtrl.create({
       header: 'Delete Staff?',
@@ -175,10 +190,14 @@ export class StaffListPage implements OnInit {
         {
           text: 'Yes',
           handler: () => {
-            this.staffService.delete(staff).subscribe(async jsonResp => {
-              loader.dismiss();
 
+            this.deleting = true; 
+
+            this.staffService.delete(staff).subscribe(async jsonResp => {
+            
               if (jsonResp.operation == 'error') {
+                
+                this.deleting = false; 
 
                 let alert = await this._alertCtrl.create({
                   header: 'Deletion Error!',
@@ -196,17 +215,15 @@ export class StaffListPage implements OnInit {
                 });
                 toast.present();
 
-                this.loadData(this.currentPage);
+                this.loadData(1);
               }              
+            }, () => {
+              this.deleting = false; 
             });
           }
         },
         {
-          text: 'No',
-          handler: () => {
-            this.loadData(this.currentPage);
-            loader.dismiss();
-          }
+          text: 'No'
         }
       ]
     });

@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { TransferListPageRoutingModule } from './transfer-list-routing.module';
 
 import { TransferListPage } from './transfer-list.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    LoadingModalModule,
     TransferListPageRoutingModule
   ],
   declarations: [TransferListPage]

@@ -7,11 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { CompanyListPageRoutingModule } from './company-list-routing.module';
 
 import { CompanyListPage } from './company-list.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    LoadingModalModule,
     IonicModule,
     CompanyListPageRoutingModule
   ],

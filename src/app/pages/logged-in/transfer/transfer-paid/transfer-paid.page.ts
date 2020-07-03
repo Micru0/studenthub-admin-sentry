@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController, AlertController, LoadingController, NavController } from '@ionic/angular';
+import { ToastController, AlertController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
@@ -18,16 +18,14 @@ export class TransferPaidPage implements OnInit {
   public candidatelistData;
   public transfer_id: number;
   public count: number = 0;
-
-  public pageCount = 0;
-  public currentPage = 1;
-  public pages: number[] = [];
+ 
+  public markingPaid: boolean = false; 
+  public loading: boolean = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public navCtrl: NavController,
-    private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
     private transferService: TransferService,
     public toastCtrl: ToastController,
@@ -42,7 +40,7 @@ export class TransferPaidPage implements OnInit {
     }
 
     if(!this.candidatelistData) {
-      this.loadData(1);
+      this.loadData();
     } else {
       this._initForm();
     }
@@ -63,36 +61,23 @@ export class TransferPaidPage implements OnInit {
   
   /**
    * Load List of Payable Candidates
-   * @param page 
    */
-  async loadData(page: number) {
+  async loadData() {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loading = true;
     
-    this.transferService.listPayableCandidates(page).subscribe(response => {
-
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
-
-      this.pages = [];
-
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-      if(this.pageCount == 1)
-        this.pages = [];
+    this.transferService.listPayableCandidates().subscribe(response => {
 
       this.candidatelistData = response.body;
     
       this._initForm();
+
+      this.loading = false;
     },
-    error => {},
-    () => {loader.dismiss();}
-    );
-  }
+    () => {
+      this.loading = false;
+    });
+  } 
 
   /**
    * Mark Paid
@@ -121,8 +106,7 @@ export class TransferPaidPage implements OnInit {
         return false;
     }  
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.markingPaid = true;
 
     this.transferService.markPaidAll(candidate_ids).subscribe(async response => {
 
@@ -137,18 +121,10 @@ export class TransferPaidPage implements OnInit {
 
       this.navCtrl.pop();
 
-      loader.dismiss();
-    });
-  }
+      this.markingPaid = false;
 
-  /**
-   * Page link color for pagination
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
+    }, () => {
+      this.markingPaid = false;
+    });
   }
 }

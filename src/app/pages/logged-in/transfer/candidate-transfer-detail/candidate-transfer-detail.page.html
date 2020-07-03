@@ -25,15 +25,18 @@
         <h2 ion-text  *ngIf="transferCandidate.paid == 1" color="primary">Paid</h2>
         <h2 ion-text  *ngIf="transferCandidate.paid == 0"  color="danger">UnPaid</h2>
 
-        <ion-button [disabled] = "candidatePayableAmount(transferCandidate) == 0" *ngIf="transferCandidate.paid == 1" (click)="markUnPaid()">
-          Mark Unpaid
+        <ion-button [disabled]="markingUnPaid || candidatePayableAmount(transferCandidate) == 0" *ngIf="transferCandidate.paid == 1" (click)="markUnPaid()">
+          <ion-spinner *ngIf="markingUnPaid"></ion-spinner>
+          <span *ngIf="!markingUnPaid">Mark Unpaid</span>
         </ion-button>
 
-        <ion-button *ngIf="transferCandidate.paid == 0" (click)="markPaid()">
-          Mark As Paid
+        <ion-button [disabled]="markingPaid" *ngIf="transferCandidate.paid == 0" (click)="markPaid()">
+          <span *ngIf="!markingPaid">Mark As Paid</span>
+          <ion-spinner *ngIf="markingPaid"></ion-spinner>
         </ion-button>
       </div>
     </div>
   </section>
 
+  <loading-modal [loading]="loading" type="transfer-detail"></loading-modal>
 </ion-content>

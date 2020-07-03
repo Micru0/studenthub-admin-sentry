@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router'; 
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 //models
@@ -14,63 +13,50 @@ import { Candidate } from 'src/app/models/candidate';
 })
 export class PayableCandidatesPage  {
 
-  public pageCount = 0;
-  public currentPage = 1;
-  public pages: number[] = [];
-  public payableAmount:number = 0.0;
+  public payableAmount: number = 0.0;
   public candidates: Candidate[] = [];
+
+  public loading : boolean = false; 
+
+  public processing: boolean = false; 
 
   constructor(
     public router: Router,
-    public transferService: TransferService,
-    private _loadingCtrl: LoadingController
+    public transferService: TransferService, 
   ) { }
 
   ngOnInit() {
-    this.loadData(this.currentPage);
+    this.loadData();
   }
 
   /**
    * Load List of Payable Candidates
-   * @param page 
    */
-  async loadData(page: number) {
+  async loadData() {
 
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loading = true;
     
-    this.transferService.listPayableCandidates(page).subscribe(response => {
-
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
-
-      this.pages = [];
-
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-      if(this.pageCount == 1)
-        this.pages = [];
+    this.transferService.listPayableCandidates().subscribe(response => {
+      
+      this.loading = false;
 
       this.candidates = response.body;
       this.totalPayableAmount(this.candidates); // calculate total payable amount
     },
-    error => {},
-    () => {loader.dismiss();}
-    );
+    () => {
+      this.loading = false;
+    });
   }
 
   /**
    * Export Payable Candidates as Excel
    */
   async export() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    
+    this.processing = true;
 
     this.transferService.exportPayableCandidates().subscribe(response => {
-      loader.dismiss();
+      this.processing = false;
     });
   }
 
@@ -78,11 +64,10 @@ export class PayableCandidatesPage  {
    * Export Payable Candidates as Text
    */
   async exportText() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.processing = true;
 
     this.transferService.downloadTxt().subscribe(response => {
-      loader.dismiss();
+      this.processing = false;
     });
   }
 
@@ -115,17 +100,6 @@ export class PayableCandidatesPage  {
         'model': model
       }
     });
-  }
-
-  /**
-   * Page link color for pagination
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
   }
 
   /**

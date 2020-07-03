@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ModalController, LoadingController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 //services
 import { BankService } from 'src/app/providers/logged-in/bank.service';
@@ -18,6 +18,8 @@ export class BankFormPage implements OnInit {
 
   public loading: boolean = false; 
 
+  public saving: boolean = false; 
+  
   public bank_id;
 
   public model: Bank;
@@ -31,7 +33,6 @@ export class BankFormPage implements OnInit {
     public authService: AuthService,
     private _fb: FormBuilder,
     private modalCtrl: ModalController,
-    private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController
   ){
   }
@@ -111,8 +112,8 @@ export class BankFormPage implements OnInit {
    * Save the model
    */
   async save() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+
+    this.saving = true;
 
     this.updateModelDataFromForm();
 
@@ -126,7 +127,8 @@ export class BankFormPage implements OnInit {
     }
 
     action.subscribe(async jsonResponse => {
-      loader.dismiss();
+      
+      this.saving = false;
 
       // On Success
       if(jsonResponse.operation == "success"){
@@ -145,6 +147,8 @@ export class BankFormPage implements OnInit {
         });
         prompt.present();
       }
+    }, () => {
+      this.saving = false;
     });
   }  
 }

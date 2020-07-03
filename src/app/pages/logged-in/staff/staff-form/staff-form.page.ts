@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, AlertController, ToastController, ModalController } from '@ionic/angular';
+import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { CustomValidator } from 'src/app/validators/custom.validator';
 import { ActivatedRoute } from '@angular/router';
 //models
@@ -19,6 +19,8 @@ export class StaffFormPage implements OnInit {
 
   public loading: boolean = false; 
 
+  public saving: boolean = false; 
+  
   public staff_id;
 
   public model: Staff;
@@ -26,12 +28,10 @@ export class StaffFormPage implements OnInit {
 
   public form: FormGroup;
 
-  constructor(
-    private activateRoute: ActivatedRoute,
+  constructor( 
     private authService: AuthService,
     public staffService: StaffService,
-    private _fb: FormBuilder,
-    private _loadingCtrl: LoadingController,
+    private _fb: FormBuilder, 
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
     public modalCtrl: ModalController
@@ -111,8 +111,8 @@ export class StaffFormPage implements OnInit {
    * Save the model
    */
   async save() {
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    
+    this.saving = true;
 
     this.updateModelDataFromForm();
 
@@ -126,7 +126,8 @@ export class StaffFormPage implements OnInit {
     }
 
     action.subscribe(async jsonResponse => {
-      loader.dismiss();
+      
+      this.saving = false;
 
       // On Success
       if(jsonResponse.operation == "success") {

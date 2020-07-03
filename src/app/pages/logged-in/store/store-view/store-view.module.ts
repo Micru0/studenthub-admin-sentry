@@ -7,11 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { StoreViewPageRoutingModule } from './store-view-routing.module';
 
 import { StoreViewPage } from './store-view.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    LoadingModalModule,
     IonicModule,
     StoreViewPageRoutingModule
   ],

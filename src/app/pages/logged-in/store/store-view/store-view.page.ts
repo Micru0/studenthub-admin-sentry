@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { StoreService } from 'src/app/providers/logged-in/store.service';
@@ -20,7 +19,6 @@ export class StoreViewPage implements OnInit {
 
   public pageCount = 0;
   public currentPage = 1;
-  public pages: number[] = [];
 
   public store: Store;
   public candidates: Candidate[] = [];
@@ -30,7 +28,6 @@ export class StoreViewPage implements OnInit {
   constructor( 
     public activateRoute: ActivatedRoute,
     public router: Router,
-    private _loadingCtrl: LoadingController,
     public storeService: StoreService,
     private candidateService: CandidateService
   ) {}
@@ -71,26 +68,48 @@ export class StoreViewPage implements OnInit {
    */
   async loadCandidates(page: number){
     
-    let loader = await this._loadingCtrl.create();
-    loader.present();
+    this.loading = true;
 
     this.candidateService.listByStore(this.store, page).subscribe(response => {
+
+      this.loading = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.pages = [];
-
-      for(var i = 1; i <= this.pageCount; i++){
-         this.pages.push(i);
-      }
-
-      //hide if no page = 1 
-      if(this.pageCount == 1)
-        this.pages = [];
-
       this.candidates = response.body;
-      loader.dismiss();
+
+    }, () => {
+      this.loading = false;
+    });
+  }
+
+  /**
+   * load more candidates
+   * @param event 
+   */
+  doInfiniteCandidates(event) {
+
+    this.loading = true;
+
+    this.currentPage++;
+
+    this.candidateService.listByStore(this.store, this.currentPage).subscribe(response => {
+
+      this.loading = false;
+
+      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+
+      this.candidates = this.candidates.concat(response.body);
+
+      event.target.complete();
+
+    }, () => {
+      
+      event.target.complete();
+      
+      this.loading = false;
     });
   }
 
@@ -104,16 +123,5 @@ export class StoreViewPage implements OnInit {
         'model': model
       }
     });
-  }
-
-  /**
-   * Define page link color for pagination
-   * @param page 
-   */
-  pageLinkColor(page: number) {
-    if(page == this.currentPage) 
-      return 'light';
-    
-    return '';
   }
 }

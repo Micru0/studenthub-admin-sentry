@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { CandidateViewPageRoutingModule } from './candidate-view-routing.module';
 
 import { CandidateViewPage } from './candidate-view.page';
+import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    LoadingModalModule,
     CandidateViewPageRoutingModule
   ],
   declarations: [CandidateViewPage]
