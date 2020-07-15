@@ -149,7 +149,7 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   downloadInvoice(invoice: Invoice): Observable<any> {
-    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}`;
+    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}/invoice`;
     return this._authhttp.pdfget(url, 'Invoice ' + invoice.invoice_id + '.pdf');
   }
 
@@ -159,7 +159,7 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   downloadReceipt(invoice: Invoice): Observable<any> {
-    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}`;
+    let url = `${this._transferEndpoint}/pdf/${invoice.invoice_id}/receipt`;
     return this._authhttp.pdfget(url, 'Receipt ' + invoice.invoice_id + '.pdf');
   }
 }
