@@ -9,7 +9,7 @@
       <ion-card-content class='authArea'>
   
         <!-- Login Form -->
-        <form [formGroup]="loginForm" *ngIf="loginForm" (ngSubmit)="onSubmit()" class="classicInput" novalidate>
+        <form [formGroup]="loginForm" *ngIf="loginForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()"  class="classicInput" novalidate>
   
           <ion-input type="email" inputmode="email" #emailInput
             formControlName="email"
@@ -38,4 +38,3 @@
     </ion-card>
   
   </ion-content>
-  
