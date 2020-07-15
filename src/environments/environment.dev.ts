@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   serviceWorker: true,
   envName: 'dev',
-  apiEndpoint: 'http://payroll-admin.dev.studenthub.co/v1'
+  apiEndpoint: 'http://payroll-admin.dev.studenthub.co/v1',
+  permanentBucketUrl: "https://studenthub-uploads-dev-server.s3.amazonaws.com/"
 };
 
 /*

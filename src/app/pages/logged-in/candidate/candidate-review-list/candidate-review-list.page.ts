@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'; 
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
+import { AwsService } from 'src/app/providers/aws.service';
 //models
 import { Candidate } from 'src/app/models/candidate';
 
@@ -22,6 +23,7 @@ export class CandidateReviewListPage implements OnInit {
 
   constructor(
     public router: Router,
+    public aws: AwsService,
     public candidateService: CandidateService
   ) {}
 

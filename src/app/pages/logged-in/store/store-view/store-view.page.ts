@@ -6,6 +6,7 @@ import { StoreService } from 'src/app/providers/logged-in/store.service';
 //models
 import { Store } from 'src/app/models/store';
 import { Candidate } from 'src/app/models/candidate';
+import { AwsService } from 'src/app/providers/aws.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class StoreViewPage implements OnInit {
   store_id;
 
   constructor( 
+    public aws: AwsService,
     public activateRoute: ActivatedRoute,
     public router: Router,
     public storeService: StoreService,

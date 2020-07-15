@@ -129,8 +129,7 @@
 
           <ion-item lines="none">
             <ion-avatar slot="start" *ngIf="resource.candidate.candidate_personal_photo_thumb">
-              <img
-                src="https://sh-payroll.s3.eu-west-2.amazonaws.com/{{resource.candidate.candidate_personal_photo_thumb}}" />
+              <img src="{{ aws.permanentBucketUrl + resource.candidate.candidate_personal_photo_thumb }}" />
             </ion-avatar>
             
             <ion-label>

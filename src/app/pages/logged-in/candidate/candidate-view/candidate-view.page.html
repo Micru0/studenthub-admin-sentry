@@ -23,7 +23,7 @@
     
     <ion-item>
       <ion-avatar slot="start" *ngIf="candidate.candidate_personal_photo">
-        <img [src]="permanentBucketUrl + candidate.candidate_personal_photo_thumb">
+        <img [src]="aws.permanentBucketUrl + candidate.candidate_personal_photo_thumb">
       </ion-avatar>
       <ion-label>
         <h2>{{ candidate.candidate_name }}</h2>
@@ -132,8 +132,8 @@
       <ion-label>
         <h5>ID Photo Front</h5>
         <p>
-          <a [href]="permanentBucketUrl + candidate.candidate_civil_photo_front" target='_blank'>
-            <img [src]="permanentBucketUrl + candidate.candidate_civil_photo_front" style='width:150px;'>
+          <a [href]="aws.permanentBucketUrl + candidate.candidate_civil_photo_front" target='_blank'>
+            <img [src]="aws.permanentBucketUrl + candidate.candidate_civil_photo_front" style='width:150px;'>
           </a>
         </p>
       </ion-label>
@@ -143,8 +143,8 @@
       <ion-label>
         <h5>ID Photo Back</h5>
         <p>
-          <a [href]="permanentBucketUrl + candidate.candidate_civil_photo_back" target='_blank'>
-            <img [src]="permanentBucketUrl + candidate.candidate_civil_photo_back" style='width:150px;'>
+          <a [href]="aws.permanentBucketUrl + candidate.candidate_civil_photo_back" target='_blank'>
+            <img [src]="aws.permanentBucketUrl + candidate.candidate_civil_photo_back" style='width:150px;'>
           </a>
         </p>
       </ion-label>

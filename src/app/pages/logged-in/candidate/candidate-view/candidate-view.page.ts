@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { EventService } from 'src/app/providers/event.service';
 import { AuthService } from 'src/app/providers/auth.service';
+import { AwsService } from 'src/app/providers/aws.service';
 //models
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
 import { Candidate } from 'src/app/models/candidate';
@@ -29,10 +30,9 @@ export class CandidateViewPage implements OnInit {
 
   public workHistory: any[] = [];
 
-  public permanentBucketUrl = "https://sh-payroll.s3.eu-west-2.amazonaws.com/";
-
   constructor(
     public router: Router,
+    public aws: AwsService,
     public authService: AuthService,
     public activateRoute: ActivatedRoute,
     public candidateService: CandidateService,
