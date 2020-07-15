@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from 'src/app/providers/event.service';
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
+import { AwsService } from 'src/app/providers/aws.service';
 //models
 import { Transfer, Invoice } from 'src/app/models/transfer';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
@@ -43,6 +44,7 @@ export class TransferViewPage implements OnInit {
     public navCtrl: NavController,
     public router: Router,
     public activatedRoute: ActivatedRoute,
+    public aws: AwsService,
     public transferService: TransferService,
     public transferCandidateService: CandidateTransferService,
     public alertCtrl: AlertController,
