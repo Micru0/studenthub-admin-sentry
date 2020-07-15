@@ -76,6 +76,7 @@ export class BankFormPage implements OnInit {
       this.form = this._fb.group({
         name: ["", Validators.required],
         swift_code: ["", Validators.required],
+        bank_iban_code: ["", Validators.required],
         address: ["", Validators.required],
         type: ["", Validators.required]
       });
@@ -84,6 +85,7 @@ export class BankFormPage implements OnInit {
       this.form = this._fb.group({
         name: [this.model.bank_name, Validators.required],
         swift_code: [this.model.bank_swift_code, Validators.required],
+        bank_iban_code: [this.model.bank_iban_code, Validators.required],
         address: [this.model.bank_address, Validators.required],
         type: [this.model.bank_transfer_type, Validators.required]
       });
@@ -94,10 +96,11 @@ export class BankFormPage implements OnInit {
    * Update Model Data based on Form Input
    */
   updateModelDataFromForm(){
-    this.model.bank_name = this.form.value.name,
-    this.model.bank_swift_code = this.form.value.swift_code,
-    this.model.bank_address = this.form.value.address
-    this.model.bank_transfer_type = this.form.value.type
+    this.model.bank_name = this.form.value.name;
+    this.model.bank_swift_code = this.form.value.swift_code;
+    this.model.bank_address = this.form.value.address;
+    this.model.bank_iban_code = this.form.value.bank_iban_code;
+    this.model.bank_transfer_type = this.form.value.type;
   }
 
   /**

@@ -47,6 +47,7 @@ export class BankService {
       "name": model.bank_name,
       "swift_code": model.bank_swift_code,
       "address": model.bank_address,
+      "bank_iban_code": model.bank_iban_code,
       "type": model.bank_transfer_type
     };
 
@@ -65,6 +66,7 @@ export class BankService {
       "company_id": model.bank_id,
       "swift_code": model.bank_swift_code,
       "address": model.bank_address,
+      "bank_iban_code": model.bank_iban_code,
       "type": model.bank_transfer_type
     };
 
