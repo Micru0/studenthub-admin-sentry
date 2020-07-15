@@ -87,21 +87,20 @@ export class TransferViewPage implements OnInit {
    * load transfer invoices
    */
   listInvoices() {
-    this.loadingInvoice = true; 
+    this.loadingInvoice = true;
 
     this.transferService.listInvoices(this.transfer_id).subscribe(data => {
-
-      this.loadingInvoice = false; 
+      this.loadingInvoice = false;
 
       this.receipts = [];
       this.invoices = [];
 
       data.forEach((value, index) => {
-        if (value.invoice_status == 'paid') {
+        // if (value.invoice_status == 'paid' || value.invoice_status == 'sent') {
           this.receipts.push(value);
-        } else {
+        // } else {
           this.invoices.push(value);
-        }
+        // }
       });
 
     }, () => {
