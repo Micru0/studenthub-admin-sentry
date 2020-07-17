@@ -37,6 +37,7 @@
     "cordova-plugin-file-transfer": "^1.7.1",
     "file-saver": "^2.0.2",
     "rxjs": "~6.5.1",
+    "raven-js": "^3.27.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
