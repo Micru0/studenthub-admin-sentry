@@ -53,7 +53,7 @@
     <h5 *ngIf="candidates.length > 0">University Students</h5>
 
     <ion-list>
-      <ion-item *ngFor="let candidate of candidates" (click)="candidateDetail(candidate)">
+      <ion-item *ngFor="let candidate of candidates" tappable (click)="candidateDetail(candidate)">
         <ion-label>
           {{candidate.candidate_name}}
         </ion-label>
