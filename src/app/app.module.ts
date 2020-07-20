@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import {NgModule, APP_INITIALIZER, ErrorHandler} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -19,6 +19,7 @@ import { CompanyFormPageModule } from './pages/logged-in/company/company-form/co
 import { StaffFormPageModule } from './pages/logged-in/staff/staff-form/staff-form.module';
 import { UniversityFormPageModule } from './pages/logged-in/university/university-form/university-form.module';
 import { UpdateAlertModule } from './components/update-alert/update-alert.module';
+import {SentryErrorhandlerService} from './providers/sentry.errorhandler.service';
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -54,7 +55,8 @@ export function startupServiceFactory(authService) {
     },
     SwUpdate,
     File,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: ErrorHandler, useClass: SentryErrorhandlerService }
   ],
   bootstrap: [AppComponent]
 })
