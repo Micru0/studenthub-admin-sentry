@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-//services
+// services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { UniversityService } from 'src/app/providers/logged-in/university.service';
-//models
+// models
 import { University } from 'src/app/models/university';
 import { Candidate } from 'src/app/models/candidate';
-//pages
+// pages
 import { UniversityFormPage } from '../university-form/university-form.page';
 
 
@@ -18,11 +18,11 @@ import { UniversityFormPage } from '../university-form/university-form.page';
 })
 export class UniversityViewPage implements OnInit {
 
-  private university_id; 
+  private university_id;
 
-  public loadingCandidates: boolean = false; 
+  public loadingCandidates = false;
 
-  public loading: boolean = false; 
+  public loading = false;
 
   public university: University;
   public currentPage = 1;
@@ -42,12 +42,12 @@ export class UniversityViewPage implements OnInit {
   public ngOnInit() {
 
     // Load the passed model if available
-    if(window['state']) {
-      this.university = window['state']['model'];
+    if (window.history.state) {
+      this.university = window.history.state.model;
     }
 
     this.university_id = this.activateRoute.snapshot.paramMap.get('university_id');
-  
+
     this.loadData();
   }
 
@@ -55,11 +55,11 @@ export class UniversityViewPage implements OnInit {
    * load university data
    */
   loadData() {
-    this.loading = true; 
+    this.loading = true;
 
     this.universityService.view(this.university_id).subscribe(bank => {
 
-      this.university = bank; 
+      this.university = bank;
 
       this.loadUniversityCandidate(this.university, this.currentPage);
 
@@ -68,13 +68,13 @@ export class UniversityViewPage implements OnInit {
     }, () => {
 
       this.loading = false;
-    })
+    });
   }
   /**
    * Loads Form in modal to update
    */
   async update() {
-    let modal = await this._modalCtrl.create({
+    const modal = await this._modalCtrl.create({
       component: UniversityFormPage,
       componentProps: {
         model: this.university,
@@ -86,11 +86,11 @@ export class UniversityViewPage implements OnInit {
 
   /**
    * load university candidate
-   * @param university 
-   * @param page 
+   * @param university
+   * @param page
    */
   async loadUniversityCandidate(university: University, page: number) {
-    
+
     this.loadingCandidates = true;
 
     this.candidateService.listByUniversity(university, page).subscribe(response => {
@@ -102,14 +102,15 @@ export class UniversityViewPage implements OnInit {
 
       this.pages = [];
 
-      for (var i = 1; i <= this.pageCount; i++) {
+      for (let i = 1; i <= this.pageCount; i++) {
         this.pages.push(i);
       }
 
-      //hide if no page = 1 
+      // hide if no page = 1
 
-      if (this.pageCount == 1)
+      if (this.pageCount == 1) {
         this.pages = [];
+      }
 
       this.candidates = response.body;
 
@@ -120,13 +121,13 @@ export class UniversityViewPage implements OnInit {
 
   /**
    * candidate detail
-   * @param candidate 
+   * @param candidate
    */
   candidateDetail(candidate: Candidate) {
-    
+
     this.router.navigate(['candidate-view', candidate.candidate_id], {
       state: {
-        'model': candidate
+        model: candidate
       }
     });
   }
