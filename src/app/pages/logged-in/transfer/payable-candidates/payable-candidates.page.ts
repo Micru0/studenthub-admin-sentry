@@ -116,4 +116,12 @@ export class PayableCandidatesPage  {
       });
     }
   }
+
+  /**
+   * @param $event
+   * @param candidate
+   */
+  loadLogo($event, candidate) {
+    return candidate.candidate_personal_photo_thumb = null;
+  }
 }
