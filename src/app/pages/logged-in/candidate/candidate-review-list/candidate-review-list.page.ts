@@ -90,4 +90,12 @@ export class CandidateReviewListPage implements OnInit {
       }
     });
   }
+
+  /**
+   * @param $event
+   * @param candidate
+   */
+  loadLogo($event, candidate) {
+    return candidate.candidate_personal_photo_thumb = null;
+  }
 }
