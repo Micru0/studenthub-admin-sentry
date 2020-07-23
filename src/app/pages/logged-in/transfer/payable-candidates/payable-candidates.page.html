@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Payable Candidates  - KWD {{payableAmount}} </ion-title>
+    
+    <ion-progress-bar type="indeterminate" *ngIf="processing"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="candidates">
+    
+    <!-- Loop Through Transfer IDs -->
+    <section *ngFor="let transfer of candidates">
+      <ion-item-divider color="light" 
+        tappable
+        (click)="transferDetails(transfer.transfer_id)">
+        <ion-label>
+          Transfer #{{transfer.transfer_id}}
+        </ion-label>
+
+        <ion-badge slot="end" class="blank_bg">KWD {{transfer.remainingPaymentTransferTotal}}</ion-badge>
+      </ion-item-divider>
+
+      <!-- Loop Through Candidates within that Transfer -->
+      <ion-item tappable *ngFor="let tc of transfer.unPaidTransferCandidates" (click)="candidateSelected(tc.candidate)"> 
+        <ion-avatar slot="start">
+          <img *ngIf="tc.candidate.candidate_personal_photo_thumb" src="{{ aws.permanentBucketUrl + tc.candidate.candidate_personal_photo_thumb }}" (error)="loadLogo($event,tc.candidate)">
+          <img *ngIf="!tc.candidate.candidate_personal_photo_thumb" src="/assets/icon.png">
+        </ion-avatar>
+        <ion-label>
+          {{tc.candidate.candidate_name}} 
+        </ion-label>
+
+        <ion-badge slot="end">KWD {{tc.total_amount | number:'1.3-3' }}</ion-badge>
+      </ion-item>
+
+    </section>
+
+    <loading-modal [loading]="loading" type="review-list"></loading-modal>
+
+  </ion-list>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button *ngIf="candidates && candidates.length > 0" expand="full" (click)="markAllPaid(candidates)">
+    Mark candidates as paid
+  </ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="full" (click)="export()">
+          Download as Excel
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="full" (click)="exportText()">
+          Download as Text
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

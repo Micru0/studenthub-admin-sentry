@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Universities </ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let university of universities" [disabled]="platform.width() > 768">
+      <ion-item tappable (click)="rowSelected(university)">
+        <ion-label>
+          {{ university.university_name_en }}
+        </ion-label>
+
+        <ion-badge slot="end" *ngIf="university.total_candidates > 0">
+          {{ university.total_candidates }} candidates
+        </ion-badge>
+
+        <ion-buttons slot="end" *ngIf="platform.width() > 768">
+
+          <ion-button color="danger" (click)="delete($event, university)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-buttons>
+
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-button color="danger" (click)="delete($event, university)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+    (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

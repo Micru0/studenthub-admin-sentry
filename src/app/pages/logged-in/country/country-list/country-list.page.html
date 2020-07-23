@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Countries </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item tappable *ngFor="let country of countries" (click)="rowSelected(country)">
+      <ion-label>
+        {{ country.country_name_en }}
+      </ion-label>
+
+      <ion-badge slot="end" *ngIf="country.total_candidates > 0">
+        {{ country.total_candidates }} candidates
+      </ion-badge>
+    </ion-item>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+  </ion-list> 
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

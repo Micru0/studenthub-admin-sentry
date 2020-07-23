@@ -1,0 +1,195 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AlertController, ToastController, ModalController } from '@ionic/angular';
+import { CustomValidator } from 'src/app/validators/custom.validator';
+//services
+import { AuthService } from 'src/app/providers/auth.service';
+import { CompanyService } from 'src/app/providers/logged-in/company.service';
+//models
+import { Company } from 'src/app/models/company';
+import { ActivatedRoute } from '@angular/router';
+
+
+@Component({
+  selector: 'app-company-form',
+  templateUrl: './company-form.page.html',
+  styleUrls: ['./company-form.page.scss'],
+})
+export class CompanyFormPage implements OnInit {
+ 
+  public loading: boolean = false; 
+  
+  public saving: boolean = false; 
+  
+  public company_id;
+
+  public model: Company;
+  public operation: string;
+  public isSubCompany:number=0;
+  public form: FormGroup;
+
+  constructor(
+    public activateRoute: ActivatedRoute,
+    public authService: AuthService,
+    public companyService: CompanyService,
+    private _fb: FormBuilder, 
+    private _alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    private _toastCtrl: ToastController
+  ) { }
+
+  ngOnInit() {
+
+    // Load the passed model if available
+    if(window['state'] && window['state']['model']) {
+      this.model = window['state']['model'];
+    }
+
+    //this.company_id = this.activateRoute.snapshot.paramMap.get('company_id');
+    //this.isSubCompany = parseInt(this.activateRoute.snapshot.paramMap.get('subcompany'));
+
+    if(this.company_id && !this.model) {
+      this.loadData(this.company_id);
+    } else {
+      this._initForm();
+    }
+  }
+
+  /**
+   * load company detail 
+   * @param company_id 
+   */
+  loadData(company_id) {
+    this.loading = true; 
+
+    this.companyService.view(company_id).subscribe(bank => {
+      this.model = bank; 
+
+      this.loading = false;
+
+    }, () => {
+
+      this.loading = false;
+    })
+  }
+
+  /**
+   * init form 
+   */
+  _initForm() {
+
+    if (this.model.parent_company_id){
+      this.model.parent_company_id = this.model.parent_company_id;
+      this.isSubCompany = 1;
+    }
+    // Init Form
+  
+    if(!this.model.company_id){ // Show Create Form
+      
+      this.operation  = (this.isSubCompany) ? "Create Sub-company" : "Create Company";
+
+      if (this.isSubCompany) {
+        this.form = this._fb.group({
+          name: ["", Validators.required],
+          bonus_commission: [""],
+          hourly_rate: ["", Validators.required]
+        });
+      } else {
+        this.form = this._fb.group({
+          name: ["", Validators.required],
+          email: ["", [Validators.required, CustomValidator.emailValidator]],
+          password: ["", Validators.required],
+          bonus_commission: [""],
+          hourly_rate: ["", Validators.required]
+        });
+      }
+    } else { // Show Update Form
+      this.operation  = (this.isSubCompany) ? "Update  Sub-company" : "Update Company";
+      if (this.isSubCompany) {
+        this.form = this._fb.group({
+            name: [this.model.company_name, Validators.required],
+            bonus_commission: [this.model.company_bonus_commission],
+            hourly_rate: [this.model.company_hourly_rate, Validators.required]
+        });
+      } else {
+        this.form = this._fb.group({
+            name: [this.model.company_name, Validators.required],
+            email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
+            password: [this.model.company_password_hash], //not required
+            bonus_commission: [this.model.company_bonus_commission],
+            hourly_rate: [this.model.company_hourly_rate, Validators.required]
+        });
+      }
+    }
+  }
+
+  /**
+   * Update Model Data based on Form Input
+   */
+  updateModelDataFromForm(){
+    this.model.company_name = this.form.value.name;
+    this.model.company_email = this.form.value.email;
+    this.model.company_password_hash = this.form.value.password;
+    this.model.company_bonus_commission = this.form.value.bonus_commission;
+    this.model.company_hourly_rate = this.form.value.hourly_rate;
+  }
+
+  /**
+   * Close the page
+   */
+  close(){
+    let data = { 'refresh': false };
+    this.modalCtrl.dismiss(data);
+  }
+
+  /**
+   * Save the model
+   */
+  async save() {
+
+    this.saving = true;
+
+    this.updateModelDataFromForm();
+
+    let action;
+
+    if (!this.model.company_id) {
+      // Create
+      action = this.companyService.create(this.model);
+    } else {
+      // Update
+      action =  this.companyService.update(this.model);
+    }
+
+    action.subscribe(async jsonResponse => {
+      
+      this.saving = false;
+
+      // On Success
+      if(jsonResponse.operation == "success") {
+
+        // Close the page
+        let data = { 'refresh': true };
+        this.modalCtrl.dismiss(data);
+
+        let toast = await this._toastCtrl.create({
+          message: this.model.company_name+' account saved successfully',
+          duration: 3000
+        });
+        toast.present();
+      }
+
+      // On Failure
+      if (jsonResponse.operation == "error") {
+
+        let prompt = await this._alertCtrl.create({
+          message: this.authService.errorMessage(jsonResponse.message),
+          buttons: ["Ok"]
+        });
+        prompt.present();
+      }
+    }, () => {
+      this.saving = false;
+    });
+  }
+}

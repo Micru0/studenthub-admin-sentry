@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Candidate Payment Search</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Transfer Filter -->
+  <ion-card>
+    <ion-item>
+      <ion-label color="primary" position="stacked">Candidate Transfer ID</ion-label>
+      <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="tc_id"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-button [disabled]="loading" (click)="loadData(1)">
+        <span *ngIf="!loading">Search</span>
+        <ion-spinner *ngIf="loading"></ion-spinner>
+      </ion-button>
+    </ion-item>
+  </ion-card>
+  <!-- Transfer List -->
+</ion-content>

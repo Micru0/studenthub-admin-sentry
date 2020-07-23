@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="staff-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="staff">{{ staff.staff_name }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngIf="staff">
+
+    <ion-item>
+      <ion-label>
+        <h5>Id</h5>
+        <p>{{ staff.staff_id }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Staff Member</h5>
+        <p>{{ staff.staff_name }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Email</h5>
+        <p>{{ staff.staff_email }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Status</h5>
+        <p>{{ staff.staff_status }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Created at</h5>
+        <p>{{ staff.staff_created_at }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Updated at</h5>
+        <p>{{ staff.staff_updated_at }}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <loading-modal [loading]="loading" type="university-view"></loading-modal>
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" (click)="resetPassword()">
+    <span *ngIf="!sendingNewPassword">Send new password to staff</span>
+    <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
+  </ion-button>
+</ion-footer>

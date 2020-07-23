@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="close()"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ operation }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button color="primary" [disabled]="!form.valid" (click)="save()">
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" *ngIf="form">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Swift Code</ion-label>
+        <ion-input type="text" formControlName="swift_code"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">IBAN Code</ion-label>
+        <ion-input type="text" formControlName="bank_iban_code"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Address</ion-label>
+        <ion-input type="text" formControlName="address"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Bank Transfer Type</ion-label>
+        <ion-select formControlName="type">
+          <ion-select-option value="LCL">Local Bank Transfer</ion-select-option>
+          <ion-select-option value="SWF">International Transfer</ion-select-option>
+          <ion-select-option value="TRF">Within Bank Transfer</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

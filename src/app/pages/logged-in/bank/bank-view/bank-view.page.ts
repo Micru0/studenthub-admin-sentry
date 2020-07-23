@@ -1,0 +1,78 @@
+import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+//services
+import { BankService } from 'src/app/providers/logged-in/bank.service';
+//pages
+import { BankFormPage } from '../bank-form/bank-form.page';
+//models
+import { Bank } from 'src/app/models/bank';
+
+
+@Component({
+  selector: 'app-bank-view',
+  templateUrl: './bank-view.page.html',
+  styleUrls: ['./bank-view.page.scss'],
+})
+export class BankViewPage implements OnInit {
+
+  public bank_id: string;
+
+  public bank: Bank;
+
+  public loading: boolean = false; 
+
+  constructor(
+    private bankService: BankService,
+    private activateRoute: ActivatedRoute,
+    private _modalCtrl: ModalController,
+    
+  ) {
+    //this.bank = params.get('model');
+  }
+
+  ngOnInit() {
+
+    // Load the passed model if available
+    if(window['state']) {
+      this.bank = window['state']['model'];
+    }
+
+    this.bank_id = this.activateRoute.snapshot.paramMap.get('bank_id');
+  
+    this.loadData();
+  }
+
+  loadData() {
+    this.loading = true; 
+
+    this.bankService.view(this.bank_id).subscribe(bank => {
+      this.bank = bank; 
+
+      this.loading = false;
+
+    }, () => {
+
+      this.loading = false;
+    })
+  }
+
+  /**
+   * Loads Form in modal to update
+   */
+  async update() {
+    let modal = await this._modalCtrl.create({
+      component: BankFormPage, 
+      componentProps: {
+       model: this.bank,
+       bank_id: this.bank.bank_id
+      }
+    });
+    modal.onDidDismiss().then(e => {
+      if (e && e.data && e.data.model) {
+        this.bank = e.data.model; //  load data on update close
+      }
+    });
+    modal.present();
+  }
+}

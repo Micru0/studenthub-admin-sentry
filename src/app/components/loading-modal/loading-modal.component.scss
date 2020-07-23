@@ -1,0 +1,159 @@
+.text-list {
+    ion-skeleton-text {
+        height: 20px;
+        margin: 0;
+        padding: 0;
+        width: 50%;
+        display: block;
+    }
+
+    ion-item:nth-child(2) ion-skeleton-text {
+        width: 80%;
+    }
+
+    ion-item:nth-child(3) ion-skeleton-text {
+        width: 70%;
+    }
+
+    ion-item:nth-child(4) ion-skeleton-text {
+        width: 30%;
+    }
+}
+
+.staff-form {
+    ion-item:nth-child(1) {
+        h2 {
+            width: 50%;
+        }
+    }
+
+    ion-item:nth-child(2) {
+        h2 {
+            width: 70%;
+        }
+    }
+
+    ion-item:nth-child(3) {
+        h2 {
+            width: 60%;
+        }
+    }
+}
+
+.university-view {
+    ion-item:nth-child(1) {
+        h2 {
+            width: 50%;
+        }
+
+        p {
+            width: 40%;
+        }
+    }
+
+    ion-item:nth-child(2) {
+        h2 {
+            width: 70%;
+        }
+
+        p {
+            width: 30%;
+        }
+    }
+
+    ion-item:nth-child(3) {
+        h2 {
+            width: 60%;
+        }
+
+        p {
+            width: 80%;
+        }
+    }
+
+}
+
+.review-list {
+    h2 {
+        width: 40%;
+    }
+
+    p {
+        width: 70%;
+    }
+}
+
+.transfer-list {
+    .title {
+        height: 18px;
+        width: 200px;
+        margin: auto;
+    }
+
+    h2 {
+        height: 30px;
+        width: 350px;
+        margin: auto;
+        display: block;
+    }
+
+    .sub-title {
+        height: 18px;
+        width: 100px;
+        margin: 10px auto 0 auto;
+    }
+
+    .status ion-skeleton-text {
+        height: 32px;
+    }
+
+    p ion-skeleton-text {
+        width: 40%;
+        height: 18px;
+    }
+
+    .detail {
+        width: 80%;
+        height: 18px;
+    }
+}
+
+.transfer-detail {
+    h2 ion-skeleton-text {
+        height: 30px;
+        width: 270px;
+    }
+
+    ion-label {
+        ion-skeleton-text:nth-child(1) {
+            width: 40%;
+        }
+
+        ion-skeleton-text:nth-child(2) {
+            width: 50%;
+        }
+
+        ion-skeleton-text:nth-child(3) {
+            width: 62%;
+        }
+
+        ion-skeleton-text:nth-child(4) {
+            width: 72%;
+        }
+    }
+
+    .detail {
+        h1 ion-skeleton-text {
+            height: 31px;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h2 ion-skeleton-text {
+            height: 30px;
+            width: 200px;
+            margin: auto;
+        }
+    }
+}

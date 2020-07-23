@@ -1,2 +1,3 @@
-# payroll-admin
+# StudentHub-admin
+
 Frontend app for the Admin portal
