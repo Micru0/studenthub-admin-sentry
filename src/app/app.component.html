@@ -59,7 +59,8 @@
             </ion-item-divider>
 
             <ion-menu-toggle auto-hide="false">
-              <ion-item lines="none" *ngIf="totalPayableCandidate > 0" [routerLink]="'payable-candidates'">
+              <!-- *ngIf="totalPayableCandidate > 0" -->
+              <ion-item lines="none" [routerLink]="'payable-candidates'">
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>
                   Payable Candidates
