@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { AwsService } from 'src/app/providers/aws.service';
+import { EventService } from 'src/app/providers/event.service';
 //models
 import { Candidate } from 'src/app/models/candidate';
 
@@ -27,11 +28,16 @@ export class PayableCandidatesPage  {
   constructor(
     public router: Router,
     public aws: AwsService,
+    public eventService: EventService,
     public transferService: TransferService, 
   ) { }
 
   ngOnInit() {
     this.loadData();
+
+    this.eventService.updatePayable$.subscribe(() => {
+      this.loadData();
+    })
   }
 
   /**
