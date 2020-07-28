@@ -15,6 +15,7 @@ import { TransferCandidate } from 'src/app/models/transfer-candidate';
 export class CandidatePaymentSearchPage implements OnInit {
 
     public tc_id: number;
+    public transfer_confirmation_id: number; 
 
     public pageCount = 0;
     public currentPage = 1;
@@ -23,6 +24,8 @@ export class CandidatePaymentSearchPage implements OnInit {
     public transfersCandidate: TransferCandidate[];
 
     public loading: boolean = false; 
+    
+    public loading2: boolean = false; 
 
     constructor(
         public router: Router,
@@ -36,9 +39,8 @@ export class CandidatePaymentSearchPage implements OnInit {
 
     /**
      * Load Transfer List
-     * @param page
      */
-    async loadData(page: number) {
+    async loadData() {
 
         this.loading = true;
 
@@ -64,6 +66,38 @@ export class CandidatePaymentSearchPage implements OnInit {
         }, 
         () => { 
             this.loading = false;
+        });
+    }
+
+    /**
+     * load by confirmation id
+     */
+    loadByConfirmationId() {
+
+        this.loading2 = true;
+
+        this._candidateTransferService.loadByConfirmationId(this.transfer_confirmation_id).subscribe(async response => {
+
+            this.loading2 = false;
+
+            let responsedata = response.body;
+            
+            if (responsedata.length > 0) {
+                if (responsedata.length > 1) {
+                    this.TransferCandidateList(responsedata);
+                } else {
+                    this.TransferCandidateDetails(responsedata[0]);
+                }
+            } else {
+                let toast = await this.toastCtrl.create({
+                    message: 'No transfer candidate record with confirmation id ' + this.transfer_confirmation_id,
+                    duration: 3000
+                });
+                toast.present();
+            }
+        }, 
+        () => { 
+            this.loading2 = false;
         });
     }
 
