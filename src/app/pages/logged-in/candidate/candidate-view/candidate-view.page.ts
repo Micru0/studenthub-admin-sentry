@@ -52,7 +52,7 @@ export class CandidateViewPage implements OnInit {
     this.loadData();
 
     this.eventService.updatePayable$.subscribe((userEventData) => {
-      if(this.candidate && userEventData['candidate_id'] == this.candidate_id) {
+      if(this.candidate && (!userEventData || userEventData['candidate_id'] == this.candidate_id)) {
         this.loadTransfersData();
       }
     });
