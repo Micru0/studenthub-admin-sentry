@@ -19,9 +19,9 @@ export class CandidateTransferListPage implements OnInit {
 
   public tc_id;
 
-  public loading: boolean = false; 
-  
-  public processing: boolean = true;
+  public loading: boolean = false;
+
+  public processing: boolean = false;
 
   constructor(
     public router: Router,
@@ -66,9 +66,9 @@ export class CandidateTransferListPage implements OnInit {
         toast.present();
       }
     },
-      error => { },
-      () => { this.loading = false; }
-    );
+    error => {
+      this.loading = false;
+    });
   }
 
   /**
@@ -115,7 +115,7 @@ export class CandidateTransferListPage implements OnInit {
 
               //update review count 
               this._eventService.updatePayable$.next();;
- 
+
               //pop
               this.navCtrl.pop();
 
@@ -159,7 +159,7 @@ export class CandidateTransferListPage implements OnInit {
         {
           text: 'Yes',
           handler: async () => {
-            
+
             this.processing = true;
 
             this._candidateTransferService.markPaidAll(transferCandidateList).subscribe(async response => {
