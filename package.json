@@ -33,6 +33,7 @@
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.2.0",
     "@sentry/browser": "^5.19.2",
+    "aws-sdk": "^2.720.0",
     "cordova-plugin-cloud-settings": "^1.0.4",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-file-transfer": "^1.7.1",

@@ -13,14 +13,12 @@ import { EventService } from 'src/app/providers/event.service';
 })
 export class TransferPaidPage implements OnInit {
 
-  public candidateList: any = [];
-  public candidatesData: any = [];
   public candidatelistData;
-  public transfer_id: number;
-  public count: number = 0;
- 
+
   public markingPaid: boolean = false; 
   public loading: boolean = false;
+
+  public excel: string; 
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -33,30 +31,9 @@ export class TransferPaidPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    
-    // Load the passed model if available
-    if(window['state']) {
-      this.candidatelistData = window['state']['candidatelistData'];
-    }
+    this.excel = this.activatedRoute.snapshot.paramMap.get('excel');
 
-    if(!this.candidatelistData) {
-      this.loadData();
-    } else {
-      this._initForm();
-    }
-  }
-
-  _initForm() {
-    this.candidatelistData.forEach((value, index) => {
-      value.unPaidTransferCandidates.forEach((innervalue, innerindex) => {
-        this.candidateList[innervalue.tc_id] = innervalue.candidate_id;  
-        this.candidatesData[innervalue.tc_id] = {
-          'candidate_id' : innervalue.candidate_id,
-          'child_transfer_id' : innervalue.transfer_id,
-          'transfer_id' : value.transfer_id,
-        }
-      });
-    });
+    this.loadData();
   }
   
   /**
@@ -66,12 +43,10 @@ export class TransferPaidPage implements OnInit {
 
     this.loading = true;
     
-    this.transferService.listPayableCandidates().subscribe(response => {
+    this.transferService.importExcel(this.excel).subscribe(response => {
 
-      this.candidatelistData = response.body;
+      this.candidatelistData = response;
     
-      this._initForm();
-
       this.loading = false;
     },
     () => {
@@ -85,12 +60,13 @@ export class TransferPaidPage implements OnInit {
   async markPaid() {
     let candidate_ids = [];
 
-    this.candidateList.forEach((value, index) => {
+    this.candidatelistData.forEach((value, index) => {
         if(value != false) {
           candidate_ids.push({
-              'candidate_id':this.candidatesData[index].candidate_id,
-              'transfer_id':this.candidatesData[index].transfer_id,
-              'child_transfer_id':this.candidatesData[index].child_transfer_id,
+              'candidate_id':this.candidatelistData[index].candidate_id,
+              'transfer_id':this.candidatelistData[index].transfer_id,
+              'tc_id':this.candidatelistData[index].tc_id,
+              'transfer_confirmation_id':this.candidatelistData[index].transfer_confirmation_id,
             }
           );
         }
@@ -119,7 +95,7 @@ export class TransferPaidPage implements OnInit {
       //update review count 
       this._eventService.updatePayable$.next();
 
-      this.navCtrl.pop();
+      this.navCtrl.navigateRoot(['payable-candidates']);
 
       this.markingPaid = false;
 

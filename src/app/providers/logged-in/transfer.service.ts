@@ -102,6 +102,18 @@ export class TransferService {
   }
 
   /**
+   * import excel 
+   * @param {excelUrl} String
+   * @returns {Observable<any>}
+   */
+  importExcel(excelUrl: string): Observable<any> {
+    let url = `${this._transferEndpoint}/import-excel`;
+    return this._authhttp.post(url, {
+      excel: excelUrl
+    });
+  }
+
+  /**
    * Mark All candidates as paid 
    * @param {array} candidates
    * @returns {Observable<any>}
