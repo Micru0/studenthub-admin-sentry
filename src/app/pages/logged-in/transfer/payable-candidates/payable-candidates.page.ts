@@ -56,11 +56,11 @@ export class PayableCandidatesPage  {
   /**
    * Export Payable Candidates as Excel
    */
-  async export() {
+  async export(onlyPayable: boolean = false) {
     
     this.processing = true;
 
-    this.transferService.exportPayableCandidates().subscribe(response => {
+    this.transferService.exportPayableCandidates(onlyPayable).subscribe(response => {
       this.processing = false;
     });
   }

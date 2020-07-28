@@ -33,8 +33,13 @@ export class TransferService {
    * Download excel containing payable canidates info 
    * @returns {Observable<any>}
    */
-  exportPayableCandidates(): Observable<any> {
+  exportPayableCandidates(onlyPayable: boolean = false): Observable<any> {
     let url = `${this._transferEndpoint}/export-payable-candidates`;
+
+    if(onlyPayable) {
+      url += '?only-payable=true';
+    }
+    
     return this._authhttp.excelget(url, `Payable Candidates.xlsx`);
   }
 
