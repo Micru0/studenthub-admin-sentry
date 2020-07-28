@@ -126,6 +126,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/transfer/payable-candidates/payable-candidates.module').then( m => m.PayableCandidatesPageModule),
     canActivate: [AuthService],
   },
+
+  {
+    path: 'import-transfer-form',
+    loadChildren: () => import('./pages/logged-in/transfer/import-transfer-form/import-transfer-form.module').then(m => m.ImportTransferFormPageModule),
+    canActivate: [AuthService],
+  },
   {
     path: 'transfer-list',
     loadChildren: () => import('./pages/logged-in/transfer/transfer-list/transfer-list.module').then( m => m.TransferListPageModule),
@@ -168,7 +174,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { enableTracing: false, preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
 })

@@ -77,13 +77,10 @@ export class PayableCandidatesPage  {
    * Mark all supplied candidates as paid
    * @param candidates 
    */
-  markAllPaid(candidates) {
-    this.router.navigate(['transfer-paid'], {
-      state: {
-        'candidatelistData': candidates,
-      }
-    });
+  markAllPaid() {
+    this.router.navigate(['import-transfer-form']);
   }
+
   /**
    * Load Transfer Detail Page
    * @param transfer_id 
