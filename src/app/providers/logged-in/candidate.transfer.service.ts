@@ -73,7 +73,9 @@ export class CandidateTransferService {
    */
   paid(model: TransferCandidate): Observable<any>{
     let url = `${this._transferEndpoint}/paid/${model.tc_id}`;
-    return this._authhttp.patch(url, {});
+    return this._authhttp.patch(url, {
+      transfer_confirmation_id: model.transfer_confirmation_id
+    });
   }
 
   /**
