@@ -1,5 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import * as Sentry from '@sentry/browser';
@@ -58,15 +57,16 @@ export class SentryErrorhandlerService implements ErrorHandler {
 	}
 
 	handleError(error) {
-		const extractedError = this.extractError(error) || 'Handled unknown error';
-
-		const chunkFailedMessage = /Loading chunk [\d]+ failed/;
-
-		if (chunkFailedMessage.test(error.message)) {
-		  window.location.reload();
-		}
-		
 		if (environment.envName == 'prod' || environment.envName == 'dev') {
+			const extractedError = this.extractError(error) || 'Handled unknown error';
+
+			const chunkFailedMessage = /Loading chunk [\d]+ failed/;
+
+			if (chunkFailedMessage.test(error.message)) {
+			  window.location.reload();
+			}
+		
+
 			// Capture handled exception and send it to Sentry.
 			const eventId = Sentry.captureException(extractedError);
 
