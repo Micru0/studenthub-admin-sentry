@@ -13,6 +13,8 @@ export class EventService {
   public error404$ = new Subject();
   public error500$ = new Subject();
 
+  public transferUpdated$ = new Subject();
+
   public totalCandidateToReview$ = new Subject();
   public updatePayable$ = new Subject();
   

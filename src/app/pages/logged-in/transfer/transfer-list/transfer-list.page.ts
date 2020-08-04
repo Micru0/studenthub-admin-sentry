@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 //models
 import { Transfer } from 'src/app/models/transfer';
+import { EventService } from 'src/app/providers/event.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class TransferListPage implements OnInit {
   constructor(
     private router: Router,
     public activatedRoute: ActivatedRoute,
+    public eventService: EventService,
     public transferService: TransferService
   ) { 
   }
@@ -43,6 +45,10 @@ export class TransferListPage implements OnInit {
     } 
     
     this.loadData(this.currentPage);  
+
+    this.eventService.transferUpdated$.subscribe(() => {
+      this.loadData(1);
+    })
   }
 
   /**
