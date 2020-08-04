@@ -14,9 +14,16 @@
       <ion-item tappable *ngIf="transferCandidate.candidate" (click)="loadCandidateDetail(transferCandidate.candidate)">
         <ion-label class="label label-ios" *ngIf="transferCandidate.candidate" >
           <h2>{{transferCandidate.candidate.candidate_name}}</h2>
-          <small>{{ transferCandidate.store_name }} @ {{ transferCandidate.company_name }}</small><br/>
-          <small>Transfer ID {{ transferCandidate.transfer_id }}</small><br/>
-          <small>Candiadte Transfer ID {{ transferCandidate.tc_id }}</small>
+          <p>{{ transferCandidate.store_name }} @ {{ transferCandidate.company_name }}</p>
+          <small>
+            Transfer ID <ion-note>{{ transferCandidate.transfer_id }}</ion-note>
+          </small><br/>
+          <small>
+            Candiadte Transfer ID <ion-note>{{ transferCandidate.tc_id }}</ion-note>
+          </small><br/>
+          <small *ngIf="transferCandidate.transfer_confirmation_id">
+            Transfer Confirmation ID <ion-note>{{ transferCandidate.transfer_confirmation_id }}</ion-note>
+          </small>
         </ion-label>
       </ion-item>
 

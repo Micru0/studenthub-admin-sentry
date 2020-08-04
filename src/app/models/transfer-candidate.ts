@@ -2,6 +2,7 @@ import { Candidate } from './candidate';
 
 export class TransferCandidate {
     tc_id: number;
+    transfer_confirmation_id: any;
     transfer_id: number; 
     candidate_id: number;
     store_id: number;
@@ -21,6 +22,5 @@ export class TransferCandidate {
     total_paid: number;
     total_amount: number;
     profit: number;
-    
     candidate: Candidate;
 }

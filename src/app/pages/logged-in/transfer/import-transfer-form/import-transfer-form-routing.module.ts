@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { TransferPaidPage } from './transfer-paid.page';
+import { ImportTransferFormPage } from './import-transfer-form.page';
 
 const routes: Routes = [
   {
-    path: ':excel',
-    component: TransferPaidPage
+    path: '',
+    component: ImportTransferFormPage
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TransferPaidPageRoutingModule {}
+export class ImportTransferFormPageRoutingModule {}

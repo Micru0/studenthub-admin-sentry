@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { AwsService } from 'src/app/providers/aws.service';
+import { EventService } from 'src/app/providers/event.service';
 //models
 import { Candidate } from 'src/app/models/candidate';
 
@@ -15,6 +16,9 @@ import { Candidate } from 'src/app/models/candidate';
 export class PayableCandidatesPage  {
 
   public payableAmount: number = 0.0;
+  public payableMissingAmount: number = 0.0;
+  public payableAvailAmount: number = 0.0;
+
   public candidates: Candidate[] = [];
 
   public loading : boolean = false; 
@@ -24,11 +28,16 @@ export class PayableCandidatesPage  {
   constructor(
     public router: Router,
     public aws: AwsService,
+    public eventService: EventService,
     public transferService: TransferService, 
   ) { }
 
   ngOnInit() {
     this.loadData();
+
+    this.eventService.updatePayable$.subscribe(() => {
+      this.loadData();
+    })
   }
 
   /**
@@ -53,11 +62,11 @@ export class PayableCandidatesPage  {
   /**
    * Export Payable Candidates as Excel
    */
-  async export() {
+  async export(onlyPayable: boolean = false) {
     
     this.processing = true;
 
-    this.transferService.exportPayableCandidates().subscribe(response => {
+    this.transferService.exportPayableCandidates(onlyPayable).subscribe(response => {
       this.processing = false;
     });
   }
@@ -77,13 +86,10 @@ export class PayableCandidatesPage  {
    * Mark all supplied candidates as paid
    * @param candidates 
    */
-  markAllPaid(candidates) {
-    this.router.navigate(['transfer-paid'], {
-      state: {
-        'candidatelistData': candidates,
-      }
-    });
+  markAllPaid() {
+    this.router.navigate(['import-transfer-form']);
   }
+
   /**
    * Load Transfer Detail Page
    * @param transfer_id 
@@ -108,13 +114,28 @@ export class PayableCandidatesPage  {
   * calculating total payable amount.
   * @param candidates
   */
-  totalPayableAmount (candidates) {
+  totalPayableAmount (transfers) {
+    
     this.payableAmount = 0.0;
-    if (candidates) {
-      candidates.forEach(element => {
-        this.payableAmount = this.payableAmount + element.remainingPaymentTransferTotal;
-      });
+    this.payableAvailAmount = 0.0;
+    this.payableMissingAmount = 0.0;
+
+    if (!transfers) {
+      return null;
     }
+
+    transfers.forEach(transfer => {
+
+      this.payableAmount = this.payableAmount + transfer.remainingPaymentTransferTotal;
+
+      transfer.unPaidTransferCandidates.forEach(transferCandidate => {
+        if(!transferCandidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name) {
+          this.payableMissingAmount += transferCandidate.total_amount; 
+        } else {
+          this.payableAvailAmount += transferCandidate.total_amount;
+        }
+      }); 
+    }); 
   }
 
   /**

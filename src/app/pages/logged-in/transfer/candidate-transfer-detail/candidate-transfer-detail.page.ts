@@ -115,21 +115,45 @@ export class CandidateTransferDetailPage implements OnInit {
    * mark single transfer candiate as paid
    */
   async markPaid () {
+
+    let inputs = [];
+
+    if(!this.transferCandidate.transfer_confirmation_id) {
+      inputs = [
+        {
+          name: 'transfer_confirmation_id',
+          type: 'text',
+          required: true,
+          placeholder: 'Enter Confirmation ID'
+        },
+      ];
+    }
+
    const alert = await this.alertCtrl.create({
     header: 'Mark Paid',
     message: 'Are you sure you want to mark this transfer candidate as Paid?',
+    inputs: inputs,
     buttons: [
       {
         text: 'No',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
+        role: 'cancel'
       },
       {
         text: 'Yes',
-        handler: async () => {
+        handler: async (data) => {
           
+          //if no transfer confirmation id get it from input 
+
+          if(!this.transferCandidate.transfer_confirmation_id) {
+            this.transferCandidate.transfer_confirmation_id = data.transfer_confirmation_id;
+          }
+
+          //if no confirmation id provided 
+
+          if(!this.transferCandidate.transfer_confirmation_id) {
+            return null; 
+          }
+
           this.markingPaid = true;
 
           this._candidateTransferService.paid(this.transferCandidate).subscribe(async response => {

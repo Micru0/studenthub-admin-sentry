@@ -33,8 +33,13 @@ export class TransferService {
    * Download excel containing payable canidates info 
    * @returns {Observable<any>}
    */
-  exportPayableCandidates(): Observable<any> {
+  exportPayableCandidates(onlyPayable: boolean = false): Observable<any> {
     let url = `${this._transferEndpoint}/export-payable-candidates`;
+
+    if(onlyPayable) {
+      url += '?only-payable=true';
+    }
+    
     return this._authhttp.excelget(url, `Payable Candidates.xlsx`);
   }
 
@@ -99,6 +104,18 @@ export class TransferService {
   markUnlock(transfer: Transfer): Observable<any> {
     let url = `${this._transferEndpoint}/unlock/${transfer.transfer_id}`;
     return this._authhttp.patch(url, '');
+  }
+
+  /**
+   * import excel 
+   * @param {excelUrl} String
+   * @returns {Observable<any>}
+   */
+  importExcel(excelUrl: string): Observable<any> {
+    let url = `${this._transferEndpoint}/import-excel`;
+    return this._authhttp.post(url, {
+      excel: excelUrl
+    });
   }
 
   /**

@@ -22,11 +22,28 @@
       <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="tc_id"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-button [disabled]="loading" (click)="loadData(1)">
+      <ion-button [disabled]="loading || !tc_id" (click)="loadData()">
         <span *ngIf="!loading">Search</span>
         <ion-spinner *ngIf="loading"></ion-spinner>
       </ion-button>
     </ion-item>
-  </ion-card>
-  <!-- Transfer List -->
+  </ion-card> 
+
+  <br />
+
+  <!-- Transfer Filter -->
+  <ion-card>
+    <ion-item>
+      <ion-label color="primary" position="stacked">Transfer Confirmation ID</ion-label>
+      <ion-input type="text" placeholder="Transfer Confirmation ID" [(ngModel)]="transfer_confirmation_id"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-button [disabled]="loading2 || !transfer_confirmation_id" (click)="loadByConfirmationId()">
+        <span *ngIf="!loading2">Search</span>
+        <ion-spinner *ngIf="loading2"></ion-spinner>
+      </ion-button>
+    </ion-item>
+  </ion-card> 
+
+
 </ion-content>

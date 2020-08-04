@@ -37,6 +37,15 @@ export class CandidateTransferService {
     let url = `${this._transferEndpoint}?tc_id=${tc_id}`;
     return this._authhttp.get(url, true);
   }
+
+  /**
+   * load by confirmation id
+   * @param transfer_confirmation_id 
+   */
+  loadByConfirmationId(transfer_confirmation_id: number): Observable<any> {
+    let url = `${this._transferEndpoint}?transfer_confirmation_id=${transfer_confirmation_id}`;
+    return this._authhttp.get(url, true);
+  }
   
   /**
    * transfer candidate detail 
@@ -64,7 +73,9 @@ export class CandidateTransferService {
    */
   paid(model: TransferCandidate): Observable<any>{
     let url = `${this._transferEndpoint}/paid/${model.tc_id}`;
-    return this._authhttp.patch(url, {});
+    return this._authhttp.patch(url, {
+      transfer_confirmation_id: model.transfer_confirmation_id
+    });
   }
 
   /**
