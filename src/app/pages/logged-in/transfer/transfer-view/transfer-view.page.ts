@@ -49,7 +49,7 @@ export class TransferViewPage implements OnInit {
     public transferCandidateService: CandidateTransferService,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    private _eventService: EventService
+    private eventService: EventService
   ) {
     this.transfer_id = parseInt(this.activatedRoute.snapshot.paramMap.get('transfer_id'));
   }
@@ -201,7 +201,9 @@ export class TransferViewPage implements OnInit {
       toast.present();
 
       //update review count 
-      this._eventService.updatePayable$.next();
+      this.eventService.updatePayable$.next();
+
+      this.eventService.transferUpdated$.next();
 
       this.navCtrl.pop();
 
@@ -217,6 +219,8 @@ export class TransferViewPage implements OnInit {
 
     this.transferService.markUnlock(this.transfer).subscribe(response => {
       
+      this.eventService.transferUpdated$.next();
+
       this.navCtrl.pop();
       
       this.processing = false;
@@ -251,6 +255,8 @@ export class TransferViewPage implements OnInit {
               });
               toast.present();
 
+              this.eventService.transferUpdated$.next();
+              
               this.navCtrl.pop();
 
               this.processing = false;
