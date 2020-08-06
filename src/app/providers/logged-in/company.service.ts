@@ -23,7 +23,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   list(page: number): Observable<any>{
-    let url = this._companyEndpoint + '?page=' + page;
+    let url = this._companyEndpoint + '?page=' + page + '&expand=files';
     return this._authhttp.get(url, true);
   }
 
@@ -80,7 +80,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(model: Company): Observable<any>{
-    let url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores`;
+    let url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files`;
     return this._authhttp.get(url);
   }  
 

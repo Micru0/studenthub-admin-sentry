@@ -2,7 +2,13 @@ import {NgModule, APP_INITIALIZER, ErrorHandler} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
+
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { IOSFilePicker } from '@ionic-native/file-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
+
+
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -53,8 +59,11 @@ export function startupServiceFactory(authService) {
       deps: [AuthService],
       multi: true
     },
-    SwUpdate,
     File,
+    FileChooser,
+    FilePath,
+    IOSFilePicker,
+    SwUpdate,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: SentryErrorhandlerService }
   ],
