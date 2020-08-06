@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   serviceWorker: false,
   envName: 'khalid',
+  cloudinaryUrl: 'https://res.cloudinary.com/studenthub/image/upload/c_thumb,w_200,h_200,g_face/v1596525812/candidate-photo/',
   apiEndpoint: 'http://localhost/~BAWES/payroll/payroll/admin/web/v1',
   permanentBucketUrl: "https://studenthub-uploads-dev-server.s3.amazonaws.com/"
 };

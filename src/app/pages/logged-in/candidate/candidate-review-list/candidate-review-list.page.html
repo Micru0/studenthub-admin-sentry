@@ -23,9 +23,9 @@
   <section>
     <ion-list>
       <ion-item *ngFor="let candidate of candidates" tappable (click)="rowSelected(candidate)">
-        <ion-avatar slot="start" *ngIf="candidate.candidate_personal_photo_thumb">
-          <img *ngIf="candidate.candidate_personal_photo_thumb" src="{{ aws.permanentBucketUrl + candidate.candidate_personal_photo_thumb }}" (error)="loadLogo($event,candidate)">
-          <img *ngIf="!candidate.candidate_personal_photo_thumb" src="/assets/icon.png">
+        <ion-avatar slot="start" *ngIf="candidate.candidate_personal_photo">
+          <img *ngIf="candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + candidate.candidate_personal_photo }}" (error)="loadLogo($event,candidate)">
+          <img *ngIf="!candidate.candidate_personal_photo" src="/assets/icon.png">
         </ion-avatar>
         <ion-label>
           <h3>{{ candidate.candidate_name }}</h3>

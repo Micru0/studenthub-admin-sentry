@@ -131,8 +131,8 @@
 
           <ion-item lines="none">
             <ion-avatar slot="start">
-              <img *ngIf="resource.candidate.candidate_personal_photo_thumb" src="{{ aws.permanentBucketUrl + resource.candidate.candidate_personal_photo_thumb }}" (error)="loadLogo($event,resource.candidate)">
-              <img *ngIf="!resource.candidate.candidate_personal_photo_thumb" src="/assets/icon.png">
+              <img *ngIf="resource.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + resource.candidate.candidate_personal_photo }}" (error)="loadLogo($event,resource.candidate)">
+              <img *ngIf="!resource.candidate.candidate_personal_photo" src="/assets/icon.png">
             </ion-avatar>
             
             <ion-label>
