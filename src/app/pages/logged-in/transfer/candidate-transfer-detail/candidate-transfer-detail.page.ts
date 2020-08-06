@@ -43,9 +43,9 @@ export class CandidateTransferDetailPage implements OnInit {
 
     this.tc_id = this.activatedRoute.snapshot.paramMap.get('tc_id');
 
-    if(!this.transferCandidate) {
+    //if(!this.transferCandidate) {
       this.loadData();
-    }
+    //}
   }
 
   ionViewWillEnter() {}
