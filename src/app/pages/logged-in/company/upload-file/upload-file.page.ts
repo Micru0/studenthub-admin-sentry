@@ -1,13 +1,14 @@
 import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AlertController, ModalController, Platform } from '@ionic/angular';
+import {AlertController, ModalController, Platform, ToastController} from '@ionic/angular';
 
 // Services
 import { SentryErrorhandlerService } from 'src/app/providers/sentry.errorhandler.service';
 import { FilepickerService } from 'src/app/providers/logged-in/filepicker.service';
 import { AwsService } from 'src/app/providers/aws.service';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {File} from "../../../../models/file";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {File} from '../../../../models/file';
+import {CompanyService} from '../../../../providers/logged-in/company.service';
 
 @Component({
   selector: 'app-upload-file',
@@ -18,15 +19,18 @@ export class UploadFilePage implements OnInit, OnDestroy {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  public company: File;
+  public fileModel: File = new File();
+  public company;
 
-  public progress;
+  public progress = null;
   public form: FormGroup;
   public loading = false;
 
   public dirty = false;
+  public saving = false;
 
   public currentTarget;
+  public tempLocation;
 
   public filePickSubscription: Subscription;
   public browserUploadSubscription: Subscription;
@@ -35,18 +39,19 @@ export class UploadFilePage implements OnInit, OnDestroy {
   constructor(
     public platform: Platform,
     public modalCtrl: ModalController,
+    public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public fb: FormBuilder,
-    // public accountService: AccountS,
-    // public translateService: Tran,
+    public companyService: CompanyService,
     public sentryService: SentryErrorhandlerService,
     public filepickerService: FilepickerService,
     public awsService: AwsService
   ) {
-    this._initForm();
+
   }
 
   ngOnInit() {
+    this._initForm();
   }
 
   ngOnDestroy() {
@@ -215,25 +220,12 @@ export class UploadFilePage implements OnInit, OnDestroy {
       if (this.fileInput && this.fileInput.nativeElement) {
         this.fileInput.nativeElement.value = null;
       }
-
       this.dirty = true;
-
-      // this.uploadSubscription = this.accountService.updateResume(event.Key).subscribe(res => {
-      //
-      //   this.progress = false;
-      //
-      //   if (res.operation == 'success') {
-      //
-      //     this.candidate.candidate_resume = res.candidate_resume;
-      //     this.dismiss();
-      //   }
-      //
-      // }, () => {
-      //   this.progress = false;
-      // });
-
-      // tempLocation = event.Location;
-
+      this.form.controls.file.setValue(event.Key);
+      this.form.controls.file.markAsDirty();
+      this.fileModel.file_s3_path = event.Key;
+      this.tempLocation = event.Location;
+      this.progress = false;
     } else {
       this.currentTarget = event;
     }
@@ -268,31 +260,62 @@ export class UploadFilePage implements OnInit, OnDestroy {
   /**
    * return extension of uploaded file
    */
-  // get uploadedFileExtension() {
-  //   const a = this.company.candidate_resume.split('.');
-  //
-  //   if (a) {
-  //     return a[a.length - 1];
-  //   }
-  // }
+  get uploadedFileExtension() {
+    const a = this.fileModel.file_s3_path.split('.');
+
+    if (a) {
+      return a[a.length - 1];
+    }
+  }
 
   /**
    * init form
    */
   _initForm() {
-
-    if (!this.company.file_uuid) { // Show Create Form
       this.form = this.fb.group({
         title: ['', Validators.required],
-        description: [''],
+        desc: [''],
         file: ['', Validators.required]
       });
-    } else {
-      this.form = this.fb.group({
-        title: [this.company.file_title, Validators.required],
-        description: [this.company.file_description],
-        file: [this.company.file_s3_path, Validators.required]
-      });
-    }
+  }
+
+  async save(){
+    this.saving = true;
+    this.fileModel.file_title = this.form.value.title;
+    this.fileModel.file_description = this.form.value.desc;
+    this.fileModel.company_id = this.company.company_id;
+    this.companyService.createFile(this.fileModel).subscribe( async jsonResponse => {
+      this.saving = false;
+
+      // On Success
+      if (jsonResponse.operation == 'success') {
+
+        // open view page
+        this.dismiss({refresh: true});
+
+        const toast = await this.toastCtrl.create({
+          message: jsonResponse.message,
+          duration: 3000
+        });
+        toast.present();
+      }
+
+      // On Failure
+      if (jsonResponse.operation == 'error') {
+        let html = '';
+
+        for (const i in jsonResponse.message) {
+          for (const j of jsonResponse.message[i]) {
+            html += j + '<br />';
+          }
+        }
+
+        const prompt = await this.alertCtrl.create({
+          message: html,
+          buttons: ['Ok']
+        });
+        prompt.present();
+      }
+    });
   }
 }

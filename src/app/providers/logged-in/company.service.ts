@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthHttpService } from './authhttp.service';
 // Models
 import { Company } from '../../models/company';
+import {File} from '../../models/file';
 
 
 /**
@@ -14,7 +15,7 @@ import { Company } from '../../models/company';
 })
 export class CompanyService {
 
-  private _companyEndpoint: string = "/companies";
+  private _companyEndpoint = '/companies';
 
   constructor(private _authhttp: AuthHttpService) { }
 
@@ -23,7 +24,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   list(page: number): Observable<any>{
-    let url = this._companyEndpoint + '?page=' + page + '&expand=files';
+    const url = this._companyEndpoint + '?page=' + page + '&expand=files';
     return this._authhttp.get(url, true);
   }
 
@@ -33,32 +34,32 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   create(model: Company): Observable<any>{
-    let postUrl = `${this._companyEndpoint}`;
-    let params = {
-      "parent": model.parent_company_id,
-      "name": model.company_name,
-      "email": model.company_email,
-      "password": model.company_password_hash,
-      "bonus_commission": model.company_bonus_commission,
-      "hourly_rate": model.company_hourly_rate
+    const postUrl = `${this._companyEndpoint}`;
+    const params = {
+      parent: model.parent_company_id,
+      name: model.company_name,
+      email: model.company_email,
+      password: model.company_password_hash,
+      bonus_commission: model.company_bonus_commission,
+      hourly_rate: model.company_hourly_rate
     };
 
     return this._authhttp.post(postUrl, params);
   }
-  
+
   /**
    * Update company
    * @param {Company} model
    * @returns {Observable<any>}
    */
   update(model: Company): Observable<any>{
-    let url = `${this._companyEndpoint}/${model.company_id}`;
-    let params = {
-      "parent": model.parent_company_id,
-      "name": model.company_name,
-      "email": model.company_email,
-      "bonus_commission": model.company_bonus_commission,
-      "hourly_rate": model.company_hourly_rate
+    const url = `${this._companyEndpoint}/${model.company_id}`;
+    const params = {
+      parent: model.parent_company_id,
+      name: model.company_name,
+      email: model.company_email,
+      bonus_commission: model.company_bonus_commission,
+      hourly_rate: model.company_hourly_rate
     };
 
     return this._authhttp.patch(url, params);
@@ -70,7 +71,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   delete(model: Company): Observable<any>{
-    let url = `${this._companyEndpoint}/${model.company_id}`;
+    const url = `${this._companyEndpoint}/${model.company_id}`;
     return this._authhttp.delete(url);
   }
 
@@ -80,9 +81,9 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(model: Company): Observable<any>{
-    let url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files`;
+    const url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files`;
     return this._authhttp.get(url);
-  }  
+  }
 
   /**
    * Reset Password
@@ -90,7 +91,34 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   resetPassword(model: Company): Observable<any> {
-    let url = `${this._companyEndpoint}/reset-password/${model.company_id}`;
+    const url = `${this._companyEndpoint}/reset-password/${model.company_id}`;
     return this._authhttp.patch(url, {});
+  }
+
+
+  /**
+   * create file for company
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  createFile(model: File): Observable<any>{
+    const url = `${this._companyEndpoint}/file-create/${model.company_id}`;
+    const params = {
+      file_title: model.file_title,
+      file_description: model.file_description,
+      file_s3_path: model.file_s3_path,
+    };
+
+    return this._authhttp.post(url, params);
+  }
+
+  /**
+   * Deletes company
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  deleteDoc(model: File): Observable<any>{
+    const url = `${this._companyEndpoint}/remove-file/${model.file_uuid}`;
+    return this._authhttp.delete(url);
   }
 }

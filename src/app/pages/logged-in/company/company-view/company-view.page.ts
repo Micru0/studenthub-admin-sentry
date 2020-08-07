@@ -7,6 +7,8 @@ import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
+import {AwsService} from "../../../../providers/aws.service";
+import {File} from "../../../../models/file";
 
 @Component({
   selector: 'app-company-view',
@@ -34,6 +36,7 @@ export class CompanyViewPage implements OnInit {
     public companyService: CompanyService,
     public storeService: StoreService,
     private _toastCtrl: ToastController,
+    private aws: AwsService,
   ) { }
 
   ngOnInit() {
@@ -257,6 +260,62 @@ export class CompanyViewPage implements OnInit {
     confirm.present();
   }
 
+  /**
+   * Delete the provided model
+   */
+  async deleteDoc(ev, file: File) {
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const confirm = await this._alertCtrl.create({
+      header: 'Delete Document?',
+      message: 'Do you want to delete this Document?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.deleting = true;
+
+            this.companyService.deleteDoc(file).subscribe(async jsonResp => {
+
+              // On Success
+              if (jsonResp.operation == 'success') {
+                const toast = await this._toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
+
+                this.loadData(true);
+              }
+
+              // On Failure
+              if (jsonResp.operation == 'error') {
+
+                this.deleting = false;
+
+                // failer text
+                const prompt = await this._alertCtrl.create({
+                  header: 'Deletion Error!',
+                  message: jsonResp.message,
+                  buttons: ['Ok']
+                });
+                prompt.present();
+              }
+
+            });
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   async uploadDocument() {
     const modal = await this._modalCtrl.create({
       component: UploadFilePage,
@@ -265,5 +324,10 @@ export class CompanyViewPage implements OnInit {
       }
     });
     modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data && data.refresh) {
+      this.loadData();
+    }
   }
 }
