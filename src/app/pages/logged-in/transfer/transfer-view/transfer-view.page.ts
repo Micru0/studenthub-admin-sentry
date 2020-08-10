@@ -345,6 +345,25 @@ export class TransferViewPage implements OnInit {
       }
     });
   }
+
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date)
+      return new Date(date.replace(/-/g, '/') + ' UTC');
+  }
+
+  /**
+   * click me to do nothing
+   * @param event 
+   */
+  doNothing(event) {
+   // event.preventDefault();
+    event.stopPropagation();
+  }
+
   /**
    * @param $event
    * @param candidate

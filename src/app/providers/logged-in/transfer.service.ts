@@ -121,12 +121,14 @@ export class TransferService {
   /**
    * Mark All candidates as paid 
    * @param {array} candidates
+   * @param {string} excel
    * @returns {Observable<any>}
    */
-  markPaidAll(candidates: any): Observable<any> {
+  markPaidAll(candidates: any, excel: string): Observable<any> {
     let url = `${this._transferEndpoint}/mark-paid-all`;
     let params = {
       "candidates": candidates,
+      "excel": excel
     };
     return this._authhttp.patch(url, params);
   }

@@ -2,6 +2,7 @@ import { Candidate } from './candidate';
 import { Bank } from './bank';
 import { Store } from './store';
 import { Company } from './company';
+import { transferFile } from './transfer-file';
 
 export class TransferCandidate {
     tc_id: number;
@@ -12,6 +13,7 @@ export class TransferCandidate {
     company_id: number;
     bank_id: number;
     transfer_confirmation_id: any;
+    transfer_file_id: any;
     transfer_benef_name: any;
     transfer_benef_iban: any;
     company_name: string;
@@ -32,4 +34,5 @@ export class TransferCandidate {
     bank: Bank;
     store: Store;
     company: Company;
+    transferFile: transferFile;
 }
