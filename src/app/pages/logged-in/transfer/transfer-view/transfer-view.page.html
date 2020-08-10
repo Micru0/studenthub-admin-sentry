@@ -191,6 +191,15 @@
                 <b>Account name</b> <br /> 
                 {{ resource.transfer_benef_name }} 
               </ion-col>
+
+              <ion-col *ngIf="resource.transferFile" size="12" size-sm="6" size-md="6" size-lg="6">
+                <b>Transfer File</b> <br /> 
+                <a [href]="aws.permanentBucketUrl + resource.transferFile.transfer_file_s3_path" (click)="doNothing($event)">
+                  {{ resource.transferFile.transfer_file_s3_path }}
+                </a> <br /> 
+                @ {{ toDate(resource.transferFile.transfer_file_created_at) }}
+              </ion-col>
+
             </ion-row>
           </ion-grid>
 

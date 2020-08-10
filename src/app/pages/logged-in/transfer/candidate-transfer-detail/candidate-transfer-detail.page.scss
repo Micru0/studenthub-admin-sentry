@@ -40,3 +40,15 @@ h2 {
     color: #fff;
     padding: 7px;
 }
+
+ion-card {
+    
+    ion-card-title ion-badge {
+        float: right;
+        margin: 4px;
+    }
+
+    ion-item:last-child {
+        --inner-border-width: 0;
+    }
+}

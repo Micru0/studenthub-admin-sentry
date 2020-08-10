@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Candidate } from 'src/app/models/candidate';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
+//services
+import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 import { EventService } from 'src/app/providers/event.service';
+import { AwsService } from 'src/app/providers/aws.service';
+//models
+import { Candidate } from 'src/app/models/candidate';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
+
 
 @Component({
   selector: 'app-candidate-transfer-detail',
@@ -30,6 +34,7 @@ export class CandidateTransferDetailPage implements OnInit {
     public _candidateTransferService: CandidateTransferService,
     private alertCtrl: AlertController,
     public toastCtrl: ToastController,
+    public aws: AwsService,
     private _eventService: EventService
   ) { }
 
@@ -67,7 +72,9 @@ export class CandidateTransferDetailPage implements OnInit {
   /**
    * mark individual as unpaid
    */
-  async markUnPaid () {
+  async markUnPaid (e) {
+    e.preventDefault();
+    e.stopPropagation();
 
    const alert = await this.alertCtrl.create({
     header: 'Mark Unpaid',
@@ -114,8 +121,10 @@ export class CandidateTransferDetailPage implements OnInit {
   /**
    * mark single transfer candiate as paid
    */
-  async markPaid () {
-
+  async markPaid (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
     let inputs = [];
 
     if(!this.transferCandidate.transfer_confirmation_id) {
@@ -192,6 +201,24 @@ export class CandidateTransferDetailPage implements OnInit {
     });
   }
   
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date)
+      return new Date(date.replace(/-/g, '/') + ' UTC');
+  }
+  
+  /**
+   * click me to do nothing
+   * @param event 
+   */
+  doNothing(event) {
+    //event.preventDefault();
+    event.stopPropagation();
+  }
+
   /**
    * candidate payable amount
    * @param transferCandidate 
