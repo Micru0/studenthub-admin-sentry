@@ -43,6 +43,12 @@
         </ion-button>
       </ion-item>
 
+      <ion-item>
+        <ion-button expand="full" color="danger" (click)="uploadDocument()">
+          <span>Upload Document</span>
+        </ion-button>
+      </ion-item>
+
       <ion-item-divider color="light">
         <ion-label>
           Payment
@@ -61,6 +67,29 @@
         </ion-label>
       </ion-item>
 
+      <div *ngIf="company.files && company.files.length > 0">
+        <ion-item-divider color="light">
+          <ion-label>
+            Uploaded Document
+          </ion-label>
+        </ion-item-divider>
+
+        <ion-item *ngFor="let file of company.files">
+          <ion-label>
+            <ion-icon name="caret-forward-outline"></ion-icon> &nbsp;
+            <a target="_blank" (click)="$event.stopPropagation()"
+               href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
+              {{file.file_title}}
+            </a>
+          </ion-label>
+          <ion-buttons slot="end">
+            <ion-button color="danger"  (click)="deleteDoc($event, file)">
+              <ion-icon slot="start" name="trash-outline"></ion-icon>
+              Delete
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </div>
     </section>
 
     <!-- If Subcompany -->

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
-//models
+// models
 import { Company } from 'src/app/models/company';
-//services
+// services
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
-//pages
+// pages
 import { CompanyFormPage } from '../company-form/company-form.page';
 
 
@@ -21,9 +21,9 @@ export class CompanyListPage implements OnInit {
 
   public companies: Company[];
 
-  public deleting: boolean = false; 
-  
-  public loading: boolean = false; 
+  public deleting = false;
+
+  public loading = false;
 
   constructor(
     public router: Router,
@@ -40,49 +40,51 @@ export class CompanyListPage implements OnInit {
 
   /**
    * load company data
-   * @param page 
+   * @param page
+   * @param silent
    */
   async loadData(page: number, silent = false) {
-   
-    if(!silent)
+
+    if (!silent) {
       this.loading = true;
+    }
 
     this.companyService.list(page).subscribe(response => {
 
-      this.loading = false; 
-      this.deleting = false; 
-                
+      this.loading = false;
+      this.deleting = false;
+
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
       this.companies = response.body;
-    }, () => { 
-      this.loading = false; 
-      this.deleting = false; 
+    }, () => {
+      this.loading = false;
+      this.deleting = false;
     });
   }
 
   /**
    * load more companies on scroll to bottom
-   * @param event 
+   * @param event
    */
   doInfinite(event) {
 
     this.currentPage++;
-    
+
     this.loading = true;
 
     this.companyService.list(this.currentPage).subscribe(response => {
 
       this.loading = false;
-                
+
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
       this.companies = this.companies.concat(response.body);
 
       event.target.complete();
-    }, () => { 
+    }, () => {
       this.loading = false;
     });
   }
@@ -93,7 +95,7 @@ export class CompanyListPage implements OnInit {
   rowSelected(model) {
     this.router.navigate(['company-view', model.company_id], {
       state: {
-        'model': model
+        model: model
       }
     });
   }
@@ -102,7 +104,7 @@ export class CompanyListPage implements OnInit {
    * Loads the create page
    */
   async create() {
-    let modal = await this._modalCtrl.create({
+    const modal = await this._modalCtrl.create({
       component: CompanyFormPage,
       componentProps: {
         model: new Company(),
@@ -123,10 +125,10 @@ export class CompanyListPage implements OnInit {
    */
   async delete(ev, company: Company) {
 
-    ev.preventDefault(); 
+    ev.preventDefault();
     ev.stopPropagation();
 
-    let confirm = await this._alertCtrl.create({
+    const confirm = await this._alertCtrl.create({
       header: 'Delete Company?',
       message: 'Do you want to delete this Company?',
       buttons: [
@@ -134,30 +136,30 @@ export class CompanyListPage implements OnInit {
           text: 'Yes',
           handler: () => {
 
-            this.deleting = true; 
-                
+            this.deleting = true;
+
             this.companyService.delete(company).subscribe(async jsonResp => {
-               
+
               // On Success
-              if (jsonResp.operation == "success") {
-                let toast = await this._toastCtrl.create({
+              if (jsonResp.operation == 'success') {
+                const toast = await this._toastCtrl.create({
                   message: jsonResp.message,
                   duration: 3000
                 });
                 toast.present();
-                
+
                 this.loadData(this.currentPage, true);
               }
 
               // On Failure
-              if (jsonResp.operation == "error") {
-                
-                this.deleting = false; 
+              if (jsonResp.operation == 'error') {
 
-                let prompt = await this._alertCtrl.create({
+                this.deleting = false;
+
+                const prompt = await this._alertCtrl.create({
                   header: 'Deletion Error!',
                   message: jsonResp.message,
-                  buttons: ["Ok"]
+                  buttons: ['Ok']
                 });
                 prompt.present();
               }
