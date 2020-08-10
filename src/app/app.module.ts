@@ -2,7 +2,13 @@ import {NgModule, APP_INITIALIZER, ErrorHandler} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
+
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { IOSFilePicker } from '@ionic-native/file-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
+
+
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -19,7 +25,8 @@ import { CompanyFormPageModule } from './pages/logged-in/company/company-form/co
 import { StaffFormPageModule } from './pages/logged-in/staff/staff-form/staff-form.module';
 import { UniversityFormPageModule } from './pages/logged-in/university/university-form/university-form.module';
 import { UpdateAlertModule } from './components/update-alert/update-alert.module';
-import {SentryErrorhandlerService} from './providers/sentry.errorhandler.service';
+import { SentryErrorhandlerService } from './providers/sentry.errorhandler.service';
+import { UploadFilePageModule } from './pages/logged-in/company/upload-file/upload-file.module';
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -44,6 +51,7 @@ export function startupServiceFactory(authService) {
     StaffFormPageModule,
     UniversityFormPageModule,
     UpdateAlertModule,
+    UploadFilePageModule
   ],
   providers: [
     {
@@ -53,8 +61,11 @@ export function startupServiceFactory(authService) {
       deps: [AuthService],
       multi: true
     },
-    SwUpdate,
     File,
+    FileChooser,
+    FilePath,
+    IOSFilePicker,
+    SwUpdate,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: SentryErrorhandlerService }
   ],

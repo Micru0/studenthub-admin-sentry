@@ -1,13 +1,21 @@
 import { Candidate } from './candidate';
+import { Bank } from './bank';
+import { Store } from './store';
+import { Company } from './company';
+import { transferFile } from './transfer-file';
 
 export class TransferCandidate {
     tc_id: number;
-    transfer_confirmation_id: any;
     transfer_id: number; 
     candidate_id: number;
     store_id: number;
     store_name: string;
     company_id: number;
+    bank_id: number;
+    transfer_confirmation_id: any;
+    transfer_file_id: any;
+    transfer_benef_name: any;
+    transfer_benef_iban: any;
     company_name: string;
     company_email: string;
     candidate_hourly_rate: number;
@@ -23,4 +31,8 @@ export class TransferCandidate {
     total_amount: number;
     profit: number;
     candidate: Candidate;
+    bank: Bank;
+    store: Store;
+    company: Company;
+    transferFile: transferFile;
 }

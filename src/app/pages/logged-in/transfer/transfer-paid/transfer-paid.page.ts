@@ -84,7 +84,7 @@ export class TransferPaidPage implements OnInit {
 
     this.markingPaid = true;
 
-    this.transferService.markPaidAll(candidate_ids).subscribe(async response => {
+    this.transferService.markPaidAll(candidate_ids, this.excel).subscribe(async response => {
 
       let toast = await this.toastCtrl.create({
         message: response.message,

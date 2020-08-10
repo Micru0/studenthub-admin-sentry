@@ -54,7 +54,7 @@ export class CandidateService {
    * @returns {Observable<any>}
    */
   transfers(id:number): Observable<any> {
-    let url = this._candidateEndpoint + '/transfers/' + id;
+    let url = this._candidateEndpoint + '/transfers/' + id + '&expand=bank';
     return this._authhttp.get(url);
   }
 

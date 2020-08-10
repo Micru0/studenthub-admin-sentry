@@ -6,6 +6,7 @@ import { TransferCandidate } from 'src/app/models/transfer-candidate';
 //services
 import { EventService } from 'src/app/providers/event.service';
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
+import { AwsService } from 'src/app/providers/aws.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class CandidateTransferListPage implements OnInit {
     public _candidateTransferService: CandidateTransferService,
     private alertCtrl: AlertController,
     public toastCtrl: ToastController,
+    public aws: AwsService,
     private _eventService: EventService
   ) {
     // Passed from Dashboard to show filtered status results
@@ -197,6 +199,24 @@ export class CandidateTransferListPage implements OnInit {
         'transferCandidate': transferCandidate
       }
     });
+  }
+
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date)
+      return new Date(date.replace(/-/g, '/') + ' UTC');
+  }
+  
+  /**
+   * click me to do nothing
+   * @param event 
+   */
+  doNothing(event) {
+    //event.preventDefault();
+    event.stopPropagation();
   }
 
   /**

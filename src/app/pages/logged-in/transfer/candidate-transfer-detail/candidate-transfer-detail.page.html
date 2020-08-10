@@ -9,40 +9,100 @@
 </ion-header>
 <ion-content>
 
-  <section *ngIf="transferCandidate">
-    <div>
-      <ion-item tappable *ngIf="transferCandidate.candidate" (click)="loadCandidateDetail(transferCandidate.candidate)">
-        <ion-label class="label label-ios" *ngIf="transferCandidate.candidate" >
-          <h2>{{transferCandidate.candidate.candidate_name}}</h2>
-          <p>{{ transferCandidate.store_name }} @ {{ transferCandidate.company_name }}</p>
-          <small>
-            Transfer ID <ion-note>{{ transferCandidate.transfer_id }}</ion-note>
-          </small><br/>
-          <small>
-            Candiadte Transfer ID <ion-note>{{ transferCandidate.tc_id }}</ion-note>
-          </small><br/>
-          <small *ngIf="transferCandidate.transfer_confirmation_id">
-            Transfer Confirmation ID <ion-note>{{ transferCandidate.transfer_confirmation_id }}</ion-note>
-          </small>
-        </ion-label>
-      </ion-item>
+  <section *ngIf="transferCandidate && transferCandidate.candidate">
 
-      <div class="ion-text-center">
-        <h1>KWD  {{ candidatePayableAmount(transferCandidate) | number }}</h1>
-        <h2 ion-text  *ngIf="transferCandidate.paid == 1" color="primary">Paid</h2>
-        <h2 ion-text  *ngIf="transferCandidate.paid == 0"  color="danger">UnPaid</h2>
+    <ion-card tappable (click)="loadCandidateDetail(transferCandidate.candidate)">
+      <ion-card-header>
 
-        <ion-button [disabled]="markingUnPaid || candidatePayableAmount(transferCandidate) == 0" *ngIf="transferCandidate.paid == 1" (click)="markUnPaid()">
+        <ion-card-title>
+          
+          {{ transferCandidate.candidate.candidate_name}}
+
+          <ion-badge color="success" *ngIf="transferCandidate.paid == 1">Paid</ion-badge>
+          <ion-badge color="dark" *ngIf="transferCandidate.paid == 0">Unpaid</ion-badge>
+        
+        </ion-card-title>
+
+        <ion-card-subtitle>{{ transferCandidate.store_name }} @ {{ transferCandidate.company_name }}</ion-card-subtitle>
+
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-item>
+          <ion-label>
+            <h5>Amount</h5>
+            <p>
+              KWD {{ candidatePayableAmount(transferCandidate) | number }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h5>Transfer Candidate ID</h5>
+            <p>
+              {{ transferCandidate.tc_id}}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="transferCandidate.transfer_confirmation_id">
+          <ion-label>
+            <h5>Transfer Confirmation ID</h5>
+            <p>
+              {{ transferCandidate.transfer_confirmation_id }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="transferCandidate.bank">
+          <ion-label>
+            <h5>Bank</h5>
+            <p>
+              {{ transferCandidate.transfer_benef_iban }} @ {{ transferCandidate.bank.bank_name }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="transferCandidate.transfer_benef_name">
+          <ion-label>
+            <h5>Account name</h5>
+            <p>
+              {{ transferCandidate.transfer_benef_name }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="transferCandidate.transferFile">
+          <ion-label>
+            <h5>Transfer File</h5>
+            <a [href]="aws.permanentBucketUrl + transferCandidate.transferFile.transfer_file_s3_path"
+              (click)="doNothing($event)">
+              {{ transferCandidate.transferFile.transfer_file_s3_path }}
+            </a>
+            <p>
+              @ {{ toDate(transferCandidate.transferFile.transfer_file_created_at) }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+      </ion-card-content>
+      <ion-card-header>
+
+        <ion-button [disabled]="markingUnPaid || candidatePayableAmount(transferCandidate) == 0"
+          *ngIf="transferCandidate.paid == 1" (click)="markUnPaid($event)">
           <ion-spinner *ngIf="markingUnPaid"></ion-spinner>
           <span *ngIf="!markingUnPaid">Mark Unpaid</span>
         </ion-button>
 
-        <ion-button [disabled]="markingPaid" *ngIf="transferCandidate.paid == 0" (click)="markPaid()">
+        <ion-button [disabled]="markingPaid" *ngIf="transferCandidate.paid == 0" (click)="markPaid($event)">
           <span *ngIf="!markingPaid">Mark As Paid</span>
           <ion-spinner *ngIf="markingPaid"></ion-spinner>
         </ion-button>
-      </div>
-    </div>
+ 
+      </ion-card-header>
+    </ion-card>
+
   </section>
 
   <loading-modal [loading]="loading" type="transfer-detail"></loading-modal>

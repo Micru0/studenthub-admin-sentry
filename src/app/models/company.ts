@@ -9,4 +9,5 @@ export class Company {
     company_status: string;
     total_candidates: number;
     subCompanies: Company[];
+    files: any[];
 }
