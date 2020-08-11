@@ -74,7 +74,6 @@ export class SentryErrorhandlerService extends ErrorHandler {
 	}
 
 	handleError(error) {
-		super.handleError(error);
 		
 		const chunkFailedMessage = /Loading chunk [\d]+ failed/;
 
@@ -83,7 +82,9 @@ export class SentryErrorhandlerService extends ErrorHandler {
 		}
 
 		// Exit function if sentry logging is not enabled
-		if (!this.sentryLoggingEnabled) return;
+		if (!this.sentryLoggingEnabled) {
+			return super.handleError(error);
+		};
 
 		const extractedError = this.extractError(error) || 'Handled unknown error';
 
