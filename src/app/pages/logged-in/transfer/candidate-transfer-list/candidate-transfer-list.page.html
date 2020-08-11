@@ -21,9 +21,11 @@
 
     <div *ngFor="let transfer of transfersCandidate">
 
-      <ion-card tappable *ngIf="transfer.candidate" (click)="loadTransferDetail(transfer)">
+      <ion-card *ngIf="transfer.candidate">
+
         <ion-card-header>
-          <ion-card-title>
+          <ion-card-title tappable (click)="loadTransferDetail(transfer)">
+
             {{transfer.candidate.candidate_name}}
           
             <ion-badge color="success" *ngIf="transfer.paid == 1">Paid</ion-badge>
@@ -89,7 +91,7 @@
                 {{ transfer.transferFile.transfer_file_s3_path }}
               </a>
               <p>
-                @ {{ toDate(transfer.transferFile.transfer_file_created_at) }}
+                @ {{ toDate(transfer.transferFile.transfer_file_created_at) | date: 'MMM d, y, h:mm:ss a' }}
               </p>
             </ion-label>
           </ion-item>

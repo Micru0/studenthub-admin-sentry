@@ -4,7 +4,7 @@ import { AlertController, ToastController, NavController } from '@ionic/angular'
 //services
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 import { EventService } from 'src/app/providers/event.service';
-import { AwsService } from 'src/app/providers/aws.service';
+import { AwsService } from 'src/app/providers/aws.service'; 
 //models
 import { Candidate } from 'src/app/models/candidate';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';

@@ -11,10 +11,10 @@
 
   <section *ngIf="transferCandidate && transferCandidate.candidate">
 
-    <ion-card tappable (click)="loadCandidateDetail(transferCandidate.candidate)">
+    <ion-card>
       <ion-card-header>
 
-        <ion-card-title>
+        <ion-card-title tappable (click)="loadCandidateDetail(transferCandidate.candidate)">
           
           {{ transferCandidate.candidate.candidate_name}}
 
@@ -81,7 +81,7 @@
               {{ transferCandidate.transferFile.transfer_file_s3_path }}
             </a>
             <p>
-              @ {{ toDate(transferCandidate.transferFile.transfer_file_created_at) }}
+              @ {{ toDate(transferCandidate.transferFile.transfer_file_created_at) | date: 'MMM d, y, h:mm:ss a' }}
             </p>
           </ion-label>
         </ion-item>
