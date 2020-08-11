@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Company } from 'src/app/models/company';
-import { Store } from 'src/app/models/store';
 import { ToastController, AlertController, ModalController, Platform } from '@ionic/angular';
-import { StoreService } from 'src/app/providers/logged-in/store.service';
-import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
-import {AwsService} from "../../../../providers/aws.service";
-import {File} from "../../../../models/file";
+
+import { StoreService } from 'src/app/providers/logged-in/store.service';
+import { CompanyService } from 'src/app/providers/logged-in/company.service';
+import {AwsService} from '../../../../providers/aws.service';
+
+import { Company } from 'src/app/models/company';
+import { Store } from 'src/app/models/store';
+import {File} from '../../../../models/file';
 
 @Component({
   selector: 'app-company-view',
@@ -36,7 +39,7 @@ export class CompanyViewPage implements OnInit {
     public companyService: CompanyService,
     public storeService: StoreService,
     private _toastCtrl: ToastController,
-    private aws: AwsService,
+    public aws: AwsService,
   ) { }
 
   ngOnInit() {
