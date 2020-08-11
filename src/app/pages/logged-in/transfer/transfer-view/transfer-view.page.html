@@ -197,7 +197,7 @@
                 <a [href]="aws.permanentBucketUrl + resource.transferFile.transfer_file_s3_path" (click)="doNothing($event)">
                   {{ resource.transferFile.transfer_file_s3_path }}
                 </a> <br /> 
-                @ {{ toDate(resource.transferFile.transfer_file_created_at) }}
+                @ {{ toDate(resource.transferFile.transfer_file_created_at) | date: 'MMM d, y, h:mm:ss a' }}
               </ion-col>
 
             </ion-row>
