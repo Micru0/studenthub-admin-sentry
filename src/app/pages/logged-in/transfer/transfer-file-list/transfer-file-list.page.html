@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Transfer Files</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let transferFile of transferFiles" tappable (click)="rowSelected(transferFile)">
+      <ion-label>
+        
+        <h4>KWD {{ transferFile.transfer_amount }}</h4>
+
+        <a [href]="aws.permanentBucketUrl + transferFile.transfer_file_s3_path" (click)="doNothing($event)">
+          {{ transferFile.transfer_file_s3_path }}
+        </a>
+        
+        <p>
+          @ {{ toDate(transferFile.transfer_file_created_at) | date: 'MMM d, y, h:mm:ss a' }}
+        </p>
+        
+      </ion-label>
+    </ion-item>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

@@ -30,6 +30,16 @@ export class CandidateTransferService {
   }
 
   /**
+   * list transfer candidates by file used to mark as paid
+   * sort by store_id
+   * @param transfer_file_id 
+   */
+  listByTransferFile(transfer_file_id: number, page: number): Observable<any> {
+    let url = `${this._transferEndpoint}/by-transfer-file/${transfer_file_id}?page=${page}&expand=bank,candidate`;
+    return this._authhttp.get(url, true);
+  } 
+
+  /**
    * List of all Candidate Transfers
    * @returns {Observable<any>}
    */
