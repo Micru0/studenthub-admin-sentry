@@ -167,9 +167,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/start-pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
+    path: 'transfer-file-list',
+    loadChildren: () => import('./pages/logged-in/transfer/transfer-file-list/transfer-file-list.module').then( m => m.TransferFileListPageModule)
+  },
+  {
+    path: 'transfer-file-detail',
+    loadChildren: () => import('./pages/logged-in/transfer/transfer-file-detail/transfer-file-detail.module').then( m => m.TransferFileDetailPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
-  },
+  }, 
 ];
 
 @NgModule({
