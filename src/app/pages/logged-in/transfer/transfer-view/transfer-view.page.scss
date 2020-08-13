@@ -3,10 +3,16 @@ small {
 }
 
 .zeroHours {
+    color: white;
     background: #F44336;
     --background: #F44336;
-    color: white;
+    --ion-item-background: #F44336;
 
+    h3 {
+        font-weight: bold;
+    }
+    
+    ion-label,
     b,
     p {
         color: white;

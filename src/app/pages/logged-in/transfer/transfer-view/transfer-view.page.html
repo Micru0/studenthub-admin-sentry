@@ -42,7 +42,7 @@
     </ion-button>
 
     <!-- If Transfer Payment Sent, You can either Mark Received or Revert Back to Locked -->
-    <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="transfer.transfer_status == 1">
+    <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="transfer.transfer_status == 1 || transfer.transfer_status == 5">
       Mark Received & Distributing Salary
     </ion-button>
 
@@ -124,7 +124,7 @@
       </ion-item-divider>
 
       <ion-card tappable *ngFor="let resource of group.resources" (click)="loadCandidateDetail(resource.candidate)"
-        [class.zeroHours]="resource.hours == 0">
+        [class.zeroHours]="resource.hours == 0 && resource.bonus == 0">
  
         <!-- If hours have been worked -->
 
@@ -140,18 +140,18 @@
               <!-- If no hours worked by candidate -->
   
               <h3>{{resource.candidate.candidate_name}}</h3>
-              <p *ngIf="resource.hours == 0">Candidate hasn't worked any hours</p>
+              <p *ngIf="resource.hours == 0 && resource.bonus == 0">Candidate hasn't worked any hours</p>
             </ion-label>
             
             <ion-badge slot="end" [color]="resource.paid==1?'secondary':'dark'"
-              *ngIf="(transfer.transfer_status==3 || transfer.transfer_status==4) && (resource.hours > 0)">
+              *ngIf="(transfer.transfer_status==3 || transfer.transfer_status==4) && (resource.hours > 0 || resource.bonus > 0)">
               <ion-icon name="checkmark-circle-outline" *ngIf="resource.paid==1"></ion-icon>
               <span *ngIf="resource.paid==0"> Transfer in progress </span>
             </ion-badge>
   
           </ion-item>
            
-          <ion-grid *ngIf="resource.hours > 0">
+          <ion-grid *ngIf="resource.hours > 0 || resource.bonus > 0">
             <ion-row>
               <ion-col size="12" class='hoursWorked'>
                 {{resource.hours}} hours worked

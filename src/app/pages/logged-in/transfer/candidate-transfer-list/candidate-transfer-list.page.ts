@@ -207,7 +207,7 @@ export class CandidateTransferListPage implements OnInit {
    */
   toDate(date) {
     if (date)
-      return new Date(date.replace(/-/g, '/') + ' UTC');
+      return new Date(date.replace(/-/g, '/'));
   }
   
   /**
