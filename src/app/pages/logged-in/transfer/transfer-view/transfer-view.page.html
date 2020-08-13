@@ -42,7 +42,7 @@
     </ion-button>
 
     <!-- If Transfer Payment Sent, You can either Mark Received or Revert Back to Locked -->
-    <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="transfer.transfer_status == 1">
+    <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="transfer.transfer_status == 1 || transfer.transfer_status == 5">
       Mark Received & Distributing Salary
     </ion-button>
 
