@@ -13,10 +13,12 @@ import { EventService } from 'src/app/providers/event.service';
 })
 export class TransferPaidPage implements OnInit {
 
-  public candidatelistData;
+  public candidatelistData = [];
 
   public markingPaid: boolean = false; 
   public loading: boolean = false;
+
+  public total;
 
   public excel: string; 
 
@@ -45,7 +47,9 @@ export class TransferPaidPage implements OnInit {
     
     this.transferService.importExcel(this.excel).subscribe(response => {
 
-      this.candidatelistData = response;
+      this.total = response.total;
+
+      this.candidatelistData = response.candidates;
     
       this.loading = false;
     },
