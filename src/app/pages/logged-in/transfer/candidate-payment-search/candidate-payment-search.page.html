@@ -19,7 +19,7 @@
   <ion-card>
     <ion-item>
       <ion-label color="primary" position="stacked">Candidate Transfer ID</ion-label>
-      <ion-input type="text" placeholder="Candidate Transfer ID" [(ngModel)]="tc_id"></ion-input>
+      <ion-input type="text" placeholder="Candidate Transfer ID" (keyup)="onTransferIdChange($event)" [(ngModel)]="tc_id"></ion-input>
     </ion-item>
     <ion-item>
       <ion-button [disabled]="loading || !tc_id" (click)="loadData()">
@@ -35,7 +35,7 @@
   <ion-card>
     <ion-item>
       <ion-label color="primary" position="stacked">Transfer Confirmation ID</ion-label>
-      <ion-input type="text" placeholder="Transfer Confirmation ID" [(ngModel)]="transfer_confirmation_id"></ion-input>
+      <ion-input type="text" placeholder="Transfer Confirmation ID" (keyup)="onConfirmationIdChange($event)" [(ngModel)]="transfer_confirmation_id"></ion-input>
     </ion-item>
     <ion-item>
       <ion-button [disabled]="loading2 || !transfer_confirmation_id" (click)="loadByConfirmationId()">

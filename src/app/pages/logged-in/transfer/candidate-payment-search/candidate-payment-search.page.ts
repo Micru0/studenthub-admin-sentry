@@ -101,6 +101,18 @@ export class CandidatePaymentSearchPage implements OnInit {
         });
     }
 
+    onConfirmationIdChange(event) {
+        if(event.keyCode == 13 && event.srcElement.value.length > 0) {
+            this.loadByConfirmationId();
+        }
+    }
+
+    onTransferIdChange(event) {
+        if(event.keyCode == 13 && event.srcElement.value.length > 0) {
+            this.loadData();
+        }
+    }
+
     /**
      * transfer detail page redirect
      * @param transferCandidate
