@@ -4,4 +4,5 @@ export class TransferFile {
     transfer_amount: number;
     transfer_file_created_at: string;
     transfer_file_updated_at: string;
+    totalCandidates: number;
 }
