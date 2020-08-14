@@ -41,7 +41,7 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-card tappable *ngFor="let resource of group.resources" (click)="loadCandidateDetail(resource.candidate)"
+      <ion-card tappable *ngFor="let resource of group.resources" (click)="loadDetail(resource)"
         [class.zeroHours]="resource.hours == 0">
 
         <!-- If hours have been worked -->

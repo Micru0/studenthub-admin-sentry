@@ -123,10 +123,10 @@ export class TransferFileDetailPage implements OnInit {
    * On Candidate Selected
    * @param model 
    */
-  loadCandidateDetail(model: Candidate) {
-    this.router.navigate(['candidate-view', model.candidate_id], {
+  loadDetail(model) {
+    this.router.navigate(['candidate-transfer-detail', model.tc_id], {
       state: {
-        'model': model
+        'transferCandidate': model
       }
     });
   }
