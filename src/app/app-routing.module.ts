@@ -170,11 +170,13 @@ const routes: Routes = [
   },
   {
     path: 'transfer-file-list',
-    loadChildren: () => import('./pages/logged-in/transfer/transfer-file-list/transfer-file-list.module').then( m => m.TransferFileListPageModule)
+    loadChildren: () => import('./pages/logged-in/transfer/transfer-file-list/transfer-file-list.module').then( m => m.TransferFileListPageModule),
+    canActivate: [AuthService],
   },
   {
     path: 'transfer-file-detail',
-    loadChildren: () => import('./pages/logged-in/transfer/transfer-file-detail/transfer-file-detail.module').then( m => m.TransferFileDetailPageModule)
+    loadChildren: () => import('./pages/logged-in/transfer/transfer-file-detail/transfer-file-detail.module').then( m => m.TransferFileDetailPageModule),
+    canActivate: [AuthService],
   },
   {
     path: '**',
