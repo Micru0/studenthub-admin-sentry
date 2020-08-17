@@ -16,7 +16,7 @@
   <ion-card *ngIf="transferFile">
     <ion-card-content>
 
-      <h4>KWD {{ transferFile.transfer_amount }}</h4>
+      <h4>KWD {{ transferFile.transfer_amount | number:'1.3-3' }}</h4>
 
       <a [href]="aws.permanentBucketUrl + transferFile.transfer_file_s3_path" (click)="doNothing($event)">
         {{ transferFile.transfer_file_s3_path }}
@@ -41,7 +41,7 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-card tappable *ngFor="let resource of group.resources" (click)="loadCandidateDetail(resource.candidate)"
+      <ion-card tappable *ngFor="let resource of group.resources" (click)="loadDetail(resource)"
         [class.zeroHours]="resource.hours == 0">
 
         <!-- If hours have been worked -->
