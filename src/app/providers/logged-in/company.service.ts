@@ -121,4 +121,14 @@ export class CompanyService {
     const url = `${this._companyEndpoint}/remove-file/${model.file_uuid}`;
     return this._authhttp.delete(url);
   }
+
+  /**
+   * change company status
+   * @param model
+   * @param status
+   */
+  changeStatus(model: Company, status: number = 10): Observable<any> {
+    const url = `${this._companyEndpoint}/change-status/${model.company_id}`;
+    return this._authhttp.patch(url, {status});
+  }
 }

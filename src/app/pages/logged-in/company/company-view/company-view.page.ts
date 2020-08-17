@@ -29,7 +29,8 @@ export class CompanyViewPage implements OnInit {
   public deleting = false;
   public loading = false;
   public sendingNewPassword = false;
-
+  public companyStatus = false;
+  public changingStatus = false;
   constructor(
     public platform: Platform,
     public router: Router,
@@ -52,6 +53,7 @@ export class CompanyViewPage implements OnInit {
     this.company_id = this.activatedRoute.snapshot.paramMap.get('company_id');
 
     this.loadData();
+    this.companyStatus = !!(this.company.company_status);
   }
 
   /**
@@ -333,4 +335,22 @@ export class CompanyViewPage implements OnInit {
       this.loadData();
     }
   }
+
+  changeStatus($event) {
+    this.companyStatus = $event.detail.checked;
+    this.changingStatus = true;
+    const status = ($event.detail.checked) ? 10 : 0;
+    this.companyService.changeStatus(this.company, status).subscribe(async response => {
+      this.changingStatus = false;
+      if (response && response.operation == 'success') {
+        const toast = await this._toastCtrl.create({
+          message: response.message,
+          duration: 3000
+        });
+        toast.present();
+      }
+    }, () => {
+    });
+  }
+
 }
