@@ -35,7 +35,7 @@ export class CandidateService {
    * @returns {Observable<any>}
    */
   view(candidate_id): Observable<any>{
-    let url = this._candidateEndpoint + '/' + candidate_id + '?expand=university,country,bank';
+    let url = this._candidateEndpoint + '/' + candidate_id + '?expand=store,company,university,country,bank';
     return this._authhttp.get(url);
   }
 
@@ -101,7 +101,7 @@ export class CandidateService {
    * @returns {Observable<any>}
    */
   listToReview(page: number): Observable<any>{
-    let url = this._candidateEndpoint + '/search?by=review&review=0&page=' + page;
+    let url = this._candidateEndpoint + '/search?expand=store,company&by=review&review=0&page=' + page;
     return this._authhttp.get(url, true);
   }
 
