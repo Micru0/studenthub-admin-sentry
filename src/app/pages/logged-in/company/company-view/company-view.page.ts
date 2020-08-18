@@ -335,6 +335,21 @@ export class CompanyViewPage implements OnInit {
       this.loadData();
     }
   }
+  async editDoc($event, file) {
+    const modal = await this._modalCtrl.create({
+      component: UploadFilePage,
+      componentProps: {
+        company: this.company,
+        file,
+      }
+    });
+    modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data && data.refresh) {
+      this.loadData();
+    }
+  }
 
   changeStatus($event) {
     this.companyStatus = $event.detail.checked;

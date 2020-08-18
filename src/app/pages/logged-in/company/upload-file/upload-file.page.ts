@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy, Input} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {AlertController, ModalController, Platform, ToastController} from '@ionic/angular';
 
@@ -21,7 +21,7 @@ export class UploadFilePage implements OnInit, OnDestroy {
 
   public fileModel: File = new File();
   public company;
-
+  @Input() file;
   public progress = null;
   public form: FormGroup;
   public loading = false;
@@ -51,6 +51,11 @@ export class UploadFilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    if (this.file) {
+      this.fileModel = this.file;
+    }
+
     this._initForm();
   }
 
@@ -273,18 +278,21 @@ export class UploadFilePage implements OnInit, OnDestroy {
    */
   _initForm() {
       this.form = this.fb.group({
-        title: ['', Validators.required],
-        desc: [''],
-        file: ['', Validators.required]
+        title: [this.file ? this.file.file_title : '', Validators.required],
+        desc: [this.file ? this.file.file_description : ''],
+        file: [this.file ? this.file.file_s3_path : '', Validators.required]
       });
   }
 
   async save(){
     this.saving = true;
-    this.fileModel.file_title = this.form.value.title;
-    this.fileModel.file_description = this.form.value.desc;
-    this.fileModel.company_id = this.company.company_id;
-    this.companyService.createFile(this.fileModel).subscribe( async jsonResponse => {
+    this.loadModelData();
+
+    const model = (this.fileModel.file_uuid) ?
+        this.companyService.updateFile(this.fileModel) :
+        this.companyService.createFile(this.fileModel);
+
+    model.subscribe( async jsonResponse => {
       this.saving = false;
 
       // On Success
@@ -317,5 +325,11 @@ export class UploadFilePage implements OnInit, OnDestroy {
         prompt.present();
       }
     });
+  }
+
+  loadModelData(){
+    this.fileModel.file_title = this.form.value.title;
+    this.fileModel.file_description = this.form.value.desc;
+    this.fileModel.company_id = this.company.company_id;
   }
 }

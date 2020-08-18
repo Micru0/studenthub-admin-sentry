@@ -113,6 +113,21 @@ export class CompanyService {
   }
 
   /**
+   * create file for company
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  updateFile(model: File): Observable<any>{
+    const url = `${this._companyEndpoint}/file-update/${model.file_uuid}`;
+    const params = {
+      file_title: model.file_title,
+      file_description: model.file_description
+    };
+
+    return this._authhttp.patch(url, params);
+  }
+
+  /**
    * Deletes company
    * @param {Company} model
    * @returns {Observable<any>}

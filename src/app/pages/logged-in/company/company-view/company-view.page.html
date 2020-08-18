@@ -85,13 +85,17 @@
 
         <ion-item *ngFor="let file of company.files">
           <ion-label>
-            <ion-icon name="caret-forward-outline"></ion-icon> &nbsp;
             <a target="_blank" (click)="$event.stopPropagation()"
                href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
               {{file.file_title}}
             </a>
+            <p>{{file.file_description}}</p>
           </ion-label>
           <ion-buttons slot="end">
+            <ion-button color="default" (click)="editDoc($event, file)">
+              <ion-icon slot="start" name="pencil-outline"></ion-icon>
+              Edit
+            </ion-button>
             <ion-button color="danger"  (click)="deleteDoc($event, file)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
