@@ -2,6 +2,11 @@ export class Company {
     company_id: number;
     parent_company_id: number;
     company_name: string;
+    company_common_name_en: string;
+    company_common_name_ar: string;
+    company_description_en: string;
+    company_description_ar: string;
+    company_website: string;
     company_email: string;
     company_password_hash: string;
     company_bonus_commission: number;
