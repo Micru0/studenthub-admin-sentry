@@ -31,8 +31,39 @@
 
       <ion-item href='mailto:{{ company.company_email }}'>
         <ion-label>
-          <ion-icon name="mail-outline" slot="start"></ion-icon>
-          {{ company.company_email }}
+          <h3>Company Email</h3>
+          <p>{{ company.company_email }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <h3>Common Name En.</h3>
+          <p>{{ company.company_common_name_en }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Common Name Ar.</h3>
+          <p>{{ company.company_common_name_ar }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Description En.</h3>
+          <p>{{ company.company_description_en }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Description Ar.</h3>
+          <p>{{ company.company_description_ar }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item href='{{ company.company_website }}'>
+        <ion-label>
+          <h3>Website</h3>
+          <p>{{ company.company_website }}</p>
         </ion-label>
       </ion-item>
 
@@ -48,6 +79,15 @@
           <span>Upload Document</span>
         </ion-button>
       </ion-item>
+
+      <ion-item>
+        <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'In Active'}}</small>)</ion-label>
+        <ion-toggle [checked]="companyStatus" (ionChange) = changeStatus($event)></ion-toggle>
+      </ion-item>
+<!--      <ion-item *ngIf="changingStatus">-->
+<!--        <ion-label>Company Status </ion-label>-->
+<!--        <ion-skeleton-text></ion-skeleton-text>-->
+<!--      </ion-item>-->
 
       <ion-item-divider color="light">
         <ion-label>
@@ -76,13 +116,17 @@
 
         <ion-item *ngFor="let file of company.files">
           <ion-label>
-            <ion-icon name="caret-forward-outline"></ion-icon> &nbsp;
             <a target="_blank" (click)="$event.stopPropagation()"
                href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
               {{file.file_title}}
             </a>
+            <p>{{file.file_description}}</p>
           </ion-label>
           <ion-buttons slot="end">
+            <ion-button color="default" (click)="editDoc($event, file)">
+              <ion-icon slot="start" name="pencil-outline"></ion-icon>
+              Edit
+            </ion-button>
             <ion-button color="danger"  (click)="deleteDoc($event, file)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
@@ -113,6 +157,7 @@
         </ion-label>
       </ion-item>
     </section>
+
 
     <!-- Subcompany List -->
 

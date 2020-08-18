@@ -41,7 +41,12 @@ export class CompanyService {
       email: model.company_email,
       password: model.company_password_hash,
       bonus_commission: model.company_bonus_commission,
-      hourly_rate: model.company_hourly_rate
+      hourly_rate: model.company_hourly_rate,
+      common_name_en : model.company_common_name_en,
+      common_name_ar : model.company_common_name_ar,
+      description_en : model.company_description_en,
+      description_ar : model.company_description_ar,
+      website : model.company_website,
     };
 
     return this._authhttp.post(postUrl, params);
@@ -53,16 +58,20 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   update(model: Company): Observable<any>{
-    const url = `${this._companyEndpoint}/${model.company_id}`;
     const params = {
       parent: model.parent_company_id,
       name: model.company_name,
       email: model.company_email,
       bonus_commission: model.company_bonus_commission,
-      hourly_rate: model.company_hourly_rate
+      hourly_rate: model.company_hourly_rate,
+      common_name_en : model.company_common_name_en,
+      common_name_ar : model.company_common_name_ar,
+      description_en : model.company_description_en,
+      description_ar : model.company_description_ar,
+      website : model.company_website,
     };
 
-    return this._authhttp.patch(url, params);
+    return this._authhttp.patch(`${this._companyEndpoint}/${model.company_id}`, params);
   }
 
   /**
@@ -71,8 +80,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   delete(model: Company): Observable<any>{
-    const url = `${this._companyEndpoint}/${model.company_id}`;
-    return this._authhttp.delete(url);
+    return this._authhttp.delete(`${this._companyEndpoint}/${model.company_id}`);
   }
 
   /**
@@ -113,6 +121,21 @@ export class CompanyService {
   }
 
   /**
+   * create file for company
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  updateFile(model: File): Observable<any>{
+    const url = `${this._companyEndpoint}/file-update/${model.file_uuid}`;
+    const params = {
+      file_title: model.file_title,
+      file_description: model.file_description
+    };
+
+    return this._authhttp.patch(url, params);
+  }
+
+  /**
    * Deletes company
    * @param {Company} model
    * @returns {Observable<any>}
@@ -120,5 +143,15 @@ export class CompanyService {
   deleteDoc(model: File): Observable<any>{
     const url = `${this._companyEndpoint}/remove-file/${model.file_uuid}`;
     return this._authhttp.delete(url);
+  }
+
+  /**
+   * change company status
+   * @param model
+   * @param status
+   */
+  changeStatus(model: Company, status: number = 10): Observable<any> {
+    const url = `${this._companyEndpoint}/change-status/${model.company_id}`;
+    return this._authhttp.patch(url, {status});
   }
 }

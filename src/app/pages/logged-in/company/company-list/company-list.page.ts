@@ -18,9 +18,10 @@ export class CompanyListPage implements OnInit {
 
   public pageCount = 0;
   public currentPage = 1;
-
+  public segment = 1;
   public companies: Company[];
-
+  public enableCompanies: Company[] = [];
+  public disableCompanies: Company[] = [];
   public deleting = false;
 
   public loading = false;
@@ -58,6 +59,13 @@ export class CompanyListPage implements OnInit {
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
       this.companies = response.body;
+      for (const company of this.companies) {
+        if (company.company_status == 10) {
+          this.enableCompanies.push(company);
+        } else  {
+          this.disableCompanies.push(company);
+        }
+      }
     }, () => {
       this.loading = false;
       this.deleting = false;
@@ -82,6 +90,14 @@ export class CompanyListPage implements OnInit {
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
       this.companies = this.companies.concat(response.body);
+
+      for (const company of this.companies) {
+        if (company.company_status == 10) {
+          this.enableCompanies.push(company);
+        } else  {
+          this.disableCompanies.push(company);
+        }
+      }
 
       event.target.complete();
     }, () => {
@@ -175,5 +191,9 @@ export class CompanyListPage implements OnInit {
       ]
     });
     confirm.present();
+  }
+
+  segmentChanged($event) {
+    this.segment = $event.detail.value;
   }
 }

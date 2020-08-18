@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { CustomValidator } from 'src/app/validators/custom.validator';
-//services
+// services
 import { AuthService } from 'src/app/providers/auth.service';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
-//models
+// models
 import { Company } from 'src/app/models/company';
 import { ActivatedRoute } from '@angular/router';
 
@@ -16,23 +16,23 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./company-form.page.scss'],
 })
 export class CompanyFormPage implements OnInit {
- 
-  public loading: boolean = false; 
-  
-  public saving: boolean = false; 
-  
+
+  public loading = false;
+
+  public saving = false;
+
   public company_id;
 
   public model: Company;
   public operation: string;
-  public isSubCompany:number=0;
+  public isSubCompany = 0;
   public form: FormGroup;
 
   constructor(
     public activateRoute: ActivatedRoute,
     public authService: AuthService,
     public companyService: CompanyService,
-    private _fb: FormBuilder, 
+    private _fb: FormBuilder,
     private _alertCtrl: AlertController,
     public modalCtrl: ModalController,
     private _toastCtrl: ToastController
@@ -41,14 +41,14 @@ export class CompanyFormPage implements OnInit {
   ngOnInit() {
 
     // Load the passed model if available
-    if(window['state'] && window['state']['model']) {
-      this.model = window['state']['model'];
+    if (window.history.state && window.history.state.model) {
+      this.model = window.history.state.model;
     }
 
-    //this.company_id = this.activateRoute.snapshot.paramMap.get('company_id');
-    //this.isSubCompany = parseInt(this.activateRoute.snapshot.paramMap.get('subcompany'));
+    // this.company_id = this.activateRoute.snapshot.paramMap.get('company_id');
+    // this.isSubCompany = parseInt(this.activateRoute.snapshot.paramMap.get('subcompany'));
 
-    if(this.company_id && !this.model) {
+    if (this.company_id && !this.model) {
       this.loadData(this.company_id);
     } else {
       this._initForm();
@@ -56,25 +56,25 @@ export class CompanyFormPage implements OnInit {
   }
 
   /**
-   * load company detail 
-   * @param company_id 
+   * load company detail
+   * @param company_id
    */
   loadData(company_id) {
-    this.loading = true; 
+    this.loading = true;
 
     this.companyService.view(company_id).subscribe(bank => {
-      this.model = bank; 
+      this.model = bank;
 
       this.loading = false;
 
     }, () => {
 
       this.loading = false;
-    })
+    });
   }
 
   /**
-   * init form 
+   * init form
    */
   _initForm() {
 
@@ -83,41 +83,53 @@ export class CompanyFormPage implements OnInit {
       this.isSubCompany = 1;
     }
     // Init Form
-  
-    if(!this.model.company_id){ // Show Create Form
-      
-      this.operation  = (this.isSubCompany) ? "Create Sub-company" : "Create Company";
+
+    if (!this.model.company_id){ // Show Create Form
+
+      this.operation  = (this.isSubCompany) ? 'Create Sub-company' : 'Create Company';
 
       if (this.isSubCompany) {
         this.form = this._fb.group({
-          name: ["", Validators.required],
-          bonus_commission: [""],
-          hourly_rate: ["", Validators.required]
+          name: ['', Validators.required],
+          bonus_commission: [''],
+          hourly_rate: ['', Validators.required]
         });
       } else {
         this.form = this._fb.group({
-          name: ["", Validators.required],
-          email: ["", [Validators.required, CustomValidator.emailValidator]],
-          password: ["", Validators.required],
-          bonus_commission: [""],
-          hourly_rate: ["", Validators.required]
+          name: ['', Validators.required],
+          common_name_ar: ['', Validators.required],
+          common_name_en: ['', Validators.required],
+          description_en: [''],
+          description_ar: [''],
+          website: ['', Validators.required],
+          email: ['', [Validators.required, CustomValidator.emailValidator]],
+          password: ['', Validators.required],
+          bonus_commission: [''],
+          hourly_rate: ['', Validators.required]
         });
       }
     } else { // Show Update Form
-      this.operation  = (this.isSubCompany) ? "Update  Sub-company" : "Update Company";
+      this.operation  = (this.isSubCompany) ? 'Update  Sub-company' : 'Update Company';
       if (this.isSubCompany) {
         this.form = this._fb.group({
             name: [this.model.company_name, Validators.required],
             bonus_commission: [this.model.company_bonus_commission],
             hourly_rate: [this.model.company_hourly_rate, Validators.required]
+
         });
       } else {
         this.form = this._fb.group({
             name: [this.model.company_name, Validators.required],
             email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
-            password: [this.model.company_password_hash], //not required
+            password: [this.model.company_password_hash], // not required
             bonus_commission: [this.model.company_bonus_commission],
-            hourly_rate: [this.model.company_hourly_rate, Validators.required]
+            hourly_rate: [this.model.company_hourly_rate, Validators.required],
+            common_name_en: [this.model.company_common_name_en, Validators.required],
+            common_name_ar: [this.model.company_common_name_ar, Validators.required],
+            description_en: [this.model.company_description_en],
+            description_ar: [this.model.company_description_ar],
+            website: [this.model.company_website, Validators.required],
+
         });
       }
     }
@@ -132,14 +144,18 @@ export class CompanyFormPage implements OnInit {
     this.model.company_password_hash = this.form.value.password;
     this.model.company_bonus_commission = this.form.value.bonus_commission;
     this.model.company_hourly_rate = this.form.value.hourly_rate;
+    this.model.company_common_name_en = this.form.value.common_name_en;
+    this.model.company_common_name_ar = this.form.value.common_name_ar;
+    this.model.company_description_en = this.form.value.description_en;
+    this.model.company_description_ar = this.form.value.description_ar;
+    this.model.company_website = this.form.value.website;
   }
 
   /**
    * Close the page
    */
   close(){
-    let data = { 'refresh': false };
-    this.modalCtrl.dismiss(data);
+    this.modalCtrl.dismiss({ refresh: false });
   }
 
   /**
@@ -162,29 +178,29 @@ export class CompanyFormPage implements OnInit {
     }
 
     action.subscribe(async jsonResponse => {
-      
+
       this.saving = false;
 
       // On Success
-      if(jsonResponse.operation == "success") {
+      if (jsonResponse.operation == 'success') {
 
         // Close the page
-        let data = { 'refresh': true };
+        const data = { refresh: true };
         this.modalCtrl.dismiss(data);
 
-        let toast = await this._toastCtrl.create({
-          message: this.model.company_name+' account saved successfully',
+        const toast = await this._toastCtrl.create({
+          message: this.model.company_name + ' account saved successfully',
           duration: 3000
         });
         toast.present();
       }
 
       // On Failure
-      if (jsonResponse.operation == "error") {
+      if (jsonResponse.operation == 'error') {
 
-        let prompt = await this._alertCtrl.create({
+        const prompt = await this._alertCtrl.create({
           message: this.authService.errorMessage(jsonResponse.message),
-          buttons: ["Ok"]
+          buttons: ['Ok']
         });
         prompt.present();
       }
