@@ -181,7 +181,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'not-found'
-  }, 
+  },   {
+    path: 'brand-form',
+    loadChildren: () => import('./pages/logged-in/company/brand-form/brand-form.module').then( m => m.BrandFormPageModule)
+  },
+
 ];
 
 @NgModule({

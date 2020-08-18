@@ -275,8 +275,12 @@ export class TransferViewPage implements OnInit {
     
     this.processing = true;
 
-    this.transferService.export(this.transfer).subscribe(response => {
+    this.transferService.export(this.transfer).subscribe(async response => {
+      
       this.navCtrl.pop();
+      
+    }, async err => { 
+    }, () => {
       this.processing = false;
     });
   }
