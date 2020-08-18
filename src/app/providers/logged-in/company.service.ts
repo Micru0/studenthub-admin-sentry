@@ -89,7 +89,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(model: Company): Observable<any>{
-    const url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files`;
+    const url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files,brands`;
     return this._authhttp.get(url);
   }
 

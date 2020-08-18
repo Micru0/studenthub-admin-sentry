@@ -7,11 +7,15 @@ import { UploadFilePage } from '../upload-file/upload-file.page';
 
 import { StoreService } from 'src/app/providers/logged-in/store.service';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
-import {AwsService} from '../../../../providers/aws.service';
+import { AwsService } from '../../../../providers/aws.service';
 
 import { Company } from 'src/app/models/company';
 import { Store } from 'src/app/models/store';
-import {File} from '../../../../models/file';
+import { File } from '../../../../models/file';
+import { Brand } from 'src/app/models/brand';
+import { BrandFormPage } from '../brand-form/brand-form.page';
+import { BrandService } from 'src/app/providers/logged-in/brand.service';
+
 
 @Component({
   selector: 'app-company-view',
@@ -25,12 +29,15 @@ export class CompanyViewPage implements OnInit {
   public company: Company;
   public subCompanies: Company[] = [];
   public stores: Store[] = [];
+  
+  public brands: Brand[] = [];
 
   public deleting = false;
   public loading = false;
   public sendingNewPassword = false;
   public companyStatus = false;
   public changingStatus = false;
+
   constructor(
     public platform: Platform,
     public router: Router,
@@ -38,6 +45,7 @@ export class CompanyViewPage implements OnInit {
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     public companyService: CompanyService,
+    public brandService: BrandService,
     public storeService: StoreService,
     private _toastCtrl: ToastController,
     public aws: AwsService,
@@ -79,6 +87,9 @@ export class CompanyViewPage implements OnInit {
 
       this.subCompanies = response.subCompanies;
       this.stores = response.stores;
+
+      this.brands = response.brands;
+      
     }, () => {
       this.loading = false;
       this.deleting = false;
@@ -150,6 +161,109 @@ export class CompanyViewPage implements OnInit {
         model
       }
     });
+  }
+
+  /**
+   * form to add new brand
+   */
+  async addBrand() {
+
+    let brand = new Brand;
+    brand.company_id = this.company_id;
+    
+    const modal = await this._modalCtrl.create({
+      component: BrandFormPage,
+      componentProps: { 
+        model: brand
+      }
+    });
+
+    // Refresh List if required
+    modal.onDidDismiss().then(e => {
+      if (e && e.data && e.data.refresh) {
+        this.loadData(true);
+      }
+    });
+    modal.present();
+  }
+
+  /**
+   * delete brand
+   * @param event 
+   * @param brand 
+   */
+  async deleteBrand(event, brand) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const confirm = await this._alertCtrl.create({
+      header: 'Delete Brand?',
+      message: 'Do you want to delete this brand?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.deleting = true;
+
+            this.brandService.delete(brand).subscribe(async jsonResp => {
+
+              // On Success
+              if (jsonResp.operation == 'success') {
+                const toast = await this._toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
+
+                this.loadData(true);
+              }
+
+              // On Failure
+              if (jsonResp.operation == 'error') {
+
+                this.deleting = false;
+
+                // failer text
+                const prompt = await this._alertCtrl.create({
+                  header: 'Deletion Error!',
+                  message: jsonResp.message,
+                  buttons: ['Ok']
+                });
+                prompt.present();
+              }
+
+            });
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  /**
+   * open brand edit page
+   * @param brand 
+   */
+  async brandSelected(brand) {
+    const modal = await this._modalCtrl.create({
+      component: BrandFormPage,
+      componentProps: { 
+        model: brand
+      }
+    });
+
+    // Refresh List if required
+    modal.onDidDismiss().then(e => {
+      if (e && e.data && e.data.refresh) {
+        this.loadData(true);
+      }
+    });
+    modal.present();
   }
 
   /**

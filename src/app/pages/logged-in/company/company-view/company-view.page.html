@@ -82,12 +82,12 @@
 
       <ion-item>
         <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'In Active'}}</small>)</ion-label>
-        <ion-toggle [checked]="companyStatus" (ionChange) = changeStatus($event)></ion-toggle>
+        <ion-toggle [checked]="companyStatus" (ionChange)=changeStatus($event)></ion-toggle>
       </ion-item>
-<!--      <ion-item *ngIf="changingStatus">-->
-<!--        <ion-label>Company Status </ion-label>-->
-<!--        <ion-skeleton-text></ion-skeleton-text>-->
-<!--      </ion-item>-->
+      <!--      <ion-item *ngIf="changingStatus">-->
+      <!--        <ion-label>Company Status </ion-label>-->
+      <!--        <ion-skeleton-text></ion-skeleton-text>-->
+      <!--      </ion-item>-->
 
       <ion-item-divider color="light">
         <ion-label>
@@ -117,7 +117,7 @@
         <ion-item *ngFor="let file of company.files">
           <ion-label>
             <a target="_blank" (click)="$event.stopPropagation()"
-               href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
+              href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
               {{file.file_title}}
             </a>
             <p>{{file.file_description}}</p>
@@ -127,7 +127,7 @@
               <ion-icon slot="start" name="pencil-outline"></ion-icon>
               Edit
             </ion-button>
-            <ion-button color="danger"  (click)="deleteDoc($event, file)">
+            <ion-button color="danger" (click)="deleteDoc($event, file)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
             </ion-button>
@@ -189,7 +189,7 @@
           </ion-badge>
 
           <ion-buttons slot="end" *ngIf="platform.width() > 768">
-            <ion-button color="danger"  (click)="delete($event, company)">
+            <ion-button color="danger" (click)="delete($event, company)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
             </ion-button>
@@ -225,12 +225,61 @@
           <ion-badge slot="end" *ngIf="store.store_total_candidates > 0">
             {{ store.store_total_candidates }} candidates
           </ion-badge>
-        </ion-item> 
+        </ion-item>
       </ion-list>
     </section>
+
+    <!-- Brand List -->
+
+    <section>
+
+      <ion-item-divider color="light">
+        <ion-label>
+          Brands
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let brand of brands" [disabled]="platform.width() > 768">
+          <ion-item tappable (click)="brandSelected(brand)">
+            <ion-thumbnail slot="start">
+              <ion-img *ngIf="brand.brand_logo" [src]="aws.cloudinaryUrl + 'company-brand/' + brand.brand_logo">
+              </ion-img>
+              <ion-img *ngIf="!brand.brand_logo" src="assets/images/placeholder.png"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              {{ brand.brand_name_en }}
+            </ion-label>
+
+            <ion-buttons slot="end" *ngIf="platform.width() > 768">
+              <ion-button color="danger" (click)="deleteBrand($event, brand)">
+                <ion-icon slot="start" name="trash-outline"></ion-icon>
+                Delete
+              </ion-button>
+            </ion-buttons>
+
+          </ion-item>
+
+          <ion-item-options side="end">
+            <ion-button color="danger" (click)="deleteBrand($event, brand)">
+              <ion-icon slot="start" name="trash-outline"></ion-icon>
+              Delete
+            </ion-button>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item>
+          <ion-button (click)="addBrand()">
+            Add New Brand
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </section>
+
   </ion-list>
 
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
+
 </ion-content>
 
 <ion-footer *ngIf="company">
