@@ -7,6 +7,7 @@ export class Company {
     company_description_en: string;
     company_description_ar: string;
     company_website: string;
+    company_logo: string;
     company_email: string;
     company_password_hash: string;
     company_bonus_commission: number;

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CompanyFormPageRoutingModule } from './company-form-routing.module';
 
 import { CompanyFormPage } from './company-form.page';
+import {ImageUploadComponent} from 'src/app/components/image-upload/image-upload.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { CompanyFormPage } from './company-form.page';
     ReactiveFormsModule,
     CompanyFormPageRoutingModule
   ],
-  declarations: [CompanyFormPage]
+  declarations: [CompanyFormPage, ImageUploadComponent]
 })
 export class CompanyFormPageModule {}

@@ -21,6 +21,10 @@
 <ion-content>
   <ion-list *ngIf="company">
 
+    <div class="ion-text-center">
+        <img *ngIf="company.company_logo" src="{{ aws.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)" width="80">
+        <img *ngIf="!company.company_logo" src="/assets/icon.png"  width="80">
+    </div>
     <!-- If Main Company -->
     <section *ngIf="company.company_email">
       <ion-item-divider color="light">

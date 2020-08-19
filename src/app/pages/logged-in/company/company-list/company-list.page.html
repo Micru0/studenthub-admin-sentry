@@ -28,10 +28,14 @@
   <ion-list *ngIf="segment == 1">
     <ion-item-sliding *ngFor="let company of enableCompanies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
-
         <ion-label>
           {{ company.company_name }}
         </ion-label>
+
+        <ion-avatar slot="start">
+          <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
+          <img *ngIf="!company.company_logo" src="/assets/icon.png">
+        </ion-avatar>
 
         <ion-badge slot="end" *ngIf="company.total_candidates > 0">
           {{ company.total_candidates }} candidates
@@ -70,6 +74,11 @@
   <ion-list *ngIf="segment == 0">
     <ion-item-sliding *ngFor="let company of disableCompanies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
+
+        <ion-avatar slot="start">
+          <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
+          <img *ngIf="!company.company_logo" src="/assets/icon.png">
+        </ion-avatar>
 
         <ion-label>
           {{ company.company_name }}

@@ -482,4 +482,8 @@ export class CompanyViewPage implements OnInit {
     });
   }
 
+  loadLogo($event, company) {
+    company.company_logo = null;
+  }
+
 }

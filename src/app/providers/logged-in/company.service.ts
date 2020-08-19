@@ -47,6 +47,7 @@ export class CompanyService {
       description_en : model.company_description_en,
       description_ar : model.company_description_ar,
       website : model.company_website,
+      logo : model.company_logo,
     };
 
     return this._authhttp.post(postUrl, params);
@@ -69,6 +70,7 @@ export class CompanyService {
       description_en : model.company_description_en,
       description_ar : model.company_description_ar,
       website : model.company_website,
+      logo : model.company_logo,
     };
 
     return this._authhttp.patch(`${this._companyEndpoint}/${model.company_id}`, params);

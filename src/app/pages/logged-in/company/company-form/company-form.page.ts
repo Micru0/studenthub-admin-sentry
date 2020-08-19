@@ -10,6 +10,7 @@ import { Company } from 'src/app/models/company';
 import { ActivatedRoute } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-company-form',
   templateUrl: './company-form.page.html',
@@ -92,7 +93,8 @@ export class CompanyFormPage implements OnInit {
         this.form = this._fb.group({
           name: ['', Validators.required],
           bonus_commission: [''],
-          hourly_rate: ['', Validators.required]
+          hourly_rate: ['', Validators.required],
+          logo: ['', Validators.required],
         });
       } else {
         this.form = this._fb.group({
@@ -105,7 +107,8 @@ export class CompanyFormPage implements OnInit {
           email: ['', [Validators.required, CustomValidator.emailValidator]],
           password: ['', Validators.required],
           bonus_commission: [''],
-          hourly_rate: ['', Validators.required]
+          hourly_rate: ['', Validators.required],
+          logo: ['', Validators.required],
         });
       }
     } else { // Show Update Form
@@ -114,7 +117,8 @@ export class CompanyFormPage implements OnInit {
         this.form = this._fb.group({
             name: [this.model.company_name, Validators.required],
             bonus_commission: [this.model.company_bonus_commission],
-            hourly_rate: [this.model.company_hourly_rate, Validators.required]
+            hourly_rate: [this.model.company_hourly_rate, Validators.required],
+            logo: [this.model.company_logo, Validators.required],
 
         });
       } else {
@@ -129,7 +133,7 @@ export class CompanyFormPage implements OnInit {
             description_en: [this.model.company_description_en],
             description_ar: [this.model.company_description_ar],
             website: [this.model.company_website, Validators.required],
-
+            logo: [this.model.company_logo, Validators.required],
         });
       }
     }
@@ -149,6 +153,7 @@ export class CompanyFormPage implements OnInit {
     this.model.company_description_en = this.form.value.description_en;
     this.model.company_description_ar = this.form.value.description_ar;
     this.model.company_website = this.form.value.website;
+    this.model.company_logo = this.form.value.logo;
   }
 
   /**
@@ -208,4 +213,5 @@ export class CompanyFormPage implements OnInit {
       this.saving = false;
     });
   }
+
 }
