@@ -60,13 +60,17 @@
       </ion-label>
     </ion-item-divider>
 
-    <ion-item *ngIf="workHistory">
-      <p *ngFor="let history of workHistory">
-        <label>{{ history.store.store_name }}: {{ history.start_date | date }} </label> to
-        <label *ngIf="history.end_date">{{ history.end_date | date }}</label>
-        <label *ngIf="!history.end_date">now</label>
-      </p>
-    </ion-item>
+    <ion-list *ngIf="workHistory">
+      <ion-item *ngFor="let history of workHistory">
+        <ion-label>
+          <p>
+            <label>{{ history.store.store_name }}: {{ history.start_date | date }} </label> to
+            <label *ngIf="history.end_date">{{ history.end_date | date }}</label>
+            <label *ngIf="!history.end_date">now</label>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
 
     <ion-item>
       <ion-label>
