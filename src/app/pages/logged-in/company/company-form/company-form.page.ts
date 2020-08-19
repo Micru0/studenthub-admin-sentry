@@ -160,7 +160,7 @@ export class CompanyFormPage implements OnInit {
    * Close the page
    */
   close(){
-    this.modalCtrl.dismiss({ refresh: false });
+    this.modalCtrl.dismiss({ refresh: true });
   }
 
   /**

@@ -108,6 +108,12 @@ export class CompanyViewPage implements OnInit {
         subcompany: 0
       }
     });
+    // Refresh List if required
+    modal.onDidDismiss().then(e => {
+      if (e && e.data && e.data.refresh) {
+        this.loadData(true);
+      }
+    });
     modal.present();
   }
 

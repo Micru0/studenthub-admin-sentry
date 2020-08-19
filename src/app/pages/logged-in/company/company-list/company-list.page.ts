@@ -38,7 +38,7 @@ export class CompanyListPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadData(this.currentPage);
+    this.loadData(1);
   }
 
   /**
@@ -132,7 +132,7 @@ export class CompanyListPage implements OnInit {
     // Refresh List if required
     modal.onDidDismiss().then(e => {
       if (e && e.data && e.data.refresh) {
-        this.loadData(this.currentPage);
+        this.loadData(1);
       }
     });
     modal.present();
