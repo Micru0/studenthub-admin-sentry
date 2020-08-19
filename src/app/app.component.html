@@ -30,20 +30,6 @@
                 </ion-label>
               </ion-item>
             </ion-menu-toggle>
-
-            <ion-menu-toggle auto-hide="false">
-              <ion-item lines="none" *ngIf="totalCandidateToReview > 0" [routerLink]="'candidate-review-list'">
-                <ion-icon name="person-outline" slot="start"></ion-icon>
-                <ion-label>
-                  Candidate Review
-                </ion-label>
-
-                <ion-badge slot="end">
-                  {{ totalCandidateToReview }}
-                </ion-badge>
-              </ion-item>
-            </ion-menu-toggle>
-
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'transfer-list'">
                 <ion-icon name="globe-outline" slot="start"></ion-icon>
