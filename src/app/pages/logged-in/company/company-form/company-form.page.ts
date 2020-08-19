@@ -118,8 +118,12 @@ export class CompanyFormPage implements OnInit {
             name: [this.model.company_name, Validators.required],
             bonus_commission: [this.model.company_bonus_commission],
             hourly_rate: [this.model.company_hourly_rate, Validators.required],
-            logo: [this.model.company_logo, Validators.required],
-
+            common_name_en: [this.model.company_common_name_en, Validators.required],
+            common_name_ar: [this.model.company_common_name_ar, Validators.required],
+            description_en: [this.model.company_description_en],
+            description_ar: [this.model.company_description_ar],
+            website: [this.model.company_website, Validators.required],
+            logo: [this.model.company_logo, Validators.required]
         });
       } else {
         this.form = this._fb.group({
