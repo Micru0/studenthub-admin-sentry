@@ -185,6 +185,10 @@ const routes: Routes = [
     path: 'brand-form',
     loadChildren: () => import('./pages/logged-in/company/brand-form/brand-form.module').then( m => m.BrandFormPageModule)
   },
+  {
+    path: 'company-contact-form',
+    loadChildren: () => import('./pages/logged-in/company/company-contact-form/company-contact-form.module').then( m => m.CompanyContactFormPageModule)
+  },
 
 ];
 
