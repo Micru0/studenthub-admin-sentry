@@ -205,6 +205,57 @@ export class CompanyViewPage implements OnInit {
   }
 
   /**
+   * update company follow up interval in week
+   */
+  async updateFollowupInterval() {
+    const alert = await this._alertCtrl.create({
+      header: 'Follow up',
+      inputs: [
+        {
+          name: 'interval',
+          type: 'number',
+          value: this.company.company_followup_interval_weeks,
+          placeholder: 'Enter interval in weeks'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Submit',
+          handler: (data) => {
+
+            this.updating = true;
+
+            this.companyService.updateFollowupInterval(this.company_id, data.interval).subscribe(async resp => {
+              this.updating = false;
+
+              if(resp.operation != 'success') {
+                const prompt = await this._alertCtrl.create({
+                  header: 'Error!',
+                  message: resp.message,
+                  buttons: ['Ok']
+                });
+                prompt.present();
+              }
+              else 
+              {
+                this.company.company_followup_interval_weeks = data.interval;
+              }
+
+            }, () => {
+              this.updating = false;
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  /**
    * delete brand
    * @param event 
    * @param brand 

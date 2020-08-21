@@ -77,6 +77,21 @@
         <ion-toggle [checked]="company.company_followup" (ionChange)="toogleFollowup($event)"></ion-toggle>
       </ion-item>
 
+      <ion-item *ngIf="company.company_followup">
+        <ion-label>
+          <h3>Followup interval</h3>
+          <p>
+            {{ company.company_followup_interval_weeks }} weeks 
+          </p>
+        </ion-label>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="updateFollowupInterval()">
+            <ion-icon name="pencil-outline"></ion-icon> Change
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
       <ion-item>
         <ion-label>
           <h3>Last Followup</h3>
@@ -98,7 +113,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'In Active'}}</small>)</ion-label>
+        <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</ion-label>
         <ion-toggle [checked]="companyStatus" (ionChange)=changeStatus($event)></ion-toggle>
       </ion-item>
 
