@@ -15,6 +15,10 @@ import { File } from '../../../../models/file';
 import { Brand } from 'src/app/models/brand';
 import { BrandFormPage } from '../brand-form/brand-form.page';
 import { BrandService } from 'src/app/providers/logged-in/brand.service';
+import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
+import { CompanyContact } from 'src/app/models/company-contact';
+import { AuthService } from 'src/app/providers/auth.service';
+import { CompanyContactFormPage } from '../company-contact-form/company-contact-form.page';
 
 
 @Component({
@@ -32,6 +36,8 @@ export class CompanyViewPage implements OnInit {
   
   public brands: Brand[] = [];
 
+  public companyContacts: CompanyContact[] = [];
+
   public deleting = false;
   public loading = false;
   public sendingNewPassword = false;
@@ -45,8 +51,10 @@ export class CompanyViewPage implements OnInit {
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     public companyService: CompanyService,
+    public companyContactService: CompanyContactService,
     public brandService: BrandService,
     public storeService: StoreService,
+    public authService: AuthService,
     private _toastCtrl: ToastController,
     public aws: AwsService,
   ) { }
@@ -61,6 +69,7 @@ export class CompanyViewPage implements OnInit {
     this.company_id = this.activatedRoute.snapshot.paramMap.get('company_id');
 
     this.loadData();
+    this.loadContacts();
     this.companyStatus = !!(this.company.company_status);
   }
 
@@ -249,6 +258,76 @@ export class CompanyViewPage implements OnInit {
       ]
     });
     confirm.present();
+  }
+
+  loadContacts() {
+    this.companyContactService.companyContacts(this.company_id).subscribe(data => {
+      this.companyContacts = data;
+    });
+  }
+
+  async onContactSelected(companyContact) {
+    const modal = await this._modalCtrl.create({
+      component: CompanyContactFormPage,
+      componentProps: { 
+        model: companyContact
+      }
+    });
+
+    // Refresh List if required
+    modal.onDidDismiss().then(e => {
+      if (e && e.data && e.data.refresh) {
+        this.loadContacts();
+      }
+    });
+    modal.present();
+  }
+
+  async addCompanyContact() {
+
+    let companyContact = new CompanyContact;
+    companyContact.company_id = this.company_id;
+    
+    const modal = await this._modalCtrl.create({
+      component: CompanyContactFormPage,
+      componentProps: { 
+        model: companyContact
+      }
+    });
+
+    // Refresh List if required
+    modal.onDidDismiss().then(e => {
+      if (e && e.data && e.data.refresh) {
+        this.loadContacts();
+      }
+    });
+    modal.present();
+  }
+
+  doNothing(event) {
+    event.stopPropagation();
+  }
+
+  async deleteContact(event, companyContact) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.companyContactService.delete(companyContact).subscribe(async response => {
+
+      if (response.operation == 'success')
+      {
+        this.companyContacts = this.companyContacts.filter(e => e.contact_uuid != companyContact.contact_uuid);
+      }
+      else
+      {
+        const prompt = await this._alertCtrl.create({
+          message: this.authService.errorMessage(response.message),
+          buttons: ['Ok']
+        });
+        prompt.present();
+      }
+    });
   }
 
   /**

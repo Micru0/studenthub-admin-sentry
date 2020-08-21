@@ -28,6 +28,7 @@ import { UpdateAlertModule } from './components/update-alert/update-alert.module
 import { SentryErrorhandlerService } from './providers/sentry.errorhandler.service';
 import { UploadFilePageModule } from './pages/logged-in/company/upload-file/upload-file.module';
 import { BrandFormPageModule } from './pages/logged-in/company/brand-form/brand-form.module';
+import { CompanyContactFormPageModule } from './pages/logged-in/company/company-contact-form/company-contact-form.module';
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -53,7 +54,8 @@ export function startupServiceFactory(authService) {
     UniversityFormPageModule,
     UpdateAlertModule,
     UploadFilePageModule,
-    BrandFormPageModule
+    BrandFormPageModule,
+    CompanyContactFormPageModule
   ],
   providers: [
     {
