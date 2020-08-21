@@ -134,6 +134,19 @@ export class CompanyService {
   }
 
   /**
+   * update follow up interval in weeks
+   * @param company_id 
+   * @param company_followup_interval_weeks 
+   */
+  updateFollowupInterval(company_id, company_followup_interval_weeks): Observable<any>{
+    const url = `${this._companyEndpoint}/update-followup-interval/${company_id}`;
+    const params = {
+      followup_interval_weeks: company_followup_interval_weeks
+    };
+    return this._authhttp.patch(url, params);
+  }
+
+  /**
    * create file for company
    * @param {Company} model
    * @returns {Observable<any>}
