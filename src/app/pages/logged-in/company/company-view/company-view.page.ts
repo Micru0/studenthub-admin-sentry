@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController, AlertController, ModalController, Platform } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-
-import { CompanyFormPage } from '../company-form/company-form.page';
-import { UploadFilePage } from '../upload-file/upload-file.page';
-
+//services
 import { StoreService } from 'src/app/providers/logged-in/store.service';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import { AwsService } from '../../../../providers/aws.service';
-
+import { BrandService } from 'src/app/providers/logged-in/brand.service';
+import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
+import { AuthService } from 'src/app/providers/auth.service';
+//models
 import { Company } from 'src/app/models/company';
 import { Store } from 'src/app/models/store';
 import { File } from '../../../../models/file';
-import { Brand } from 'src/app/models/brand';
-import { BrandFormPage } from '../brand-form/brand-form.page';
-import { BrandService } from 'src/app/providers/logged-in/brand.service';
-import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
 import { CompanyContact } from 'src/app/models/company-contact';
-import { AuthService } from 'src/app/providers/auth.service';
+import { Brand } from 'src/app/models/brand';
+//pages
+import { BrandFormPage } from '../brand-form/brand-form.page';
 import { CompanyContactFormPage } from '../company-contact-form/company-contact-form.page';
+import { CompanyFormPage } from '../company-form/company-form.page';
+import { UploadFilePage } from '../upload-file/upload-file.page';
 
 
 @Component({
@@ -42,7 +42,8 @@ export class CompanyViewPage implements OnInit {
   public loading = false;
   public sendingNewPassword = false;
   public companyStatus = false;
-  public changingStatus = false;
+
+  public updating = false;
 
   constructor(
     public platform: Platform,
@@ -70,6 +71,7 @@ export class CompanyViewPage implements OnInit {
 
     this.loadData();
     this.loadContacts();
+
     this.companyStatus = !!(this.company.company_status);
   }
 
@@ -550,12 +552,16 @@ export class CompanyViewPage implements OnInit {
     }
   }
 
-  changeStatus($event) {
-    this.companyStatus = $event.detail.checked;
-    this.changingStatus = true;
-    const status = ($event.detail.checked) ? 10 : 0;
-    this.companyService.changeStatus(this.company, status).subscribe(async response => {
-      this.changingStatus = false;
+  toogleFollowup($event) {
+    
+    this.company.company_followup = $event.detail.checked;
+
+    this.updating = true;
+
+    this.companyService.updateFollowup(this.company).subscribe(async response => {
+      
+      this.updating = false;
+
       if (response && response.operation == 'success') {
         const toast = await this._toastCtrl.create({
           message: response.message,
@@ -564,11 +570,38 @@ export class CompanyViewPage implements OnInit {
         toast.present();
       }
     }, () => {
+      this.updating = false;
+    });
+  }
+
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date)
+      return new Date(date.replace(/-/g, '/'));
+  }
+  
+  changeStatus($event) {
+    this.companyStatus = $event.detail.checked;
+    this.updating = true;
+    const status = ($event.detail.checked) ? 10 : 0;
+    this.companyService.changeStatus(this.company, status).subscribe(async response => {
+      this.updating = false;
+      if (response && response.operation == 'success') {
+        const toast = await this._toastCtrl.create({
+          message: response.message,
+          duration: 3000
+        });
+        toast.present();
+      }
+    }, () => {
+      this.updating = false;
     });
   }
 
   loadLogo($event, company) {
     company.company_logo = null;
   }
-
 }

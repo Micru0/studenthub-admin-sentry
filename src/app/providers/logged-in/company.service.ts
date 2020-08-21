@@ -105,7 +105,6 @@ export class CompanyService {
     return this._authhttp.patch(url, {});
   }
 
-
   /**
    * create file for company
    * @param {Company} model
@@ -120,6 +119,18 @@ export class CompanyService {
     };
 
     return this._authhttp.post(url, params);
+  }
+
+  /**
+   * update follow up
+   * @param model 
+   */
+  updateFollowup(model: Company): Observable<any>{
+    const url = `${this._companyEndpoint}/update-followup/${model.company_id}`;
+    const params = {
+      followup: model.company_followup
+    };
+    return this._authhttp.patch(url, params);
   }
 
   /**
