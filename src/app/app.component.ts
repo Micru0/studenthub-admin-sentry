@@ -70,7 +70,11 @@ export class AppComponent implements OnInit {
     });
     
     this.eventService.error500$.subscribe(data => {
-        this.navCtrl.navigateForward(['server-error']);
+        this.navCtrl.navigateForward(['server-error'], {
+          state: {
+            message: data? data['message']: null
+          }
+        });
     });
 
     // Check for network connection
@@ -108,10 +112,8 @@ export class AppComponent implements OnInit {
    */
   changeTheme() {
     if (!this.authService.theme || this.authService.theme == 'day') {
-      console.log(1);
       this.authService.setTheme('night');
     } else {
-      console.log(2);
       this.authService.setTheme('day');
     }
   }

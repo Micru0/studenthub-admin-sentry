@@ -1,0 +1,84 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+// Services
+import { AuthHttpService } from './authhttp.service';
+// Models
+import { Brand } from '../../models/brand';
+
+
+/**
+ * Manages Company Brand Functionality on the server
+ */
+@Injectable({
+  providedIn: 'root'
+})
+export class BrandService {
+
+  private _brandEndpoint: string = "/brands";
+
+  constructor(private _authhttp: AuthHttpService) { }
+
+  /**
+   * load brand detail
+   * @param brand_uuid 
+   */
+  view(brand_uuid) {
+    let url = this._brandEndpoint + '/' + brand_uuid;
+    return this._authhttp.get(url);
+  }
+
+  /**
+   * List of all staff
+   * @returns {Observable<any>}
+   */
+  list(page: number): Observable<any>{
+    let url = this._brandEndpoint + '?page=' + page;
+    return this._authhttp.get(url, true);
+  }
+
+  /**
+   * Create Brand
+   * @param {Brand} model
+   * @returns {Observable<any>}
+   */
+  create(model: Brand): Observable<any>{
+    let postUrl = `${this._brandEndpoint}`;
+
+    let params = {
+      "name_en": model.brand_name_en,
+      "name_ar": model.brand_name_ar,
+      "company_id": model.company_id,
+      "logo": model.brand_logo,
+    };
+
+    return this._authhttp.post(postUrl, params);
+  }
+
+  /**
+   * Update Brand
+   * @param {Brand} model
+   * @returns {Observable<any>}
+   */
+  update(model: Brand): Observable<any>{
+    let url = `${this._brandEndpoint}/${model.brand_uuid}`;
+
+    let params = {
+      "name_en": model.brand_name_en,
+      "name_ar": model.brand_name_ar,
+      "company_id": model.company_id,
+      "logo": model.brand_logo,
+    };
+
+    return this._authhttp.patch(url, params);
+  }
+
+  /**
+   * Delete Brand
+   * @param {Brand} model
+   * @returns {Observable<any>}
+   */
+  delete(model: Brand): Observable<any>{
+    let url = `${this._brandEndpoint}/${model.brand_uuid}`;
+    return this._authhttp.delete(url);
+  }
+}

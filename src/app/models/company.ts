@@ -7,9 +7,13 @@ export class Company {
     company_description_en: string;
     company_description_ar: string;
     company_website: string;
+    company_logo: string;
     company_email: string;
     company_password_hash: string;
     company_bonus_commission: number;
+    company_followup: any;
+    company_followup_interval_weeks: any;
+    company_last_followup_datetime: string;
     company_hourly_rate: number;
     company_status: number;
     total_candidates: number;

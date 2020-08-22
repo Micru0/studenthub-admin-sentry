@@ -275,8 +275,12 @@ export class TransferViewPage implements OnInit {
     
     this.processing = true;
 
-    this.transferService.export(this.transfer).subscribe(response => {
+    this.transferService.export(this.transfer).subscribe(async response => {
+      
       this.navCtrl.pop();
+      
+    }, async err => { 
+    }, () => {
       this.processing = false;
     });
   }
@@ -370,6 +374,5 @@ export class TransferViewPage implements OnInit {
    */
   loadLogo($event, candidate) {
     candidate.candidate_personal_photo = null;
-    return candidate.candidate_personal_photo_thumb = null;
   }
 }

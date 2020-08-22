@@ -7,6 +7,7 @@ import { Company } from 'src/app/models/company';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
 // pages
 import { CompanyFormPage } from '../company-form/company-form.page';
+import {AwsService} from '../../../../providers/aws.service';
 
 
 @Component({
@@ -30,13 +31,14 @@ export class CompanyListPage implements OnInit {
     public router: Router,
     public platform: Platform,
     public companyService: CompanyService,
+    public awsService: AwsService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController
   ) { }
 
   ngOnInit() {
-    this.loadData(this.currentPage);
+    this.loadData(1);
   }
 
   /**
@@ -111,7 +113,7 @@ export class CompanyListPage implements OnInit {
   rowSelected(model) {
     this.router.navigate(['company-view', model.company_id], {
       state: {
-        model: model
+        model
       }
     });
   }
@@ -130,7 +132,7 @@ export class CompanyListPage implements OnInit {
     // Refresh List if required
     modal.onDidDismiss().then(e => {
       if (e && e.data && e.data.refresh) {
-        this.loadData(this.currentPage);
+        this.loadData(1);
       }
     });
     modal.present();
@@ -195,5 +197,9 @@ export class CompanyListPage implements OnInit {
 
   segmentChanged($event) {
     this.segment = $event.detail.value;
+  }
+
+  loadLogo($event, company) {
+    company.company_logo = null;
   }
 }

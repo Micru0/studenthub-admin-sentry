@@ -25,7 +25,7 @@ export class AuthHttpService {
   ) { }
 
   /**
-   * Requests via Excel GET verb
+   * Requests via GET verb
    * @param {string} endpointUrl
    * @param {string} filename
    * @returns {Observable<any>}
@@ -55,7 +55,7 @@ export class AuthHttpService {
   }
 
   /**
-   * Requests via Excel GET verb
+   * Requests via GET verb
    * @param {string} endpointUrl
    * @param {number} invoice_id
    * @returns {Observable<any>}
@@ -70,7 +70,7 @@ export class AuthHttpService {
         'Authorization': 'Bearer ' + bearerToken
       })
     }).pipe(
-      retryWhen(genericRetryStrategy()),
+      //retryWhen(genericRetryStrategy()),
       catchError((err) => {
         return this._handleError(err);
       }),
@@ -277,7 +277,9 @@ export class AuthHttpService {
 
     // Handle internal server error - 500  
     if (error.status === 500) {
-      this.eventService.error500$.next();
+      this.eventService.error500$.next({
+        message: error.message
+      });
       return empty();
     }
 

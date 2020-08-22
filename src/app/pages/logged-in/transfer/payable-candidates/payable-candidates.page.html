@@ -63,7 +63,7 @@
       <!-- Loop Through Candidates within that Transfer -->
       <ion-item tappable *ngFor="let tc of transfer.unPaidTransferCandidates" (click)="candidateSelected(tc.candidate)"> 
         <ion-avatar slot="start">
-          <img *ngIf="tc.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + tc.candidate.candidate_personal_photo }}" (error)="loadLogo($event,tc.candidate)">
+          <img *ngIf="tc.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + tc.candidate.candidate_personal_photo }}" (error)="loadLogo($event,tc.candidate)">
           <img *ngIf="!tc.candidate.candidate_personal_photo" src="/assets/icon.png">
         </ion-avatar>
         <ion-label>

@@ -47,6 +47,7 @@ export class CompanyService {
       description_en : model.company_description_en,
       description_ar : model.company_description_ar,
       website : model.company_website,
+      logo : model.company_logo,
     };
 
     return this._authhttp.post(postUrl, params);
@@ -69,6 +70,7 @@ export class CompanyService {
       description_en : model.company_description_en,
       description_ar : model.company_description_ar,
       website : model.company_website,
+      logo : model.company_logo,
     };
 
     return this._authhttp.patch(`${this._companyEndpoint}/${model.company_id}`, params);
@@ -89,7 +91,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(model: Company): Observable<any>{
-    const url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files`;
+    const url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files,brands`;
     return this._authhttp.get(url);
   }
 
@@ -102,7 +104,6 @@ export class CompanyService {
     const url = `${this._companyEndpoint}/reset-password/${model.company_id}`;
     return this._authhttp.patch(url, {});
   }
-
 
   /**
    * create file for company
@@ -118,6 +119,31 @@ export class CompanyService {
     };
 
     return this._authhttp.post(url, params);
+  }
+
+  /**
+   * update follow up
+   * @param model 
+   */
+  updateFollowup(model: Company): Observable<any>{
+    const url = `${this._companyEndpoint}/update-followup/${model.company_id}`;
+    const params = {
+      followup: model.company_followup
+    };
+    return this._authhttp.patch(url, params);
+  }
+
+  /**
+   * update follow up interval in weeks
+   * @param company_id 
+   * @param company_followup_interval_weeks 
+   */
+  updateFollowupInterval(company_id, company_followup_interval_weeks): Observable<any>{
+    const url = `${this._companyEndpoint}/update-followup-interval/${company_id}`;
+    const params = {
+      followup_interval_weeks: company_followup_interval_weeks
+    };
+    return this._authhttp.patch(url, params);
   }
 
   /**
