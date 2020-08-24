@@ -24,7 +24,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   list(page: number): Observable<any>{
-    const url = this._companyEndpoint + '?page=' + page + '&expand=files';
+    const url = this._companyEndpoint + '?page=' + page + '&expand=files,notes,notes.staff';
     return this._authhttp.get(url, true);
   }
 
@@ -91,7 +91,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(model: Company): Observable<any>{
-    const url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files,brands`;
+    const url = `${this._companyEndpoint}/${model.company_id}?expand=subCompanies,stores,files,brands,notes,notes.staff`;
     return this._authhttp.get(url);
   }
 

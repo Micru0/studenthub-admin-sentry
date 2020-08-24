@@ -257,6 +257,29 @@
       </ion-list>
     </section>
 
+    <!-- Notes List -->
+
+    <!-- note -->
+    <section *ngIf="!loading && company">
+
+      <ion-item-divider color="light">
+        <ion-label>
+          Notes
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let note of company.notes">
+          <ion-item tappable>
+            <ion-label>
+              {{ note.note_text }}<br/>
+              <p>By {{ note.staff.staff_name}} @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+    </section>
+
     <!-- Brand List -->
 
     <section>
