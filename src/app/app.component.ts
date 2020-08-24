@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
         SplashScreen.hide();
       }
 
-      this.totalToReview();
+      // this.totalToReview();
 
       this.setServiceWorker();
     });
@@ -93,6 +93,9 @@ export class AppComponent implements OnInit {
     this.eventService.userLogin$.subscribe(userEventData => {
       this.navCtrl.navigateRoot(['/']);
     });
+    this.eventService.userLogin$.subscribe(userEventData => {
+      this.totalToReview();
+    });
 
     // On Logout Event, set root to Login Page
     this.eventService.userLogout$.subscribe((logoutReason) => {
@@ -130,7 +133,7 @@ export class AppComponent implements OnInit {
 
           // Allow the app to stabilize first, before starting polling for updates with `interval()`.
           const appIsStable$ = this.appRef.isStable.pipe(first(isStable => isStable === true));
-          const updateInterval$ = interval(1000);// every minute 60
+          const updateInterval$ = interval(1000); // every minute 60
           const updateIntervalOnceAppIsStable$ = concat(appIsStable$, updateInterval$);
 
           updateIntervalOnceAppIsStable$.subscribe(() => {
