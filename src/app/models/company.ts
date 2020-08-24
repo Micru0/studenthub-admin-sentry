@@ -21,4 +21,5 @@ export class Company {
     total_subcompanies: number;
     subCompanies: Company[];
     files: any[];
+    notes: any[];
 }
