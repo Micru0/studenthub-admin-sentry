@@ -1,13 +1,14 @@
 import { Injectable, RendererFactory2 } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Storage } from '@ionic/storage';
+
 import { catchError, first, take, map, retryWhen } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RouterStateSnapshot, ActivatedRouteSnapshot, UrlTree, Router } from '@angular/router';
-//services
+// services
 import { EventService } from './event.service';
-
+import { Plugins } from '@capacitor/core';
+const { Storage } = Plugins;
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
 
   public renderer;
 
-  public isLogin: boolean = false;
+  public isLogin = false;
 
   // Logged in agent details
   private _accessToken;
@@ -25,14 +26,13 @@ export class AuthService {
   public email: string;
   public theme: string;
 
-  private _urlBasicAuth: string = "/auth/login";
+  private _urlBasicAuth = '/auth/login';
 
   constructor(
     public rendererFactory: RendererFactory2,
     public _http: HttpClient,
-    private _storage: Storage,
     public router: Router,
-    private _eventService: EventService
+    private eventService: EventService
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
   }
@@ -42,103 +42,113 @@ export class AuthService {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (this.isLogin) {
-      return true;
-    }
 
     /**
      * new router changes don't wait for startup service
      * https://github.com/angular/angular/issues/14615
      */
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
 
-      const promises = [
-        this._storage.get('bearer'),
-        this._storage.get('id'),
-        this._storage.get('name'),
-        this._storage.get('email'),
-        this._storage.get('theme')
-      ];
+      if (this.isLogin) {
+        resolve(true);
+      }
 
-      return Promise.all(promises)
-        .then(results => {
+      const ret = await Storage.get({ key: 'loggedInAdmin' });
 
-          if (results[0] && results[1] && results[2] && results[3]) {
+      const user = JSON.parse(ret.value);
 
-            this.isLogin = true;
-            this._accessToken = results[0];
-            this.id = results[1];
-            this.name = results[2];
-            this.email = results[3];
+      if (user) {
 
-            this.setTheme(results[4]);
+        this.isLogin = true;
+        this._accessToken = user.token;
+        this.id = user.id;
+        this.name = user.name;
+        this.email = user.email;
+        this.theme = user.theme;
 
-            resolve(true);
-          } else {
-            resolve(false);
-            this.router.navigate(['login']);
-          }
-        });
+        resolve(true);
+      } else {
+        resolve(false);
+        this.logout('invalid access');
+      }
     });
   }
 
   // This is the method you want to call at bootstrap
-  load(): Promise<any> {
+  async load(): Promise<any> {
+    const ret = await Storage.get({ key: 'loggedInAdmin' });
 
-    const promises = [
-      this._storage.get('bearer'),
-      this._storage.get('id'),
-      this._storage.get('name'),
-      this._storage.get('email'),
-      this._storage.get('theme')
-    ];
+    const admin = JSON.parse(ret.value);
 
-    return Promise.all(promises)
-      .then(results => {
+    if (admin && admin.token) {
+      return this.setAccessToken(admin);
+    } else {
+      // return this.logout('error with store variables',true);
+    }
 
-        if (results[4]) {
-          this.setTheme(results[4]);
-        }
+    const { value } = await Storage.get({ key: 'theme' });
 
-        if (results[0] && results[1] && results[2] && results[3]) {
-          this.setAccessToken(results[0], results[1], results[2], results[3]);
-          return this.getAccessToken();
-        } else {
-          this.logout();
-        }
-      })
-      .then(data => {
-        // return this.logout('promise fail');
-      });
+    if (value) {
+      this.setTheme(value);
+    }
+  }
+
+
+  /**
+   * Get Access Token from Service or Cookie
+   * @returns {string} token
+   */
+  getAccessToken(redirect = false) {
+
+    // Return Access Token if set already
+    if (this._accessToken) {
+      return this._accessToken;
+    }
+
+    Storage.get({ key: 'loggedInAdmin' }).then(ret => {
+      const user = JSON.parse(ret.value);
+
+      if (user) {
+        this.setAccessToken(user, redirect);
+        this._accessToken = user.token;
+      }
+    });
+
+    return this._accessToken;
   }
 
   /**
    * Logs a user out by setting logged in to false and clearing token from storage
    * @param {string} [reason]
+   * @param {boolean} [silent]
    */
-  logout(reason?: string) {
+  logout(reason?: string, silent = false) {
+
+    this.isLogin = false;
+
     // Remove from Storage then process logout
+
     this._accessToken = null;
     this.id = null;
     this.name = null;
     this.email = null;
+    Storage.clear();
 
-    this.isLogin = false;
-
-    this._storage.remove('bearer');
-    this._storage.remove('id');
-    this._storage.remove('name');
-    this._storage.remove('email');
-
-    this._eventService.userLogout$.next(reason ? reason : false);
+    if (!silent) {
+      this.eventService.userLogout$.next(reason ? reason : false);
+    }
   }
 
   /**
    * set app theme
-   * @param theme 
+   * @param theme
    */
   setTheme(theme) {
-    this._storage.set('theme', theme);
+    Storage.set({
+      key: 'theme',
+      value: theme
+    });
+
     this.theme = theme;
 
     if (theme == 'night') {
@@ -153,55 +163,35 @@ export class AuthService {
   /**
    * Set the access token
    */
-  setAccessToken(token: string, id: number, name: string, email: string) {
-    this.isLogin = true;
+  setAccessToken(response, redirect = false) {
 
-    this._accessToken = token;
-    this.id = id;
-    this.name = name;
-    this.email = email;
+    this._accessToken = response.token;
+    this.id = response.id;
+    this.name = response.name;
+    this.email = response.email;
 
-    // Save to Storage 
-    this._storage.set('bearer', token);
-    this._storage.set('id', id);
-    this._storage.set('name', name);
-    this._storage.set('email', email);
+    // Save to Storage
+    this.saveInStorage();
 
-    // Log User In by Triggering Event that Access Token has been Set
-    this._eventService.userLogin$.next();
-
+    if (this._accessToken) {
+      this.isLogin = true;
+      this.eventService.userLogin$.next({ redirect });
+    }
   }
 
   /**
-   * Get Access Token from Service or LocalStorage
-   * @returns {string} token
+   * Save user data in storage
    */
-  getAccessToken() {
-    // Return Access Token if set already
-    if (this._accessToken) {
-      return this._accessToken;
-    }
-
-    // Check Storage and Try Again
-    const p1 = this._storage.get('bearer');
-    const p2 = this._storage.get('id');
-    const p3 = this._storage.get('name');
-    const p4 = this._storage.get('email');
-
-    Promise.all([p1, p2, p3, p4]).then(results => {
-      if (results[0] && results[1] && results[2] && results[3]) {
-        this.setAccessToken(results[0], results[1], results[2], results[3]);
-        return this.getAccessToken();
-      } else {
-        this.logout();
-      }
-    }, () => {
-      // On Promise Failure
-      this.logout();
+  saveInStorage() {
+    Storage.set({
+      key: 'loggedInAdmin',
+      value: JSON.stringify({
+        token: this._accessToken,
+        id: this.id,
+        name: this.name,
+        email: this.email
+      })
     });
-
-    // No Access Token Available
-    return false;
   }
 
   /**
@@ -215,7 +205,7 @@ export class AuthService {
 
     const authHeader = new HttpHeaders({
       'Content-Type': 'application/json',
-      "Authorization": "Basic " + btoa(`${email}:${password}`)
+      Authorization: 'Basic ' + btoa(`${email}:${password}`)
     });
 
     const url = environment.apiEndpoint + this._urlBasicAuth;
@@ -225,13 +215,13 @@ export class AuthService {
     })
       .pipe(
         take(1),
-        //map((res: Response) => res)
+        // map((res: Response) => res)
       );
   }
 
   /**
-   * json to string error message 
-   * @param message 
+   * json to string error message
+   * @param message
    */
   errorMessage(message): string {
 
@@ -239,16 +229,16 @@ export class AuthService {
       return message + '';
     }
 
-    let a = [];
+    const a = [];
 
-    for (let i in message) {
+    for (const i in message) {
 
       if (!Array.isArray(message[i])) {
         a.push(message[i]);
         continue;
       }
 
-      for (let j of message[i]) {
+      for (const j of message[i]) {
         a.push(j);
       }
     }
