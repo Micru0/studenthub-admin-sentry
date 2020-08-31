@@ -72,7 +72,7 @@
           <ion-input type="text" formControlName="email"></ion-input>
         </ion-item>
 
-        <ion-item *ngIf="!model.company_id">
+        <ion-item *ngIf="!isSubCompany">
           <ion-label position="floating">Password</ion-label>
           <ion-input type="password" formControlName="password"></ion-input>
         </ion-item>
