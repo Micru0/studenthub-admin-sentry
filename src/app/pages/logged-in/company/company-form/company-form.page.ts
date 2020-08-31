@@ -42,9 +42,9 @@ export class CompanyFormPage implements OnInit {
   ngOnInit() {
 
     // Load the passed model if available
-    if (window.history.state && window.history.state.model) {
-      this.model = window.history.state.model;
-    }
+    // if (window.history.state && window.history.state.model) {
+    //   this.model = window.history.state.model;
+    // }
 
     // this.company_id = this.activateRoute.snapshot.paramMap.get('company_id');
     // this.isSubCompany = parseInt(this.activateRoute.snapshot.paramMap.get('subcompany'));
@@ -54,6 +54,7 @@ export class CompanyFormPage implements OnInit {
     } else {
       this._initForm();
     }
+    console.log(this.model);
   }
 
   /**
@@ -80,7 +81,6 @@ export class CompanyFormPage implements OnInit {
   _initForm() {
 
     if (this.model.parent_company_id){
-      this.model.parent_company_id = this.model.parent_company_id;
       this.isSubCompany = 1;
     }
     // Init Form
@@ -94,7 +94,12 @@ export class CompanyFormPage implements OnInit {
           name: ['', Validators.required],
           bonus_commission: [''],
           hourly_rate: ['', Validators.required],
-          logo: ['', Validators.required],
+          logo: [''],
+          common_name_en: [''],
+          common_name_ar: [''],
+          description_en: [''],
+          description_ar: [''],
+          website: [''],
         });
       } else {
         this.form = this._fb.group({
@@ -108,7 +113,7 @@ export class CompanyFormPage implements OnInit {
           password: ['', Validators.required],
           bonus_commission: [''],
           hourly_rate: ['', Validators.required],
-          logo: ['', Validators.required],
+          logo: [''],
         });
       }
     } else { // Show Update Form
@@ -122,8 +127,8 @@ export class CompanyFormPage implements OnInit {
             common_name_ar: [this.model.company_common_name_ar, Validators.required],
             description_en: [this.model.company_description_en],
             description_ar: [this.model.company_description_ar],
-            website: [this.model.company_website, Validators.required],
-            logo: [this.model.company_logo, Validators.required]
+            website: [this.model.company_website],
+            logo: [this.model.company_logo]
         });
       } else {
         this.form = this._fb.group({
@@ -136,8 +141,8 @@ export class CompanyFormPage implements OnInit {
             common_name_ar: [this.model.company_common_name_ar, Validators.required],
             description_en: [this.model.company_description_en],
             description_ar: [this.model.company_description_ar],
-            website: [this.model.company_website, Validators.required],
-            logo: [this.model.company_logo, Validators.required],
+            website: [this.model.company_website],
+            logo: [this.model.company_logo],
         });
       }
     }
