@@ -162,7 +162,7 @@ export class AppComponent implements OnInit {
 
           // Allow the app to stabilize first, before starting polling for updates with `interval()`.
           const appIsStable$ = this.appRef.isStable.pipe(first(isStable => isStable === true));
-          const updateInterval$ = interval(1000); // every minute 60
+          const updateInterval$ = interval(60 * 1000); // every minute 
           const updateIntervalOnceAppIsStable$ = concat(appIsStable$, updateInterval$);
 
           updateIntervalOnceAppIsStable$.subscribe(() => {
