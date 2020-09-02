@@ -82,10 +82,7 @@ export class CandidateTransferDetailPage implements OnInit {
     buttons: [
       {
         text: 'No',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
+        role: 'cancel'
       },
       {
         text: 'Yes',

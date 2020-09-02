@@ -100,14 +100,21 @@ export class StaffListPage implements OnInit {
    * Loads the create page
    */
   async create() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     let modal = await this._modalCtrl.create({
       component: StaffFormPage,
       componentProps: {
         model: new Staff()
       }
     });
-    // Refresh List if required
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    
       if (e && e.data && e.data.refresh) {
         this.loadData(this.currentPage, true);
       }

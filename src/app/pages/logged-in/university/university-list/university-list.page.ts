@@ -103,6 +103,8 @@ export class UniversityListPage implements OnInit {
    * Loads the create page
    */
   async create() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     let modal = await this._modalCtrl.create({
       component: UniversityFormPage,
       componentProps: {
@@ -110,6 +112,12 @@ export class UniversityListPage implements OnInit {
       }
     });
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    
       if (e && e.data && e.data.refresh) {
         this.currentPage = 1;
         this.loadData(this.currentPage);

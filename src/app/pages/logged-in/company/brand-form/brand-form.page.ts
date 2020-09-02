@@ -374,7 +374,6 @@ export class BrandFormPage implements OnInit {
 
       };
     } else {
-      console.log(event);
       this.currentTarget = event;
     }
   }

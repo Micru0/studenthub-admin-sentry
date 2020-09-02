@@ -54,7 +54,6 @@ export class CompanyFormPage implements OnInit {
     } else {
       this._initForm();
     }
-    console.log(this.model);
   }
 
   /**
