@@ -2,13 +2,14 @@ import { Component, OnInit, ApplicationRef } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { interval, concat } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Platform, AlertController, NavController, ToastController } from '@ionic/angular';
+import { Platform, AlertController, NavController, ToastController, PopoverController, ModalController } from '@ionic/angular';
 import { SwUpdate } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 //services
 import { EventService } from './providers/event.service';
 import { AuthService } from './providers/auth.service';
 import { CandidateService } from './providers/logged-in/candidate.service';
+import { promises } from 'dns';
 
 
 const { SplashScreen } = Plugins;
@@ -29,6 +30,8 @@ export class AppComponent implements OnInit {
     public updates: SwUpdate,
     public appRef: ApplicationRef,
     private platform: Platform,
+    public popoverCtrl: PopoverController,
+    public modalCtrl: ModalController,
     public navCtrl: NavController,
     public _toastCtrl: ToastController,
     public _alertCtrl: AlertController,
@@ -41,6 +44,33 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
    
+    window.onpopstate = e => {
+
+      if (window['history-back-from'] == 'onDidDismiss') {
+        window['history-back-from'] = null;
+        return false;
+      }
+
+      Promise.all([
+        this.popoverCtrl.getTop(),
+        this.modalCtrl.getTop()
+      ])
+      .then(data => {
+        
+        if (data[0]) {
+          this.popoverCtrl.dismiss({
+            'from': 'native-back-btn'
+          });
+        }
+
+        if(data[1]) {
+          this.modalCtrl.dismiss({
+            'from': 'native-back-btn'
+          });
+        }
+      });
+    };
+
     this.platform.ready().then(() => {
 
       if (this.platform.is('hybrid')) {
@@ -105,7 +135,6 @@ export class AppComponent implements OnInit {
       // Show Message explaining logout reason if there's one set
       if (logoutReason) {
         console.log(logoutReason);
-        console.log('Invalid Access');
       }
     });
   }
@@ -133,7 +162,7 @@ export class AppComponent implements OnInit {
 
           // Allow the app to stabilize first, before starting polling for updates with `interval()`.
           const appIsStable$ = this.appRef.isStable.pipe(first(isStable => isStable === true));
-          const updateInterval$ = interval(1000); // every minute 60
+          const updateInterval$ = interval(60 * 1000); // every minute 
           const updateIntervalOnceAppIsStable$ = concat(appIsStable$, updateInterval$);
 
           updateIntervalOnceAppIsStable$.subscribe(() => {
@@ -142,7 +171,6 @@ export class AppComponent implements OnInit {
           });
 
           this.updates.available.subscribe((e) => {
-            console.log(e);
             this.updatesAvailable = true;
           });
 

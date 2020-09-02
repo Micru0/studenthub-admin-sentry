@@ -64,11 +64,20 @@ export class StaffViewPage implements OnInit {
    * Loads Form in modal to update
    */
   async update() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     let modal = await this._modalCtrl.create({
       component: StaffFormPage,
       componentProps: {
         model: this.staff,
         staff_id: this.staff.staff_id
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
       }
     });
     modal.present();

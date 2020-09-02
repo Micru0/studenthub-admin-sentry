@@ -145,8 +145,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * This method will only be called if the target is not a cordova app.
    * @param  {any} path
    */
-  uploadFileViaNativeFilePath(path){
-    console.log('uploadFileViaNativeFilePath');
+  uploadFileViaNativeFilePath(path) {
     // Upload and process for progress
     this.awsService.uploadNativePath(path)
       .then((uploadObservable) => {
@@ -161,8 +160,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * Process S3 upload by subscribing to progress observable
    * @param  {} uploadObservable
    */
-  processFileUpload(uploadObservable){
-    console.log('processFileUpload');
+  processFileUpload(uploadObservable) {
     // Create Temporary Transfer Record
     const newUpload = {
       name: 'Preparing file for upload',
@@ -177,7 +175,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
     // Process Upload and Display Progress
     uploadObservable.subscribe((progress) => {
-      console.log(progress);
+     
       // Update progress, possibly create emitter for this data if needed
       if (progress.loaded &&  progress.loaded != progress.total){
         newUpload.status = 'uploading';
@@ -191,12 +189,10 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
       }
     }, (err) => {
 
-      console.log('Error', err);
       newUpload.status = 'error';
       // Hide File Upload Indicator based on which file is being uploaded
       this.isUploading = false;
     }, () => {
-      console.log('completed');
       newUpload.status = 'complete';
       // Hide File Upload Indicator based on which file is being uploaded
       this.isUploading = false;

@@ -92,8 +92,6 @@ export class CompanyContactFormPage implements OnInit {
    * Update Model Data based on Form Input
    */
   updateModelDataFromForm() {
-    console.log(this.form);
-
     this.model.contact_name = this.form.value.name;
     this.model.contact_position = this.form.value.position;
     this.model.contact_note = this.form.value.note;

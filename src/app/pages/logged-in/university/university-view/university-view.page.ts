@@ -74,11 +74,20 @@ export class UniversityViewPage implements OnInit {
    * Loads Form in modal to update
    */
   async update() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     const modal = await this._modalCtrl.create({
       component: UniversityFormPage,
       componentProps: {
         model: this.university,
         university_id: this.university_id
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
       }
     });
     modal.present();
