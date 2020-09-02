@@ -17,6 +17,7 @@
     <ion-item *ngFor="let transferFile of transferFiles" tappable (click)="rowSelected(transferFile)">
       <ion-label>
         
+        <h5>Transfer File # {{ transferFile.transfer_file_id }}</h5>
         <h4>Paid <b>KWD {{ transferFile.transfer_amount | number:'1.3-3' }}</b> to <b>{{ transferFile.totalCandidates }} candidates</b></h4>
 
         <p>
