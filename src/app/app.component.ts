@@ -77,7 +77,9 @@ export class AppComponent implements OnInit {
         SplashScreen.hide();
       }
 
-      // this.totalToReview();
+      if(this.authService.isLogin) {
+        this.totalToReview();
+      } 
 
       this.setServiceWorker();
     });
@@ -123,6 +125,7 @@ export class AppComponent implements OnInit {
     this.eventService.userLogin$.subscribe(userEventData => {
       this.navCtrl.navigateRoot(['/']);
     });
+
     this.eventService.userLogin$.subscribe(userEventData => {
       this.totalToReview();
     });
