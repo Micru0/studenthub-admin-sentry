@@ -137,8 +137,8 @@
       <ion-label>
         <h5>ID Photo Front</h5>
         <p>
-          <a [href]="aws.permanentBucketUrl + candidate.candidate_civil_photo_front" target='_blank'>
-            <img [src]="aws.permanentBucketUrl + candidate.candidate_civil_photo_front" style='width:150px;'>
+          <a [href]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_front" target='_blank'>
+            <img [src]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_front" style='width:150px;'>
           </a>
         </p>
       </ion-label>
@@ -148,8 +148,8 @@
       <ion-label>
         <h5>ID Photo Back</h5>
         <p>
-          <a [href]="aws.permanentBucketUrl + candidate.candidate_civil_photo_back" target='_blank'>
-            <img [src]="aws.permanentBucketUrl + candidate.candidate_civil_photo_back" style='width:150px;'>
+          <a [href]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_back" target='_blank'>
+            <img [src]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_back" style='width:150px;'>
           </a>
         </p>
       </ion-label>
