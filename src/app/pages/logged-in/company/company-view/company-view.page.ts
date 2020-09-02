@@ -111,6 +111,8 @@ export class CompanyViewPage implements OnInit {
    * Loads Form in modal to update
    */
   async update() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     const modal = await this._modalCtrl.create({
       component: CompanyFormPage,
       componentProps: {
@@ -121,6 +123,12 @@ export class CompanyViewPage implements OnInit {
     });
     // Refresh List if required
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+  
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -146,6 +154,8 @@ export class CompanyViewPage implements OnInit {
    * @param subcompany
    */
   async create(parent_company_id: number, isSubcompany: boolean = false) {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     const company = new Company();
 
     company.parent_company_id = parent_company_id;
@@ -158,9 +168,13 @@ export class CompanyViewPage implements OnInit {
         subcompany : isSubcompany
       }
     });
-
-    // Refresh List if required
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -184,6 +198,7 @@ export class CompanyViewPage implements OnInit {
    * form to add new brand
    */
   async addBrand() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
     let brand = new Brand;
     brand.company_id = this.company_id;
@@ -194,9 +209,13 @@ export class CompanyViewPage implements OnInit {
         model: brand
       }
     });
-
-    // Refresh List if required
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+  
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -320,15 +339,21 @@ export class CompanyViewPage implements OnInit {
   }
 
   async onContactSelected(companyContact) {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     const modal = await this._modalCtrl.create({
       component: CompanyContactFormPage,
       componentProps: { 
         model: companyContact
       }
     });
-
-    // Refresh List if required
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+   
       if (e && e.data && e.data.refresh) {
         this.loadContacts();
       }
@@ -337,6 +362,7 @@ export class CompanyViewPage implements OnInit {
   }
 
   async addCompanyContact() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
     let companyContact = new CompanyContact;
     companyContact.company_id = this.company_id;
@@ -347,9 +373,13 @@ export class CompanyViewPage implements OnInit {
         model: companyContact
       }
     });
-
-    // Refresh List if required
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+  
       if (e && e.data && e.data.refresh) {
         this.loadContacts();
       }
@@ -388,15 +418,21 @@ export class CompanyViewPage implements OnInit {
    * @param brand 
    */
   async brandSelected(brand) {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     const modal = await this._modalCtrl.create({
       component: BrandFormPage,
       componentProps: { 
         model: brand
       }
     });
-
-    // Refresh List if required
     modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -574,6 +610,8 @@ export class CompanyViewPage implements OnInit {
   }
 
   async uploadDocument() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     const modal = await this._modalCtrl.create({
       component: UploadFilePage,
       componentProps: {
@@ -581,13 +619,24 @@ export class CompanyViewPage implements OnInit {
       }
     });
     modal.present();
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    });
 
     const { data } = await modal.onWillDismiss();
+
     if (data && data.refresh) {
       this.loadData();
     }
   }
+
   async editDoc($event, file) {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
     const modal = await this._modalCtrl.create({
       component: UploadFilePage,
       componentProps: {
@@ -596,7 +645,14 @@ export class CompanyViewPage implements OnInit {
       }
     });
     modal.present();
+    modal.onDidDismiss().then(e => {
 
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    });
+    
     const { data } = await modal.onWillDismiss();
     if (data && data.refresh) {
       this.loadData();
