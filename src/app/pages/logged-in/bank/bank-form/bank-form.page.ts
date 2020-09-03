@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/providers/auth.service';
 //models
 import { Bank } from 'src/app/models/bank';
 
-
 @Component({
   selector: 'app-bank-form',
   templateUrl: './bank-form.page.html',
@@ -35,6 +34,12 @@ export class BankFormPage implements OnInit {
     private modalCtrl: ModalController,
     private _alertCtrl: AlertController
   ){
+  }
+
+  ionViewDidEnter(){
+    if (this.authService.admin_limited_access) {
+      this.close();
+    }
   }
 
   ngOnInit() {

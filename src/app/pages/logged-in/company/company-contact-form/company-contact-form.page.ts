@@ -7,6 +7,7 @@ import { CompanyContactService } from 'src/app/providers/logged-in/company-conta
 import { CompanyContact } from 'src/app/models/company-contact';
 //validator
 import { CustomValidator } from 'src/app/validators/custom.validator';
+import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -27,7 +28,8 @@ export class CompanyContactFormPage implements OnInit {
     public companyContactService: CompanyContactService,
     private _fb: FormBuilder,
     private modalCtrl: ModalController,
-    private _alertCtrl: AlertController
+    private _alertCtrl: AlertController,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {

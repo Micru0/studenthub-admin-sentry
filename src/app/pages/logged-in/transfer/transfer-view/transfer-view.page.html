@@ -39,17 +39,17 @@
 
     <!-- If Transfer Locked -->
     <ion-button fill="outline" (click)="markUnlock()"
-      *ngIf="transfer.transfer_status == 5 || transfer.transfer_status == 1">
+      *ngIf="(transfer.transfer_status == 5 || transfer.transfer_status == 1) && !authService.admin_limited_access">
       <ion-icon name="lock-open-outline" slot="start"></ion-icon>
       Unlock Transfer, revert to draft
     </ion-button>
 
     <!-- If Transfer Payment Sent, You can either Mark Received or Revert Back to Locked -->
-    <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="transfer.transfer_status == 1 || transfer.transfer_status == 5">
+    <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="(transfer.transfer_status == 1 || transfer.transfer_status == 5) && !authService.admin_limited_access">
       Mark Received & Distributing Salary
     </ion-button>
 
-    <ion-button fill="outline" (click)="revertBackToLock()" *ngIf="transfer.transfer_status === 1">
+    <ion-button fill="outline" (click)="revertBackToLock()" *ngIf="transfer.transfer_status === 1 && !authService.admin_limited_access">
       <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
       Revert Back To Locked
     </ion-button>

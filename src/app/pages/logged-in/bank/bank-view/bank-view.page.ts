@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-//services
+// services
 import { BankService } from 'src/app/providers/logged-in/bank.service';
-//pages
+import { AuthService } from 'src/app/providers/auth.service';
+// pages
 import { BankFormPage } from '../bank-form/bank-form.page';
-//models
+// models
 import { Bank } from 'src/app/models/bank';
 
 
@@ -20,41 +21,42 @@ export class BankViewPage implements OnInit {
 
   public bank: Bank;
 
-  public loading: boolean = false; 
+  public loading = false;
 
   constructor(
     private bankService: BankService,
     private activateRoute: ActivatedRoute,
     private _modalCtrl: ModalController,
-    
+    public authService: AuthService,
+
   ) {
-    //this.bank = params.get('model');
+    // this.bank = params.get('model');
   }
 
   ngOnInit() {
 
     // Load the passed model if available
-    if(window['state']) {
-      this.bank = window['state']['model'];
+    if (window.history.state) {
+      this.bank = window.history.state.model;
     }
 
     this.bank_id = this.activateRoute.snapshot.paramMap.get('bank_id');
-  
+
     this.loadData();
   }
 
   loadData() {
-    this.loading = true; 
+    this.loading = true;
 
     this.bankService.view(this.bank_id).subscribe(bank => {
-      this.bank = bank; 
+      this.bank = bank;
 
       this.loading = false;
 
     }, () => {
 
       this.loading = false;
-    })
+    });
   }
 
   /**
@@ -63,8 +65,8 @@ export class BankViewPage implements OnInit {
   async update() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    let modal = await this._modalCtrl.create({
-      component: BankFormPage, 
+    const modal = await this._modalCtrl.create({
+      component: BankFormPage,
       componentProps: {
        model: this.bank,
        bank_id: this.bank.bank_id
@@ -76,7 +78,7 @@ export class BankViewPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-   
+
       if (e && e.data && e.data.model) {
         this.bank = e.data.model; //  load data on update close
       }

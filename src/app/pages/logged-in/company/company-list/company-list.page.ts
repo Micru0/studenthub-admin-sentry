@@ -5,9 +5,11 @@ import { ModalController, AlertController, ToastController, Platform } from '@io
 import { Company } from 'src/app/models/company';
 // services
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
+import { AuthService } from "src/app/providers/auth.service";
 // pages
 import { CompanyFormPage } from '../company-form/company-form.page';
 import {AwsService} from '../../../../providers/aws.service';
+
 
 
 @Component({
@@ -34,7 +36,8 @@ export class CompanyListPage implements OnInit {
     public awsService: AwsService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
-    private _toastCtrl: ToastController
+    private _toastCtrl: ToastController,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {

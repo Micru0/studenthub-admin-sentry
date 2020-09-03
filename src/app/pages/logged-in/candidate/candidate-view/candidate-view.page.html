@@ -6,7 +6,7 @@
 
     <ion-title *ngIf="candidate">{{ candidate.candidate_name }}</ion-title>
 
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button *ngIf="candidate && !candidate.approved" (click)="approve(candidate)">
         <span *ngIf="!approving">Approve</span>
         <ion-spinner *ngIf="approving"></ion-spinner>

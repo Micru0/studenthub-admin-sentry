@@ -5,6 +5,7 @@ import { TransferFileService } from 'src/app/providers/logged-in/transfer.file.s
 import { AwsService } from 'src/app/providers/aws.service';
 //models
 import { TransferFile } from 'src/app/models/transfer-file';
+import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -20,12 +21,13 @@ export class TransferFileListPage implements OnInit {
 
   public transferFiles: TransferFile[];
 
-  public loading: boolean = false; 
+  public loading: boolean = false;
 
   constructor(
     public router: Router,
     public aws: AwsService,
     public transferFileService: TransferFileService,
+    public authService: AuthService,
 
   ) { }
 

@@ -10,6 +10,7 @@ import { AwsService } from 'src/app/providers/aws.service';
 import { Transfer, Invoice } from 'src/app/models/transfer';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
 import { Candidate } from 'src/app/models/candidate';
+import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -49,7 +50,8 @@ export class TransferViewPage implements OnInit {
     public transferCandidateService: CandidateTransferService,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    private eventService: EventService
+    private eventService: EventService,
+    public authService: AuthService
   ) {
     this.transfer_id = parseInt(this.activatedRoute.snapshot.paramMap.get('transfer_id'));
   }
@@ -272,7 +274,11 @@ export class TransferViewPage implements OnInit {
    * Export as Excel
    */
   async exportExcel() {
-    
+
+    if (!this.authService.admin_limited_access && this.transfer.transfer_status != 3) {
+      return false;
+    }
+
     this.processing = true;
 
     this.transferService.export(this.transfer).subscribe(async response => {
@@ -291,6 +297,9 @@ export class TransferViewPage implements OnInit {
    */
   async downloadReceipt(invoice: Invoice) {
 
+    if (!this.authService.admin_limited_access && this.transfer.transfer_status != 3) {
+      return false;
+    }
     this.processing = true;
 
     this.transferService.downloadReceipt(invoice).subscribe(response => {
@@ -303,6 +312,10 @@ export class TransferViewPage implements OnInit {
    * @param invoice
    */
   async downloadInvoice(invoice: Invoice) {
+
+    if (!this.authService.admin_limited_access && this.transfer.transfer_status != 3) {
+      return false;
+    }
 
     this.processing = true;
 

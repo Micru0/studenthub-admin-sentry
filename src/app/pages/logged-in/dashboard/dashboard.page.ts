@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-//services
+
+// services
 import { StatisticService } from 'src/app/providers/logged-in/statistics.service';
 import { EventService } from 'src/app/providers/event.service';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +14,7 @@ export class DashboardPage implements OnInit {
 
   public statistics: any;
 
-  public loading: boolean = false; 
+  public loading: boolean = false;
   
   constructor(
   	public router: Router,

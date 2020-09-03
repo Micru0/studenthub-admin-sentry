@@ -7,6 +7,7 @@ import { Admin } from 'src/app/models/admin';
 import { AdminFormPage } from '../admin-form/admin-form.page';
 // services
 import { AdminService } from 'src/app/providers/logged-in/admin.service';
+import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -32,7 +33,8 @@ export class AdminListPage implements OnInit {
     public adminService: AdminService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
-    private _toastCtrl: ToastController
+    private _toastCtrl: ToastController,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {

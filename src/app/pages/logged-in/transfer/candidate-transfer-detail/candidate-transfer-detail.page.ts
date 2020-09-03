@@ -8,6 +8,7 @@ import { AwsService } from 'src/app/providers/aws.service';
 //models
 import { Candidate } from 'src/app/models/candidate';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
+import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -35,7 +36,8 @@ export class CandidateTransferDetailPage implements OnInit {
     private alertCtrl: AlertController,
     public toastCtrl: ToastController,
     public aws: AwsService,
-    private _eventService: EventService
+    private _eventService: EventService,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
