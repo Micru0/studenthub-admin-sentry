@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Admin Members</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let admin of admins" [disabled]="platform.width() > 768">
+      <ion-item tappable (click)="rowSelected(admin)">
+        <ion-label>
+          {{ admin.admin_name }}<br/>
+          <small *ngIf="admin.admin_limited_access">Limited Access</small>
+          <small *ngIf="!admin.admin_limited_access">Full Access</small>
+        </ion-label>
+        <ion-buttons slot="end" *ngIf="platform.width() > 768">
+          <ion-button (click)="resetPassword($event, admin)">
+            <ion-icon slot="start" name="key-outline"></ion-icon>
+            Send Password
+          </ion-button>
+  
+          <ion-button color="danger" (click)="delete($event, admin)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-buttons>
+
+      </ion-item>  
+
+      <ion-item-options side="end">
+        <ion-button (click)="resetPassword($event, admin)">
+          <ion-icon slot="start" name="key-outline"></ion-icon>
+          Send Password
+        </ion-button>
+
+        <ion-button color="danger" (click)="delete($event, admin)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+</ion-list>
+
+<ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content>
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

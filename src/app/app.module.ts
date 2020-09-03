@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BankFormPageModule } from './pages/logged-in/bank/bank-form/bank-form.module';
 import { CompanyFormPageModule } from './pages/logged-in/company/company-form/company-form.module';
 import { StaffFormPageModule } from './pages/logged-in/staff/staff-form/staff-form.module';
+import { AdminFormPageModule } from './pages/logged-in/admin/admin-form/admin-form.module';
 import { UniversityFormPageModule } from './pages/logged-in/university/university-form/university-form.module';
 import { UpdateAlertModule } from './components/update-alert/update-alert.module';
 import { SentryErrorhandlerService } from './providers/sentry.errorhandler.service';
@@ -50,6 +51,7 @@ export function startupServiceFactory(authService) {
     BankFormPageModule,
     CompanyFormPageModule,
     StaffFormPageModule,
+    AdminFormPageModule,
     UniversityFormPageModule,
     UpdateAlertModule,
     UploadFilePageModule,

@@ -102,6 +102,22 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/staff/staff-form/staff-form.module').then( m => m.StaffFormPageModule),
     canActivate: [AuthService],
   },
+
+  {
+    path: 'admin-list',
+    loadChildren: () => import('./pages/logged-in/admin/admin-list/admin-list.module').then( m => m.AdminListPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'admin-view',
+    loadChildren: () => import('./pages/logged-in/admin/admin-view/admin-view.module').then( m => m.AdminViewPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'admin-form',
+    loadChildren: () => import('./pages/logged-in/admin/admin-form/admin-form.module').then( m => m.AdminFormPageModule),
+    canActivate: [AuthService],
+  },
   {
     path: 'store-view',
     loadChildren: () => import('./pages/logged-in/store/store-view/store-view.module').then( m => m.StoreViewPageModule),
