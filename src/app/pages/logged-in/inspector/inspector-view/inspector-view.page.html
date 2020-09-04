@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="inspector-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="inspector">{{ inspector.inspector_name }}</ion-title>
+
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngIf="inspector && !loading">
+
+    <ion-item>
+      <ion-label>
+        <h5>Id</h5>
+        <p>{{ inspector.inspector_uuid }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Inspector Member</h5>
+        <p>{{ inspector.inspector_name }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Email</h5>
+        <p>{{ inspector.inspector_email }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Status</h5>
+        <p *ngIf="inspector.inspector_status == 10">Active</p>
+        <p *ngIf="inspector.inspector_status != 10">In-Active</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Created at</h5>
+        <p>{{ inspector.inspector_created_at }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h5>Updated at</h5>
+        <p>{{ inspector.inspector_updated_at }}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <loading-modal [loading]="loading" type="university-view"></loading-modal>
+</ion-content>
+<ion-footer *ngIf="!authService.admin_limited_access">
+  <ion-button expand="full" (click)="resetPassword()" *ngIf="!loading && inspector">
+    <span *ngIf="!sendingNewPassword">Send new password to inspector</span>
+    <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
+  </ion-button>
+</ion-footer>

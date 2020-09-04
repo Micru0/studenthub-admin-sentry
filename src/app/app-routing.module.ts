@@ -102,7 +102,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/staff/staff-form/staff-form.module').then( m => m.StaffFormPageModule),
     canActivate: [AuthService],
   },
-
   {
     path: 'admin-list',
     loadChildren: () => import('./pages/logged-in/admin/admin-list/admin-list.module').then( m => m.AdminListPageModule),
@@ -195,15 +194,31 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
-    path: '**',
-    redirectTo: 'not-found'
-  },   {
     path: 'brand-form',
     loadChildren: () => import('./pages/logged-in/company/brand-form/brand-form.module').then( m => m.BrandFormPageModule)
   },
   {
     path: 'company-contact-form',
     loadChildren: () => import('./pages/logged-in/company/company-contact-form/company-contact-form.module').then( m => m.CompanyContactFormPageModule)
+  },
+  {
+    path: 'inspector-list',
+    loadChildren: () => import('./pages/logged-in/inspector/inspector-list/inspector-list.module').then( m => m.InspectorListPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'inspector-view',
+    loadChildren: () => import('./pages/logged-in/inspector/inspector-view/inspector-view.module').then( m => m.InspectorViewPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'inspector-form',
+    loadChildren: () => import('./pages/logged-in/inspector/inspector-form/inspector-form.module').then( m => m.InspectorFormPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
   },
 
 ];
