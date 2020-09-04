@@ -9,6 +9,7 @@ import { AuthService } from "src/app/providers/auth.service";
 // pages
 import { CompanyFormPage } from '../company-form/company-form.page';
 import {AwsService} from '../../../../providers/aws.service';
+import {EventService} from "../../../../providers/event.service";
 
 
 
@@ -37,11 +38,16 @@ export class CompanyListPage implements OnInit {
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
-    public authService: AuthService
+    public authService: AuthService,
+    public eventService: EventService
   ) { }
 
   ngOnInit() {
     this.loadData(1);
+
+    this.eventService.reloadCompanyList$.subscribe(res => {
+      this.loadData(1);
+    });
   }
 
   /**
