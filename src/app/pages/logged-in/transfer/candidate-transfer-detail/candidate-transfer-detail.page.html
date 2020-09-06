@@ -87,7 +87,7 @@
         </ion-item>
 
       </ion-card-content>
-      <ion-card-header>
+      <ion-card-header *ngIf="!authService.admin_limited_access">
 
         <ion-button [disabled]="markingUnPaid || candidatePayableAmount(transferCandidate) == 0"
           *ngIf="transferCandidate.paid == 1" (click)="markUnPaid($event)">

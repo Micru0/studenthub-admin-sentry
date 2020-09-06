@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Inspector</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let inspector of inspectors" [disabled]="platform.width() > 768">
+      <ion-item tappable (click)="rowSelected(inspector)">
+        <ion-label>
+          {{ inspector.inspector_name }}<br/>
+        </ion-label>
+        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
+          <ion-button (click)="resetPassword($event, inspector)">
+            <ion-icon slot="start" name="key-outline"></ion-icon>
+            Send Password
+          </ion-button>
+  
+          <ion-button color="danger" (click)="delete($event, inspector)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-buttons>
+
+      </ion-item>  
+
+      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+        <ion-button (click)="resetPassword($event, inspector)">
+          <ion-icon slot="start" name="key-outline"></ion-icon>
+          Send Password
+        </ion-button>
+
+        <ion-button color="danger" (click)="delete($event, inspector)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+</ion-list>
+<no-items message = "No item found" *ngIf="inspectors && inspectors.length == 0 && !loading"></no-items>
+<ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content>
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer *ngIf="!authService.admin_limited_access">
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

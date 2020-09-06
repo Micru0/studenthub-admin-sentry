@@ -6,6 +6,7 @@ import { AwsService } from 'src/app/providers/aws.service';
 import { EventService } from 'src/app/providers/event.service';
 //models
 import { Candidate } from 'src/app/models/candidate';
+import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -30,6 +31,7 @@ export class PayableCandidatesPage  {
     public aws: AwsService,
     public eventService: EventService,
     public transferService: TransferService, 
+    public authService: AuthService,
   ) { }
 
   ngOnInit() {

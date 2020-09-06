@@ -6,7 +6,7 @@
 
     <ion-title *ngIf="candidate">{{ candidate.candidate_name }}</ion-title>
 
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button *ngIf="candidate && !candidate.approved" (click)="approve(candidate)">
         <span *ngIf="!approving">Approve</span>
         <ion-spinner *ngIf="approving"></ion-spinner>
@@ -137,8 +137,8 @@
       <ion-label>
         <h5>ID Photo Front</h5>
         <p>
-          <a [href]="aws.permanentBucketUrl + candidate.candidate_civil_photo_front" target='_blank'>
-            <img [src]="aws.permanentBucketUrl + candidate.candidate_civil_photo_front" style='width:150px;'>
+          <a [href]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_front" target='_blank'>
+            <img [src]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_front" style='width:150px;'>
           </a>
         </p>
       </ion-label>
@@ -148,8 +148,8 @@
       <ion-label>
         <h5>ID Photo Back</h5>
         <p>
-          <a [href]="aws.permanentBucketUrl + candidate.candidate_civil_photo_back" target='_blank'>
-            <img [src]="aws.permanentBucketUrl + candidate.candidate_civil_photo_back" style='width:150px;'>
+          <a [href]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_back" target='_blank'>
+            <img [src]="aws.permanentBucketUrl +'photos/'+ candidate.candidate_civil_photo_back" style='width:150px;'>
           </a>
         </p>
       </ion-label>

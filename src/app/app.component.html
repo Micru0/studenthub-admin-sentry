@@ -86,6 +86,14 @@
             </ion-item-divider>
 
             <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'admin-list'">
+                <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Admin
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'company-list'">
                 <ion-icon name="briefcase-outline" slot="start"></ion-icon>
                 <ion-label>
@@ -98,6 +106,13 @@
               <ion-item lines="none" [routerLink]="'staff-list'">
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>Staff</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'inspector-list'">
+                <ion-icon name="people-outline" slot="start"></ion-icon>
+                <ion-label>Inspector</ion-label>
               </ion-item>
             </ion-menu-toggle>
           </ion-item-group>

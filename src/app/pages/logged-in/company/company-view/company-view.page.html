@@ -7,7 +7,7 @@
 
     <ion-title *ngIf="company">{{ company.company_name }}</ion-title>
 
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button (click)="update()">
         Update
       </ion-button>
@@ -74,7 +74,7 @@
 
       <ion-item>
         <ion-label>Followup</ion-label>
-        <ion-toggle [checked]="company.company_followup" (ionChange)="toogleFollowup($event)"></ion-toggle>
+        <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="followup" (ionChange)="toggleFollowup($event)"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="company.company_followup">
@@ -85,7 +85,7 @@
           </p>
         </ion-label>
 
-        <ion-buttons slot="end">
+        <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
           <ion-button (click)="updateFollowupInterval()">
             <ion-icon name="pencil-outline"></ion-icon> Change
           </ion-button>
@@ -99,14 +99,14 @@
         </ion-label>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="!authService.admin_limited_access">
         <ion-button expand="full" color="danger" [disabled]="sendingNewPassword" (click)="resetPassword()">
           <span *ngIf="!sendingNewPassword">Send new password to company</span>
           <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
         </ion-button>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="!authService.admin_limited_access">
         <ion-button expand="full" color="danger" (click)="uploadDocument()">
           <span>Upload Document</span>
         </ion-button>
@@ -114,7 +114,7 @@
 
       <ion-item>
         <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</ion-label>
-        <ion-toggle [checked]="companyStatus" (ionChange)=changeStatus($event)></ion-toggle>
+        <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatus" (ionChange)=changeStatus($event)></ion-toggle>
       </ion-item>
 
       <ion-item-divider color="light">
@@ -150,7 +150,7 @@
             </a>
             <p>{{file.file_description}}</p>
           </ion-label>
-          <ion-buttons slot="end">
+          <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
             <ion-button color="default" (click)="editDoc($event, file)">
               <ion-icon slot="start" name="pencil-outline"></ion-icon>
               Edit
@@ -216,7 +216,7 @@
             {{ company.total_stores }} stores
           </ion-badge>
 
-          <ion-buttons slot="end" *ngIf="platform.width() > 768">
+          <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
             <ion-button color="danger" (click)="delete($event, company)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
@@ -225,7 +225,7 @@
 
         </ion-item>
 
-        <ion-item-options side="end">
+        <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
           <ion-button color="danger" (click)="delete($event, company)">
             <ion-icon slot="start" name="trash-outline"></ion-icon>
             Delete
@@ -302,7 +302,7 @@
               {{ brand.brand_name_en }}
             </ion-label>
 
-            <ion-buttons slot="end" *ngIf="platform.width() > 768">
+            <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
               <ion-button color="danger" (click)="deleteBrand($event, brand)">
                 <ion-icon slot="start" name="trash-outline"></ion-icon>
                 Delete
@@ -311,7 +311,7 @@
 
           </ion-item>
 
-          <ion-item-options side="end">
+          <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
             <ion-button color="danger" (click)="deleteBrand($event, brand)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
@@ -319,7 +319,7 @@
           </ion-item-options>
         </ion-item-sliding>
 
-        <ion-item lines="none">
+        <ion-item lines="none" *ngIf="!authService.admin_limited_access">
           <ion-button (click)="addBrand()">
             Add New Brand
           </ion-button>
@@ -357,7 +357,7 @@
               </p>
             </ion-label>
 
-            <ion-buttons slot="end" *ngIf="platform.width() > 768">
+            <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
               <ion-button color="danger" (click)="deleteContact($event, companyContact)">
                 <ion-icon slot="start" name="trash-outline"></ion-icon>
                 Delete
@@ -366,7 +366,7 @@
 
           </ion-item>
 
-          <ion-item-options side="end">
+          <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
             <ion-button color="danger" (click)="deleteContact($event, companyContact)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
@@ -374,7 +374,7 @@
           </ion-item-options>
         </ion-item-sliding>
 
-        <ion-item lines="none">
+        <ion-item lines="none" *ngIf="!authService.admin_limited_access">
           <ion-button (click)="addCompanyContact()">
             Add New Contact
           </ion-button>
@@ -388,7 +388,7 @@
 
 </ion-content>
 
-<ion-footer *ngIf="company">
+<ion-footer *ngIf="company && !authService.admin_limited_access">
   <ion-button expand="full" *ngIf="!stores || stores.length == 0" (click)="create(company.company_id, true)">
     Create Sub Company
   </ion-button>

@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 // services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { UniversityService } from 'src/app/providers/logged-in/university.service';
+import {AuthService} from "../../../../providers/auth.service";
 // models
 import { University } from 'src/app/models/university';
 import { Candidate } from 'src/app/models/candidate';
@@ -35,7 +36,8 @@ export class UniversityViewPage implements OnInit {
     public router: Router,
     public universityService: UniversityService,
     public candidateService: CandidateService,
-    private _modalCtrl: ModalController
+    private _modalCtrl: ModalController,
+    public authService: AuthService
   ) {
   }
 

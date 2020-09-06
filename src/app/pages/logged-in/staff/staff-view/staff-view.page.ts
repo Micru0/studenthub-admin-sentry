@@ -7,6 +7,7 @@ import { StaffService } from 'src/app/providers/logged-in/staff.service';
 import { Staff } from 'src/app/models/staff';
 //pages
 import { StaffFormPage } from '../staff-form/staff-form.page';
+import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -30,7 +31,8 @@ export class StaffViewPage implements OnInit {
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
-    public staffService: StaffService
+    public staffService: StaffService,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {

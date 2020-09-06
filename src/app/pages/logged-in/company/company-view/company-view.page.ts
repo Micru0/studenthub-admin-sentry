@@ -19,6 +19,7 @@ import { BrandFormPage } from '../brand-form/brand-form.page';
 import { CompanyContactFormPage } from '../company-contact-form/company-contact-form.page';
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
+import {EventService} from "../../../../providers/event.service";
 
 
 @Component({
@@ -42,6 +43,7 @@ export class CompanyViewPage implements OnInit {
   public loading = false;
   public sendingNewPassword = false;
   public companyStatus = false;
+  public followup = false;
 
   public updating = false;
 
@@ -58,6 +60,7 @@ export class CompanyViewPage implements OnInit {
     public authService: AuthService,
     private _toastCtrl: ToastController,
     public aws: AwsService,
+    public eventService: EventService,
   ) { }
 
   ngOnInit() {
@@ -71,8 +74,6 @@ export class CompanyViewPage implements OnInit {
 
     this.loadData();
     this.loadContacts();
-
-    this.companyStatus = !!(this.company.company_status);
   }
 
   /**
@@ -83,6 +84,9 @@ export class CompanyViewPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
+    // if initialize
+    this.companyStatus = !!(this.company && this.company.company_status);
+    this.followup = !!(this.company && this.company.company_followup);
 
     if (!this.company) {
       this.company = new Company;
@@ -95,6 +99,9 @@ export class CompanyViewPage implements OnInit {
       this.deleting = false;
 
       this.company = response;
+      // if load
+      this.companyStatus = !!(this.company.company_status);
+      this.followup = !!(this.company.company_followup);
 
       this.subCompanies = response.subCompanies;
       this.stores = response.stores;
@@ -659,10 +666,11 @@ export class CompanyViewPage implements OnInit {
     }
   }
 
-  toogleFollowup($event) {
+  toggleFollowup($event) {
     
+    this.followup = $event.detail.checked;
     this.company.company_followup = $event.detail.checked;
-
+    console.log(this.followup,this.company.company_followup);
     this.updating = true;
 
     this.companyService.updateFollowup(this.company).subscribe(async response => {
@@ -675,7 +683,9 @@ export class CompanyViewPage implements OnInit {
           duration: 3000
         });
         toast.present();
+        this.eventService.reloadCompanyList$.next();
       }
+
     }, () => {
       this.updating = false;
     });
@@ -697,6 +707,7 @@ export class CompanyViewPage implements OnInit {
     this.companyService.changeStatus(this.company, status).subscribe(async response => {
       this.updating = false;
       if (response && response.operation == 'success') {
+        this.eventService.reloadCompanyList$.next();
         const toast = await this._toastCtrl.create({
           message: response.message,
           duration: 3000

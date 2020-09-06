@@ -103,6 +103,21 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
+    path: 'admin-list',
+    loadChildren: () => import('./pages/logged-in/admin/admin-list/admin-list.module').then( m => m.AdminListPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'admin-view',
+    loadChildren: () => import('./pages/logged-in/admin/admin-view/admin-view.module').then( m => m.AdminViewPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'admin-form',
+    loadChildren: () => import('./pages/logged-in/admin/admin-form/admin-form.module').then( m => m.AdminFormPageModule),
+    canActivate: [AuthService],
+  },
+  {
     path: 'store-view',
     loadChildren: () => import('./pages/logged-in/store/store-view/store-view.module').then( m => m.StoreViewPageModule),
     canActivate: [AuthService],
@@ -179,15 +194,31 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
-    path: '**',
-    redirectTo: 'not-found'
-  },   {
     path: 'brand-form',
     loadChildren: () => import('./pages/logged-in/company/brand-form/brand-form.module').then( m => m.BrandFormPageModule)
   },
   {
     path: 'company-contact-form',
     loadChildren: () => import('./pages/logged-in/company/company-contact-form/company-contact-form.module').then( m => m.CompanyContactFormPageModule)
+  },
+  {
+    path: 'inspector-list',
+    loadChildren: () => import('./pages/logged-in/inspector/inspector-list/inspector-list.module').then( m => m.InspectorListPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'inspector-view',
+    loadChildren: () => import('./pages/logged-in/inspector/inspector-view/inspector-view.module').then( m => m.InspectorViewPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: 'inspector-form',
+    loadChildren: () => import('./pages/logged-in/inspector/inspector-form/inspector-form.module').then( m => m.InspectorFormPageModule),
+    canActivate: [AuthService],
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
   },
 
 ];

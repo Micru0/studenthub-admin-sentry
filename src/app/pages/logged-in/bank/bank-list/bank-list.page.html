@@ -23,7 +23,7 @@
           {{ bankMember.bank_name }}
         </ion-label>
 
-        <ion-buttons slot="end" *ngIf="platform.width() > 768">
+        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access" >
 
           <ion-button color="danger" (click)="delete($event, bankMember)">
             <ion-icon name="trash-outline" slot="start"></ion-icon>
@@ -33,7 +33,7 @@
 
       </ion-item>
 
-      <ion-item-options side="end">
+      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
         <ion-button color="danger" (click)="delete($event, bankMember)">
           <ion-icon name="trash-outline" slot="start"></ion-icon>
           Delete
@@ -51,8 +51,7 @@
   </ion-infinite-scroll>
 
 </ion-content>
-
-<ion-footer>
+<ion-footer *ngIf="!authService.admin_limited_access">
   <ion-button expand="full" (click)="create()">
     Create
   </ion-button>

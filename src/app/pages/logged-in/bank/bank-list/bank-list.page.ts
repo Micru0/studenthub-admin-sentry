@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
-//services
+// services
 import { BankService } from 'src/app/providers/logged-in/bank.service';
-//models
+import { AuthService } from 'src/app/providers/auth.service';
+// models
 import { Bank } from 'src/app/models/bank';
-//pages
+// pages
 import { BankFormPage } from '../bank-form/bank-form.page';
+
 
 
 @Component({
@@ -15,10 +17,10 @@ import { BankFormPage } from '../bank-form/bank-form.page';
   styleUrls: ['./bank-list.page.scss'],
 })
 export class BankListPage implements OnInit {
- 
-  public loading: boolean = false; 
 
-  public deleting: boolean = false; 
+  public loading = false;
+
+  public deleting = false;
 
   public pageCount = 0;
   public currentPage = 1;
@@ -31,46 +33,48 @@ export class BankListPage implements OnInit {
     public bankService: BankService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
-    private _toastCtrl: ToastController
+    private _toastCtrl: ToastController,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
     this.loadData(this.currentPage);
   }
-  
+
   /**
    * list banks
-   * @param page 
+   * @param page
    */
   async loadData(page: number, silent = false) {
-    
-    if(!silent)
-      this.loading = true; 
+
+    if (!silent) {
+      this.loading = true;
+    }
 
     this.bankService.list(page).subscribe(response => {
 
-      this.loading = false; 
-      this.deleting = false; 
+      this.loading = false;
+      this.deleting = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
       this.banks = response.body;
-    }, () => { 
-      this.loading = false; 
-      this.deleting = false; 
+    }, () => {
+      this.loading = false;
+      this.deleting = false;
     });
   }
-  
+
   doInfinite(event) {
 
-    this.loading = true; 
+    this.loading = true;
 
     this.currentPage++;
 
     this.bankService.list(this.currentPage).subscribe(response => {
 
-      this.loading = false;  
+      this.loading = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
@@ -78,9 +82,9 @@ export class BankListPage implements OnInit {
       this.banks = this.banks.concat(response.body);
 
       event.target.complete();
-      
-    }, () => { 
-      this.loading = false;  
+
+    }, () => {
+      this.loading = false;
     });
   }
 
@@ -91,8 +95,8 @@ export class BankListPage implements OnInit {
     // Load Detail Page
     this.router.navigate(['/bank-view', model.bank_id], {
       state: {
-        'model': model
-      }      
+        model: model
+      }
     });
   }
 
@@ -102,7 +106,7 @@ export class BankListPage implements OnInit {
   async create() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    let modal = await this._modalCtrl.create({
+    const modal = await this._modalCtrl.create({
       component: BankFormPage,
       componentProps: {
         model: new Bank()
@@ -115,7 +119,7 @@ export class BankListPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-   
+
       if (e && e.data && e.data.refresh) {
         this.loadData(this.currentPage);
       }
@@ -128,26 +132,26 @@ export class BankListPage implements OnInit {
    */
   async delete(ev, bank: Bank) {
 
-    ev.preventDefault(); 
+    ev.preventDefault();
     ev.stopPropagation();
- 
-    let confirm = await this._alertCtrl.create({
+
+    const confirm = await this._alertCtrl.create({
       header: 'Delete Bank?',
       message: 'Are you sure you want to delete this Bank?',
       buttons: [
         {
           text: 'Yes',
           handler: () => {
-            
-            this.deleting = true; 
+
+            this.deleting = true;
 
             this.bankService.delete(bank).subscribe(async jsonResp => {
-              
-              if (jsonResp.operation == 'error') {
-                
-                this.deleting = false; 
 
-                let alert = await this._alertCtrl.create({
+              if (jsonResp.operation == 'error') {
+
+                this.deleting = false;
+
+                const alert = await this._alertCtrl.create({
                   header: 'Deletion Error!',
                   subHeader: jsonResp.message,
                   buttons: ['OK']
@@ -156,16 +160,16 @@ export class BankListPage implements OnInit {
               }
 
               if (jsonResp.operation == 'success') {
-                let toast = await this._toastCtrl.create({
+                const toast = await this._toastCtrl.create({
                   message: jsonResp.message,
                   duration: 3000
                 });
                 toast.present();
- 
+
                 this.loadData(this.currentPage, true);
               }
             }, () => {
-              this.deleting = false; 
+              this.deleting = false;
             });
           }
         },

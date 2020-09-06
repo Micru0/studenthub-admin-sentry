@@ -22,12 +22,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { BankFormPageModule } from './pages/logged-in/bank/bank-form/bank-form.module';
 import { CompanyFormPageModule } from './pages/logged-in/company/company-form/company-form.module';
 import { StaffFormPageModule } from './pages/logged-in/staff/staff-form/staff-form.module';
+import { AdminFormPageModule } from './pages/logged-in/admin/admin-form/admin-form.module';
 import { UniversityFormPageModule } from './pages/logged-in/university/university-form/university-form.module';
 import { UpdateAlertModule } from './components/update-alert/update-alert.module';
 import { SentryErrorhandlerService } from './providers/sentry.errorhandler.service';
 import { UploadFilePageModule } from './pages/logged-in/company/upload-file/upload-file.module';
 import { BrandFormPageModule } from './pages/logged-in/company/brand-form/brand-form.module';
 import { CompanyContactFormPageModule } from './pages/logged-in/company/company-contact-form/company-contact-form.module';
+import {NoItemsModule} from "./components/no-items/no-items.module";
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -50,11 +52,13 @@ export function startupServiceFactory(authService) {
     BankFormPageModule,
     CompanyFormPageModule,
     StaffFormPageModule,
+    AdminFormPageModule,
     UniversityFormPageModule,
     UpdateAlertModule,
     UploadFilePageModule,
     BrandFormPageModule,
-    CompanyContactFormPageModule
+    CompanyContactFormPageModule,
+    NoItemsModule
   ],
   providers: [
     {

@@ -24,6 +24,7 @@ export class AuthService {
   public id: number;
   public name: string;
   public email: string;
+  public admin_limited_access: any;
   public theme: string;
 
   private _urlBasicAuth = '/auth/login';
@@ -64,6 +65,7 @@ export class AuthService {
         this.id = user.id;
         this.name = user.name;
         this.email = user.email;
+        this.admin_limited_access = user.admin_limited_access;
         this.theme = user.theme;
 
         resolve(true);
@@ -132,6 +134,7 @@ export class AuthService {
     this.id = null;
     this.name = null;
     this.email = null;
+    this.admin_limited_access = null;
     Storage.clear();
 
     if (!silent) {
@@ -169,6 +172,7 @@ export class AuthService {
     this.id = response.id;
     this.name = response.name;
     this.email = response.email;
+    this.admin_limited_access = response.admin_limited_access;
 
     // Save to Storage
     this.saveInStorage();
@@ -189,7 +193,8 @@ export class AuthService {
         token: this._accessToken,
         id: this.id,
         name: this.name,
-        email: this.email
+        email: this.email,
+        admin_limited_access: this.admin_limited_access
       })
     });
   }

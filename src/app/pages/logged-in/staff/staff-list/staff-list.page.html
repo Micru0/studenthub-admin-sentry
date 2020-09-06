@@ -21,7 +21,7 @@
       <ion-item tappable (click)="rowSelected(staffMember)">
         <ion-label>{{ staffMember.staff_name }}</ion-label>
 
-        <ion-buttons slot="end" *ngIf="platform.width() > 768">
+        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
           <ion-button (click)="resetPassword($event, staffMember)">
             <ion-icon slot="start" name="key-outline"></ion-icon>
             Send Password
@@ -35,7 +35,7 @@
 
       </ion-item>  
 
-      <ion-item-options side="end">
+      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
         <ion-button (click)="resetPassword($event, staffMember)">
           <ion-icon slot="start" name="key-outline"></ion-icon>
           Send Password
@@ -59,7 +59,7 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="!authService.admin_limited_access">
   <ion-button expand="full" (click)="create()">
     Create
   </ion-button>

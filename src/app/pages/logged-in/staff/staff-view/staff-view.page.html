@@ -7,7 +7,7 @@
 
     <ion-title *ngIf="staff">{{ staff.staff_name }}</ion-title>
 
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button (click)="update()">
         Update
       </ion-button>
@@ -65,7 +65,7 @@
 
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="!authService.admin_limited_access">
   <ion-button expand="full" (click)="resetPassword()">
     <span *ngIf="!sendingNewPassword">Send new password to staff</span>
     <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
