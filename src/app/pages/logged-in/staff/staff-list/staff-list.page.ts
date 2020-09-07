@@ -34,7 +34,7 @@ export class StaffListPage implements OnInit {
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
-    private authService: AuthService
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
