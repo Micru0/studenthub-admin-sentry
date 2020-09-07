@@ -29,7 +29,7 @@ export class CompanyContactFormPage implements OnInit {
     private _fb: FormBuilder,
     private modalCtrl: ModalController,
     private _alertCtrl: AlertController,
-    private authService: AuthService
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
