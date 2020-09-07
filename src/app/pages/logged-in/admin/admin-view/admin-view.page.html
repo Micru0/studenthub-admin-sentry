@@ -43,8 +43,8 @@
     <ion-item>
       <ion-label>
         <h5>Status</h5>
-        <p *ngIf="admin.admin_status == 10">Active</p>
-        <p *ngIf="admin.admin_status != 10">In-Active</p>
+        <p *ngIf="admin.admin_status">Active</p>
+        <p *ngIf="!admin.admin_status">In-Active</p>
       </ion-label>
     </ion-item>
 
