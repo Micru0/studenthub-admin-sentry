@@ -74,7 +74,7 @@
 
       <ion-item>
         <ion-label>Followup</ion-label>
-        <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="company.company_followup" (ionChange)="toogleFollowup($event)"></ion-toggle>
+        <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="followup" (ionChange)="toggleFollowup($event)"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="company.company_followup">

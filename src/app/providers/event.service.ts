@@ -18,6 +18,7 @@ export class EventService {
   public totalCandidateToReview$ = new Subject();
   public updatePayable$ = new Subject();
   public payableCandidate$ = new Subject();
+  public reloadCompanyList$ = new Subject();
 
   constructor() { }
 }

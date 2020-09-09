@@ -2,10 +2,10 @@
   <ion-toolbar>
 
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="admin-list"></ion-back-button>
+      <ion-back-button defaultHref="inspector-list"></ion-back-button>
     </ion-buttons>
 
-    <ion-title *ngIf="admin">{{ admin.admin_name }}</ion-title>
+    <ion-title *ngIf="inspector">{{ inspector.inspector_name }}</ion-title>
 
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button (click)="update()">
@@ -17,56 +17,48 @@
 
 <ion-content>
 
-  <ion-list *ngIf="admin && !loading">
+  <ion-list *ngIf="inspector && !loading">
 
     <ion-item>
       <ion-label>
         <h5>Id</h5>
-        <p>{{ admin.admin_id }}</p>
+        <p>{{ inspector.inspector_uuid }}</p>
       </ion-label>
     </ion-item>
 
     <ion-item>
       <ion-label>
-        <h5>Admin Member</h5>
-        <p>{{ admin.admin_name }}</p>
+        <h5>Inspector Member</h5>
+        <p>{{ inspector.inspector_name }}</p>
       </ion-label>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <h5>Email</h5>
-        <p>{{ admin.admin_email }}</p>
+        <p>{{ inspector.inspector_email }}</p>
       </ion-label>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <h5>Status</h5>
-        <p *ngIf="admin.admin_status">Active</p>
-        <p *ngIf="!admin.admin_status">In-Active</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>
-        <h5>Access</h5>
-        <p *ngIf="admin.admin_limited_access">Limited Access</p>
-        <p *ngIf="!admin.admin_limited_access">Full Access</p>
+        <p *ngIf="inspector.inspector_status">Active</p>
+        <p *ngIf="!inspector.inspector_status">In-Active</p>
       </ion-label>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <h5>Created at</h5>
-        <p>{{ admin.admin_created_at }}</p>
+        <p>{{ inspector.inspector_created_at }}</p>
       </ion-label>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <h5>Updated at</h5>
-        <p>{{ admin.admin_updated_at }}</p>
+        <p>{{ inspector.inspector_updated_at }}</p>
       </ion-label>
     </ion-item>
 
@@ -75,8 +67,8 @@
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
 </ion-content>
 <ion-footer *ngIf="!authService.admin_limited_access">
-  <ion-button expand="full" (click)="resetPassword()" *ngIf="!loading && admin">
-    <span *ngIf="!sendingNewPassword">Send new password to staff</span>
+  <ion-button expand="full" (click)="resetPassword()" *ngIf="!loading && inspector">
+    <span *ngIf="!sendingNewPassword">Send new password to inspector</span>
     <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
   </ion-button>
 </ion-footer>

@@ -1,89 +1,94 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
-//models
-import { Staff } from 'src/app/models/staff';
-//pages
-import { StaffFormPage } from '../staff-form/staff-form.page';
-//services
-import { StaffService } from 'src/app/providers/logged-in/staff.service';
-import {AuthService} from "../../../../providers/auth.service";
+// models
+import { Inspector } from 'src/app/models/inspector';
+// pages
+import { InspectorFormPage } from '../inspector-form/inspector-form.page';
+// services
+import { InspectorService } from 'src/app/providers/logged-in/inspector.service';
+import { AuthService } from 'src/app/providers/auth.service';
 
 
 @Component({
-  selector: 'app-staff-list',
-  templateUrl: './staff-list.page.html',
-  styleUrls: ['./staff-list.page.scss'],
+  selector: 'app-inspector-list',
+  templateUrl: './inspector-list.page.html',
+  styleUrls: ['./inspector-list.page.scss'],
 })
-export class StaffListPage implements OnInit {
+export class InspectorListPage implements OnInit {
 
   public pageCount = 0;
   public currentPage = 1;
   public pages: number[] = [];
 
-  public staff: Staff[];
+  public inspectors: Inspector[];
 
-  public loading: boolean = false; 
-  public deleting: boolean = false; 
-  public sendingNewPassword: boolean = false; 
+  public loading = false;
+  public deleting = false;
+  public sendingNewPassword = false;
 
   constructor(
     public platform: Platform,
     public router: Router,
-    public staffService: StaffService,
-    private _modalCtrl: ModalController,
-    private _alertCtrl: AlertController,
-    private _toastCtrl: ToastController,
+    public inspectorService: InspectorService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     public authService: AuthService
   ) { }
 
   ngOnInit() {
+    // this.loadData(this.currentPage);
+  }
+  ionViewDidEnter() {
     this.loadData(this.currentPage);
   }
 
   /**
-   * Load list of staff
-   * @param page 
+   * Load list of admin
+   * @param page
+   * @param silent
    */
   async loadData(page: number, silent: boolean = false) {
-    
-    if(!silent)
-      this.loading = true;
 
-    this.staffService.list(page).subscribe(response => {
+    if (!silent) {
+      this.loading = true;
+    }
+
+    this.inspectorService.list(page).subscribe(response => {
 
       this.loading = false;
-      this.deleting = false; 
+      this.deleting = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.staff = response.body;
-    },() => { 
-      this.loading = false; 
-      this.deleting = false; 
+      this.inspectors = response.body;
+    }, () => {
+      this.loading = false;
+      this.deleting = false;
     });
   }
-  
+
   async doInfinite(event) {
-    
+
     this.loading = true;
 
-    this.currentPage++; 
+    this.currentPage++;
 
-    this.staffService.list(this.currentPage).subscribe(response => {
+    this.inspectorService.list(this.currentPage).subscribe(response => {
 
       this.loading = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
-      this.staff = this.staff.concat(response.body);
+      this.inspectors = this.inspectors.concat(response.body);
 
-      event.target.complete(); 
+      event.target.complete();
 
-    },() => { 
-      this.loading = false; 
+    }, () => {
+      this.loading = false;
     });
   }
 
@@ -91,9 +96,9 @@ export class StaffListPage implements OnInit {
    * When its selected
    */
   rowSelected(model) {
-    this.router.navigate(['staff-view', model.staff_id], {
+    this.router.navigate(['inspector-view', model.inspector_uuid], {
       state: {
-        'model': model
+        model
       }
     });
   }
@@ -104,10 +109,10 @@ export class StaffListPage implements OnInit {
   async create() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    let modal = await this._modalCtrl.create({
-      component: StaffFormPage,
+    const modal = await this.modalCtrl.create({
+      component: InspectorFormPage,
       componentProps: {
-        model: new Staff()
+        model: new Inspector()
       }
     });
     modal.onDidDismiss().then(e => {
@@ -116,7 +121,7 @@ export class StaffListPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-    
+
       if (e && e.data && e.data.refresh) {
         this.loadData(this.currentPage, true);
       }
@@ -125,17 +130,17 @@ export class StaffListPage implements OnInit {
   }
 
   /**
-   * Confirm password reset and send new password 
-   * @param staffMember 
+   * Confirm password reset and send new password
+   * @param staffMember
    */
-  async resetPassword(ev, staffMember: Staff) {
+  async resetPassword(ev, staffMember: Inspector) {
 
-    ev.preventDefault(); 
+    ev.preventDefault();
     ev.stopPropagation();
 
-    let confirm = await this._alertCtrl.create({
+    const confirm = await this.alertCtrl.create({
       header: 'Confirm password reset',
-      message: 'Do you want to send new password to staff?',
+      message: 'Do you want to send new password to admin?',
       buttons: [
         {
           text: 'Yes',
@@ -155,31 +160,31 @@ export class StaffListPage implements OnInit {
   /**
    * Reset and email the staff a new password
    */
-  async sendNewPassword(staffMember: Staff) {
+  async sendNewPassword(staffMember: Inspector) {
 
     this.sendingNewPassword = true;
 
-    this.staffService.resetPassword(staffMember).subscribe(async response => {
-      
+    this.inspectorService.resetPassword(staffMember).subscribe(async response => {
+
       this.sendingNewPassword = false;
 
-      if(response.operation == 'error')
+      if (response.operation == 'error')
       {
-        let toast = await this._toastCtrl.create({
+        const toast = await this.toastCtrl.create({
           message: response.message,
           duration: 3000
-        });        
+        });
         toast.present();
-      } 
-      else 
+      }
+      else
       {
-        let alert = await this._alertCtrl.create({
+        const alert = await this.alertCtrl.create({
             header: 'Reset Password',
             subHeader: 'New password sent to candidate',
             buttons: ['Okay']
           });
-          alert.present();
-      }      
+        alert.present();
+      }
     }, () => {
       this.sendingNewPassword = false;
     });
@@ -188,28 +193,28 @@ export class StaffListPage implements OnInit {
   /**
    * Delete the provided model
    */
-  async delete(ev, staff: Staff) {
+  async delete(ev, admin: Inspector) {
 
-    ev.preventDefault(); 
+    ev.preventDefault();
     ev.stopPropagation();
 
-    let confirm = await this._alertCtrl.create({
-      header: 'Delete Staff?',
-      message: 'Are you sure you want to delete this Staff?',
+    const confirm = await this.alertCtrl.create({
+      header: 'Delete Admin?',
+      message: 'Are you sure you want to delete this Admin?',
       buttons: [
         {
           text: 'Yes',
           handler: () => {
 
-            this.deleting = true; 
+            this.deleting = true;
 
-            this.staffService.delete(staff).subscribe(async jsonResp => {
-            
+            this.inspectorService.delete(admin).subscribe(async jsonResp => {
+
               if (jsonResp.operation == 'error') {
-                
-                this.deleting = false; 
 
-                let alert = await this._alertCtrl.create({
+                this.deleting = false;
+
+                const alert = await this.alertCtrl.create({
                   header: 'Deletion Error!',
                   subHeader: jsonResp.message,
                   buttons: ['OK']
@@ -219,16 +224,16 @@ export class StaffListPage implements OnInit {
 
               if (jsonResp.operation == 'success') {
 
-                let toast = await this._toastCtrl.create({
+                const toast = await this.toastCtrl.create({
                   message: jsonResp.message,
                   duration: 3000
                 });
                 toast.present();
 
                 this.loadData(1, true);
-              }              
+              }
             }, () => {
-              this.deleting = false; 
+              this.deleting = false;
             });
           }
         },

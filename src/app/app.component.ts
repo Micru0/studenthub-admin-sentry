@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment';
 import { EventService } from './providers/event.service';
 import { AuthService } from './providers/auth.service';
 import { CandidateService } from './providers/logged-in/candidate.service';
-import { promises } from 'dns';
 
 
 const { SplashScreen } = Plugins;
@@ -138,6 +137,7 @@ export class AppComponent implements OnInit {
 
     // On Logout Event, set root to Login Page
     this.eventService.userLogout$.subscribe((logoutReason) => {
+
       // Set root to Login Page
       this.navCtrl.navigateRoot(['/login']);
 
