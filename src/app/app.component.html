@@ -52,7 +52,7 @@
                   Payable Candidates
                 </ion-label>
 
-                <ion-badge slot="end">
+                <ion-badge slot="end" *ngIf="totalPayableCandidate">
                   {{ totalPayableCandidate }}
                 </ion-badge>
               </ion-item>
