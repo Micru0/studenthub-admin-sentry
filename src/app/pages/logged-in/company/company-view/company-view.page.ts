@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController, AlertController, ModalController, Platform } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-//services
+// services
 import { StoreService } from 'src/app/providers/logged-in/store.service';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import { AwsService } from '../../../../providers/aws.service';
 import { BrandService } from 'src/app/providers/logged-in/brand.service';
 import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
 import { AuthService } from 'src/app/providers/auth.service';
-//models
+// models
 import { Company } from 'src/app/models/company';
 import { Store } from 'src/app/models/store';
 import { File } from '../../../../models/file';
 import { CompanyContact } from 'src/app/models/company-contact';
 import { Brand } from 'src/app/models/brand';
-//pages
+// pages
 import { BrandFormPage } from '../brand-form/brand-form.page';
 import { CompanyContactFormPage } from '../company-contact-form/company-contact-form.page';
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
-import {EventService} from "../../../../providers/event.service";
+import {EventService} from '../../../../providers/event.service';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class CompanyViewPage implements OnInit {
   public company: Company;
   public subCompanies: Company[] = [];
   public stores: Store[] = [];
-  
+
   public brands: Brand[] = [];
 
   public companyContacts: CompanyContact[] = [];
@@ -107,7 +107,7 @@ export class CompanyViewPage implements OnInit {
       this.stores = response.stores;
 
       this.brands = response.brands;
-      
+
     }, () => {
       this.loading = false;
       this.deleting = false;
@@ -135,7 +135,7 @@ export class CompanyViewPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-  
+
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -181,7 +181,7 @@ export class CompanyViewPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-    
+
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -207,12 +207,12 @@ export class CompanyViewPage implements OnInit {
   async addBrand() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    let brand = new Brand;
+    const brand = new Brand;
     brand.company_id = this.company_id;
-    
+
     const modal = await this._modalCtrl.create({
       component: BrandFormPage,
-      componentProps: { 
+      componentProps: {
         model: brand
       }
     });
@@ -222,7 +222,7 @@ export class CompanyViewPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-  
+
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -258,7 +258,7 @@ export class CompanyViewPage implements OnInit {
             this.companyService.updateFollowupInterval(this.company_id, data.interval).subscribe(async resp => {
               this.updating = false;
 
-              if(resp.operation != 'success') {
+              if (resp.operation != 'success') {
                 const prompt = await this._alertCtrl.create({
                   header: 'Error!',
                   message: resp.message,
@@ -266,7 +266,7 @@ export class CompanyViewPage implements OnInit {
                 });
                 prompt.present();
               }
-              else 
+              else
               {
                 this.company.company_followup_interval_weeks = data.interval;
               }
@@ -283,8 +283,8 @@ export class CompanyViewPage implements OnInit {
 
   /**
    * delete brand
-   * @param event 
-   * @param brand 
+   * @param event
+   * @param brand
    */
   async deleteBrand(event, brand) {
 
@@ -350,7 +350,7 @@ export class CompanyViewPage implements OnInit {
 
     const modal = await this._modalCtrl.create({
       component: CompanyContactFormPage,
-      componentProps: { 
+      componentProps: {
         model: companyContact
       }
     });
@@ -360,7 +360,7 @@ export class CompanyViewPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-   
+
       if (e && e.data && e.data.refresh) {
         this.loadContacts();
       }
@@ -371,12 +371,12 @@ export class CompanyViewPage implements OnInit {
   async addCompanyContact() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    let companyContact = new CompanyContact;
+    const companyContact = new CompanyContact;
     companyContact.company_id = this.company_id;
-    
+
     const modal = await this._modalCtrl.create({
       component: CompanyContactFormPage,
-      componentProps: { 
+      componentProps: {
         model: companyContact
       }
     });
@@ -386,7 +386,7 @@ export class CompanyViewPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-  
+
       if (e && e.data && e.data.refresh) {
         this.loadContacts();
       }
@@ -422,14 +422,14 @@ export class CompanyViewPage implements OnInit {
 
   /**
    * open brand edit page
-   * @param brand 
+   * @param brand
    */
   async brandSelected(brand) {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
     const modal = await this._modalCtrl.create({
       component: BrandFormPage,
-      componentProps: { 
+      componentProps: {
         model: brand
       }
     });
@@ -439,7 +439,7 @@ export class CompanyViewPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-    
+
       if (e && e.data && e.data.refresh) {
         this.loadData(true);
       }
@@ -659,7 +659,7 @@ export class CompanyViewPage implements OnInit {
         window.history.back();
       }
     });
-    
+
     const { data } = await modal.onWillDismiss();
     if (data && data.refresh) {
       this.loadData();
@@ -667,14 +667,14 @@ export class CompanyViewPage implements OnInit {
   }
 
   toggleFollowup($event) {
-    
+
     this.followup = $event.detail.checked;
     this.company.company_followup = $event.detail.checked;
-    console.log(this.followup,this.company.company_followup);
+    console.log(this.followup, this.company.company_followup);
     this.updating = true;
 
     this.companyService.updateFollowup(this.company).subscribe(async response => {
-      
+
       this.updating = false;
 
       if (response && response.operation == 'success') {
@@ -696,10 +696,11 @@ export class CompanyViewPage implements OnInit {
    * @param date
    */
   toDate(date) {
-    if (date)
+    if (date) {
       return new Date(date.replace(/-/g, '/'));
+    }
   }
-  
+
   changeStatus($event) {
     this.companyStatus = $event.detail.checked;
     this.updating = true;
