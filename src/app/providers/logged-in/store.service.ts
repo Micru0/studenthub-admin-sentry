@@ -32,8 +32,7 @@ export class StoreService {
    * @param store_id 
    */
   view(store_id): Observable<any>{
-    let url = this._storeEndpoint + '/' + store_id;
-    return this._authhttp.get(url);
+    return this._authhttp.get(`${this._storeEndpoint}/${store_id}?expand=candidates,brand,company,company.brands`);
   }
 
   /**

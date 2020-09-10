@@ -38,17 +38,19 @@ export class StoreViewPage implements OnInit {
   ngOnInit() {
 
     // Load the passed model if available
-    if(window['state']) {
-      this.store = window['state']['model'];
-    }
+    // if(window['state']) {
+    //   this.store = window['state']['model'];
+    // }
 
     this.store_id = this.activateRoute.snapshot.paramMap.get('store_id');
-  
-    this.loadData();
+
+    if (this.store_id) {
+      this.loadData();
+    }
   }
 
   loadData() {
-    this.loading = true; 
+    this.loading = true;
 
     this.storeService.view(this.store_id).subscribe(store => {
       
