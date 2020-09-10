@@ -217,6 +217,11 @@ const routes: Routes = [
     canActivate: [AuthService],
   },
   {
+    path: 'brand-view',
+    loadChildren: () => import('./pages/logged-in/company/brand-view/brand-view.module').then( m => m.BrandViewPageModule),
+    canActivate: [AuthService],
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
   },

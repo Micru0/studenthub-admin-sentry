@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController, AlertController, ModalController, Platform } from '@ionic/angular';
+import {ToastController, AlertController, ModalController, Platform, NavController} from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 // services
 import { StoreService } from 'src/app/providers/logged-in/store.service';
@@ -61,6 +61,7 @@ export class CompanyViewPage implements OnInit {
     private _toastCtrl: ToastController,
     public aws: AwsService,
     public eventService: EventService,
+    public navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -425,6 +426,13 @@ export class CompanyViewPage implements OnInit {
    * @param brand
    */
   async brandSelected(brand) {
+    this.navCtrl.navigateForward('brand-view/' + brand.brand_uuid, {
+      state: {
+        model: brand
+      }
+    });
+  }
+  async editSelected($event, brand) {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
     const modal = await this._modalCtrl.create({
