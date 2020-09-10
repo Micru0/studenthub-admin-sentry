@@ -4,6 +4,7 @@ export class Brand {
     brand_name_en: string;
     brand_name_ar: string;
     brand_logo: string;
+    candidate_count: number;
     brand_created_datetime: string;
     brand_updated_datetime: string;
 }
