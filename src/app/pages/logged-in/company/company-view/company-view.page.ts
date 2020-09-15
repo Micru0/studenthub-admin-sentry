@@ -8,6 +8,7 @@ import { AwsService } from '../../../../providers/aws.service';
 import { BrandService } from 'src/app/providers/logged-in/brand.service';
 import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
 import { AuthService } from 'src/app/providers/auth.service';
+import { EventService } from '../../../../providers/event.service';
 // models
 import { Company } from 'src/app/models/company';
 import { Store } from 'src/app/models/store';
@@ -19,7 +20,6 @@ import { BrandFormPage } from '../brand-form/brand-form.page';
 import { CompanyContactFormPage } from '../company-contact-form/company-contact-form.page';
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
-import {EventService} from '../../../../providers/event.service';
 
 
 @Component({
@@ -38,6 +38,8 @@ export class CompanyViewPage implements OnInit {
   public brands: Brand[] = [];
 
   public companyContacts: CompanyContact[] = [];
+
+  public segment: string = 'info';
 
   public deleting = false;
   public loading = false;
@@ -115,6 +117,10 @@ export class CompanyViewPage implements OnInit {
     });
   }
 
+  segmentChanged($event) {
+    this.segment = $event.detail.value;
+  }
+  
   /**
    * Loads Form in modal to update
    */
