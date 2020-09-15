@@ -16,146 +16,201 @@
     <ion-progress-bar type="indeterminate" *ngIf="deleting || updating"></ion-progress-bar>
 
   </ion-toolbar>
+  
+  <ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event)" [value]="segment">
+      <ion-segment-button value="info">
+        <ion-label>Info</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="companies" *ngIf="subCompanies && subCompanies.length > 0">
+        <ion-label>Companies</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="contacts">
+        <ion-label>Contacts</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="notes">
+        <ion-label>Notes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="requests">
+        <ion-label>Requests</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="documents">
+        <ion-label>Documents</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="stores" *ngIf="stores && stores.length > 0">
+        <ion-label>Stores</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="brands">
+        <ion-label>Brands</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
+
   <ion-list *ngIf="company">
 
-    <div class="ion-text-center">
-        <img *ngIf="company.company_logo" src="{{ aws.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)" width="80">
-        <img *ngIf="!company.company_logo" src="/assets/icon.png"  width="80">
-    </div>
+    <section *ngIf="segment == 'info'">
+      <div class="ion-text-center">
+        <img *ngIf="company.company_logo" src="{{ aws.cloudinaryUrl + company.company_logo }}"
+          (error)="loadLogo($event,company)" width="80">
+        <img *ngIf="!company.company_logo" src="/assets/icon.png" width="80">
+      </div>
 
-    <!-- If Main Company -->
-    <section *ngIf="company.company_email">
-      <ion-item-divider color="light">
-        <ion-label>
-          Contact
-        </ion-label>
-      </ion-item-divider>
+      <!-- If Main Company -->
+      <section *ngIf="company.company_email">
+        <ion-item-divider color="light">
+          <ion-label>
+            Contact
+          </ion-label>
+        </ion-item-divider>
 
-      <ion-item href='mailto:{{ company.company_email }}'>
-        <ion-label>
-          <h3>Company Email</h3>
-          <p>{{ company.company_email }}</p>
-        </ion-label>
-      </ion-item>
+        <ion-item href='mailto:{{ company.company_email }}'>
+          <ion-label>
+            <h3>Company Email</h3>
+            <p>{{ company.company_email }}</p>
+          </ion-label>
+        </ion-item>
 
-      <ion-item>
-        <ion-label>
-          <h3>Common Name - English</h3>
-          <p>{{ company.company_common_name_en }}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h3>Common Name - Arabic</h3>
-          <p>{{ company.company_common_name_ar }}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h3>Description - English</h3>
-          <p>{{ company.company_description_en }}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h3>Description - Arabic</h3>
-          <p>{{ company.company_description_ar }}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item href='{{ company.company_website }}'>
-        <ion-label>
-          <h3>Website</h3>
-          <p>{{ company.company_website }}</p>
-        </ion-label>
-      </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Common Name - English</h3>
+            <p>{{ company.company_common_name_en }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Common Name - Arabic</h3>
+            <p>{{ company.company_common_name_ar }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Description - English</h3>
+            <p>{{ company.company_description_en }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Description - Arabic</h3>
+            <p>{{ company.company_description_ar }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item href='{{ company.company_website }}'>
+          <ion-label>
+            <h3>Website</h3>
+            <p>{{ company.company_website }}</p>
+          </ion-label>
+        </ion-item>
 
-      <ion-item>
-        <ion-label>Followup</ion-label>
-        <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="followup" (ionChange)="toggleFollowup($event)"></ion-toggle>
-      </ion-item>
+        <ion-item>
+          <ion-label>Followup</ion-label>
+          <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="followup"
+            (ionChange)="toggleFollowup($event)"></ion-toggle>
+        </ion-item>
 
-      <ion-item *ngIf="company.company_followup">
-        <ion-label>
-          <h3>Followup interval</h3>
-          <p>
-            {{ company.company_followup_interval_weeks }} weeks 
-          </p>
-        </ion-label>
+        <ion-item *ngIf="company.company_followup">
+          <ion-label>
+            <h3>Followup interval</h3>
+            <p>
+              {{ company.company_followup_interval_weeks }} weeks
+            </p>
+          </ion-label>
 
-        <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
-          <ion-button (click)="updateFollowupInterval()">
-            <ion-icon name="pencil-outline"></ion-icon> Change
+          <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+            <ion-button (click)="updateFollowupInterval()">
+              <ion-icon name="pencil-outline"></ion-icon> Change
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h3>Last Followup</h3>
+            <p>@ {{ toDate(company.company_last_followup_datetime) | date: 'MMM d, y, h:mm:ss a' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="!authService.admin_limited_access">
+          <ion-button expand="full" color="danger" [disabled]="sendingNewPassword" (click)="resetPassword()">
+            <span *ngIf="!sendingNewPassword">Send new password to company</span>
+            <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
           </ion-button>
-        </ion-buttons>
-      </ion-item>
+        </ion-item>
 
-      <ion-item>
-        <ion-label>
-          <h3>Last Followup</h3>
-          <p>@ {{ toDate(company.company_last_followup_datetime) | date: 'MMM d, y, h:mm:ss a' }}</p>
-        </ion-label>
-      </ion-item>
+        <ion-item>
+          <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</ion-label>
+          <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatus"
+            (ionChange)=changeStatus($event)></ion-toggle>
+        </ion-item>
 
-      <ion-item *ngIf="!authService.admin_limited_access">
-        <ion-button expand="full" color="danger" [disabled]="sendingNewPassword" (click)="resetPassword()">
-          <span *ngIf="!sendingNewPassword">Send new password to company</span>
-          <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
-        </ion-button>
-      </ion-item>
+        <ion-item-divider color="light">
+          <ion-label>
+            Payment
+          </ion-label>
+        </ion-item-divider>
 
-      <ion-item>
-        <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</ion-label>
-        <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatus" (ionChange)=changeStatus($event)></ion-toggle>
-      </ion-item>
+        <ion-item>
+          <ion-label>
+            Bonus Commission(%) - {{ company.company_bonus_commission }}
+          </ion-label>
+        </ion-item>
 
-      <ion-item-divider color="light">
-        <ion-label>
-          Payment
-        </ion-label>
-      </ion-item-divider>
+        <ion-item>
+          <ion-label>
+            Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} KWD
+          </ion-label>
+        </ion-item>
+      </section>
 
-      <ion-item>
-        <ion-label>
-          Bonus Commission(%) - {{ company.company_bonus_commission }}
-        </ion-label>
-      </ion-item>
+      <!-- If Subcompany -->
 
-      <ion-item>
-        <ion-label>
-          Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} KWD
-        </ion-label>
-      </ion-item>
+      <section *ngIf="!company.company_email">
+        <ion-item-divider color="light">
+          <ion-label>
+            Payment
+          </ion-label>
+        </ion-item-divider>
+
+        <ion-item>
+          <ion-label>
+            Bonus Commission(%) - {{ company.company_bonus_commission }}
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} KWD
+          </ion-label>
+        </ion-item>
+      </section>
     </section>
 
-    <!-- If Subcompany -->
+    <!-- request List -->
 
-    <section *ngIf="!company.company_email">
-      <ion-item-divider color="light">
-        <ion-label>
-          Payment
-        </ion-label>
-      </ion-item-divider>
+    <section *ngIf="segment == 'requests'">
 
-      <ion-item>
-        <ion-label>
-          Bonus Commission(%) - {{ company.company_bonus_commission }}
-        </ion-label>
-      </ion-item>
+      <ion-list>
+        <ion-item *ngFor="let request of company.requests">
 
-      <ion-item>
-        <ion-label>
-          Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} KWD
-        </ion-label>
-      </ion-item>
+          <ion-label>
+            {{ request.request_position_title }}<br />
+            <small>{{ request.request_created_datetime | date}}</small>
+          </ion-label>
+
+          <ion-badge color="primary" *ngIf="request.request_status == 'pending'">pending</ion-badge>
+          <ion-badge color="secondary" *ngIf="request.request_status == 'started'">started</ion-badge>
+          <ion-badge color="success" *ngIf="request.request_status == 'delivered'">delivered</ion-badge>
+          <ion-badge color="light" *ngIf="request.request_status == 'cancelled'">cancelled</ion-badge>
+        </ion-item>
+      </ion-list>
     </section>
-
 
     <!-- Subcompany List -->
 
-    <section *ngIf="subCompanies && subCompanies.length > 0">
+    <section *ngIf="segment == 'companies'">
 
       <ion-item-divider color="light">
         <ion-label>
@@ -202,19 +257,15 @@
 
     <!-- Store List -->
 
-    <section *ngIf="stores && stores.length > 0">
-
-      <ion-item-divider color="light">
-        <ion-label>
-          Stores
-        </ion-label>
-      </ion-item-divider>
+    <section *ngIf="segment == 'stores'">
 
       <ion-list>
         <ion-item tappable *ngFor="let store of stores" (click)="storeSelected(store)">
           <ion-label>
             <h5>{{ store.store_name }}</h5>
-            <p *ngIf="store.store_location"><ion-icon name="location-outline"></ion-icon> {{ store.store_location }}</p>
+            <p *ngIf="store.store_location">
+              <ion-icon name="location-outline"></ion-icon> {{ store.store_location }}
+            </p>
           </ion-label>
 
           <ion-badge slot="end" *ngIf="store.store_total_candidates > 0">
@@ -226,20 +277,13 @@
 
     <!-- Notes List -->
 
-    <!-- note -->
-    <section *ngIf="!loading && company">
-
-      <ion-item-divider color="light">
-        <ion-label>
-          Notes
-        </ion-label>
-      </ion-item-divider>
+    <section *ngIf="segment == 'notes'">
 
       <ion-list>
         <ion-item-sliding *ngFor="let note of company.notes">
           <ion-item tappable>
             <ion-label>
-              {{ note.note_text }}<br/>
+              {{ note.note_text }}<br />
               <p>By {{ note.staff.staff_name}} @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
             </ion-label>
           </ion-item>
@@ -249,13 +293,7 @@
 
     <!-- Brand List -->
 
-    <section>
-
-      <ion-item-divider color="light">
-        <ion-label>
-          Brands
-        </ion-label>
-      </ion-item-divider>
+    <section *ngIf="segment == 'brands'">
 
       <ion-list>
         <ion-item-sliding *ngFor="let brand of brands" [disabled]="platform.width() > 768">
@@ -304,13 +342,7 @@
 
     <!-- Contact List -->
 
-    <section>
-
-      <ion-item-divider color="light">
-        <ion-label>
-          Contacts
-        </ion-label>
-      </ion-item-divider>
+    <section *ngIf="segment == 'contacts'">
 
       <ion-list class="contact-list">
         <ion-item-sliding *ngFor="let companyContact of companyContacts" [disabled]="platform.width() > 768">
@@ -321,12 +353,14 @@
                 {{ companyContact.contact_position }}
               </p>
               <p>
-                <a href="mailto:{{ companyContactEmail.email_address }}" (click)="doNothing($event)" *ngFor="let companyContactEmail of companyContact.companyContactEmails">
+                <a href="mailto:{{ companyContactEmail.email_address }}" (click)="doNothing($event)"
+                  *ngFor="let companyContactEmail of companyContact.companyContactEmails">
                   <ion-icon name="mail-outline"></ion-icon> {{ companyContactEmail.email_address }}
                 </a>
               </p>
               <p>
-                <a href="tel:{{ companyContactPhone.phone_number }}" (click)="doNothing($event)" *ngFor="let companyContactPhone of companyContact.companyContactPhones">
+                <a href="tel:{{ companyContactPhone.phone_number }}" (click)="doNothing($event)"
+                  *ngFor="let companyContactPhone of companyContact.companyContactPhones">
                   <ion-icon name="call-outline"></ion-icon> {{ companyContactPhone.phone_number }}
                 </a>
               </p>
@@ -356,17 +390,14 @@
         </ion-item>
       </ion-list>
     </section>
-    <section>
-      <ion-item-divider color="light">
-        <ion-label>
-          Uploaded Document
-        </ion-label>
-      </ion-item-divider>
+
+    <section *ngIf="segment == 'documents'">
+  
       <div *ngIf="company.files && company.files.length > 0">
         <ion-item *ngFor="let file of company.files">
           <ion-label>
             <a target="_blank" (click)="$event.stopPropagation()"
-               href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
+              href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
               {{file.file_title}}
             </a>
             <p>{{file.file_description}}</p>
@@ -383,8 +414,8 @@
           </ion-buttons>
         </ion-item>
       </div>
-      <ion-item *ngIf="!authService.admin_limited_access">
-        <ion-button expand="full" color="danger" (click)="uploadDocument()">
+      <ion-item lines="none" *ngIf="!authService.admin_limited_access">
+        <ion-button (click)="uploadDocument()">
           <span>Upload Document</span>
         </ion-button>
       </ion-item>
