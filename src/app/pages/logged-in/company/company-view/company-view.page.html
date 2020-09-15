@@ -106,12 +106,6 @@
         </ion-button>
       </ion-item>
 
-      <ion-item *ngIf="!authService.admin_limited_access">
-        <ion-button expand="full" color="danger" (click)="uploadDocument()">
-          <span>Upload Document</span>
-        </ion-button>
-      </ion-item>
-
       <ion-item>
         <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</ion-label>
         <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatus" (ionChange)=changeStatus($event)></ion-toggle>
@@ -134,34 +128,6 @@
           Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} KWD
         </ion-label>
       </ion-item>
-
-      <div *ngIf="company.files && company.files.length > 0">
-        <ion-item-divider color="light">
-          <ion-label>
-            Uploaded Document
-          </ion-label>
-        </ion-item-divider>
-
-        <ion-item *ngFor="let file of company.files">
-          <ion-label>
-            <a target="_blank" (click)="$event.stopPropagation()"
-              href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
-              {{file.file_title}}
-            </a>
-            <p>{{file.file_description}}</p>
-          </ion-label>
-          <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
-            <ion-button color="default" (click)="editDoc($event, file)">
-              <ion-icon slot="start" name="pencil-outline"></ion-icon>
-              Edit
-            </ion-button>
-            <ion-button color="danger" (click)="deleteDoc($event, file)">
-              <ion-icon slot="start" name="trash-outline"></ion-icon>
-              Delete
-            </ion-button>
-          </ion-buttons>
-        </ion-item>
-      </div>
     </section>
 
     <!-- If Subcompany -->
@@ -248,7 +214,7 @@
         <ion-item tappable *ngFor="let store of stores" (click)="storeSelected(store)">
           <ion-label>
             <h5>{{ store.store_name }}</h5>
-            <p><ion-icon name="location-outline"></ion-icon> {{ store.store_location }}</p>
+            <p *ngIf="store.store_location"><ion-icon name="location-outline"></ion-icon> {{ store.store_location }}</p>
           </ion-label>
 
           <ion-badge slot="end" *ngIf="store.store_total_candidates > 0">
@@ -390,7 +356,39 @@
         </ion-item>
       </ion-list>
     </section>
-
+    <section>
+      <ion-item-divider color="light">
+        <ion-label>
+          Uploaded Document
+        </ion-label>
+      </ion-item-divider>
+      <div *ngIf="company.files && company.files.length > 0">
+        <ion-item *ngFor="let file of company.files">
+          <ion-label>
+            <a target="_blank" (click)="$event.stopPropagation()"
+               href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
+              {{file.file_title}}
+            </a>
+            <p>{{file.file_description}}</p>
+          </ion-label>
+          <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+            <ion-button color="default" (click)="editDoc($event, file)">
+              <ion-icon slot="start" name="pencil-outline"></ion-icon>
+              Edit
+            </ion-button>
+            <ion-button color="danger" (click)="deleteDoc($event, file)">
+              <ion-icon slot="start" name="trash-outline"></ion-icon>
+              Delete
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </div>
+      <ion-item *ngIf="!authService.admin_limited_access">
+        <ion-button expand="full" color="danger" (click)="uploadDocument()">
+          <span>Upload Document</span>
+        </ion-button>
+      </ion-item>
+    </section>
   </ion-list>
 
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
