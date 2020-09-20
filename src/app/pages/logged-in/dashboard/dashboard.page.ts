@@ -19,34 +19,29 @@ export class DashboardPage implements OnInit {
   constructor(
   	public router: Router,
   	public statisticService: StatisticService,
-    private _eventService: EventService,
+    private eventService: EventService,
   ) {}
 
   ngOnInit(){
     this.loadData();
 
-    this._eventService.updatePayable$.subscribe((userEventData) => {
-      this.statisticService.get().subscribe(response => {
-        this.statistics = response;
-        },
-        error => {},
-        () => {}
-      );
+    this.eventService.updatePayable$.subscribe((userEventData) => {
+      this.loadData(false);
     });
   }
 
   /**
    * Load Stats for display
    */
-  async loadData() {
-    
-    this.loading = true;
+  async loadData(loading = true) {
+
+    this.loading = loading;
     
     this.statisticService.get().subscribe(response => {
       this.loading = false;
-      
       this.statistics = response;
-    }, 
+      this.eventService.payableCandidate$.next(this.statistics.payable.total);
+    },
     () => {
       this.loading = false;
     });
@@ -74,6 +69,6 @@ export class DashboardPage implements OnInit {
    * Load Payable Candidate Page
    */
   loadPayableCandidatesPage(){
-    this.router.navigate(['payable-candidates']); 
+    this.router.navigate(['payable-candidates']);
   }
 }

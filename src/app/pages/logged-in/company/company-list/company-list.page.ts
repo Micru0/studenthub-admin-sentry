@@ -63,9 +63,6 @@ export class CompanyListPage implements OnInit {
 
     this.companyService.list(page).subscribe(response => {
 
-      this.loading = false;
-      this.deleting = false;
-
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
 
@@ -79,9 +76,11 @@ export class CompanyListPage implements OnInit {
           this.disableCompanies.push(company);
         }
       }
-    }, () => {
       this.loading = false;
       this.deleting = false;
+
+    }, () => {
+      // this.deleting = false;
     });
   }
 
@@ -96,8 +95,6 @@ export class CompanyListPage implements OnInit {
     this.loading = true;
 
     this.companyService.list(this.currentPage).subscribe(response => {
-
-      this.loading = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
       this.currentPage = response.headers.get('X-Pagination-Current-Page');
@@ -114,10 +111,9 @@ export class CompanyListPage implements OnInit {
           }
         }
       }
-
+      this.loading = false;
       event.target.complete();
     }, () => {
-      this.loading = false;
     });
   }
 

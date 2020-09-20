@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   public updatesAvailable: boolean = false;
 
   public totalCandidateToReview: number = 0;
-  public totalPayableCandidate: number = 0;
+  public totalPayableCandidate: any = 0;
 
   constructor(
     public updates: SwUpdate,
@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
 
       if(this.authService.isLogin) {
         this.totalToReview();
-      } 
+      }
 
       this.setServiceWorker();
     });
@@ -127,6 +127,12 @@ export class AppComponent implements OnInit {
 
     this.eventService.userLogin$.subscribe(userEventData => {
       this.totalToReview();
+    });
+
+    this.eventService.payableCandidate$.subscribe(userEventData => {
+      if (userEventData) {
+        this.totalPayableCandidate = userEventData;
+      }
     });
 
     // On Logout Event, set root to Login Page
