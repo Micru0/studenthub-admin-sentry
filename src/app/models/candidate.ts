@@ -30,7 +30,9 @@ export class Candidate {
     deleted: boolean;
     age: number;
     employee_id: number;
-    
+    candidate_resume: string;
+    candidate_video: string;
+
     //Related
     store: Store;
     company: Company;
