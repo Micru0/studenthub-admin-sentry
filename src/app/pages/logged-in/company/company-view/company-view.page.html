@@ -43,7 +43,7 @@
       <ion-segment-button value="brands">
         <ion-label>Brands</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="transfer" *ngIf="company && company.parentTransfers">
+      <ion-segment-button value="transfer" *ngIf="company && company.parentTransfers && company.parentTransfers.length > 0">
         <ion-label>Transfer</ion-label>
       </ion-segment-button>
     </ion-segment>
