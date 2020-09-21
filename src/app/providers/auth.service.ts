@@ -18,6 +18,7 @@ export class AuthService {
   public renderer;
 
   public isLogin = false;
+  public navEnable = false;
 
   // Logged in agent details
   private _accessToken;
@@ -49,6 +50,12 @@ export class AuthService {
      * https://github.com/angular/angular/issues/14615
      */
     return new Promise(async resolve => {
+
+      this.navEnable = true;
+
+      if (route.data.navDisable) {
+        this.navEnable = false;
+      }
 
       if (this.isLogin) {
         resolve(true);
