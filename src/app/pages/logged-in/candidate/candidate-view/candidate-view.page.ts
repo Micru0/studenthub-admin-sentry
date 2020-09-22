@@ -29,6 +29,7 @@ export class CandidateViewPage implements OnInit {
   public salaryTransfers: any[] = [];
 
   public workHistory: any[] = [];
+  public sections = 'personal';
 
   constructor(
     public router: Router,
@@ -142,5 +143,9 @@ export class CandidateViewPage implements OnInit {
    */
   loadLogo($event, candidate) {
     candidate.candidate_personal_photo = null;
+  }
+
+  public segmentChanged($e){
+    this.sections = $e.detail.value;
   }
 }
