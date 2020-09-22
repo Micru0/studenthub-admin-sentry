@@ -35,7 +35,7 @@ export class CandidateService {
    * @returns {Observable<any>}
    */
   view(candidate_id): Observable<any>{
-    let url = this._candidateEndpoint + '/' + candidate_id + '?expand=store,company,university,country,bank';
+    let url = this._candidateEndpoint + '/' + candidate_id + '?expand=store,company,university,country,bank,candidateSkills,candidateExperiences';
     return this._authhttp.get(url);
   }
 

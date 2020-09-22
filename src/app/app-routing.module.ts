@@ -71,6 +71,9 @@ const routes: Routes = [
     path: 'company-view',
     loadChildren: () => import('./pages/logged-in/company/company-view/company-view.module').then( m => m.CompanyViewPageModule),
     canActivate: [AuthService],
+    data: {
+      navDisable: true,
+    }
   },
   {
     path: 'country-list',

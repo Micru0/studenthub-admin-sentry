@@ -30,7 +30,16 @@ export class Candidate {
     deleted: boolean;
     age: number;
     employee_id: number;
-    
+    candidate_resume: string;
+    candidate_video: string;
+    candidate_created_at: string;
+    candidate_updated_at: string;
+    candidate_gender: string;
+    candidate_objective: string;
+    candidate_driving_license: string;
+    candidateSkills: any[];
+    candidateExperiences: any[];
+
     //Related
     store: Store;
     company: Company;

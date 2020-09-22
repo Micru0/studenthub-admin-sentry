@@ -10,7 +10,7 @@
       <span *ngIf="transfer?.company_total">- KWD {{ transfer.company_total | number:'1.3-3' }}</span>
     </ion-title>
     
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!this.authService.admin_limited_access">
       <ion-button (click)="exportExcel()">
         Download as Excel
       </ion-button>
@@ -22,6 +22,7 @@
 </ion-header>
 
 <ion-content>
+
   <ion-toolbar class="ion-padding ion-text-center" *ngIf="transfer">
     <ion-title>
       {{transferStatus}}
