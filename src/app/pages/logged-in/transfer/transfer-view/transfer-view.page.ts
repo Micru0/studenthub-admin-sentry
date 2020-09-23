@@ -297,7 +297,7 @@ export class TransferViewPage implements OnInit {
    */
   async downloadReceipt(invoice: Invoice) {
 
-    if (this.authService.admin_limited_access) {
+    if (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4)) {
       return false;
     }
     this.processing = true;
@@ -313,7 +313,7 @@ export class TransferViewPage implements OnInit {
    */
   async downloadInvoice(invoice: Invoice) {
 
-    if (this.authService.admin_limited_access) {
+    if (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4)) {
       return false;
     }
 
