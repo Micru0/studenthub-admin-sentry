@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -33,6 +33,7 @@ export class CandidateViewPage implements OnInit {
 
   constructor(
     public router: Router,
+    public platform: Platform,
     public aws: AwsService,
     public authService: AuthService,
     public activateRoute: ActivatedRoute,
