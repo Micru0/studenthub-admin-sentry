@@ -30,6 +30,7 @@ import { UploadFilePageModule } from './pages/logged-in/company/upload-file/uplo
 import { BrandFormPageModule } from './pages/logged-in/company/brand-form/brand-form.module';
 import { CompanyContactFormPageModule } from './pages/logged-in/company/company-contact-form/company-contact-form.module';
 import { NoItemsModule } from "./components/no-items/no-items.module";
+import {SelectiveLoadingStrategy} from "./util/SelectiveLoadingStrategy";
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -73,12 +74,13 @@ export function startupServiceFactory(authService) {
     FilePath,
     IOSFilePicker,
     SwUpdate,
+    SelectiveLoadingStrategy,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: SentryErrorhandlerService }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
 
   static injector: Injector;
 
