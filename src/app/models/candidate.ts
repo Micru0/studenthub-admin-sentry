@@ -34,9 +34,9 @@ export class Candidate {
     candidate_video: string;
     candidate_created_at: string;
     candidate_updated_at: string;
-    candidate_gender: string;
+    candidate_gender: number;
     candidate_objective: string;
-    candidate_driving_license: string;
+    candidate_driving_license: number;
     candidateSkills: any[];
     candidateExperiences: any[];
 
