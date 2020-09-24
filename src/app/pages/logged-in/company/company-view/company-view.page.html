@@ -312,15 +312,46 @@
     <section *ngIf="segment == 'notes'">
 
       <ion-list>
-        <ion-item-sliding *ngFor="let note of company.notes">
-          <ion-item tappable>
+        <ion-item-sliding *ngFor="let note of company.notes" [disabled]="platform.width() > 768">
+          <ion-item tappable (click)="addNote(note)">
             <ion-label>
               {{ note.note_text }}<br />
               <p>By {{ note.staff.staff_name}} @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
             </ion-label>
+  
+            <ion-buttons slot="end" *ngIf="!authService.admin_limited_access && platform.width() > 768">
+
+              <ion-button>
+                <ion-icon slot="start" name="pencil-outline"></ion-icon>
+                Edit
+              </ion-button>
+  
+              <ion-button color="danger" (click)="removeNote($event, note)">
+                <ion-icon slot="start" name="trash-outline"></ion-icon>
+                Delete
+              </ion-button>
+            </ion-buttons>
+  
           </ion-item>
+          <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+            <ion-button (click)="addNote(note)">
+              <ion-icon slot="start" name="pencil-outline"></ion-icon>
+              Edit
+            </ion-button>
+  
+            <ion-button color="danger" (click)="removeNote($event, note)">
+              <ion-icon slot="start" name="trash-outline"></ion-icon>
+              Delete
+            </ion-button>
+          </ion-item-options>
         </ion-item-sliding>
+        <ion-item lines="none" *ngIf="!authService.admin_limited_access">
+          <ion-button color="danger" (click)="addNote(null)">
+            <span>Add New Note</span>
+          </ion-button>
+        </ion-item>
       </ion-list>
+
     </section>
 
     <!-- Brand List -->
@@ -339,8 +370,9 @@
               {{ brand.brand_name_en }}
             </ion-label>
             <ion-badge slot="end">{{brand.candidate_count}}</ion-badge>
+
             <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
-              <ion-button color="primary" (click)="editSelected($event, brand)">
+              <ion-button (click)="editSelected($event, brand)">
                 <ion-icon slot="start" name="pencil-outline"></ion-icon>
                 Edit
               </ion-button>
@@ -353,7 +385,7 @@
           </ion-item>
 
           <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
-            <ion-button color="primary" (click)="editSelected($event, brand)">
+            <ion-button (click)="editSelected($event, brand)">
               <ion-icon slot="start" name="pencil-outline"></ion-icon>
               Edit
             </ion-button>
@@ -399,6 +431,11 @@
             </ion-label>
 
             <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
+              <ion-button color="default">
+                <ion-icon slot="start" name="pencil-outline"></ion-icon>
+                Edit
+              </ion-button>
+
               <ion-button color="danger" (click)="deleteContact($event, companyContact)">
                 <ion-icon slot="start" name="trash-outline"></ion-icon>
                 Delete
@@ -408,6 +445,11 @@
           </ion-item>
 
           <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+            <ion-button (click)="onContactSelected(companyContact)">
+              <ion-icon slot="start" name="pencil-outline"></ion-icon>
+              Edit
+            </ion-button>
+
             <ion-button color="danger" (click)="deleteContact($event, companyContact)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
@@ -423,10 +465,10 @@
       </ion-list>
     </section>
 
-    <section *ngIf="segment == 'documents'">
+    <section *ngIf="segment == 'documents' && company.files && company.files.length > 0">
 
-      <div *ngIf="company.files && company.files.length > 0">
-        <ion-item *ngFor="let file of company.files">
+      <ion-item-sliding *ngFor="let file of company.files" [disabled]="platform.width() > 768">
+        <ion-item>
           <ion-label>
             <a target="_blank" (click)="$event.stopPropagation()"
               href="{{ aws.permanentBucketUrl }}{{ file.file_s3_path }}">
@@ -450,12 +492,25 @@
             </ion-button>
           </ion-buttons>
         </ion-item>
-      </div>
+   
+        <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+          <ion-button (click)="editDoc($event, file)">
+            <ion-icon slot="start" name="pencil-outline"></ion-icon>
+            Edit
+          </ion-button>
+          <ion-button color="danger" (click)="deleteDoc($event, file)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-item-options>
+      </ion-item-sliding>
+
       <ion-item lines="none" *ngIf="!authService.admin_limited_access">
         <ion-button (click)="uploadDocument()">
           <span>Upload Document</span>
         </ion-button>
       </ion-item>
+
     </section>
     <!--    Transfer List-->
     <section *ngIf="segment == 'transfer'">
