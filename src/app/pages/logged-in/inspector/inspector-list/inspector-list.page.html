@@ -51,7 +51,9 @@
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
 </ion-list>
-<no-items message = "No item found" *ngIf="inspectors && inspectors.length == 0 && !loading"></no-items>
+
+<no-items message = "No inspector added yet!" *ngIf="inspectors && inspectors.length == 0 && !loading"></no-items>
+
 <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
   <ion-infinite-scroll-content>
   </ion-infinite-scroll-content>
