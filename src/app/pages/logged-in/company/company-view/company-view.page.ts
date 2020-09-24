@@ -438,7 +438,12 @@ export class CompanyViewPage implements OnInit {
       }
     });
   }
-  async editSelected($event, brand) {
+
+  async editSelected(ev, brand) {
+    
+    ev.preventDefault();
+    ev.stopPropagation();
+
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
     const modal = await this._modalCtrl.create({
@@ -655,7 +660,11 @@ export class CompanyViewPage implements OnInit {
     }
   }
 
-  async editDoc($event, file) {
+  async editDoc(event, file) {
+    
+    event.preventDefault();
+    event.stopPropagation();
+
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
     const modal = await this._modalCtrl.create({
