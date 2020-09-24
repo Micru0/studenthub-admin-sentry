@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -29,9 +29,11 @@ export class CandidateViewPage implements OnInit {
   public salaryTransfers: any[] = [];
 
   public workHistory: any[] = [];
+  public sections = 'personal';
 
   constructor(
     public router: Router,
+    public platform: Platform,
     public aws: AwsService,
     public authService: AuthService,
     public activateRoute: ActivatedRoute,
@@ -142,5 +144,9 @@ export class CandidateViewPage implements OnInit {
    */
   loadLogo($event, candidate) {
     candidate.candidate_personal_photo = null;
+  }
+
+  public segmentChanged($e){
+    this.sections = $e.detail.value;
   }
 }

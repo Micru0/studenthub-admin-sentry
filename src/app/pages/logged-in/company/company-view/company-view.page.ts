@@ -117,8 +117,8 @@ export class CompanyViewPage implements OnInit {
     });
   }
 
-  segmentChanged($event) {
-    this.segment = $event.detail.value;
+  segmentChanged(event) {
+    this.segment = event.detail.value;
   }
   
   /**
