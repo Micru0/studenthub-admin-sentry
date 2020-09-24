@@ -23,7 +23,7 @@ export class CandidateViewPage implements OnInit {
   public loading: boolean = false; 
 
   public loadingSalaryTransfers: boolean = false;
-
+  
   public candidate_id; 
 
   public candidate: Candidate;
@@ -90,7 +90,7 @@ export class CandidateViewPage implements OnInit {
     this.candidateService.transfers(this.candidate_id).subscribe(response => {
       this.loadingSalaryTransfers = false;
 
-      //this.salaryTransfers = response;
+      this.salaryTransfers = response;
     }, () => {
       this.loadingSalaryTransfers = false;
     });
