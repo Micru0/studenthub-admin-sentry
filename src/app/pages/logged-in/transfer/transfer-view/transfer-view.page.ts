@@ -275,36 +275,33 @@ export class TransferViewPage implements OnInit {
    */
   async exportExcel() {
 
-    if (this.authService.admin_limited_access) {
-      return false;
+    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
+      this.processing = true;
+
+      this.transferService.export(this.transfer).subscribe(async response => {
+
+        this.navCtrl.pop();
+
+      }, async err => {
+      }, () => {
+        this.processing = false;
+      });
     }
-
-    this.processing = true;
-
-    this.transferService.export(this.transfer).subscribe(async response => {
-      
-      this.navCtrl.pop();
-      
-    }, async err => { 
-    }, () => {
-      this.processing = false;
-    });
   }
 
   /**
    * Download Receipt
-   * @param invoice 
+   * @param invoice
    */
   async downloadReceipt(invoice: Invoice) {
 
-    if (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4)) {
-      return false;
-    }
-    this.processing = true;
+    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
+      this.processing = true;
 
-    this.transferService.downloadReceipt(invoice).subscribe(response => {
-      this.processing = false;
-    });
+      this.transferService.downloadReceipt(invoice).subscribe(response => {
+        this.processing = false;
+      });
+    }
   }
 
   /**
@@ -313,15 +310,13 @@ export class TransferViewPage implements OnInit {
    */
   async downloadInvoice(invoice: Invoice) {
 
-    if (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4)) {
-      return false;
+    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
+      this.processing = true;
+
+      this.transferService.downloadInvoice(invoice).subscribe(response => {
+        this.processing = false;
+      });
     }
-
-    this.processing = true;
-
-    this.transferService.downloadInvoice(invoice).subscribe(response => {
-      this.processing = false;
-    });
   }
 
   /**
