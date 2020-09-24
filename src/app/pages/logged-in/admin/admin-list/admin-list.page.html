@@ -24,6 +24,7 @@
           <small *ngIf="!admin.admin_limited_access">Full Access</small>
         </ion-label>
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
+          
           <ion-button (click)="resetPassword($event, admin)">
             <ion-icon slot="start" name="key-outline"></ion-icon>
             Send Password
