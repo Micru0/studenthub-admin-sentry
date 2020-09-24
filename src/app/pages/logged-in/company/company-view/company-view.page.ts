@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ToastController, AlertController, ModalController, Platform, NavController} from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 // services
+import { CompanyNoteService } from 'src/app/providers/logged-in/company-note.service';
 import { StoreService } from 'src/app/providers/logged-in/store.service';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import { AwsService } from '../../../../providers/aws.service';
@@ -10,6 +11,7 @@ import { CompanyContactService } from 'src/app/providers/logged-in/company-conta
 import { AuthService } from 'src/app/providers/auth.service';
 import { EventService } from '../../../../providers/event.service';
 // models
+import { Note } from 'src/app/models/note';
 import { Company } from 'src/app/models/company';
 import { Store } from 'src/app/models/store';
 import { File } from '../../../../models/file';
@@ -20,6 +22,7 @@ import { BrandFormPage } from '../brand-form/brand-form.page';
 import { CompanyContactFormPage } from '../company-contact-form/company-contact-form.page';
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
+import { CompanyNoteFormPage } from '../company-note-form/company-note-form.page';
 
 
 @Component({
@@ -52,18 +55,19 @@ export class CompanyViewPage implements OnInit {
   constructor(
     public platform: Platform,
     public router: Router,
-    public activatedRoute: ActivatedRoute,
-    private _modalCtrl: ModalController,
-    private _alertCtrl: AlertController,
+    public activatedRoute: ActivatedRoute,    
+    public navCtrl: NavController,
+    private _toastCtrl: ToastController,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     public companyService: CompanyService,
     public companyContactService: CompanyContactService,
     public brandService: BrandService,
     public storeService: StoreService,
     public authService: AuthService,
-    private _toastCtrl: ToastController,
+    public noteService: CompanyNoteService,
     public aws: AwsService,
     public eventService: EventService,
-    public navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -117,8 +121,8 @@ export class CompanyViewPage implements OnInit {
     });
   }
 
-  segmentChanged($event) {
-    this.segment = $event.detail.value;
+  segmentChanged(event) {
+    this.segment = event.detail.value;
   }
   
   /**
@@ -127,7 +131,7 @@ export class CompanyViewPage implements OnInit {
   async update() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: CompanyFormPage,
       componentProps: {
         model: this.company,
@@ -174,7 +178,7 @@ export class CompanyViewPage implements OnInit {
 
     company.parent_company_id = parent_company_id;
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: CompanyFormPage,
       componentProps: {
         model: company,
@@ -217,7 +221,7 @@ export class CompanyViewPage implements OnInit {
     const brand = new Brand;
     brand.company_id = this.company_id;
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: BrandFormPage,
       componentProps: {
         model: brand
@@ -241,7 +245,7 @@ export class CompanyViewPage implements OnInit {
    * update company follow up interval in week
    */
   async updateFollowupInterval() {
-    const alert = await this._alertCtrl.create({
+    const alert = await this.alertCtrl.create({
       header: 'Follow up',
       inputs: [
         {
@@ -266,7 +270,7 @@ export class CompanyViewPage implements OnInit {
               this.updating = false;
 
               if (resp.operation != 'success') {
-                const prompt = await this._alertCtrl.create({
+                const prompt = await this.alertCtrl.create({
                   header: 'Error!',
                   message: resp.message,
                   buttons: ['Ok']
@@ -298,8 +302,8 @@ export class CompanyViewPage implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    const confirm = await this._alertCtrl.create({
-      header: 'Delete Brand?',
+    const confirm = await this.alertCtrl.create({
+      header: 'Delete Brand',
       message: 'Do you want to delete this brand?',
       buttons: [
         {
@@ -327,7 +331,7 @@ export class CompanyViewPage implements OnInit {
                 this.deleting = false;
 
                 // failer text
-                const prompt = await this._alertCtrl.create({
+                const prompt = await this.alertCtrl.create({
                   header: 'Deletion Error!',
                   message: jsonResp.message,
                   buttons: ['Ok']
@@ -346,6 +350,83 @@ export class CompanyViewPage implements OnInit {
     confirm.present();
   }
 
+  async addNote(note: Note) {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this.modalCtrl.create({
+      component: CompanyNoteFormPage,
+      componentProps: {
+        company: this.company,
+        note,
+      }
+    });
+    modal.present();
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    });
+
+    const { data } = await modal.onWillDismiss();
+
+    if (data && data.refresh) {
+      this.loadData(true);
+    }
+  }
+
+  /**
+   * removing note
+   * @param event
+   * @param note
+   */
+  async removeNote(event, note) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const confirm = await this.alertCtrl.create({
+      header: 'Delete Note',
+      message: 'Do you want to delete this note?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.deleting = true;
+                    
+            this.noteService.delete(note).subscribe(async response => {
+
+              this.deleting = false;
+
+              if (response.operation == 'success') {
+                this.loadData(true);
+              } else {
+                
+                this.deleting = false;
+
+                // failer text
+                const prompt = await this.alertCtrl.create({
+                  header: 'Deletion Error!',
+                  message: response.message,
+                  buttons: ['Ok']
+                });
+                prompt.present();
+              }
+            }, () => {
+              this.deleting = false;
+            });
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
+    });
+    confirm.present();
+  }
+  
   loadContacts() {
     this.companyContactService.companyContacts(this.company_id).subscribe(data => {
       this.companyContacts = data;
@@ -355,7 +436,7 @@ export class CompanyViewPage implements OnInit {
   async onContactSelected(companyContact) {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: CompanyContactFormPage,
       componentProps: {
         model: companyContact
@@ -381,7 +462,7 @@ export class CompanyViewPage implements OnInit {
     const companyContact = new CompanyContact;
     companyContact.company_id = this.company_id;
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: CompanyContactFormPage,
       componentProps: {
         model: companyContact
@@ -409,22 +490,44 @@ export class CompanyViewPage implements OnInit {
 
     event.preventDefault();
     event.stopPropagation();
+   
+    const confirm = await this.alertCtrl.create({
+      header: 'Delete Contact',
+      message: 'Do you want to delete this contact?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
 
-    this.companyContactService.delete(companyContact).subscribe(async response => {
+            this.deleting = true;
 
-      if (response.operation == 'success')
-      {
-        this.companyContacts = this.companyContacts.filter(e => e.contact_uuid != companyContact.contact_uuid);
-      }
-      else
-      {
-        const prompt = await this._alertCtrl.create({
-          message: this.authService.errorMessage(response.message),
-          buttons: ['Ok']
-        });
-        prompt.present();
-      }
+            this.companyContactService.delete(companyContact).subscribe(async response => {
+
+              this.deleting = false;
+
+              if (response.operation == 'success')
+              {
+                this.companyContacts = this.companyContacts.filter(e => e.contact_uuid != companyContact.contact_uuid);
+              }
+              else
+              {
+                const prompt = await this.alertCtrl.create({
+                  message: this.authService.errorMessage(response.message),
+                  buttons: ['Ok']
+                });
+                prompt.present();
+              }
+            }, () => {
+              this.deleting = false;
+            });
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
     });
+    confirm.present();
   }
 
   /**
@@ -438,10 +541,15 @@ export class CompanyViewPage implements OnInit {
       }
     });
   }
-  async editSelected($event, brand) {
+
+  async editSelected(ev, brand) {
+    
+    ev.preventDefault();
+    ev.stopPropagation();
+
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: BrandFormPage,
       componentProps: {
         model: brand
@@ -465,7 +573,7 @@ export class CompanyViewPage implements OnInit {
    * Show confirm alert to reset password
    */
   async resetPassword() {
-    const alert = await this._alertCtrl.create({
+    const alert = await this.alertCtrl.create({
       header: 'Confirm password reset',
       message: 'Do you want to send new password to company?',
       buttons: [
@@ -506,7 +614,7 @@ export class CompanyViewPage implements OnInit {
       }
       else
       {
-        const alert = await this._alertCtrl.create({
+        const alert = await this.alertCtrl.create({
             header: 'Reset Password',
             subHeader: 'New password sent to company',
             buttons: ['Okay']
@@ -526,8 +634,8 @@ export class CompanyViewPage implements OnInit {
     ev.preventDefault();
     ev.stopPropagation();
 
-    const confirm = await this._alertCtrl.create({
-      header: 'Delete Company?',
+    const confirm = await this.alertCtrl.create({
+      header: 'Delete Company',
       message: 'Do you want to delete this Company?',
       buttons: [
         {
@@ -555,7 +663,7 @@ export class CompanyViewPage implements OnInit {
                 this.deleting = false;
 
                 // failer text
-                const prompt = await this._alertCtrl.create({
+                const prompt = await this.alertCtrl.create({
                   header: 'Deletion Error!',
                   message: jsonResp.message,
                   buttons: ['Ok']
@@ -582,8 +690,8 @@ export class CompanyViewPage implements OnInit {
     ev.preventDefault();
     ev.stopPropagation();
 
-    const confirm = await this._alertCtrl.create({
-      header: 'Delete Document?',
+    const confirm = await this.alertCtrl.create({
+      header: 'Delete Document',
       message: 'Do you want to delete this Document?',
       buttons: [
         {
@@ -611,7 +719,7 @@ export class CompanyViewPage implements OnInit {
                 this.deleting = false;
 
                 // failer text
-                const prompt = await this._alertCtrl.create({
+                const prompt = await this.alertCtrl.create({
                   header: 'Deletion Error!',
                   message: jsonResp.message,
                   buttons: ['Ok']
@@ -633,7 +741,7 @@ export class CompanyViewPage implements OnInit {
   async uploadDocument() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: UploadFilePage,
       componentProps: {
         company: this.company,
@@ -655,10 +763,14 @@ export class CompanyViewPage implements OnInit {
     }
   }
 
-  async editDoc($event, file) {
+  async editDoc(event, file) {
+    
+    event.preventDefault();
+    event.stopPropagation();
+
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    const modal = await this._modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: UploadFilePage,
       componentProps: {
         company: this.company,
@@ -716,13 +828,21 @@ export class CompanyViewPage implements OnInit {
   }
 
   changeStatus($event) {
+    
     this.companyStatus = $event.detail.checked;
+    
     this.updating = true;
+    
     const status = ($event.detail.checked) ? 10 : 0;
+
     this.companyService.changeStatus(this.company, status).subscribe(async response => {
+      
       this.updating = false;
+
       if (response && response.operation == 'success') {
+        
         this.eventService.reloadCompanyList$.next();
+
         const toast = await this._toastCtrl.create({
           message: response.message,
           duration: 3000

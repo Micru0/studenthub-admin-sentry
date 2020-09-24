@@ -10,7 +10,7 @@
       <span *ngIf="transfer?.company_total">- KWD {{ transfer.company_total | number:'1.3-3' }}</span>
     </ion-title>
     
-    <ion-buttons slot="end" *ngIf="!this.authService.admin_limited_access">
+    <ion-buttons slot="end">
       <ion-button (click)="exportExcel()">
         Download as Excel
       </ion-button>
@@ -143,7 +143,7 @@
             <ion-label>
               <!-- If no hours worked by candidate -->
   
-              <h3>{{resource.candidate.candidate_name}}</h3>
+              <h3>{{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}</h3>
               <p *ngIf="resource.hours == 0 && resource.bonus == 0">Candidate hasn't worked any hours</p>
             </ion-label>
             

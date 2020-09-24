@@ -67,7 +67,7 @@
           <img *ngIf="!tc.candidate.candidate_personal_photo" src="/assets/icon.png">
         </ion-avatar>
         <ion-label>
-          {{tc.candidate.candidate_name}} 
+          {{ tc.candidate.candidate_name? tc.candidate.candidate_name: tc.candidate.candidate_name_ar }} 
         </ion-label>
 
         <ion-badge slot="end">KWD {{ tc.total_amount | number:'1.3-3' }}</ion-badge>

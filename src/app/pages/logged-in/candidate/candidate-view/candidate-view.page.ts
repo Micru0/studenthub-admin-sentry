@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -22,6 +22,8 @@ export class CandidateViewPage implements OnInit {
   
   public loading: boolean = false; 
 
+  public loadingSalaryTransfers: boolean = false;
+  
   public candidate_id; 
 
   public candidate: Candidate;
@@ -33,6 +35,7 @@ export class CandidateViewPage implements OnInit {
 
   constructor(
     public router: Router,
+    public platform: Platform,
     public aws: AwsService,
     public authService: AuthService,
     public activateRoute: ActivatedRoute,
@@ -81,8 +84,15 @@ export class CandidateViewPage implements OnInit {
    * Load list of all salary transfers
    */
   loadTransfersData() {
+
+    this.loadingSalaryTransfers = true;
+
     this.candidateService.transfers(this.candidate_id).subscribe(response => {
+      this.loadingSalaryTransfers = false;
+
       this.salaryTransfers = response;
+    }, () => {
+      this.loadingSalaryTransfers = false;
     });
   }
 

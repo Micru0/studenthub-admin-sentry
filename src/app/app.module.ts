@@ -1,4 +1,4 @@
-import {NgModule, APP_INITIALIZER, ErrorHandler} from '@angular/core';
+import { NgModule, APP_INITIALIZER, Injector, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -29,7 +29,8 @@ import { SentryErrorhandlerService } from './providers/sentry.errorhandler.servi
 import { UploadFilePageModule } from './pages/logged-in/company/upload-file/upload-file.module';
 import { BrandFormPageModule } from './pages/logged-in/company/brand-form/brand-form.module';
 import { CompanyContactFormPageModule } from './pages/logged-in/company/company-contact-form/company-contact-form.module';
-import {NoItemsModule} from "./components/no-items/no-items.module";
+import { NoItemsModule } from "./components/no-items/no-items.module";
+import {SelectiveLoadingStrategy} from "./util/SelectiveLoadingStrategy";
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -73,9 +74,17 @@ export function startupServiceFactory(authService) {
     FilePath,
     IOSFilePicker,
     SwUpdate,
+    SelectiveLoadingStrategy,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: SentryErrorhandlerService }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+
+  static injector: Injector;
+
+  constructor(public injector: Injector) {
+    AppModule.injector = injector;
+  }
+}
