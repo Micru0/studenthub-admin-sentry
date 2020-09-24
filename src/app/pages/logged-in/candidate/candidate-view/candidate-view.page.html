@@ -209,6 +209,9 @@
       </ion-item>
     </ng-container>
     <ng-container *ngIf="sections == 'salary' && candidate">
+
+      <no-items message = "No salary transferred yet!" *ngIf="salaryTransfers.length == 0 && !loadingSalaryTransfers"></no-items>
+
       <ion-item tappable *ngFor="let salary of salaryTransfers" (click)="candidateTransferDetails(salary)">
         <ion-label>
           {{ salary.tc_created_at }}

@@ -22,6 +22,8 @@ export class CandidateViewPage implements OnInit {
   
   public loading: boolean = false; 
 
+  public loadingSalaryTransfers: boolean = false;
+
   public candidate_id; 
 
   public candidate: Candidate;
@@ -82,8 +84,15 @@ export class CandidateViewPage implements OnInit {
    * Load list of all salary transfers
    */
   loadTransfersData() {
+
+    this.loadingSalaryTransfers = true;
+
     this.candidateService.transfers(this.candidate_id).subscribe(response => {
-      this.salaryTransfers = response;
+      this.loadingSalaryTransfers = false;
+
+      //this.salaryTransfers = response;
+    }, () => {
+      this.loadingSalaryTransfers = false;
     });
   }
 
