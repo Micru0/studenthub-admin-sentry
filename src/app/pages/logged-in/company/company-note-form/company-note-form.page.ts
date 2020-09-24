@@ -91,7 +91,7 @@ export class CompanyNoteFormPage implements OnInit {
       // On Failure
       if (jsonResponse.operation == 'error') {
         const prompt = await this.alertCtrl.create({
-          message: this.authService._processResponseMessage(jsonResponse),
+          message: jsonResponse.message,
           buttons: ['Ok']
         });
         prompt.present();
