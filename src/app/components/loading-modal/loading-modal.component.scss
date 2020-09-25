@@ -18,6 +18,9 @@
     ion-item:nth-child(4) ion-skeleton-text {
         width: 30%;
     }
+    ion-list {
+        padding: inherit;
+    }
 }
 
 .staff-form {
