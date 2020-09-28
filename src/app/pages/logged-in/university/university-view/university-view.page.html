@@ -19,6 +19,7 @@
   <ion-list *ngIf="university">
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>University ID</h5>
         <p>{{ university.university_id }}</p>
@@ -26,6 +27,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>University Name</h5>
         <p>{{ university.university_name_en }}</p>
@@ -33,6 +35,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>University Name - Arabic</h5>
         <p>{{ university.university_name_ar }}</p>
@@ -54,6 +57,7 @@
 
     <ion-list>
       <ion-item *ngFor="let candidate of candidates" tappable (click)="candidateDetail(candidate)">
+        <div tabindex="0"></div>
         <ion-label>
           {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}
         </ion-label>

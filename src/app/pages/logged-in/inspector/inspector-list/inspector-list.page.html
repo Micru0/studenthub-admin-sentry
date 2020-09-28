@@ -18,6 +18,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let inspector of inspectors" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(inspector)">
+        <div tabindex="0"></div>
         <ion-label>
           {{ inspector.inspector_name }}<br/>
         </ion-label>

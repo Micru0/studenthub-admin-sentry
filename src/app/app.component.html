@@ -24,6 +24,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'/dashboard'">
+                <div tabindex="0"></div>
                 <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
                 <ion-label>
                   Summary
@@ -32,6 +33,7 @@
             </ion-menu-toggle>
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'transfer-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="globe-outline" slot="start"></ion-icon>
                 <ion-label>Transfers</ion-label>
               </ion-item>
@@ -47,6 +49,7 @@
             <ion-menu-toggle auto-hide="false">
               <!-- *ngIf="totalPayableCandidate > 0" -->
               <ion-item lines="none" [routerLink]="'payable-candidates'">
+                <div tabindex="0"></div>
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>
                   Payable Candidates
@@ -60,6 +63,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'candidate-payment-search'">
+                <div tabindex="0"></div>
                 <ion-icon name="search-outline" slot="start"></ion-icon>
                 <ion-label>
                   Payment Search
@@ -69,6 +73,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'transfer-file-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="folder-open-outline" slot="start"></ion-icon> 
                 <ion-label>
                   Transfer Files
@@ -87,6 +92,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'admin-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="person-circle-outline" slot="start"></ion-icon>
                 <ion-label>
                   Admin
@@ -95,6 +101,7 @@
             </ion-menu-toggle>
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'company-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="briefcase-outline" slot="start"></ion-icon>
                 <ion-label>
                   Companies
@@ -104,6 +111,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'staff-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>Staff</ion-label>
               </ion-item>
@@ -111,6 +119,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'inspector-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>Inspector</ion-label>
               </ion-item>
@@ -124,6 +133,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'bank-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="cash-outline" slot="start"></ion-icon>
                 <ion-label>Banks</ion-label>
               </ion-item>
@@ -131,6 +141,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'university-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="school-outline" slot="start"></ion-icon>
                 <ion-label>Universities</ion-label>
               </ion-item>
@@ -138,6 +149,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'country-list'">
+                <div tabindex="0"></div>
                 <ion-icon name="paper-plane-outline" slot="start"></ion-icon>
                 <ion-label>Countries</ion-label>
               </ion-item>
@@ -152,6 +164,7 @@
 
             <ion-menu-toggle auto-hide="false">
               <ion-item tappable lines="none" class="ion-activatable ion-focusable" (click)="authService.logout()">
+                <div tabindex="0"></div>
                 <ion-icon name="log-out-outline" slot="start"></ion-icon>
                 <ion-label>Logout</ion-label>
               </ion-item>
