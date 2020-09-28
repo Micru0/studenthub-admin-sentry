@@ -50,6 +50,7 @@
   <!-- Transfer List -->
   <ion-list>
     <ion-item tappable *ngFor="let transfer of transfers" (click)="transferDetails(transfer.transfer_id)">
+      <div tabindex="0"></div>
       <ion-grid>
         <ion-row>
           <ion-col class="ion-text-center">

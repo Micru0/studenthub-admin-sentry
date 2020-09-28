@@ -18,6 +18,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let admin of admins" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(admin)">
+        <div tabindex="0"></div>
         <ion-label>
           {{ admin.admin_name }}<br/>
           <small *ngIf="admin.admin_limited_access">Limited Access</small>

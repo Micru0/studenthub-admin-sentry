@@ -33,6 +33,8 @@
                 </ion-item>
 
                 <ion-item lines="none" *ngIf="!progress && !fileModel.file_uuid">
+                    <div tabindex="0"></div>
+                    
                     <ion-button class="fileUpload" (click)="mobileUpload();" *ngIf="platform.is('hybrid')">
                         <ion-icon name="cloud-upload-outline"></ion-icon>&nbsp;&nbsp;
                         <span *ngIf="this.fileModel.file_s3_path">Replace File</span>
@@ -51,6 +53,7 @@
                 </ion-item>
 
                 <ion-item lines="none" *ngIf="!progress && this.fileModel.file_s3_path">
+                    <div tabindex="0"></div>
                     <div class="selected-file">
 
                         <div class="extension">{{ uploadedFileExtension }}</div>

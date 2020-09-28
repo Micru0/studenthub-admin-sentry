@@ -39,6 +39,7 @@
         <ion-card-content>
 
           <ion-item>
+            <div tabindex="0"></div>
             <ion-label>
               <h5>Amount</h5>
               <p>
@@ -48,6 +49,7 @@
           </ion-item>
            
           <ion-item>
+            <div tabindex="0"></div>
             <ion-label>
               <h5>Transfer Candidate ID</h5>
               <p>
@@ -57,6 +59,7 @@
           </ion-item>
 
           <ion-item *ngIf="transfer.transfer_confirmation_id">
+            <div tabindex="0"></div>
             <ion-label>
               <h5>Transfer Confirmation ID</h5>
               <p>
@@ -66,6 +69,7 @@
           </ion-item>
 
           <ion-item *ngIf="transfer.bank">
+            <div tabindex="0"></div>
             <ion-label>
               <h5>Bank</h5>
               <p>
@@ -75,6 +79,7 @@
           </ion-item>
 
           <ion-item *ngIf="transfer.transfer_benef_name">
+            <div tabindex="0"></div>
             <ion-label>
               <h5>Account name</h5>
               <p>
@@ -84,6 +89,7 @@
           </ion-item>
 
           <ion-item *ngIf="transfer.transferFile">
+            <div tabindex="0"></div>
             <ion-label>
               <h5>Transfer File</h5>
               <a [href]="aws.permanentBucketUrl + transfer.transferFile.transfer_file_s3_path"

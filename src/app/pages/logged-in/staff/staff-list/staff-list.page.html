@@ -19,6 +19,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let staffMember of staff" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(staffMember)">
+        <div tabindex="0"></div>
         <ion-label>{{ staffMember.staff_name }}</ion-label>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
