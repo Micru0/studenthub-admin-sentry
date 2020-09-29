@@ -15,6 +15,7 @@
 
   <ion-list *ngIf="country">
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Country ID</h5>
         <p>{{ country.country_id }}</p>
@@ -22,6 +23,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Country Name</h5>
         <p>{{ country.country_name_en }}</p>
@@ -29,6 +31,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Country Name - Arabic</h5>
         <p>{{ country.country_name_ar }}</p>
@@ -36,6 +39,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Country Nationality</h5>
         <p>{{ country.country_nationality_name_en }}</p>
@@ -43,6 +47,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Country Nationality - Arabic</h5>
         <p>{{ country.country_nationality_name_ar }}</p>
@@ -56,6 +61,7 @@
 
   <ion-list> 
     <ion-item tappable *ngFor="let candidate of candidates" (click)="candidateSelected(candidate)">
+      <div tabindex="0"></div>
       <ion-label>
         {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}
       </ion-label>

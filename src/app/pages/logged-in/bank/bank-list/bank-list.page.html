@@ -19,6 +19,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let bankMember of banks" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(bankMember)">
+        <div tabindex="0"></div>
         <ion-label>
           {{ bankMember.bank_name }}
         </ion-label>

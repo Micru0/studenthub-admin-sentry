@@ -22,6 +22,7 @@
       <ion-input type="text" placeholder="Candidate Transfer ID" (keyup)="onTransferIdChange($event)" [(ngModel)]="tc_id"></ion-input>
     </ion-item>
     <ion-item>
+      <div tabindex="0"></div>
       <ion-button [disabled]="loading || !tc_id" (click)="loadData()">
         <span *ngIf="!loading">Search</span>
         <ion-spinner *ngIf="loading"></ion-spinner>
@@ -38,6 +39,7 @@
       <ion-input type="text" placeholder="Transfer Confirmation ID" (keyup)="onConfirmationIdChange($event)" [(ngModel)]="transfer_confirmation_id"></ion-input>
     </ion-item>
     <ion-item>
+      <div tabindex="0"></div>
       <ion-button [disabled]="loading2 || !transfer_confirmation_id" (click)="loadByConfirmationId()">
         <span *ngIf="!loading2">Search</span>
         <ion-spinner *ngIf="loading2"></ion-spinner>

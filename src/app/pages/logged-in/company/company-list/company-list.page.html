@@ -28,6 +28,7 @@
   <ion-list *ngIf="segment == 1">
     <ion-item-sliding *ngFor="let company of enableCompanies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
+        <div tabindex="0"></div>
         <ion-label>
           {{ company.company_name }}
         </ion-label>
@@ -74,7 +75,8 @@
   <ion-list *ngIf="segment == 0">
     <ion-item-sliding *ngFor="let company of disableCompanies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
-
+        <div tabindex="0"></div>
+        
         <ion-avatar slot="start">
           <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
           <img *ngIf="!company.company_logo" src="/assets/icon.png">

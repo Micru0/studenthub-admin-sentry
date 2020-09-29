@@ -20,6 +20,7 @@
   <ion-list *ngIf="inspector && !loading">
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Id</h5>
         <p>{{ inspector.inspector_uuid }}</p>
@@ -27,6 +28,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Inspector Member</h5>
         <p>{{ inspector.inspector_name }}</p>
@@ -34,6 +36,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Email</h5>
         <p>{{ inspector.inspector_email }}</p>
@@ -41,6 +44,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Status</h5>
         <p *ngIf="inspector.inspector_status">Active</p>
@@ -49,6 +53,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Created at</h5>
         <p>{{ inspector.inspector_created_at }}</p>
@@ -56,6 +61,7 @@
     </ion-item>
 
     <ion-item>
+      <div tabindex="0"></div>
       <ion-label>
         <h5>Updated at</h5>
         <p>{{ inspector.inspector_updated_at }}</p>

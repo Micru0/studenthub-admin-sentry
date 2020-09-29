@@ -3,6 +3,8 @@ import { Company } from './company';
 import { University } from './university';
 import { Country } from './country';
 import { Bank } from './bank';
+import { Area } from './area';
+
 
 export class Candidate {
 	candidate_id: number;
@@ -11,6 +13,7 @@ export class Candidate {
     bank_id: number;
     university_id: number;
     country_id: number;
+    country_area_uuid: string;
     bank_account_name: string;
     candidate_iban: string;
     candidate_name: string;
@@ -45,5 +48,7 @@ export class Candidate {
     company: Company;
     university: University;
     country: Country;
+    area: Area;
+    nationality: Country;
     bank: Bank;
 }

@@ -16,6 +16,7 @@
 <ion-content>
   <ion-list>
     <ion-item tappable *ngFor="let country of countries" (click)="rowSelected(country)">
+      <div tabindex="0"></div>
       <ion-label>
         {{ country.country_name_en }}
       </ion-label>
@@ -26,7 +27,7 @@
     </ion-item>
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
-  </ion-list> 
+  </ion-list>
 
   <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content>

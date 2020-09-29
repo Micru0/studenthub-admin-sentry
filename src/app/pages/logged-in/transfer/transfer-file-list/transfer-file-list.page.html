@@ -15,6 +15,7 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let transferFile of transferFiles" tappable (click)="rowSelected(transferFile)">
+      <div tabindex="0"></div>
       <ion-label>
         
         <h5>Transfer File # {{ transferFile.transfer_file_id }}</h5>
