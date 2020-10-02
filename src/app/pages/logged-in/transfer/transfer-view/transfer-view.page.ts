@@ -163,6 +163,7 @@ export class TransferViewPage implements OnInit {
    * Update transfer status and description based on return value from API
    */
   private _updateTransferStatus() {
+
     switch (this.transfer.transfer_status) {
       case 10: // Draft
         this.transferStatus = "Transfer Draft";
@@ -275,7 +276,7 @@ export class TransferViewPage implements OnInit {
    */
   async exportExcel() {
 
-    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
+    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && this.transfer && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
       this.processing = true;
 
       this.transferService.export(this.transfer).subscribe(async response => {
@@ -295,7 +296,7 @@ export class TransferViewPage implements OnInit {
    */
   async downloadReceipt(invoice: Invoice) {
 
-    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
+    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && this.transfer && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
       this.processing = true;
 
       this.transferService.downloadReceipt(invoice).subscribe(response => {
@@ -310,7 +311,7 @@ export class TransferViewPage implements OnInit {
    */
   async downloadInvoice(invoice: Invoice) {
 
-    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
+    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && this.transfer && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
       this.processing = true;
 
       this.transferService.downloadInvoice(invoice).subscribe(response => {

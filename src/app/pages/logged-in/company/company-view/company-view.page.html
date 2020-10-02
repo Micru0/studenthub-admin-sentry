@@ -183,6 +183,7 @@
         </ion-item>
 
         <ion-item>
+          <div tabindex="0"></div>
           <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</ion-label>
           <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatus"
             (ionChange)=changeStatus($event)></ion-toggle>
