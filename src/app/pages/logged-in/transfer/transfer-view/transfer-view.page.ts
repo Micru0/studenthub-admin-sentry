@@ -296,13 +296,11 @@ export class TransferViewPage implements OnInit {
    */
   async downloadReceipt(invoice: Invoice) {
 
-    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && this.transfer && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
       this.processing = true;
 
       this.transferService.downloadReceipt(invoice).subscribe(response => {
         this.processing = false;
       });
-    }
   }
 
   /**
@@ -310,14 +308,11 @@ export class TransferViewPage implements OnInit {
    * @param invoice
    */
   async downloadInvoice(invoice: Invoice) {
+    this.processing = true;
 
-    if (!this.authService.admin_limited_access || (this.authService.admin_limited_access && this.transfer && (this.transfer.transfer_status == 3 || this.transfer.transfer_status == 4))) {
-      this.processing = true;
-
-      this.transferService.downloadInvoice(invoice).subscribe(response => {
-        this.processing = false;
-      });
-    }
+    this.transferService.downloadInvoice(invoice).subscribe(response => {
+      this.processing = false;
+    });
   }
 
   /**

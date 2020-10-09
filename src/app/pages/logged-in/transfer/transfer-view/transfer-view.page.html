@@ -87,36 +87,39 @@
 
   <loading-modal [loading]="loading && !transfer" type="transfer"></loading-modal>
 
+  <ng-container *ngIf="!this.authService.admin_limited_access && transfer && (transfer.transfer_status==3 || this.transfer.transfer_status==4)">
+
+
   <!-- Invoices -->
   <div class="invoices ion-padding" *ngIf="invoices.length > 0">
-    <h3>Invoices</h3>
-    <ion-list>
-      <ion-item tappable *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice)">
-        <div tabindex="0"></div>
-        <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
-        <ion-label>
-          Download Invoice #{{ invoice.invoice_id }} - KWD {{ invoice.invoice_total | number:'1.3-3' }}
-          <small>{{ invoice.company.company_name }}</small>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
+      <h3>Invoices</h3>
+      <ion-list>
+        <ion-item tappable *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice)">
+          <div tabindex="0"></div>
+          <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
+          <ion-label>
+            Download Invoice #{{ invoice.invoice_id }} - KWD {{ invoice.invoice_total | number:'1.3-3' }}
+            <small>{{ invoice.company.company_name }}</small>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
 
-  <!-- Receipts -->
-  <div class="receipts ion-padding" *ngIf="receipts.length > 0">
-    <h3>Receipts</h3>
-    <ion-list>
-      <ion-item tappable *ngFor="let receipt of receipts" (click)="downloadReceipt(receipt)">
-        <div tabindex="0"></div>
-        <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
-        <ion-label>
-          Download Receipt #{{ receipt.invoice_id }} - KWD {{ receipt.invoice_total | number:'1.3-3' }}
-          <small>{{ receipt.company.company_name }}</small>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
-
+    <!-- Receipts -->
+    <div class="receipts ion-padding" *ngIf="receipts.length > 0">
+      <h3>Receipts</h3>
+      <ion-list>
+        <ion-item tappable *ngFor="let receipt of receipts" (click)="downloadReceipt(receipt)">
+          <div tabindex="0"></div>
+          <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
+          <ion-label>
+            Download Receipt #{{ receipt.invoice_id }} - KWD {{ receipt.invoice_total | number:'1.3-3' }}
+            <small>{{ receipt.company.company_name }}</small>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ng-container>
   <!-- Transfer Details made to each Candidate -->
   
   <ion-list *ngIf="transfer && transferCandidates" class='candidateList'>
@@ -200,7 +203,7 @@
                 {{ resource.transfer_benef_name }} 
               </ion-col>
 
-              <ion-col *ngIf="resource.transferFile" size="12" size-sm="6" size-md="6" size-lg="6">
+              <ion-col *ngIf="resource.transferFile && !this.authService.admin_limited_access" size="12" size-sm="6" size-md="6" size-lg="6">
                 <b>Transfer File</b> <br /> 
                 <a [href]="aws.permanentBucketUrl + resource.transferFile.transfer_file_s3_path" (click)="doNothing($event)">
                   {{ resource.transferFile.transfer_file_s3_path }}
