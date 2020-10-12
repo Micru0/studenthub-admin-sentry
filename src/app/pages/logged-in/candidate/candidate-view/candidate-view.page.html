@@ -221,7 +221,7 @@
         <ion-label>
           <h5>Candidate Video</h5>
           <ng-container *ngIf="candidate.candidate_video">
-            <video class="manipulation-video" controls="true" preload="none" publicid="{{ candidate.candidate_video }}" width="300"
+            <video class="manipulation-video" controls="true" preload="none" width="300"
                    poster="{{ aws.cloudinaryVideoUrl }}candidate-video/{{ candidate.candidate_video }}.jpg">
               <source src="{{ aws.cloudinaryVideoUrl }}candidate-video/{{ candidate.candidate_video }}.webm"
                       type="video/webm">
