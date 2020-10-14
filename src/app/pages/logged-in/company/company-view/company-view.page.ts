@@ -82,6 +82,10 @@ export class CompanyViewPage implements OnInit {
 
     this.loadData();
     this.loadContacts();
+
+    this.eventService.transferUpdated$.subscribe(_ => {
+      this.loadData();
+    });
   }
 
   /**
