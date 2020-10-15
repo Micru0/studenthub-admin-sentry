@@ -507,7 +507,7 @@
       </ion-list>
     </section>
 
-    <section *ngIf="segment == 'documents' && company.files && company.files.length > 0">
+    <section *ngIf="segment == 'documents'">
 
       <ion-item-sliding *ngFor="let file of company.files" [disabled]="platform.width() > 768">
         <ion-item>
@@ -556,6 +556,7 @@
       </ion-item>
 
     </section>
+    
     <!--    Transfer List-->
     <section *ngIf="segment == 'transfer'">
       <ion-list *ngIf="company.parentTransfers">
