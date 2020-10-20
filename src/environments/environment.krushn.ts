@@ -10,7 +10,6 @@ export const environment = {
   ///apiEndpoint: 'http://localhost:8888/studenthub/admin/web/v1',
   apiEndpoint: 'http://localhost:8888/studenthub/admin/web/v1',
   permanentBucketUrl: "https://studenthub-uploads-dev-server.s3.amazonaws.com/",
-  cloudinaryVideoUrl: 'https://res.cloudinary.com/studenthub/video/upload/w_250,q_auto:low/v1596453482/dev/',
 };
 
 /*
