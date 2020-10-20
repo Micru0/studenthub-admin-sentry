@@ -20,31 +20,57 @@
 
   <!-- Transfer Filter -->
   <ion-card>
-    <ion-list>
-      <ion-list-header>
-        <ion-label>
-          Filter by
-        </ion-label>
-      </ion-list-header>
-      <!-- Filter by Company Name -->
-      <ion-item>
-        <ion-label color="primary" position="stacked">Company name</ion-label>
-        <ion-input type="text" placeholder="Enter Company Name" [(ngModel)]="companyName" (change)="loadData(1)"></ion-input>
-      </ion-item>
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label color="primary" position="stacked">Company name</ion-label>
+              <ion-input type="text" placeholder="Enter Company Name" [(ngModel)]="filters.companyName"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label color="primary" position="stacked">Transfer Status</ion-label>
+              <ion-select [(ngModel)]="filters.transferStatus">
+                <ion-select-option value="0">All</ion-select-option>
+                <ion-select-option value="10">Draft</ion-select-option>
+                <ion-select-option value="5">Locked, Pending Payment</ion-select-option>
+                <ion-select-option value="1">Payment Sent, Confirm Received</ion-select-option>
+                <ion-select-option value="3">Received & Distribution in Progress</ion-select-option>
+                <ion-select-option value="4">Transfer Completed</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked" color="primary">Start Date</ion-label>
+              <app-date-dropdown pickerFormat="DD MMMM YYYY" displayFormat="DD MMMM YYYY" [min]="min" [max]="max"
+                                 placeholder="DD/MM/YYYY" [(ngModel)]="filters.startDate"></app-date-dropdown>
+            </ion-item>
+          </ion-col>
 
-      <!-- Filter by Transfer Status -->
-      <ion-item>
-        <ion-label color="primary" position="stacked">Transfer Status</ion-label>
-        <ion-select [(ngModel)]="transferStatus" (ionChange)="loadData(1)">
-          <ion-select-option value="0">All</ion-select-option>
-          <ion-select-option value="10">Draft</ion-select-option>
-          <ion-select-option value="5">Locked, Pending Payment</ion-select-option>
-          <ion-select-option value="1">Payment Sent, Confirm Received</ion-select-option>
-          <ion-select-option value="3">Received & Distribution in Progress</ion-select-option>
-          <ion-select-option value="4">Transfer Completed</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked" color="primary">End Date</ion-label>
+              <app-date-dropdown pickerFormat="DD MMMM YYYY" displayFormat="DD MMMM YYYY" [min]="min" [max]="max"
+                                 placeholder="DD/MM/YYYY" [(ngModel)]="filters.endDate"></app-date-dropdown>
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
   </ion-card>
 
   <!-- Transfer List -->
