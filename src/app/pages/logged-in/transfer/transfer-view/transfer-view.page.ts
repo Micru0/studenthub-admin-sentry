@@ -6,11 +6,11 @@ import { EventService } from 'src/app/providers/event.service';
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 import { AwsService } from 'src/app/providers/aws.service';
+import { AuthService } from "../../../../providers/auth.service";
 //models
 import { Transfer, Invoice } from 'src/app/models/transfer';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
 import { Candidate } from 'src/app/models/candidate';
-import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -30,7 +30,7 @@ export class TransferViewPage implements OnInit {
   public receipts: Invoice[] = []; //paid invoices 
 
   public transferCandidates = [];
-  
+
   public transferStatus = "";
   public transferStatusDescription = "";
 
@@ -61,6 +61,7 @@ export class TransferViewPage implements OnInit {
   // Reload data when page is entering
   // Also used to reload data after paid to user
   ionViewWillEnter() {
+
     this.loadData();
 
     this.listTransferCandidates();
@@ -101,15 +102,15 @@ export class TransferViewPage implements OnInit {
 
       data.forEach((value, index) => {
         // if (value.invoice_status == 'paid' || value.invoice_status == 'sent') {
-          this.receipts.push(value);
+        this.receipts.push(value);
         // } else {
-          this.invoices.push(value);
+        this.invoices.push(value);
         // }
       });
 
     }, () => {
 
-      this.loadingInvoice = false; 
+      this.loadingInvoice = false;
     });
   }
 
@@ -118,9 +119,9 @@ export class TransferViewPage implements OnInit {
    */
   listTransferCandidates() {
 
-    this.loadingCandidates = true; 
+    this.loadingCandidates = true;
 
-    this.candidatePage = 1; 
+    this.candidatePage = 1;
 
     this.transferCandidateService.listTransferCandidates(this.transfer_id, this.candidatePage).subscribe(response => {
 
@@ -141,9 +142,9 @@ export class TransferViewPage implements OnInit {
    * @param event 
    */
   infiniteTransferCandidates(event) {
-    this.loadingCandidates = true; 
+    this.loadingCandidates = true;
 
-    this.candidatePage++; 
+    this.candidatePage++;
 
     this.transferCandidateService.listTransferCandidates(this.transfer_id, this.candidatePage).subscribe(response => {
 
@@ -152,7 +153,7 @@ export class TransferViewPage implements OnInit {
       this.loadingCandidates = false;
 
       this.transferCandidates = this.transferCandidates.concat(response.body);
-      
+
     }, () => {
       event.target.complete();
       this.loadingCandidates = false;
@@ -192,7 +193,7 @@ export class TransferViewPage implements OnInit {
    * Mark as Payment Received and Distribution in Progress for current transfer
    */
   async markReceivedAndDistribute() {
-    
+
     this.processing = true;
 
     this.transferService.markReceivedDistributing(this.transfer).subscribe(async response => {
@@ -221,11 +222,11 @@ export class TransferViewPage implements OnInit {
     this.processing = true;
 
     this.transferService.markUnlock(this.transfer).subscribe(response => {
-      
+
       this.eventService.transferUpdated$.next();
 
       this.navCtrl.pop();
-      
+
       this.processing = false;
     });
   }
@@ -246,7 +247,7 @@ export class TransferViewPage implements OnInit {
         {
           text: 'Yes',
           handler: async () => {
-            
+
             this.processing = true;
 
             this.transferService.markLocked(this.transfer).subscribe(async response => {
@@ -259,7 +260,7 @@ export class TransferViewPage implements OnInit {
               toast.present();
 
               this.eventService.transferUpdated$.next();
-              
+
               this.navCtrl.pop();
 
               this.processing = false;
@@ -296,11 +297,11 @@ export class TransferViewPage implements OnInit {
    */
   async downloadReceipt(invoice: Invoice) {
 
-      this.processing = true;
+    this.processing = true;
 
-      this.transferService.downloadReceipt(invoice).subscribe(response => {
-        this.processing = false;
-      });
+    this.transferService.downloadReceipt(invoice).subscribe(response => {
+      this.processing = false;
+    });
   }
 
   /**
@@ -368,7 +369,7 @@ export class TransferViewPage implements OnInit {
    * @param event 
    */
   doNothing(event) {
-   // event.preventDefault();
+    // event.preventDefault();
     event.stopPropagation();
   }
 
