@@ -87,11 +87,20 @@
 
   <loading-modal [loading]="loading && !transfer" type="transfer"></loading-modal>
 
-  <ng-container *ngIf="!this.authService.admin_limited_access && transfer && (transfer.transfer_status==3 || this.transfer.transfer_status==4)">
+  <!-- either full access or limited access and received/completed -->
+  
+  <ng-container *ngIf="
+    this.authService.admin_limited_access == 0 ||
+    (
+      this.authService.admin_limited_access == 1 && 
+      transfer && 
+      (transfer.transfer_status==3 || this.transfer.transfer_status==4)
+    )
+    ">
 
 
-  <!-- Invoices -->
-  <div class="invoices ion-padding" *ngIf="invoices.length > 0">
+    <!-- Invoices -->
+    <div class="invoices ion-padding" *ngIf="invoices.length > 0">
       <h3>Invoices</h3>
       <ion-list>
         <ion-item tappable *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice)">
@@ -120,6 +129,7 @@
       </ion-list>
     </div>
   </ng-container>
+
   <!-- Transfer Details made to each Candidate -->
   
   <ion-list *ngIf="transfer && transferCandidates" class='candidateList'>
