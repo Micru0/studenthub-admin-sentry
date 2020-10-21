@@ -36,10 +36,10 @@ export class CountryViewPage implements OnInit {
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private candidateService: CandidateService, 
-    private countryService: CountryService,
-    private authService: AuthService,
-    private _modalCtrl: ModalController
+    public candidateService: CandidateService,
+    public countryService: CountryService,
+    public authService: AuthService,
+    public _modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
