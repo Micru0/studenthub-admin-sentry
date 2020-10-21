@@ -31,6 +31,7 @@ import { BrandFormPageModule } from './pages/logged-in/company/brand-form/brand-
 import { CompanyContactFormPageModule } from './pages/logged-in/company/company-contact-form/company-contact-form.module';
 import { NoItemsModule } from "./components/no-items/no-items.module";
 import {SelectiveLoadingStrategy} from "./util/SelectiveLoadingStrategy";
+import {CountryFormPageModule} from "./pages/logged-in/country/country-form/country-form.module";
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -59,7 +60,8 @@ export function startupServiceFactory(authService) {
     UploadFilePageModule,
     BrandFormPageModule,
     CompanyContactFormPageModule,
-    NoItemsModule
+    NoItemsModule,
+    CountryFormPageModule
   ],
   providers: [
     {

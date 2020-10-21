@@ -75,13 +75,16 @@ export class CompanyViewPage implements OnInit {
     // Load the passed model if available
     if (window.history.state) {
       this.company = window.history.state.model;
-    }
-    console.log(this.company);
+    } 
 
     this.company_id = this.activatedRoute.snapshot.paramMap.get('company_id');
 
     this.loadData();
     this.loadContacts();
+
+    this.eventService.transferUpdated$.subscribe(_ => {
+      this.loadData();
+    });
   }
 
   /**
@@ -92,21 +95,18 @@ export class CompanyViewPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
+
     // if initialize
     this.companyStatus = !!(this.company && this.company.company_status);
     this.followup = !!(this.company && this.company.company_followup);
 
-    if (!this.company) {
-      this.company = new Company;
-      this.company.company_id = this.company_id;
-    }
-
-    this.companyService.view(this.company).subscribe(response => {
+    this.companyService.view(this.company_id).subscribe(response => {
 
       this.loading = false;
       this.deleting = false;
 
       this.company = response;
+
       // if load
       this.companyStatus = !!(this.company.company_status);
       this.followup = !!(this.company.company_followup);
@@ -794,10 +794,10 @@ export class CompanyViewPage implements OnInit {
   }
 
   toggleFollowup($event) {
-
+    
     this.followup = $event.detail.checked;
     this.company.company_followup = $event.detail.checked;
-    console.log(this.followup, this.company.company_followup);
+   
     this.updating = true;
 
     this.companyService.updateFollowup(this.company).subscribe(async response => {

@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core'; 
 import { ActivatedRoute, Router } from '@angular/router';
+import {ModalController} from "@ionic/angular";
 //models
 import { Country } from 'src/app/models/country';
 import { Candidate } from 'src/app/models/candidate';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { CountryService } from 'src/app/providers/logged-in/country.service';
+import {AuthService} from "../../../../providers/auth.service";
+import {CountryFormPage} from "../country-form/country-form.page";
 
 
 @Component({
@@ -33,8 +36,10 @@ export class CountryViewPage implements OnInit {
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private candidateService: CandidateService, 
-    private countryService: CountryService
+    public candidateService: CandidateService,
+    public countryService: CountryService,
+    public authService: AuthService,
+    public _modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -146,5 +151,33 @@ export class CountryViewPage implements OnInit {
     }, () => {
       this.deletingCandidates = false;
     });
+  }
+
+
+  /**
+   * Loads Form in modal to update
+   */
+  async update() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: CountryFormPage,
+      componentProps: {
+        model: this.country,
+        country_id: this.country.country_id
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+
+      if (e && e.data && e.data.model) {
+        this.country = e.data.model; //  load data on update close
+      }
+    });
+    modal.present();
   }
 }
