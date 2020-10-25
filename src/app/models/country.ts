@@ -5,4 +5,5 @@ export class Country {
     country_nationality_name_en: string;
     country_nationality_name_ar: string;
     total_candidates: number;
+    country_from_google_map: number;
 }

@@ -11,6 +11,8 @@ export class Transfer {
 	transfer_status: number;
 	transfer_created_at: string;
 	transfer_updated_at: string;
+	start_date: string;
+	end_date: string;
 	company_name: string;
 	company_email: string;
 	total_transfer_cost: number;

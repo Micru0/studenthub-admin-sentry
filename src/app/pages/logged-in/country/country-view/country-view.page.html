@@ -6,7 +6,11 @@
 
     <ion-title *ngIf="country">{{ country.country_name_en }}</ion-title>
 
-    <ion-progress-bar type="indeterminate" *ngIf="deletingCandidates"></ion-progress-bar>
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
 
   </ion-toolbar>
 </ion-header>

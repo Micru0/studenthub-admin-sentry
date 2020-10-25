@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core'; 
 import { Router } from '@angular/router';
+import {ModalController} from "@ionic/angular";
 //models
 import { Country } from 'src/app/models/country';
+import {Bank} from "../../../../models/bank";
 //services
 import { CountryService } from 'src/app/providers/logged-in/country.service';
+import {AuthService} from "../../../../providers/auth.service";
+
+import {CountryFormPage} from "../country-form/country-form.page";
 
 
 @Component({
@@ -19,10 +24,12 @@ export class CountryListPage implements OnInit {
   public loading: boolean = false; 
 
   public countries: Country[];
-
+  public query = null;
   constructor(
     public router: Router,
-    public countryService: CountryService
+    public countryService: CountryService,
+    public authService: AuthService,
+    public _modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -37,7 +44,7 @@ export class CountryListPage implements OnInit {
    
     this.loading = true;
 
-    this.countryService.list(page).subscribe(response => {
+    this.countryService.list(page, this.query).subscribe(response => {
 
       this.loading = false;
 
@@ -59,15 +66,13 @@ export class CountryListPage implements OnInit {
    
     this.loading = true;
 
-    this.currentPage++; 
+    this.currentPage++;
 
-    this.countryService.list(this.currentPage).subscribe(response => {
+    this.countryService.list(this.currentPage, this.query).subscribe(response => {
 
       this.loading = false;
 
       this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
-
       this.countries = this.countries.concat(response.body);
 
       event.target.complete();
@@ -86,5 +91,38 @@ export class CountryListPage implements OnInit {
         'model': model
       }
     });
+  }
+
+  searchFilter($event) {
+    this.query = $event.target.value;
+    this.loadData(1);
+  }
+
+
+  /**
+   * Loads the create page
+   */
+  async create() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: CountryFormPage,
+      componentProps: {
+        model: new Country()
+      }
+    });
+    // Refresh List if required
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+
+      if (e && e.data && e.data.refresh) {
+        this.loadData(this.currentPage);
+      }
+    });
+    modal.present();
   }
 }
