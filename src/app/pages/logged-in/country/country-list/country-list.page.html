@@ -10,10 +10,13 @@
     </ion-buttons>
 
     <ion-title>Countries </ion-title>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-searchbar (ionInput)="searchFilter($event)" debounce=500>
+  </ion-searchbar>
   <ion-list>
     <ion-item tappable *ngFor="let country of countries" (click)="rowSelected(country)">
       <div tabindex="0"></div>
@@ -35,3 +38,8 @@
   </ion-infinite-scroll>
 
 </ion-content>
+<ion-footer *ngIf="!authService.admin_limited_access">
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

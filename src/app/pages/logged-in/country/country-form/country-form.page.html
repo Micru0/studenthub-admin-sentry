@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="close()"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ operation }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button color="primary" *ngIf="!saving" [disabled]="!form.valid" (click)="save()">
+        Save
+      </ion-button>
+      <ion-spinner *ngIf="saving"></ion-spinner>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" *ngIf="form">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name <small>English</small></ion-label>
+        <ion-input type="text" formControlName="name_en"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Name <small>Arabic</small></ion-label>
+        <ion-input type="text" formControlName="name_ar"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nationality Name <small>English</small></ion-label>
+        <ion-input type="text" formControlName="nationality_name_en"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nationality Name <small>Arabic</small></ion-label>
+        <ion-input type="text" formControlName="nationality_name_ar"></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
