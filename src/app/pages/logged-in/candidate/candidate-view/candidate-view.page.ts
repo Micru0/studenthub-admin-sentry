@@ -158,4 +158,8 @@ export class CandidateViewPage implements OnInit {
   public segmentChanged($e){
     this.sections = $e.detail.value;
   }
+
+  getResumeUrl(candidate) {
+    return this.aws.permanentBucketUrl + 'candidate-resume/' + encodeURIComponent(candidate.candidate_resume);
+  }
 }
