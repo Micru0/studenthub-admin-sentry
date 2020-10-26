@@ -55,8 +55,8 @@ export class StaffListPage implements OnInit {
       this.loading = false;
       this.deleting = false; 
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.staff = response.body;
     },() => { 
@@ -75,8 +75,8 @@ export class StaffListPage implements OnInit {
 
       this.loading = false;
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.staff = this.staff.concat(response.body);
 

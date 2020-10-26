@@ -84,8 +84,8 @@ export class TransferListPage implements OnInit {
     const searchParams = this.urlParams();
     this.transferService.list(searchParams, page).subscribe(response => {
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.transfers = response.body;
 
@@ -104,8 +104,8 @@ export class TransferListPage implements OnInit {
     const searchParams = this.urlParams();
     this.transferService.list(searchParams, this.currentPage).subscribe(response => {
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.transfers = this.transfers.concat(response.body);
 

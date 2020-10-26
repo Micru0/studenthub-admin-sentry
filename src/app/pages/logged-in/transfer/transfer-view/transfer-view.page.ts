@@ -129,8 +129,8 @@ export class TransferViewPage implements OnInit {
 
       this.transferCandidates = response.body;
 
-      this.candidatePageCount = response.headers.get('X-Pagination-Page-Count');
-      this.candidatePage = response.headers.get('X-Pagination-Current-Page');
+      this.candidatePageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.candidatePage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
     }, () => {
       this.loadingCandidates = false;
