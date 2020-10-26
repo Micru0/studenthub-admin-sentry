@@ -48,8 +48,8 @@ export class CountryListPage implements OnInit {
 
       this.loading = false;
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.countries = response.body;
     }, 
@@ -72,7 +72,8 @@ export class CountryListPage implements OnInit {
 
       this.loading = false;
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+
       this.countries = this.countries.concat(response.body);
 
       event.target.complete();
