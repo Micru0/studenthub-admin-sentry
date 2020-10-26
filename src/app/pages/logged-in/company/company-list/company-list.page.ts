@@ -63,12 +63,15 @@ export class CompanyListPage implements OnInit {
 
     this.companyService.list(page).subscribe(response => {
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.companies = response.body;
+      
       this.enableCompanies = [];
+      
       this.disableCompanies = [];
+
       for (const company of this.companies) {
         if (company.company_status == 10) {
           this.enableCompanies.push(company);
@@ -96,8 +99,8 @@ export class CompanyListPage implements OnInit {
 
     this.companyService.list(this.currentPage).subscribe(response => {
 
-      this.pageCount = response.headers.get('X-Pagination-Page-Count');
-      this.currentPage = response.headers.get('X-Pagination-Current-Page');
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       const companies = response.body;
       this.companies = this.companies.concat(companies);
