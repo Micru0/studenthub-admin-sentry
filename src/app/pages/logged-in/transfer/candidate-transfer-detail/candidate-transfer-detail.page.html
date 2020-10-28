@@ -14,7 +14,7 @@
     <ion-card>
       <ion-card-header>
 
-        <ion-card-title tappable (click)="loadCandidateDetail(transferCandidate.candidate)">
+        <ion-card-title tappable (click)="loadCandidateDetail(transferCandidate.candidate)"  class="candidate_name">
           
           {{ transferCandidate.candidate.candidate_name? transferCandidate.candidate.candidate_name: transferCandidate.candidate.candidate_name_ar }}
 

@@ -71,7 +71,7 @@
           <img *ngIf="tc.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + tc.candidate.candidate_personal_photo }}" (error)="loadLogo($event,tc.candidate)">
           <img *ngIf="!tc.candidate.candidate_personal_photo" src="/assets/icon.png">
         </ion-avatar>
-        <ion-label>
+        <ion-label  class="candidate_name">
           {{ tc.candidate.candidate_name? tc.candidate.candidate_name: tc.candidate.candidate_name_ar }} 
         </ion-label>
 
