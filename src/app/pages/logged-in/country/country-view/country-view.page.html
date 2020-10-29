@@ -66,7 +66,7 @@
   <ion-list> 
     <ion-item tappable *ngFor="let candidate of candidates" (click)="candidateSelected(candidate)">
       <div tabindex="0"></div>
-      <ion-label>
+      <ion-label class="candidate_name">
         {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}
       </ion-label>
     </ion-item> 

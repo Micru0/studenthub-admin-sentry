@@ -24,7 +24,7 @@
       <ion-card *ngIf="transfer.candidate">
 
         <ion-card-header>
-          <ion-card-title tappable (click)="loadTransferDetail(transfer)">
+          <ion-card-title tappable (click)="loadTransferDetail(transfer)"  class="candidate_name">
 
             {{ transfer.candidate.candidate_name? transfer.candidate.candidate_name: transfer.candidate.candidate_name_ar }}
           
