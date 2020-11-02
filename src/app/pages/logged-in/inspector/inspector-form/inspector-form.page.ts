@@ -23,9 +23,12 @@ export class InspectorFormPage implements OnInit {
   public inspector_uuid;
 
   public model: Inspector = new Inspector();
+
   public operation: string;
 
   public form: FormGroup;
+
+  public type: string = 'password';
 
   constructor(
     private authService: AuthService,
@@ -156,5 +159,9 @@ export class InspectorFormPage implements OnInit {
         prompt.present();
       }
     });
+  }
+
+  togglePasswordVisibility() {
+    this.type = this.type == 'password'? 'text': 'password';
   }
 }

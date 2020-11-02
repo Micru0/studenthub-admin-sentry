@@ -30,9 +30,14 @@
           <ion-input type="text" formControlName="email"></ion-input>
         </ion-item>
 
-        <ion-item *ngIf="!model.staff_id">
+        <ion-item class="field-password" *ngIf="!model.staff_id">
           <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
+          <ion-input type="{{ type }}" formControlName="password"></ion-input>
+
+          <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility()">
+            <ion-icon *ngIf="type == 'password'" name="eye"></ion-icon>
+            <ion-icon *ngIf="type != 'password'" name="eye-off"></ion-icon>
+          </ion-button>
         </ion-item>
     </ion-list>
   </form>
