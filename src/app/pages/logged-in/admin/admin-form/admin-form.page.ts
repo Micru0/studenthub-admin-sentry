@@ -27,6 +27,8 @@ export class AdminFormPage implements OnInit {
 
   public form: FormGroup;
 
+  public type: string = 'password';
+
   constructor(
     private authService: AuthService,
     public adminService: AdminService,
@@ -158,5 +160,9 @@ export class AdminFormPage implements OnInit {
 
   onchange($event) {
     this.model.admin_limited_access = ($event.detail.checked) ? 1 : 0;
+  }
+
+  togglePasswordVisibility() {
+    this.type = this.type == 'password'? 'text': 'password';
   }
 }

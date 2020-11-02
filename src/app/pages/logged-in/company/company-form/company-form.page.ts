@@ -25,9 +25,14 @@ export class CompanyFormPage implements OnInit {
   public company_id;
 
   public model: Company;
+  
   public operation: string;
+  
   public isSubCompany = 0;
+
   public form: FormGroup;
+
+  public type: string = 'password';
 
   constructor(
     public activateRoute: ActivatedRoute,
@@ -222,4 +227,7 @@ export class CompanyFormPage implements OnInit {
     });
   }
 
+  togglePasswordVisibility() {
+    this.type = this.type == 'password'? 'text': 'password';
+  }
 }

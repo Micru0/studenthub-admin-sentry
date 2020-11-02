@@ -180,7 +180,7 @@ export class InspectorListPage implements OnInit {
       {
         const alert = await this.alertCtrl.create({
             header: 'Reset Password',
-            subHeader: 'New password sent to candidate',
+            subHeader: 'New password has been sent to inspector',
             buttons: ['Okay']
           });
         alert.present();

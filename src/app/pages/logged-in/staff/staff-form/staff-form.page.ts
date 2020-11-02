@@ -24,9 +24,12 @@ export class StaffFormPage implements OnInit {
   public staff_id;
 
   public model: Staff;
+
   public operation:string;
 
   public form: FormGroup;
+
+  public type: string = 'password';
 
   constructor( 
     private authService: AuthService,
@@ -154,5 +157,9 @@ export class StaffFormPage implements OnInit {
         prompt.present();
       }
     });
+  }
+
+  togglePasswordVisibility() {
+    this.type = this.type == 'password'? 'text': 'password';
   }
 }
