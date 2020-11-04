@@ -55,14 +55,18 @@ export class TransferListPage implements OnInit {
     this.max = (this.platform.is('mobile')) ? d.getFullYear() + '-12-12' : d;
   }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ionViewWillEnter() {
 
     // Passed from Dashboard to show filtered status results
     const status = this.activatedRoute.snapshot.paramMap.get('transfer_status');
 
-    if (status) {
-      this.transferStatus = status;
+    const state =  window.history.state;
+    if (state.status) {
+      this.filters.transferStatus = state.status;
     }
+    console.log(window.history);
 
     this.loadData(this.currentPage);
 
