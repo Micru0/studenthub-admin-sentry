@@ -162,8 +162,8 @@
           <ion-item lines="none">
             <div tabindex="0"></div>
             <ion-avatar slot="start">
-              <img *ngIf="resource.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + resource.candidate.candidate_personal_photo }}" (error)="loadLogo($event,resource.candidate)">
-              <img *ngIf="!resource.candidate.candidate_personal_photo" src="/assets/icon.png">
+              <img *ngIf="resource.candidate && resource.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + resource.candidate.candidate_personal_photo }}" (error)="loadLogo($event,resource.candidate)">
+              <img *ngIf="!resource.candidate || !resource.candidate.candidate_personal_photo" src="/assets/icon.png">
             </ion-avatar>
             
             <ion-label>

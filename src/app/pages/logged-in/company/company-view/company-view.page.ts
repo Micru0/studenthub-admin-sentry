@@ -48,6 +48,7 @@ export class CompanyViewPage implements OnInit {
   public loading = false;
   public sendingNewPassword = false;
   public companyStatus = false;
+
   public followup = false;
 
   public updating = false;
@@ -796,6 +797,7 @@ export class CompanyViewPage implements OnInit {
   toggleFollowup($event) {
     
     this.followup = $event.detail.checked;
+    
     this.company.company_followup = $event.detail.checked;
    
     this.updating = true;
