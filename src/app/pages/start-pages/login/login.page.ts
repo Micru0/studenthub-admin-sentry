@@ -12,6 +12,8 @@ import { AuthService } from 'src/app/providers/auth.service';
 })
 export class LoginPage  {
 
+  public type: string = 'password';
+
   public loginForm: FormGroup;
 
   // Disable submit button if loading response
@@ -96,5 +98,9 @@ export class LoginPage  {
         alert.present();
       }
     });
+  }
+  
+  togglePasswordVisibility() {
+    this.type = this.type == 'password'? 'text': 'password';
   }
 }

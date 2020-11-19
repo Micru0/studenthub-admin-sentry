@@ -29,8 +29,10 @@ export class TransferListPage implements OnInit {
   public loading = false;
 
   public deleting = false;
+
   public min; // min date
   public max; // max date
+
   public filters: {
     companyName: string,
     transferStatus: number,
@@ -63,10 +65,10 @@ export class TransferListPage implements OnInit {
     const status = this.activatedRoute.snapshot.paramMap.get('transfer_status');
 
     const state =  window.history.state;
+
     if (state.status) {
       this.filters.transferStatus = state.status;
     }
-    console.log(window.history);
 
     this.loadData(this.currentPage);
 
@@ -85,7 +87,7 @@ export class TransferListPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-    
+
     const searchParams = this.urlParams();
 
     this.transferService.list(searchParams, page).subscribe(response => {
