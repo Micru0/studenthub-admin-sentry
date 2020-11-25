@@ -29,6 +29,17 @@ export class CompanyListPage implements OnInit {
   public deleting = false;
 
   public loading = false;
+  public filters: {
+    name: string,
+    common_name_en: string,
+    common_name_ar: string
+    status: string
+  } = {
+    name: null,
+    common_name_en: null,
+    common_name_ar: null,
+    status: null
+  };
 
   constructor(
     public router: Router,
@@ -60,25 +71,13 @@ export class CompanyListPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-
-    this.companyService.list(page).subscribe(response => {
+    const searchParams = this.urlParams();
+    this.companyService.list(page, searchParams).subscribe(response => {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.companies = response.body;
-      
-      this.enableCompanies = [];
-      
-      this.disableCompanies = [];
-
-      for (const company of this.companies) {
-        if (company.company_status == 10) {
-          this.enableCompanies.push(company);
-        } else  {
-          this.disableCompanies.push(company);
-        }
-      }
       this.loading = false;
       this.deleting = false;
 
@@ -96,24 +95,14 @@ export class CompanyListPage implements OnInit {
     this.currentPage++;
 
     this.loading = true;
-
-    this.companyService.list(this.currentPage).subscribe(response => {
+    const searchParams = this.urlParams();
+    this.companyService.list(this.currentPage, searchParams).subscribe(response => {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       const companies = response.body;
       this.companies = this.companies.concat(companies);
-
-      if (companies.length > 0) {
-        for (const company of companies) {
-          if (company.company_status == 10) {
-            this.enableCompanies.push(company);
-          } else {
-            this.disableCompanies.push(company);
-          }
-        }
-      }
       this.loading = false;
       event.target.complete();
     }, () => {
@@ -216,11 +205,41 @@ export class CompanyListPage implements OnInit {
     confirm.present();
   }
 
-  segmentChanged($event) {
-    this.segment = $event.detail.value;
-  }
-
   loadLogo($event, company) {
     company.company_logo = null;
+  }
+
+  resetFilter() {
+    this.filters = {
+      name: null,
+      common_name_en: null,
+      common_name_ar: null,
+      status: null
+    };
+
+    this.loadData(1); // reload all result
+  }
+
+  /**
+   * Return url string to filter list
+   */
+  urlParams() {
+    let urlParams = '';
+    if (this.filters.name) {
+      urlParams += '&name=' + this.filters.name;
+    }
+
+    if (this.filters.common_name_en) {
+      urlParams += '&common_name_en=' + this.filters.common_name_en;
+    }
+
+    if (this.filters.common_name_ar) {
+      urlParams += '&common_name_ar=' + this.filters.common_name_ar;
+    }
+    if (this.filters.status) {
+      urlParams += '&status=' + this.filters.status;
+    }
+
+    return urlParams;
   }
 }

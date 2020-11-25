@@ -16,6 +16,7 @@ export class Company {
     company_password_hash: string;
     company_logo: string;
     company_status: number;
+    last_40_days_transfer_count: number;
     total_candidates: number;
     total_stores: number;
     total_subcompanies: number;

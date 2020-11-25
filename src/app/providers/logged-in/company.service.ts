@@ -23,8 +23,8 @@ export class CompanyService {
    * List of all companies
    * @returns {Observable<any>}
    */
-  list(page: number): Observable<any>{
-    const url = this._companyEndpoint + '?page=' + page + '&expand=files,notes,notes.staff';
+  list(page: number, searchParams: string): Observable<any>{
+    const url = this._companyEndpoint + '?page=' + page + searchParams + '&expand=files,notes,notes.staff,stores,subCompanies';
     return this._authhttp.get(url, true);
   }
 

@@ -13,26 +13,75 @@
     <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
 
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-segment (ionChange)="segmentChanged($event)" [value]="segment">
-      <ion-segment-button value="1">
-        <ion-label>Active</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="0">
-        <ion-label>In Active</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list *ngIf="segment == 1">
-    <ion-item-sliding *ngFor="let company of enableCompanies" [disabled]="platform.width() > 768">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="6" size-xs="12" size-lg="3">
+            <ion-item>
+              <ion-label position="floating" color="primary">Name</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="6" size-xs="12" size-lg="3">
+            <ion-item>
+              <ion-label position="floating" color="primary">Common Name - English</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.common_name_en"></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size-md="6" size-xs="12" size-lg="3">
+            <ion-item>
+              <ion-label position="floating" color="primary">Common Name - Arabic</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.common_name_ar"></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size-md="6" size-xs="12" size-lg="3">
+            <ion-item>
+              <ion-label color="primary" position="floating">Filter By</ion-label>
+              <ion-select [(ngModel)]="filters.status">
+                <ion-select-option value="4">All</ion-select-option>
+                <ion-select-option value="1">Active</ion-select-option>
+                <ion-select-option value="2">In-Active</ion-select-option>
+                <ion-select-option value="3">active+40 days passed without payment</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let company of companies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
         <div tabindex="0"></div>
         <ion-label>
-          {{ company.company_name }}
+          {{ company.company_name }}<br/>
+          <ion-badge class="company_status_badge" slot="start" color="danger" *ngIf="!company.company_status">
+            Inactive
+          </ion-badge>
+          <ion-badge class="company_status_badge" slot="start" color="success" *ngIf="company.company_status">
+            Active
+          </ion-badge>
+          <ion-badge slot="start" color="danger" *ngIf="company.company_status && !company.last_40_days_transfer_count">
+            40 days passed without payment
+          </ion-badge>
         </ion-label>
-
         <ion-avatar slot="start">
           <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
           <img *ngIf="!company.company_logo" src="/assets/icon.png">
@@ -72,55 +121,6 @@
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
 
   </ion-list>
-  <ion-list *ngIf="segment == 0">
-    <ion-item-sliding *ngFor="let company of disableCompanies" [disabled]="platform.width() > 768">
-      <ion-item tappable (click)="rowSelected(company)">
-        <div tabindex="0"></div>
-        
-        <ion-avatar slot="start">
-          <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
-          <img *ngIf="!company.company_logo" src="/assets/icon.png">
-        </ion-avatar>
-
-        <ion-label>
-          {{ company.company_name }}
-        </ion-label>
-
-        <ion-badge slot="end" *ngIf="company.total_candidates > 0">
-          {{ company.total_candidates }} candidates
-        </ion-badge>
-
-        <ion-badge slot="end" *ngIf="company.total_subcompanies > 0">
-          {{ company.total_subcompanies }} sub-companies
-        </ion-badge>
-
-        <ion-badge slot="end" *ngIf="company.total_stores > 0">
-          {{ company.total_stores }} stores
-        </ion-badge>
-
-        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
-
-          <ion-button color="danger" (click)="delete($event, company)">
-            <ion-icon name="trash-outline" slot="start"></ion-icon>
-            Delete
-          </ion-button>
-        </ion-buttons>
-
-      </ion-item>
-
-      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
-        <ion-button color="danger" (click)="delete($event, company)">
-          <ion-icon slot="start" name="trash-outline"></ion-icon>
-          Delete
-        </ion-button>
-      </ion-item-options>
-
-    </ion-item-sliding>
-
-    <loading-modal [loading]="loading" type="text-list"></loading-modal>
-
-  </ion-list>
-
   <ion-infinite-scroll *ngIf="currentPage < pageCount"
     (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
