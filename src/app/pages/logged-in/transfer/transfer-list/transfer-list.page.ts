@@ -87,8 +87,9 @@ export class TransferListPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-    const searchParams = this.urlParams();
     
+    const searchParams = this.urlParams();
+
     this.transferService.list(searchParams, page).subscribe(response => {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));

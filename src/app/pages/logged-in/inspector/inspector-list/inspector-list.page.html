@@ -39,7 +39,7 @@
       <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
         <ion-button (click)="resetPassword($event, inspector)">
           <ion-icon slot="start" name="key-outline"></ion-icon>
-          Send Password
+          Send Password Reset Email
         </ion-button>
 
         <ion-button color="danger" (click)="delete($event, inspector)">
