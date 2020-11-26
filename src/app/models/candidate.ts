@@ -35,6 +35,7 @@ export class Candidate {
     deleted: boolean;
     age: number;
     employee_id: number;
+    candidate_mom_kuwaiti: number;
     candidate_resume: string;
     candidate_video: string;
     candidate_video_processed: any;
