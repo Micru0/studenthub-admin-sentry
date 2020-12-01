@@ -16,7 +16,6 @@ export class Company {
     company_password_hash: string;
     company_logo: string;
     company_status: number;
-    last_40_days_transfer_count: number;
     total_candidates: number;
     total_stores: number;
     total_subcompanies: number;
@@ -26,6 +25,7 @@ export class Company {
     company_followup_interval_weeks: any;
     company_last_followup_datetime: any;
     currency_pref: number;
+    transferInLast40Days: number;
     subcompanies: Company[];
     subCompanies: Company[];
     stores: Store[];
