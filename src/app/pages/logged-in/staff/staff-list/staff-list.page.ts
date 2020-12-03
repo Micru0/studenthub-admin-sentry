@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
-//models
+// models
 import { Staff } from 'src/app/models/staff';
-//pages
+// pages
 import { StaffFormPage } from '../staff-form/staff-form.page';
-//services
+// services
 import { StaffService } from 'src/app/providers/logged-in/staff.service';
-import {AuthService} from "../../../../providers/auth.service";
+import {AuthService} from '../../../../providers/auth.service';
 
 
 @Component({
@@ -23,9 +23,9 @@ export class StaffListPage implements OnInit {
 
   public staff: Staff[];
 
-  public loading: boolean = false; 
-  public deleting: boolean = false; 
-  public sendingNewPassword: boolean = false; 
+  public loading = false;
+  public deleting = false;
+  public sendingNewPassword = false;
 
   constructor(
     public platform: Platform,
@@ -43,33 +43,34 @@ export class StaffListPage implements OnInit {
 
   /**
    * Load list of staff
-   * @param page 
+   * @param page
    */
   async loadData(page: number, silent: boolean = false) {
-    
-    if(!silent)
+
+    if (!silent) {
       this.loading = true;
+    }
 
     this.staffService.list(page).subscribe(response => {
 
       this.loading = false;
-      this.deleting = false; 
+      this.deleting = false;
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.staff = response.body;
-    },() => { 
-      this.loading = false; 
-      this.deleting = false; 
+    }, () => {
+      this.loading = false;
+      this.deleting = false;
     });
   }
-  
+
   async doInfinite(event) {
-    
+
     this.loading = true;
 
-    this.currentPage++; 
+    this.currentPage++;
 
     this.staffService.list(this.currentPage).subscribe(response => {
 
@@ -80,10 +81,10 @@ export class StaffListPage implements OnInit {
 
       this.staff = this.staff.concat(response.body);
 
-      event.target.complete(); 
+      event.target.complete();
 
-    },() => { 
-      this.loading = false; 
+    }, () => {
+      this.loading = false;
     });
   }
 
@@ -93,7 +94,7 @@ export class StaffListPage implements OnInit {
   rowSelected(model) {
     this.router.navigate(['staff-view', model.staff_id], {
       state: {
-        'model': model
+        model: model
       }
     });
   }
@@ -104,7 +105,7 @@ export class StaffListPage implements OnInit {
   async create() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    let modal = await this._modalCtrl.create({
+    const modal = await this._modalCtrl.create({
       component: StaffFormPage,
       componentProps: {
         model: new Staff()
@@ -116,7 +117,7 @@ export class StaffListPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-    
+
       if (e && e.data && e.data.refresh) {
         this.loadData(this.currentPage, true);
       }
@@ -125,15 +126,15 @@ export class StaffListPage implements OnInit {
   }
 
   /**
-   * Confirm password reset and send new password 
-   * @param staffMember 
+   * Confirm password reset and send new password
+   * @param staffMember
    */
   async resetPassword(ev, staffMember: Staff) {
 
-    ev.preventDefault(); 
+    ev.preventDefault();
     ev.stopPropagation();
 
-    let confirm = await this._alertCtrl.create({
+    const confirm = await this._alertCtrl.create({
       header: 'Confirm password reset',
       message: 'Do you want to send new password to staff?',
       buttons: [
@@ -160,26 +161,26 @@ export class StaffListPage implements OnInit {
     this.sendingNewPassword = true;
 
     this.staffService.resetPassword(staffMember).subscribe(async response => {
-      
+
       this.sendingNewPassword = false;
 
-      if(response.operation == 'error')
+      if (response.operation == 'error')
       {
-        let toast = await this._toastCtrl.create({
+        const toast = await this._toastCtrl.create({
           message: response.message,
           duration: 3000
-        });        
+        });
         toast.present();
-      } 
-      else 
+      }
+      else
       {
-        let alert = await this._alertCtrl.create({
+        const alert = await this._alertCtrl.create({
             header: 'Reset Password',
             subHeader: 'New password sent to candidate',
             buttons: ['Okay']
           });
-          alert.present();
-      }      
+        alert.present();
+      }
     }, () => {
       this.sendingNewPassword = false;
     });
@@ -190,10 +191,10 @@ export class StaffListPage implements OnInit {
    */
   async delete(ev, staff: Staff) {
 
-    ev.preventDefault(); 
+    ev.preventDefault();
     ev.stopPropagation();
 
-    let confirm = await this._alertCtrl.create({
+    const confirm = await this._alertCtrl.create({
       header: 'Delete Staff?',
       message: 'Are you sure you want to delete this Staff?',
       buttons: [
@@ -201,15 +202,15 @@ export class StaffListPage implements OnInit {
           text: 'Yes',
           handler: () => {
 
-            this.deleting = true; 
+            this.deleting = true;
 
             this.staffService.delete(staff).subscribe(async jsonResp => {
-            
-              if (jsonResp.operation == 'error') {
-                
-                this.deleting = false; 
 
-                let alert = await this._alertCtrl.create({
+              if (jsonResp.operation == 'error') {
+
+                this.deleting = false;
+
+                const alert = await this._alertCtrl.create({
                   header: 'Deletion Error!',
                   subHeader: jsonResp.message,
                   buttons: ['OK']
@@ -219,16 +220,16 @@ export class StaffListPage implements OnInit {
 
               if (jsonResp.operation == 'success') {
 
-                let toast = await this._toastCtrl.create({
+                const toast = await this._toastCtrl.create({
                   message: jsonResp.message,
                   duration: 3000
                 });
                 toast.present();
 
                 this.loadData(1, true);
-              }              
+              }
             }, () => {
-              this.deleting = false; 
+              this.deleting = false;
             });
           }
         },

@@ -6,5 +6,5 @@ export class Staff{
     staff_status: string;
     staff_created_at: string;
     staff_updated_at: string;
+    deleted: number;
 }
- 
