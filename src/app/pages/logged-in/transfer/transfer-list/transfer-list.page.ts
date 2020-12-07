@@ -87,7 +87,7 @@ export class TransferListPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-    
+
     const searchParams = this.urlParams();
 
     this.transferService.list(searchParams, page).subscribe(response => {
