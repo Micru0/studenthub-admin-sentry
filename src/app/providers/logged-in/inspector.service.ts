@@ -42,6 +42,7 @@ export class InspectorService {
     return this.authHttp.post(`${this.endpoint}`, {
       name : model.inspector_name,
       email : model.inspector_email,
+      inspector_password_hash : model.inspector_password_hash,
     });
   }
 

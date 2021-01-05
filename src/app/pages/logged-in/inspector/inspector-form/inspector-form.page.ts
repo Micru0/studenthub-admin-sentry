@@ -83,14 +83,14 @@ export class InspectorFormPage implements OnInit {
       this.form = this.fb.group({
         name: ['', Validators.required],
         email: ['', [Validators.required, CustomValidator.emailValidator]],
-        //password: ['', Validators.required],
+        password: ['', Validators.required],
       });
     }else{ // Show Update Form
       this.operation = 'Update Inspector';
       this.form = this.fb.group({
         name: [this.model.inspector_name, Validators.required],
         email: [this.model.inspector_email, [Validators.required, CustomValidator.emailValidator]],
-        //password: [this.model.inspector_password_hash],
+        password: [this.model.inspector_password_hash],
       });
     }
   }
@@ -101,7 +101,7 @@ export class InspectorFormPage implements OnInit {
   updateModelDataFromForm(){
     this.model.inspector_name = this.form.value.name;
     this.model.inspector_email = this.form.value.email;
-    //this.model.inspector_password_hash = this.form.value.password;
+    this.model.inspector_password_hash = this.form.value.password;
   }
 
   /**
