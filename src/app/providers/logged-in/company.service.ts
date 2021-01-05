@@ -71,6 +71,7 @@ export class CompanyService {
       description_ar : model.company_description_ar,
       website : model.company_website,
       logo : model.company_logo,
+      password: model.company_password_hash
     };
 
     return this._authhttp.patch(`${this._companyEndpoint}/${model.company_id}`, params);
