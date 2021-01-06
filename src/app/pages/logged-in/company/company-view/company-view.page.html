@@ -264,7 +264,7 @@
           <div tabindex="0"></div>
           <ion-label>
             {{ request.request_position_title }}<br />
-            <small>{{ request.request_created_datetime | date}}</small>
+            <small>{{ toDate(request.request_created_datetime) | date}}</small>
           </ion-label>
 
           <ion-badge color="primary" *ngIf="request.request_status == 'pending'">pending</ion-badge>
@@ -353,7 +353,7 @@
             <div tabindex="0"></div>
             <ion-label>
               {{ note.note_text }}<br />
-              <p>By {{ note.staff.staff_name}} @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
+              <p>By {{ note.createdBy.staff_name}} @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
             </ion-label>
   
             <ion-buttons slot="end" *ngIf="!authService.admin_limited_access && platform.width() > 768">
