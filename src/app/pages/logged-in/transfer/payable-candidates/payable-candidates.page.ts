@@ -7,6 +7,7 @@ import { EventService } from 'src/app/providers/event.service';
 //models
 import { Candidate } from 'src/app/models/candidate';
 import {AuthService} from "../../../../providers/auth.service";
+import {Transfer} from "../../../../models/transfer";
 
 
 @Component({
@@ -20,7 +21,7 @@ export class PayableCandidatesPage  {
   public payableMissingAmount: number = 0.0;
   public payableAvailAmount: number = 0.0;
 
-  public candidates: Candidate[] = [];
+  public candidates: Transfer[] = [];
 
   public loading : boolean = false; 
 

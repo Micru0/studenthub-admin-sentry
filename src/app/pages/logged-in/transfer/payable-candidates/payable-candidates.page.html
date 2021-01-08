@@ -68,10 +68,10 @@
       <ion-item tappable *ngFor="let tc of transfer.unPaidTransferCandidates" (click)="candidateSelected(tc.candidate)"> 
         <div tabindex="0"></div>
         <ion-avatar slot="start">
-          <img *ngIf="tc.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + tc.candidate.candidate_personal_photo }}" (error)="loadLogo($event,tc.candidate)">
-          <img *ngIf="!tc.candidate.candidate_personal_photo" src="/assets/icon.png">
+          <img *ngIf="tc.candidate && tc.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + tc.candidate.candidate_personal_photo }}" (error)="loadLogo($event,tc.candidate)">
+          <img *ngIf="tc.candidate && !tc.candidate.candidate_personal_photo" src="/assets/icon.png">
         </ion-avatar>
-        <ion-label  class="candidate_name">
+        <ion-label  class="candidate_name" *ngIf="tc.candidate">
           {{ tc.candidate.candidate_name? tc.candidate.candidate_name: tc.candidate.candidate_name_ar }} 
         </ion-label>
 
