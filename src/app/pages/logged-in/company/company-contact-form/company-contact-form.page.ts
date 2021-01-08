@@ -8,6 +8,7 @@ import { CompanyContact } from 'src/app/models/company-contact';
 //validator
 import { CustomValidator } from 'src/app/validators/custom.validator';
 import {AuthService} from "../../../../providers/auth.service";
+import { Contact } from 'src/app/models/contact';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class CompanyContactFormPage implements OnInit {
 
   public saving: boolean = false;
 
-  public model: CompanyContact;
+  public model: Contact;
   public operation: string;
 
   public form: FormGroup;
@@ -38,17 +39,17 @@ export class CompanyContactFormPage implements OnInit {
 
     let phoneCtrls = [];
 
-    if(this.model.companyContactEmails)
-      for (let companyContactEmail of this.model.companyContactEmails) {
+    if(this.model.contactEmails)
+      for (let contactEmail of this.model.contactEmails) {
         emailCtrls.push(this._fb.group({
-          email_address: [companyContactEmail.email_address, [CustomValidator.emailValidator]]
+          email_address: [contactEmail.email_address, [CustomValidator.emailValidator]]
         }));
       }
 
-    if(this.model.companyContactPhones)
-      for (let companyContactPhone of this.model.companyContactPhones) {
+    if(this.model.contactPhones)
+      for (let contactPhone of this.model.contactPhones) {
         phoneCtrls.push(this._fb.group({
-          phone_number: [companyContactPhone.phone_number, []]
+          phone_number: [contactPhone.phone_number, []]
         }));
       }
 
@@ -67,6 +68,10 @@ export class CompanyContactFormPage implements OnInit {
         name: ["", Validators.required],
         position: ["", Validators.required],
         note: [""],
+        email: ["", [CustomValidator.emailValidator, Validators.required]],
+        password: ["", Validators.required],
+        receive_email: [false],
+        receive_notification: [false],
         emails: new FormArray(emailCtrls),
         phones: new FormArray(phoneCtrls),
       });
@@ -78,6 +83,10 @@ export class CompanyContactFormPage implements OnInit {
       this.form = this._fb.group({
         name: [this.model.contact_name, Validators.required],
         position: [this.model.contact_position, Validators.required],
+        email: [this.model.contact_email, [CustomValidator.emailValidator, Validators.required]],
+        //password: [this.model.contact_position, Validators.required], 
+        receive_email: [this.model.contact_receive_email, Validators.required],
+        receive_notification: [this.model.contact_receive_notification, Validators.required],
         emails: new FormArray(emailCtrls),
         phones: new FormArray(phoneCtrls),
       });
@@ -94,9 +103,13 @@ export class CompanyContactFormPage implements OnInit {
    */
   updateModelDataFromForm() {
     this.model.contact_name = this.form.value.name;
+    this.model.contact_email = this.form.value.email;
+    this.model.contact_receive_email = this.form.value.receive_email;
+    this.model.contact_receive_notification = this.form.value.receive_notification;
+    this.model.contact_password = this.form.value.password;
     this.model.contact_position = this.form.value.position;
-    this.model.companyContactEmails = this.form.value.emails;
-    this.model.companyContactPhones = this.form.value.phones;
+    this.model.contactEmails = this.form.value.emails;
+    this.model.contactPhones = this.form.value.phones;
   }
 
   removeEmail(index) {

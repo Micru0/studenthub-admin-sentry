@@ -39,7 +39,6 @@ export class CompanyService {
       parent: model.parent_company_id,
       name: model.company_name,
       email: model.company_email,
-      password: model.company_password_hash,
       bonus_commission: model.company_bonus_commission,
       hourly_rate: model.company_hourly_rate,
       common_name_en : model.company_common_name_en,
@@ -71,7 +70,6 @@ export class CompanyService {
       description_ar : model.company_description_ar,
       website : model.company_website,
       logo : model.company_logo,
-      password: model.company_password_hash
     };
 
     return this._authhttp.patch(`${this._companyEndpoint}/${model.company_id}`, params);
@@ -118,7 +116,6 @@ export class CompanyService {
       file_description: model.file_description,
       file_s3_path: model.file_s3_path,
     };
-
     return this._authhttp.post(url, params);
   }
 
