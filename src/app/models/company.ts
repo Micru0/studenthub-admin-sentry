@@ -1,7 +1,6 @@
 import { Store } from './store';
 import { CompanyContact } from './company-contact';
 import { Request } from './request';
-import {Transfer} from "./transfer";
 
 export class Company {
     company_id: number;
@@ -13,7 +12,6 @@ export class Company {
     company_description_ar: string;
     company_website: string;
     company_email: string;
-    company_password_hash: string;
     company_logo: string;
     company_status: number;
     total_candidates: number;
