@@ -125,7 +125,14 @@ export class TransferService {
       "candidates": candidates,
       "excel": excel
     };
-    return this._authhttp.patch(url, params);
+
+    const retryStrategy =  {
+      maxRetryAttempts: 0,
+      scalingDuration: 1000,
+      excludedStatusCodes: [400, 401, 404, 500] 
+    }
+
+    return this._authhttp.patch(url, params, retryStrategy);
   }
 
   /**
