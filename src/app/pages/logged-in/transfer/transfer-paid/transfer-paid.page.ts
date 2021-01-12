@@ -62,6 +62,7 @@ export class TransferPaidPage implements OnInit {
    * Mark Paid
    */
   async markPaid() {
+
     let candidate_ids = [];
 
     this.candidatelistData.forEach((value, index) => {
@@ -75,6 +76,7 @@ export class TransferPaidPage implements OnInit {
           );
         }
     });
+
     if (candidate_ids.length == 0) {
 
         let prompt = await this._alertCtrl.create({
@@ -85,6 +87,10 @@ export class TransferPaidPage implements OnInit {
 
         return false;
     }  
+
+    if(this.markingPaid) {
+      return false;
+    }
 
     this.markingPaid = true;
 
