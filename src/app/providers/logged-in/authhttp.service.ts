@@ -111,7 +111,11 @@ export class AuthHttpService {
    * @param endpointUrl
    * @param formData
    */
-  uploadFile(endpointUrl, formData): Observable<any> {
+  uploadFile(endpointUrl, formData, retryStrategy = { 
+    maxRetryAttempts: 0,
+    scalingDuration: 1000,
+    excludedStatusCodes: [400, 401, 404, 500] 
+  }): Observable<any> {
 
     const url = environment.apiEndpoint + endpointUrl;
 
@@ -130,7 +134,7 @@ export class AuthHttpService {
       }
     )
       .pipe(
-        retryWhen(genericRetryStrategy()),
+        retryWhen(genericRetryStrategy(retryStrategy)),
         catchError((err) => {
           return this._handleError(err);
         }),
@@ -145,13 +149,17 @@ export class AuthHttpService {
    * @param {string} withHeader
    * @returns {Observable<any>}
    */
-  get(endpointUrl: string, withHeader: boolean = false): Observable<any> {
+  get(endpointUrl: string, withHeader: boolean = false, retryStrategy = { 
+    maxRetryAttempts: 1,
+    scalingDuration: 1000,
+    excludedStatusCodes: [400, 401, 404, 500] 
+  }): Observable<any> {
 
     const url = environment.apiEndpoint + endpointUrl;
 
     let response = this._http.get(url, { headers: this._buildAuthHeaders(), observe: 'response' })
       .pipe(
-        retryWhen(genericRetryStrategy()),
+        retryWhen(genericRetryStrategy(retryStrategy)),
         catchError((err) => this._handleError(err)),
         take(1)
       );
@@ -171,12 +179,16 @@ export class AuthHttpService {
    * @param params
    * @param withHeader
    */
-  post(endpointUrl: string, params: any, withHeader: boolean = false): Observable<any> {
+  post(endpointUrl: string, params: any, withHeader: boolean = false, retryStrategy = { 
+    maxRetryAttempts: 0,
+    scalingDuration: 1000,
+    excludedStatusCodes: [400, 401, 404, 500] 
+  }): Observable<any> {
     const url = environment.apiEndpoint + endpointUrl;
 
     let response = this._http.post(url, JSON.stringify(params), { headers: this._buildAuthHeaders(), observe: 'response' })
       .pipe(
-        retryWhen(genericRetryStrategy()),
+        retryWhen(genericRetryStrategy(retryStrategy)),
         catchError((err) => this._handleError(err)),
         take(1)
       );
@@ -193,12 +205,16 @@ export class AuthHttpService {
    * @param {*} params
    * @returns {Observable<any>}
    */
-  patch(endpointUrl: string, params: any): Observable<any> {
+  patch(endpointUrl: string, params: any, retryStrategy = { 
+    maxRetryAttempts: 1,
+    scalingDuration: 1000,
+    excludedStatusCodes: [400, 401, 404, 500] 
+  }): Observable<any> {
     const url = environment.apiEndpoint + endpointUrl;
 
     return this._http.patch(url, JSON.stringify(params), { headers: this._buildAuthHeaders() })
       .pipe(
-        retryWhen(genericRetryStrategy()),
+        retryWhen(genericRetryStrategy(retryStrategy)),
         catchError((err) => this._handleError(err)),
         take(1),
         map((res) => { return res; })
@@ -211,12 +227,16 @@ export class AuthHttpService {
    * @param {string} endpointUrl
    * @returns {Observable<any>}
    */
-  delete(endpointUrl: string): Observable<any> {
+  delete(endpointUrl: string, retryStrategy = { 
+    maxRetryAttempts: 0,
+    scalingDuration: 1000,
+    excludedStatusCodes: [400, 401, 404, 500] 
+  }): Observable<any> {
     const url = environment.apiEndpoint + endpointUrl;
 
     return this._http.delete(url, { headers: this._buildAuthHeaders() })
       .pipe(
-        retryWhen(genericRetryStrategy()),
+        retryWhen(genericRetryStrategy(retryStrategy)),
         catchError((err) => this._handleError(err)),
         take(1),
         map((res) => { return res })
