@@ -35,7 +35,7 @@ export class TransferListPage implements OnInit {
 
   public filters: {
     companyName: string,
-    transferStatus: number,
+    transferStatus: any,
     startDate: string
     endDate: string
   } = {
@@ -68,6 +68,9 @@ export class TransferListPage implements OnInit {
 
     if (state.status) {
       this.filters.transferStatus = state.status;
+    }
+    if (status) {
+      this.filters.transferStatus = status;
     }
 
     this.loadData(this.currentPage);
