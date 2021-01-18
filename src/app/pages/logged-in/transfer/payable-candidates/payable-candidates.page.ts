@@ -19,6 +19,7 @@ export class PayableCandidatesPage  {
   public payableAmount: number = 0.0;
   public payableMissingAmount: number = 0.0;
   public payableAvailAmount: number = 0.0;
+  public payableIncompleteProfile = 0.0;
 
   public candidates: Candidate[] = [];
 
@@ -135,6 +136,10 @@ export class PayableCandidatesPage  {
           this.payableMissingAmount += transferCandidate.total_amount; 
         } else {
           this.payableAvailAmount += transferCandidate.total_amount;
+        }
+
+        if (!transferCandidate.candidate.isProfileCompleted) {
+          this.payableIncompleteProfile += transferCandidate.total_amount;
         }
       }); 
     }); 
