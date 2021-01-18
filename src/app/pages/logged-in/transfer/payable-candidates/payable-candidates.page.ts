@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; 
-//services
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+// services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { AwsService } from 'src/app/providers/aws.service';
 import { EventService } from 'src/app/providers/event.service';
-//models
-import { Candidate } from 'src/app/models/candidate';
-import {AuthService} from "../../../../providers/auth.service";
-import {Transfer} from "../../../../models/transfer";
+// models
+import {AuthService} from '../../../../providers/auth.service';
+import {Transfer} from '../../../../models/transfer';
 
 
 @Component({
@@ -17,21 +16,22 @@ import {Transfer} from "../../../../models/transfer";
 })
 export class PayableCandidatesPage  {
 
-  public payableAmount: number = 0.0;
-  public payableMissingAmount: number = 0.0;
-  public payableAvailAmount: number = 0.0;
+  public payableAmount = 0.0;
+  public payableMissingAmount = 0.0;
+  public payableIncompleteProfile = 0.0;
+  public payableAvailAmount = 0.0;
 
   public candidates: Transfer[] = [];
 
-  public loading : boolean = false; 
+  public loading = false;
 
-  public processing: boolean = false; 
+  public processing = false;
 
   constructor(
     public router: Router,
     public aws: AwsService,
     public eventService: EventService,
-    public transferService: TransferService, 
+    public transferService: TransferService,
     public authService: AuthService,
   ) { }
 
@@ -40,7 +40,7 @@ export class PayableCandidatesPage  {
 
     this.eventService.updatePayable$.subscribe(() => {
       this.loadData();
-    })
+    });
   }
 
   /**
@@ -49,9 +49,9 @@ export class PayableCandidatesPage  {
   async loadData() {
 
     this.loading = true;
-    
+
     this.transferService.listPayableCandidates().subscribe(response => {
-      
+
       this.loading = false;
 
       this.candidates = response.body;
@@ -66,7 +66,7 @@ export class PayableCandidatesPage  {
    * Export Payable Candidates as Excel
    */
   async export(onlyPayable: boolean = false) {
-    
+
     this.processing = true;
 
     this.transferService.exportPayableCandidates(onlyPayable).subscribe(response => {
@@ -87,7 +87,7 @@ export class PayableCandidatesPage  {
 
   /**
    * Mark all supplied candidates as paid
-   * @param candidates 
+   * @param candidates
    */
   markAllPaid() {
     this.router.navigate(['import-transfer-form']);
@@ -95,7 +95,7 @@ export class PayableCandidatesPage  {
 
   /**
    * Load Transfer Detail Page
-   * @param transfer_id 
+   * @param transfer_id
    */
   transferDetails(transfer_id: number) {
     this.router.navigate(['transfer-view', transfer_id]);
@@ -103,12 +103,12 @@ export class PayableCandidatesPage  {
 
   /**
    * When candidate row is selected, load detail page
-   * @param model 
+   * @param model
    */
   candidateSelected(model) {
     this.router.navigate(['candidate-view', model.candidate_id], {
       state: {
-        'model': model
+        model: model
       }
     });
   }
@@ -117,11 +117,12 @@ export class PayableCandidatesPage  {
   * calculating total payable amount.
   * @param candidates
   */
-  totalPayableAmount (transfers) {
-    
+  totalPayableAmount(transfers) {
+
     this.payableAmount = 0.0;
     this.payableAvailAmount = 0.0;
     this.payableMissingAmount = 0.0;
+    this.payableIncompleteProfile = 0.0;
 
     if (!transfers) {
       return null;
@@ -132,13 +133,16 @@ export class PayableCandidatesPage  {
       this.payableAmount = this.payableAmount + transfer.remainingPaymentTransferTotal;
 
       transfer.unPaidTransferCandidates.forEach(transferCandidate => {
-        if(!transferCandidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name) {
-          this.payableMissingAmount += transferCandidate.total_amount; 
+        if (!transferCandidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name) {
+          this.payableMissingAmount += transferCandidate.total_amount;
         } else {
           this.payableAvailAmount += transferCandidate.total_amount;
         }
-      }); 
-    }); 
+        if (!transferCandidate.candidate.isProfileCompleted) {
+          this.payableIncompleteProfile += transferCandidate.total_amount;
+        }
+      });
+    });
   }
 
   /**
