@@ -33,6 +33,7 @@ export class Candidate {
     candidate_status: number;
     approved: number;
     deleted: boolean;
+    isProfileCompleted: boolean;
     age: number;
     employee_id: number;
     candidate_mom_kuwaiti: number;
@@ -47,7 +48,7 @@ export class Candidate {
     candidateSkills: any[];
     candidateExperiences: any[];
 
-    //Related
+    // Related
     store: Store;
     company: Company;
     university: University;
