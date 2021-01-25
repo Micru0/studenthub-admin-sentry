@@ -24,7 +24,7 @@ export class CompanyContactFormPage implements OnInit {
   public operation: string;
 
   public form: FormGroup;
-
+  public type: string = 'password';
   constructor(
     public companyContactService: CompanyContactService,
     private _fb: FormBuilder,
@@ -222,5 +222,9 @@ export class CompanyContactFormPage implements OnInit {
       this.saving = false;
 
     });
+  }
+
+  togglePasswordVisibility() {
+    this.type = this.type == 'password'? 'text': 'password';
   }
 }
