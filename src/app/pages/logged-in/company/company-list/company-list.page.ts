@@ -5,11 +5,11 @@ import { ModalController, AlertController, ToastController, Platform } from '@io
 import { Company } from 'src/app/models/company';
 // services
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
-import { AuthService } from "src/app/providers/auth.service";
+import { AuthService } from 'src/app/providers/auth.service';
 // pages
 import { CompanyFormPage } from '../company-form/company-form.page';
 import {AwsService} from '../../../../providers/aws.service';
-import {EventService} from "../../../../providers/event.service";
+import {EventService} from '../../../../providers/event.service';
 
 
 
@@ -31,14 +31,10 @@ export class CompanyListPage implements OnInit {
   public loading = false;
   public filters: {
     name: string,
-    common_name_en: string,
-    common_name_ar: string
-    status: string
+    status: any
   } = {
     name: null,
-    common_name_en: null,
-    common_name_ar: null,
-    status: null
+    status: 4
   };
 
   constructor(
@@ -140,7 +136,7 @@ export class CompanyListPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-   
+
       if (e && e.data && e.data.refresh) {
         this.loadData(1);
       }
@@ -212,8 +208,6 @@ export class CompanyListPage implements OnInit {
   resetFilter() {
     this.filters = {
       name: null,
-      common_name_en: null,
-      common_name_ar: null,
       status: null
     };
 
@@ -229,17 +223,20 @@ export class CompanyListPage implements OnInit {
       urlParams += '&name=' + this.filters.name;
     }
 
-    if (this.filters.common_name_en) {
-      urlParams += '&common_name_en=' + this.filters.common_name_en;
-    }
-
-    if (this.filters.common_name_ar) {
-      urlParams += '&common_name_ar=' + this.filters.common_name_ar;
-    }
     if (this.filters.status) {
       urlParams += '&status=' + this.filters.status;
     }
 
     return urlParams;
+  }
+
+  searchByName($event) {
+    this.filters.name = $event.detail.value;
+    this.loadData(1); // reload all result
+  }
+
+  filterByStatus($event, status) {
+    this.filters.status = status;
+    this.loadData(1); // reload all result
   }
 }
