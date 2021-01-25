@@ -352,8 +352,8 @@
           <ion-item tappable (click)="addNote(note)">
             <div tabindex="0"></div>
             <ion-label>
-              {{ note.note_text }}<br />
-              <p>By {{ note.createdBy.staff_name}} @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
+              <label [innerHTML]="note.note_text"></label><br />
+              <p>By <span *ngIf="note && note.createdBy">{{ note.createdBy.staff_name}}</span> @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
             </ion-label>
   
             <ion-buttons slot="end" *ngIf="!authService.admin_limited_access && platform.width() > 768">
@@ -453,9 +453,25 @@
           <ion-item tappable (click)="onContactSelected(companyContact)">
             <div tabindex="0"></div>
             <ion-label>
-              <h4>{{ companyContact.contact_name }}</h4>
+              <h4>Name : {{ companyContact.contact_name }}</h4>
               <p>
-                {{ companyContact.contact_position }}
+                Position : {{ companyContact.contact_position }}
+              </p>
+              <p>
+                Email : {{ companyContact.contact_email }}
+              </p>
+              <p>
+                Role : {{ companyContact.role }}
+              </p>
+              <p>
+                Receive Email?:
+                <span *ngIf="companyContact.contact_receive_email">Enabled</span>
+                <span *ngIf="!companyContact.contact_receive_email">Disabled</span>
+              </p>
+              <p>
+                Receive Notification? :
+                <span *ngIf="companyContact.contact_receive_notification">Enabled</span>
+                <span *ngIf="!companyContact.contact_receive_notification">Disabled</span>
               </p>
               <p>
                 <a href="mailto:{{ contactEmail.email_address }}" (click)="doNothing($event)"

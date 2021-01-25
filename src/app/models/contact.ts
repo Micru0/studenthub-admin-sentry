@@ -14,6 +14,7 @@ export class Contact {
     contact_password_reset_token: string;
     contact_created_datetime: string;
     contact_updated_datetime: string;
+    role: any;
     contactEmails: contactEmail[];
     contactPhones: contactPhone[];
     notes: Note[];
