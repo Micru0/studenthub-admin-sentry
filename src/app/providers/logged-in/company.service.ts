@@ -39,7 +39,6 @@ export class CompanyService {
       parent: model.parent_company_id,
       name: model.company_name,
       email: model.company_email,
-      password: model.company_password_hash,
       bonus_commission: model.company_bonus_commission,
       hourly_rate: model.company_hourly_rate,
       common_name_en : model.company_common_name_en,
@@ -91,7 +90,7 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(company_id: string): Observable<any>{
-    const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,notes,notes.staff,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
+    const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,notes,notes.createdBy,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
     return this._authhttp.get(url);
   }
 
@@ -117,7 +116,6 @@ export class CompanyService {
       file_description: model.file_description,
       file_s3_path: model.file_s3_path,
     };
-
     return this._authhttp.post(url, params);
   }
 

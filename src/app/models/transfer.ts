@@ -21,8 +21,10 @@ export class Transfer {
 	totalPaid: number;
 	totalUnpaid: number;
 	profit: number;
+	remainingPaymentTransferTotal: any;
 	candidates: Candidate[];
 	transferCandidates: TransferCandidate[];
+	unPaidTransferCandidates: TransferCandidate[];
 	invoices: Invoice[];
 }
 

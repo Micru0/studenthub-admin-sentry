@@ -23,6 +23,7 @@ import { CompanyContactFormPage } from '../company-contact-form/company-contact-
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
 import { CompanyNoteFormPage } from '../company-note-form/company-note-form.page';
+import {Contact} from "../../../../models/contact";
 
 
 @Component({

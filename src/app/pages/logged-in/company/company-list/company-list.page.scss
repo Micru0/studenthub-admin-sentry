@@ -1,3 +1,26 @@
 .company_status_badge {
   margin-right: 12px;
 }
+.content {
+
+  ion-badge {
+    border: solid 1px #4354a4;
+    background-color: #ffffff;
+    padding: 4px 17px;
+    margin: 0 7px 7px 0;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    text-align: center;
+    color: #4354a4;
+  }
+
+  ion-badge.active {
+    background-color: #4354a4;
+    color: #fff;
+  }
+}
