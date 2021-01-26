@@ -20,7 +20,7 @@ export class CompanyContactService {
    * @param company_id 
    */
   companyContacts(company_id) : Observable<any>{
-    const url = `${this._endpoint}?expand=contactEmails,contactPhones&company_id=${company_id}`;
+    const url = `${this._endpoint}?expand=contact,contactEmails,contactPhones&company_id=${company_id}`;
     return this._authhttp.get(url);
   }
 

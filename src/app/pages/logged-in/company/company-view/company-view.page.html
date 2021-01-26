@@ -453,25 +453,25 @@
           <ion-item tappable (click)="onContactSelected(companyContact)">
             <div tabindex="0"></div>
             <ion-label>
-              <h4>Name : {{ companyContact.contact_name }}</h4>
+              <h4>Name : {{ companyContact.contact.contact_name }}</h4>
               <p>
-                Position : {{ companyContact.contact_position }}
+                Position : {{ companyContact.contact.contact_position }}
               </p>
               <p>
-                Email : {{ companyContact.contact_email }}
+                Email : {{ companyContact.contact.contact_email }}
               </p>
               <p>
                 Role : {{ companyContact.role }}
               </p>
               <p>
                 Receive Email?:
-                <span *ngIf="companyContact.contact_receive_email">Enabled</span>
-                <span *ngIf="!companyContact.contact_receive_email">Disabled</span>
+                <span *ngIf="companyContact.contact.contact_receive_email">Enabled</span>
+                <span *ngIf="!companyContact.contact.contact_receive_email">Disabled</span>
               </p>
               <p>
                 Receive Notification? :
-                <span *ngIf="companyContact.contact_receive_notification">Enabled</span>
-                <span *ngIf="!companyContact.contact_receive_notification">Disabled</span>
+                <span *ngIf="companyContact.contact.contact_receive_notification">Enabled</span>
+                <span *ngIf="!companyContact.contact.contact_receive_notification">Disabled</span>
               </p>
               <p>
                 <a href="mailto:{{ contactEmail.email_address }}" (click)="doNothing($event)"

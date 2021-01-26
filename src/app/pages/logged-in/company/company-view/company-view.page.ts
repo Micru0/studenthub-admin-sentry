@@ -41,7 +41,7 @@ export class CompanyViewPage implements OnInit {
 
   public brands: Brand[] = [];
 
-  public companyContacts: Contact[] = [];
+  public companyContacts: CompanyContact[] = [];
 
   public segment: string = 'info';
 

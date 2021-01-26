@@ -8,4 +8,8 @@ export class CompanyContact {
     updated_at: string;
     created_by: string;
     updated_by: string;
+    contact: any[];
+    company: any[];
+    contactEmails: any[];
+    contactPhones: any[];
 }
