@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FileSizePipe } from './filesize.pipe';
 import { GroupByPipe } from './groupby-pipe';
+import { TimeAgoPipe } from './timeago.pipe';
 import { SortPipe } from './timestamp-pipe';
 
 
@@ -9,13 +10,15 @@ import { SortPipe } from './timestamp-pipe';
     declarations: [
         GroupByPipe,
         SortPipe,
-        FileSizePipe
+        FileSizePipe,
+        TimeAgoPipe
     ],
     imports: [],
     exports: [
         GroupByPipe,
         SortPipe,
-        FileSizePipe
+        FileSizePipe,
+        TimeAgoPipe
     ]
 })
 export class PipesModule {}
