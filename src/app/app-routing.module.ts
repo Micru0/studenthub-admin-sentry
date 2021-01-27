@@ -334,6 +334,16 @@ const routes: Routes = [
       name: 'BrandViewPage'
     }
   },
+
+  {
+    path: 'company-contact-view',
+    loadChildren: () => import('./pages/logged-in/company/company-contact-view/company-contact-view.module').then( m => m.CompanyContactViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'CompanyContactViewPage'
+    }
+  },
+
   {
     path: '**',
     redirectTo: 'not-found'

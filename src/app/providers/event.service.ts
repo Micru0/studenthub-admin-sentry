@@ -15,6 +15,8 @@ export class EventService {
 
   public transferUpdated$ = new Subject();
 
+  public noteUpdated$ = new Subject();
+  
   public totalCandidateToReview$ = new Subject();
   public updatePayable$ = new Subject();
   public payableCandidate$ = new Subject();
