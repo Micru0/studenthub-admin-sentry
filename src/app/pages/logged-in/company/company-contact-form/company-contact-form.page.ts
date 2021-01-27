@@ -110,8 +110,8 @@ export class CompanyContactFormPage implements OnInit {
         position: [this.model.contact_position, Validators.required],
         email: [this.model.contact_email, [CustomValidator.emailValidator, Validators.required]],
         //password: [this.model.contact_position, Validators.required], 
-        receive_email: [this.model.contact_receive_email, Validators.required],
-        receive_notification: [this.model.contact_receive_notification, Validators.required],
+        receive_email: [this.model.contact_receive_email],
+        receive_notification: [this.model.contact_receive_notification],
         emails: new FormArray(emailCtrls),
         phones: new FormArray(phoneCtrls),
       });
