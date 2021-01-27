@@ -33,6 +33,15 @@ export class CompanyContactService {
     const url = `${this._endpoint}/${contact_uuid}?expand=contact.contactEmails,contact.contactPhones,company`;
     return this._authhttp.get(url);
   }
+
+  /**
+   * load contact role detail
+   * @param contact_uuid 
+   */
+  viewCompanyContact(contact_uuid, company_id): Observable<any>{
+    const url = `${this._endpoint}/view-company-contact?contact_uuid=${contact_uuid}&company_id=${company_id}`;
+    return this._authhttp.get(url);
+  }
   
   /**
    * check if email already exists

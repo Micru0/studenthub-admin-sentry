@@ -7,8 +7,9 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 //models
 import { CompanyContact } from 'src/app/models/company-contact';
 import { Note } from 'src/app/models/note';
-import { AuthService } from 'src/app/providers/auth.service';
+import { Contact } from 'src/app/models/contact';
 //services
+import { AuthService } from 'src/app/providers/auth.service';
 import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
 import { NoteService } from 'src/app/providers/logged-in/note.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -32,6 +33,8 @@ export class CompanyContactViewPage implements OnInit {
   public loading: boolean = false;
 
   public deleting: boolean = false;
+
+  public contact: Contact = null;
 
   public companyContact: CompanyContact = null;
 
@@ -81,13 +84,15 @@ export class CompanyContactViewPage implements OnInit {
     const model = window.history.state.model;
 
     if(model) {
-      // this.companyContact = model;
+      this.companyContact = model;
       this.initNoteForm();
       this.loadNotes();
     }
 
-    if(!this.companyContact) {
-      this.loadDetail();
+    this.loadDetail();
+
+    if(!this.companyContact && this.company_id) {
+      this.loadCompanyContact();
     }
 
     this.eventService.noteUpdated$.subscribe((data: any) => {
@@ -104,7 +109,9 @@ export class CompanyContactViewPage implements OnInit {
     this.loading = true;
 
     this.companyContactService.view(this.contact_uuid).subscribe(data => {
-      this.companyContact = data;
+      
+      this.contact = data;
+
       this.loadNotes();
 
       if(!this.noteForm)
@@ -115,13 +122,22 @@ export class CompanyContactViewPage implements OnInit {
     });
   }
 
+  /**
+   * load role details
+   */
+  loadCompanyContact() {
+    this.companyContactService.viewCompanyContact(this.contact_uuid, this.company_id).subscribe(data => {
+      this.companyContact = data;
+    });
+  }
+
   async edit() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
     const modal = await this.modalCtrl.create({
       component: CompanyContactFormPage,
       componentProps: {
-        model: this.companyContact.contact,
+        model: this.contact,
         companyContact: this.companyContact
       }
     });
@@ -139,46 +155,49 @@ export class CompanyContactViewPage implements OnInit {
     modal.present();
   }
 
+  /**
+   * delete contact
+   */
   async delete() {
 
-    // const confirm = await this.alertCtrl.create({
-    //   header: 'Delete Contact',
-    //   message: 'Do you want to delete this contact?',
-    //   buttons: [
-    //     {
-    //       text: 'Yes',
-    //       handler: () => {
-    //
-    //         this.deleting = true;
-    //
-    //         this.companyContactService.delete(this.companyContact).subscribe(async response => {
-    //
-    //           this.deleting = false;
-    //
-    //           if (response.operation == 'success') {
-    //             this.eventService.reloadStats$.next({
-    //               company_id: this.companyContact.company_id
-    //             });
-    //             this.location.back();
-    //           }
-    //           else {
-    //             const prompt = await this.alertCtrl.create({
-    //               message: this.authService.errorMessage(response.message),
-    //               buttons: ['Ok']
-    //             });
-    //             prompt.present();
-    //           }
-    //         }, () => {
-    //           this.deleting = false;
-    //         });
-    //       },
-    //     },
-    //     {
-    //       text: 'No',
-    //     }
-    //   ]
-    // });
-    // confirm.present();
+     const confirm = await this.alertCtrl.create({
+       header: 'Delete Contact',
+       message: 'Do you want to delete this contact?',
+       buttons: [
+         {
+           text: 'Yes',
+           handler: () => {
+    
+             this.deleting = true;
+    
+             this.companyContactService.delete(this.contact).subscribe(async response => {
+    
+               this.deleting = false;
+    
+               if (response.operation == 'success') {
+                 /*this.eventService.reloadStats$.next({
+                   company_id: this.companyContact.company_id
+                 });*/
+                 this.location.back();
+               }
+               else {
+                 const prompt = await this.alertCtrl.create({
+                   message: this.authService.errorMessage(response.message),
+                   buttons: ['Ok']
+                 });
+                 prompt.present();
+               }
+             }, () => {
+               this.deleting = false;
+             });
+           },
+         },
+         {
+           text: 'No',
+         }
+       ]
+     });
+     confirm.present();
   }
 
   /**
