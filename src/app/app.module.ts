@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER, Injector, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
@@ -33,6 +33,7 @@ import { NoItemsModule } from "./components/no-items/no-items.module";
 import {SelectiveLoadingStrategy} from "./util/SelectiveLoadingStrategy";
 import {CountryFormPageModule} from "./pages/logged-in/country/country-form/country-form.module";
 import {InspectorFormPageModule} from "./pages/logged-in/inspector/inspector-form/inspector-form.module";
+import { ModalPopPageModule } from './pages/logged-in/modal-pop/modal-pop.module';
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -44,6 +45,7 @@ export function startupServiceFactory(authService) {
   ],
   entryComponents: [],
   imports: [
+    CKEditorModule,
     HttpClientModule,
     BrowserModule,
     IonicModule.forRoot(),
@@ -63,7 +65,8 @@ export function startupServiceFactory(authService) {
     CompanyContactFormPageModule,
     NoItemsModule,
     CountryFormPageModule,
-    InspectorFormPageModule
+    InspectorFormPageModule,
+    ModalPopPageModule
   ],
   providers: [
     {

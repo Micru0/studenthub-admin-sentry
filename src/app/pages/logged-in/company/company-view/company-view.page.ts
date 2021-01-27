@@ -24,6 +24,7 @@ import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
 import { CompanyNoteFormPage } from '../company-note-form/company-note-form.page';
 import {Contact} from "../../../../models/contact";
+import { ModalPopPage } from '../../modal-pop/modal-pop.page';
 
 
 @Component({
@@ -436,41 +437,37 @@ export class CompanyViewPage implements OnInit {
     });
   }
 
+  /**
+   * onn contact selected
+   * @param companyContact 
+   */
   async onContactSelected(companyContact) {
-    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
-
-    const modal = await this.modalCtrl.create({
-      component: CompanyContactFormPage,
-      componentProps: {
+    this.router.navigate(['company-contact-view', companyContact.contact_uuid, this.company.company_id], {
+      state: {
         model: companyContact
       }
     });
-    modal.onDidDismiss().then(e => {
-
-      if (!e.data || e.data.from != 'native-back-btn') {
-        window['history-back-from'] = 'onDidDismiss';
-        window.history.back();
-      }
-
-      if (e && e.data && e.data.refresh) {
-        this.loadContacts();
-      }
-    });
-    modal.present();
   }
 
+  /**
+   * add new contact to company
+   */
   async addCompanyContact() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    const companyContact = new CompanyContact;
-    companyContact.company_id = this.company_id;
+    const companyContact = new CompanyContact();
+    companyContact.company_id = this.company.company_id;
 
     const modal = await this.modalCtrl.create({
-      component: CompanyContactFormPage,
+      component: ModalPopPage,
       componentProps: {
-        model: companyContact
+        activatedRoutePath: CompanyContactFormPage,
+        activatedRoutePathProps: {
+          companyContact: companyContact
+        }
       }
     });
+
     modal.onDidDismiss().then(e => {
 
       if (!e.data || e.data.from != 'native-back-btn') {
@@ -480,6 +477,10 @@ export class CompanyViewPage implements OnInit {
 
       if (e && e.data && e.data.refresh) {
         this.loadContacts();
+
+        /*this.eventService.reloadStats$.next({
+          company_id: this.company.company_id
+        });*/
       }
     });
     modal.present();

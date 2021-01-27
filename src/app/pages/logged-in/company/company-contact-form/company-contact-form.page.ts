@@ -3,12 +3,13 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ModalController, AlertController } from '@ionic/angular';
 //services
 import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
+import {AuthService} from "../../../../providers/auth.service";
 //models
+import { Contact } from 'src/app/models/contact';
 import { CompanyContact } from 'src/app/models/company-contact';
 //validator
 import { CustomValidator } from 'src/app/validators/custom.validator';
-import {AuthService} from "../../../../providers/auth.service";
-import { Contact } from 'src/app/models/contact';
+//import { EventService } from 'src/app/providers/event.service';
 
 
 @Component({
@@ -20,20 +21,42 @@ export class CompanyContactFormPage implements OnInit {
 
   public saving: boolean = false;
 
+  //model to update/add
   public model: Contact;
+  
+  public companyContact: CompanyContact;
+
   public operation: string;
 
   public form: FormGroup;
+  
   public type: string = 'password';
+
+  public addingToTeam: boolean = false;
+
+  //already available
+  public contact: Contact;
+
   constructor(
     public companyContactService: CompanyContactService,
     private _fb: FormBuilder,
     private modalCtrl: ModalController,
     private _alertCtrl: AlertController,
+    //public eventService: EventService,
     public authService: AuthService
   ) { }
 
   ngOnInit() {
+
+    const state = window.history.state;
+
+    if(state && state.companyContact) {
+      this.companyContact = state.companyContact;
+    }
+
+    if(!this.model) {
+      this.model = new Contact();
+    }
 
     let emailCtrls = [];
 
@@ -65,6 +88,7 @@ export class CompanyContactFormPage implements OnInit {
       this.operation = "Create";
 
       this.form = this._fb.group({
+        role: [this.companyContact?.role, Validators.required],
         name: ["", Validators.required],
         position: ["", Validators.required],
         note: [""],
@@ -81,6 +105,7 @@ export class CompanyContactFormPage implements OnInit {
       this.operation = "Update";
 
       this.form = this._fb.group({
+        role: [this.companyContact?.role, Validators.required],
         name: [this.model.contact_name, Validators.required],
         position: [this.model.contact_position, Validators.required],
         email: [this.model.contact_email, [CustomValidator.emailValidator, Validators.required]],
@@ -110,6 +135,9 @@ export class CompanyContactFormPage implements OnInit {
     this.model.contact_position = this.form.value.position;
     this.model.contactEmails = this.form.value.emails;
     this.model.contactPhones = this.form.value.phones;
+    
+    if(this.companyContact)
+      this.companyContact.role = this.form.value.role;
   }
 
   removeEmail(index) {
@@ -192,10 +220,10 @@ export class CompanyContactFormPage implements OnInit {
     let action;
     if (!this.model.contact_uuid) {
       // Create
-      action = this.companyContactService.create(this.model);
+      action = this.companyContactService.create(this.model, this.companyContact);
     } else {
       // Update
-      action = this.companyContactService.update(this.model);
+      action = this.companyContactService.update(this.model, this.companyContact);
     }
 
     action.subscribe(async jsonResponse => {
@@ -222,6 +250,58 @@ export class CompanyContactFormPage implements OnInit {
       this.saving = false;
 
     });
+  }
+
+  /**
+   * on adding new contact with role, check if email already available (to add that contact to team),
+   * edit will be without company/role details, so no need to check email
+   */
+  checkEmailAvailable(e) {
+    if (this.model.contact_uuid || !this.companyContact) {
+      return false;
+    }
+
+    this.companyContactService.isEmailExists(e.target.value).subscribe(data => {
+      this.contact = data.contact;
+    });
+  }
+
+  /**
+   * add to team
+   */
+  addToTeam() {
+    this.addingToTeam = true;
+
+    this.companyContact.contact_uuid = this.contact.contact_uuid;
+
+    this.companyContactService.addToTeam(this.companyContact).subscribe(async data => {
+
+      this.addingToTeam = false;
+
+      if(data.operation == 'success') {
+
+        /*this.eventService.reloadStats$.next({
+          company_id: this.company_id
+        });*/
+
+        // Close the page
+        let data = { 'refresh': true };
+        this.modalCtrl.dismiss(data);
+      }
+
+      // On Failure
+      if (data.operation == "error") {
+        let prompt = await this._alertCtrl.create({
+          message: JSON.stringify(data.message),
+          buttons: ["Okay"]
+        });
+        prompt.present();
+      }
+    });
+  }
+  
+  onRoleSelected(role) {
+    this.companyContact.role = role;
   }
 
   togglePasswordVisibility() {
