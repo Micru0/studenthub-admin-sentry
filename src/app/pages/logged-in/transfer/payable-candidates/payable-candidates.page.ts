@@ -143,6 +143,15 @@ export class PayableCandidatesPage  {
         }
       });
     });
+    // deduct incomplete profile from payable candidate amount.
+    this.payableAvailAmount =
+        (this.payableIncompleteProfile && this.payableAvailAmount) ?
+            this.payableAvailAmount - this.payableIncompleteProfile :
+            this.payableAvailAmount;
+
+    // in case if incomplete profile candidate amount is greater and payable is less
+    // then it will show payable in minus so convert that in zero.
+    this.payableAvailAmount = (this.payableAvailAmount < 0)  ? 0.00 : this.payableAvailAmount;
   }
 
   /**
