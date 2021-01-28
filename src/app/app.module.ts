@@ -14,7 +14,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 // import { IonicStorageModule } from '@ionic/storage';
-
+import { CalendarModule } from 'ion2-calendar';
 import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AuthService } from './providers/auth.service';
@@ -48,6 +48,7 @@ export function startupServiceFactory(authService) {
     CKEditorModule,
     HttpClientModule,
     BrowserModule,
+    CalendarModule,
     IonicModule.forRoot(),
     // IonicStorageModule.forRoot({
     //   name: '__payroll_admin'
