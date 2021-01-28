@@ -1,11 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import {
+  CalendarModal,
+  CalendarModalOptions,
+  CalendarResult,
+  CalendarComponentOptions
+} from 'ion2-calendar';
+
 // services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 // models
 import { Transfer } from 'src/app/models/transfer';
 import { EventService } from 'src/app/providers/event.service';
-import {Platform} from '@ionic/angular';
+import {ModalController, Platform} from '@ionic/angular';
 
 
 @Component({
@@ -40,7 +47,7 @@ export class TransferListPage implements OnInit {
     endDate: string
   } = {
     companyName: null,
-    transferStatus: null,
+    transferStatus: 0,
     startDate: null,
     endDate: null
   };
@@ -49,7 +56,8 @@ export class TransferListPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public eventService: EventService,
     public transferService: TransferService,
-    public platform: Platform
+    public platform: Platform,
+    public modalCtrl: ModalController
   ) {
     this.min = '1930/01/01';
 
@@ -188,5 +196,56 @@ export class TransferListPage implements OnInit {
     };
 
     this.loadData(1); // reload all result
+  }
+
+
+  filterByStatus($event, status) {
+    this.filters.transferStatus = status;
+    this.loadData(1); // reload all result
+  }
+  searchByName($event) {
+    this.filters.companyName = $event.detail.value;
+    this.loadData(1); // reload all result
+  }
+
+  /**
+   * clear selected date filter
+   * @param start
+   */
+  clearfilter(start = false) {
+    if (start){
+      this.filters.startDate = null;
+    } else  {
+      this.filters.endDate = null;
+    }
+    this.loadData(1); // reload all result
+  }
+
+
+  async selectDate(startDate = true) {
+    const options: CalendarModalOptions = {
+      title: 'Select Date',
+      canBackwardsSelected: true,
+    };
+
+    const myCalendar = await this.modalCtrl.create({
+      component: CalendarModal,
+      componentProps: { options }
+    });
+
+    myCalendar.present();
+
+    const event: any = await myCalendar.onDidDismiss();
+    const date: CalendarResult = event.data;
+    if (date) {
+      if (startDate) {
+        this.filters.startDate = event.data.string;
+        this.loadData(1); // reload all result
+      } else {
+        this.filters.endDate = event.data.string;
+        this.loadData(1); // reload all result
+      }
+    }
+    console.log(date);
   }
 }
