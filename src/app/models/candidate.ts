@@ -48,7 +48,7 @@ export class Candidate {
     candidateSkills: any[];
     candidateExperiences: any[];
 
-    //Related
+    // Related
     store: Store;
     company: Company;
     university: University;
