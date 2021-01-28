@@ -60,7 +60,8 @@ export class CompanyContactService {
     const url = `${this._endpoint}/add-to-team`;
 
     const params = {
-      role: companyContact.role,
+      allow_access: companyContact.allow_access,
+      contact_position: companyContact.contact_position,
       contact_uuid: companyContact.contact_uuid,
       company_id: companyContact.company_id
     };
@@ -79,13 +80,13 @@ export class CompanyContactService {
 
     const params = {
       company_id: companyContact?.company_id,
-      role: companyContact?.role,
+      allow_access: companyContact?.allow_access,
+      contact_position: companyContact?.contact_position,
       name: model.contact_name,
       email: model.contact_email,
       password: model.contact_password,
       receive_email: model.contact_receive_email,
       receive_notification: model.contact_receive_notification,
-      position: model.contact_position,
       emails: model.contactEmails,
       phones: model.contactPhones,
     };
@@ -103,9 +104,9 @@ export class CompanyContactService {
     
     const params = {
       company_id: companyContact?.company_id,
-      role: companyContact?.role,
+      allow_access: companyContact?.allow_access,
+      contact_position: companyContact?.contact_position,
       name: model.contact_name,
-      position: model.contact_position,
       email: model.contact_email,
       password: model.contact_password,
       receive_email: model.contact_receive_email,

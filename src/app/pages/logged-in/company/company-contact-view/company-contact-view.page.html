@@ -25,9 +25,6 @@
         <div tabindex="0"></div>
         <ion-label>
           <h4>{{ contact.contact_name }}</h4>
-          <p>
-            {{ contact.contact_position }}
-          </p>
 
           <p *ngIf="contact.contact_email">
             <a href="mailto:{{ contact.contact_email }}">
@@ -52,8 +49,15 @@
 
       <ion-item *ngIf="companyContact">
         <ion-label>
-          <h4>Role</h4>
-          <p>{{ companyContact.role }}</p>
+          <h4>Position</h4>
+          <p>{{ companyContact.contact_position }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="companyContact">
+        <ion-label>
+          <h4>Allow access?</h4>
+          <p *ngIf="companyContact.allow_access">Yes</p>
+          <p *ngIf="!companyContact.allow_access">No</p>
         </ion-label>
       </ion-item>
 
