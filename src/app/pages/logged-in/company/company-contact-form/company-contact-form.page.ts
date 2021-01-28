@@ -88,9 +88,9 @@ export class CompanyContactFormPage implements OnInit {
       this.operation = "Create";
 
       this.form = this._fb.group({
-        role: [this.companyContact?.role, Validators.required],
+        allow_access: [this.companyContact?.allow_access, Validators.required],
+        position: [this.companyContact?.contact_position, Validators.required],
         name: ["", Validators.required],
-        position: ["", Validators.required],
         note: [""],
         email: ["", [CustomValidator.emailValidator, Validators.required]],
         password: ["", Validators.required],
@@ -105,9 +105,9 @@ export class CompanyContactFormPage implements OnInit {
       this.operation = "Update";
 
       this.form = this._fb.group({
-        role: [this.companyContact?.role, Validators.required],
+        allow_access: [this.companyContact?.allow_access, Validators.required],
+        position: [this.companyContact?.contact_position, Validators.required],
         name: [this.model.contact_name, Validators.required],
-        position: [this.model.contact_position, Validators.required],
         email: [this.model.contact_email, [CustomValidator.emailValidator, Validators.required]],
         //password: [this.model.contact_position, Validators.required], 
         receive_email: [this.model.contact_receive_email],
@@ -132,12 +132,13 @@ export class CompanyContactFormPage implements OnInit {
     this.model.contact_receive_email = this.form.value.receive_email;
     this.model.contact_receive_notification = this.form.value.receive_notification;
     this.model.contact_password = this.form.value.password;
-    this.model.contact_position = this.form.value.position;
     this.model.contactEmails = this.form.value.emails;
     this.model.contactPhones = this.form.value.phones;
     
-    if(this.companyContact)
-      this.companyContact.role = this.form.value.role;
+    if(this.companyContact) {
+      this.companyContact.allow_access = this.form.value.allow_access;
+      this.companyContact.contact_position = this.form.value.position;
+    }
   }
 
   removeEmail(index) {
@@ -272,6 +273,8 @@ export class CompanyContactFormPage implements OnInit {
   addToTeam() {
     this.addingToTeam = true;
 
+    this.companyContact.allow_access = this.form.controls.allow_access.value;
+    this.companyContact.contact_position = this.form.controls.position.value;
     this.companyContact.contact_uuid = this.contact.contact_uuid;
 
     this.companyContactService.addToTeam(this.companyContact).subscribe(async data => {
@@ -298,10 +301,6 @@ export class CompanyContactFormPage implements OnInit {
         prompt.present();
       }
     });
-  }
-  
-  onRoleSelected(role) {
-    this.companyContact.role = role;
   }
 
   togglePasswordVisibility() {

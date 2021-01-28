@@ -449,70 +449,43 @@
     <section *ngIf="segment == 'contacts'">
 
       <ion-list class="contact-list">
-        <ion-item-sliding *ngFor="let companyContact of companyContacts" [disabled]="platform.width() > 768">
-          <ion-item tappable (click)="onContactSelected(companyContact)">
-            <div tabindex="0"></div>
-            <ion-label>
-              <h4>Name : {{ companyContact.contact.contact_name }}</h4>
-              <p>
-                Position : {{ companyContact.contact.contact_position }}
-              </p>
-              <p>
-                Email : {{ companyContact.contact.contact_email }}
-              </p>
-              <p>
-                Role : {{ companyContact.role }}
-              </p>
-              <p>
-                Receive Email?:
-                <span *ngIf="companyContact.contact.contact_receive_email">Enabled</span>
-                <span *ngIf="!companyContact.contact.contact_receive_email">Disabled</span>
-              </p>
-              <p>
-                Receive Notification? :
-                <span *ngIf="companyContact.contact.contact_receive_notification">Enabled</span>
-                <span *ngIf="!companyContact.contact.contact_receive_notification">Disabled</span>
-              </p>
-              <p>
-                <a href="mailto:{{ contactEmail.email_address }}" (click)="doNothing($event)"
-                  *ngFor="let contactEmail of companyContact.contactEmails">
-                  <ion-icon name="mail-outline"></ion-icon> {{ contactEmail.email_address }}
-                </a>
-              </p>
-              <p>
-                <a href="tel:{{ contactPhone.phone_number }}" (click)="doNothing($event)"
-                  *ngFor="let contactPhone of companyContact.contactPhones">
-                  <ion-icon name="call-outline"></ion-icon> {{ contactPhone.phone_number }}
-                </a>
-              </p>
-            </ion-label>
-
-            <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
-              <ion-button color="default">
-                <ion-icon slot="start" name="pencil-outline"></ion-icon>
-                Edit
-              </ion-button>
-
-              <ion-button color="danger" (click)="deleteContact($event, companyContact)">
-                <ion-icon slot="start" name="trash-outline"></ion-icon>
-                Delete
-              </ion-button>
-            </ion-buttons>
-
-          </ion-item>
-
-          <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
-            <ion-button (click)="onContactSelected(companyContact)">
-              <ion-icon slot="start" name="pencil-outline"></ion-icon>
-              Edit
-            </ion-button>
-
-            <ion-button color="danger" (click)="deleteContact($event, companyContact)">
-              <ion-icon slot="start" name="trash-outline"></ion-icon>
-              Delete
-            </ion-button>
-          </ion-item-options>
-        </ion-item-sliding>
+        <ion-item tappable *ngFor="let companyContact of companyContacts" (click)="onContactSelected(companyContact)">
+          <div tabindex="0"></div>
+          <ion-label>
+            <h4>Name : {{ companyContact.contact.contact_name }}</h4>
+            <p *ngIf="companyContact.contact_position">
+              Position : {{ companyContact.contact_position }}
+            </p>
+            <p>
+              Allow access : {{ companyContact.allow_access? 'Yes': 'No' }}
+            </p>
+            <p>
+              Email : {{ companyContact.contact.contact_email }}
+            </p>
+            <p>
+              Receive Email?:
+              <span *ngIf="companyContact.contact.contact_receive_email">Enabled</span>
+              <span *ngIf="!companyContact.contact.contact_receive_email">Disabled</span>
+            </p>
+            <p>
+              Receive Notification? :
+              <span *ngIf="companyContact.contact.contact_receive_notification">Enabled</span>
+              <span *ngIf="!companyContact.contact.contact_receive_notification">Disabled</span>
+            </p>
+            <p>
+              <a href="mailto:{{ contactEmail.email_address }}" (click)="doNothing($event)"
+                *ngFor="let contactEmail of companyContact.contactEmails">
+                <ion-icon name="mail-outline"></ion-icon> {{ contactEmail.email_address }}
+              </a>
+            </p>
+            <p>
+              <a href="tel:{{ contactPhone.phone_number }}" (click)="doNothing($event)"
+                *ngFor="let contactPhone of companyContact.contactPhones">
+                <ion-icon name="call-outline"></ion-icon> {{ contactPhone.phone_number }}
+              </a>
+            </p>
+          </ion-label>
+        </ion-item>
 
         <ion-item lines="none" *ngIf="!authService.admin_limited_access">
           <div tabindex="0"></div>
