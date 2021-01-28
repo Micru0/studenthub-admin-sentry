@@ -133,7 +133,7 @@ export class PayableCandidatesPage  {
       this.payableAmount = this.payableAmount + transfer.remainingPaymentTransferTotal;
 
       transfer.unPaidTransferCandidates.forEach(transferCandidate => {
-        if (!transferCandidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name) {
+        if (!transferCandidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name || !transferCandidate.candidate.isProfileCompleted) {
           this.payableMissingAmount += transferCandidate.total_amount;
         } else {
           this.payableAvailAmount += transferCandidate.total_amount;
@@ -144,15 +144,6 @@ export class PayableCandidatesPage  {
         }
       });
     });
-    // deduct incomplete profile from payable candidate amount.
-    this.payableAvailAmount =
-        (this.payableIncompleteProfile && this.payableAvailAmount) ?
-            this.payableAvailAmount - this.payableIncompleteProfile :
-            this.payableAvailAmount;
-
-    // in case if incomplete profile candidate amount is greater and payable is less
-    // then it will show payable in minus so convert that in zero.
-    this.payableAvailAmount = (this.payableAvailAmount < 0)  ? 0.00 : this.payableAvailAmount;
   }
 
   /**
