@@ -133,7 +133,7 @@ export class PayableCandidatesPage  {
       this.payableAmount = this.payableAmount + transfer.remainingPaymentTransferTotal;
 
       transfer.unPaidTransferCandidates.forEach(transferCandidate => {
-        if (!transferCandidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name || !transferCandidate.candidate.isProfileCompleted) {
+        if (!transferCandidate.candidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name || !transferCandidate.candidate.isProfileCompleted) {
           this.payableMissingAmount += transferCandidate.total_amount;
         } else {
           this.payableAvailAmount += transferCandidate.total_amount;
