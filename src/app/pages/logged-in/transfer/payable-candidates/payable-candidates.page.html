@@ -36,7 +36,7 @@
             <div tabindex="0"></div>
             <ion-label>
               <h3>Ready to process</h3>
-              <ion-note>KWD {{ (payableAvailAmount)  || 0.000  | number:'1.3-3' }}</ion-note>
+              <ion-note>KWD {{ payableAvailAmount  | number:'1.3-3' }}</ion-note>
             </ion-label> 
           </ion-item>
         </ion-col>
@@ -82,9 +82,9 @@
         </ion-avatar>
         <ion-label  class="candidate_name" *ngIf="tc.candidate">
           {{ tc.candidate.candidate_name? tc.candidate.candidate_name: tc.candidate.candidate_name_ar }}
-          <ng-container *ngIf="!tc.bank_id || !tc.candidate.isProfileCompleted">
+          <ng-container *ngIf="!tc.candidate.bank_id || !tc.candidate.isProfileCompleted">
             <br/><br/>
-            <ion-badge slot="start" color="danger" *ngIf="!tc.bank_id">Missing Bank Info</ion-badge>&nbsp;&nbsp;
+            <ion-badge slot="start" color="danger" *ngIf="!tc.candidate.bank_id">Missing Bank Info</ion-badge>&nbsp;&nbsp;
             <ion-badge slot="start" color="warning" *ngIf="!tc.candidate.isProfileCompleted">Incomplete Profile</ion-badge>
           </ng-container>
         </ion-label>
