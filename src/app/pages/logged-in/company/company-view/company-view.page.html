@@ -467,11 +467,13 @@
               <span *ngIf="companyContact.contact.contact_receive_email">Enabled</span>
               <span *ngIf="!companyContact.contact.contact_receive_email">Disabled</span>
             </p>
+            <!--
             <p>
               Receive Notification? :
               <span *ngIf="companyContact.contact.contact_receive_notification">Enabled</span>
               <span *ngIf="!companyContact.contact.contact_receive_notification">Disabled</span>
             </p>
+            -->
             <p>
               <a href="mailto:{{ contactEmail.email_address }}" (click)="doNothing($event)"
                 *ngFor="let contactEmail of companyContact.contactEmails">
