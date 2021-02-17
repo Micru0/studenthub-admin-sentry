@@ -120,12 +120,14 @@ export class AppComponent implements OnInit {
       this.navCtrl.navigateForward(['/no-internet']);
     });
 
+    this.eventService.errorStorage$.subscribe(() => {
+      this.navCtrl.navigateRoot(['app-error']);
+    });
+    
     // On Login Event, set root to Internal app page
     this.eventService.userLogin$.subscribe(userEventData => {
       this.navCtrl.navigateRoot(['/']);
-    });
-
-    this.eventService.userLogin$.subscribe(userEventData => {
+ 
       this.totalToReview();
     });
 
