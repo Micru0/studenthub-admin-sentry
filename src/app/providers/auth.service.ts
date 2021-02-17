@@ -61,47 +61,55 @@ export class AuthService {
         resolve(true);
       }
 
-      const ret = await Storage.get({ key: 'loggedInAdmin' });
+      Storage.get({ key: 'loggedInAdmin' }).then(ret => {
 
-      const user = JSON.parse(ret.value);
+        const user = JSON.parse(ret.value);
 
-      if (user) {
+        if (user) {
 
-        this.isLogin = true;
-        this._accessToken = user.token;
-        this.id = user.id;
-        this.name = user.name;
-        this.email = user.email;
-        this.admin_limited_access = user.admin_limited_access;
-        this.theme = user.theme;
+          this.isLogin = true;
+          this._accessToken = user.token;
+          this.id = user.id;
+          this.name = user.name;
+          this.email = user.email;
+          this.admin_limited_access = user.admin_limited_access;
+          this.theme = user.theme;
 
-        resolve(true);
-      } else {
-        resolve(false);
-        this.logout('invalid access');
-      }
+          resolve(true);
+        } else {
+          resolve(false);
+          this.logout('invalid access');
+        }
+      }).catch(r => {
+        this.eventService.errorStorage$.next();
+      });
     });
   }
 
   // This is the method you want to call at bootstrap
   async load(): Promise<any> {
-    const ret = await Storage.get({ key: 'loggedInAdmin' });
+    Storage.get({ key: 'loggedInAdmin' }).then(ret => {
 
-    const admin = JSON.parse(ret.value);
+      const admin = JSON.parse(ret.value);
 
-    if (admin && admin.token) {
-      return this.setAccessToken(admin);
-    } else {
-      // return this.logout('error with store variables',true);
-    }
+      if (admin && admin.token) {
+        return this.setAccessToken(admin);
+      } else {
+        // return this.logout('error with store variables',true);
+      }
+    }).catch(r => {
+      this.eventService.errorStorage$.next();
+    });
 
-    const { value } = await Storage.get({ key: 'theme' });
+    Storage.get({ key: 'theme' }).then(ret => {
 
-    if (value) {
-      this.setTheme(value);
-    }
+      if (ret.value) {
+        this.setTheme(ret.value);
+      }
+    }).catch(r => {
+      this.eventService.errorStorage$.next();
+    });
   }
-
 
   /**
    * Get Access Token from Service or Cookie
@@ -121,6 +129,8 @@ export class AuthService {
         this.setAccessToken(user, redirect);
         this._accessToken = user.token;
       }
+    }).catch(r => {
+      this.eventService.errorStorage$.next();
     });
 
     return this._accessToken;
@@ -142,7 +152,10 @@ export class AuthService {
     this.name = null;
     this.email = null;
     this.admin_limited_access = null;
-    Storage.clear();
+
+    Storage.clear().catch(r => {
+      this.eventService.errorStorage$.next();
+    });
 
     if (!silent) {
       this.eventService.userLogout$.next(reason ? reason : false);
@@ -157,6 +170,8 @@ export class AuthService {
     Storage.set({
       key: 'theme',
       value: theme
+    }).catch(r => {
+      this.eventService.errorStorage$.next();
     });
 
     this.theme = theme;
@@ -203,6 +218,8 @@ export class AuthService {
         email: this.email,
         admin_limited_access: this.admin_limited_access
       })
+    }).catch(r => {
+      this.eventService.errorStorage$.next();
     });
   }
 
