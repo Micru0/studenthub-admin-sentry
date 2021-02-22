@@ -12,7 +12,8 @@ export class EventService {
   public internetOffline$ = new Subject();
   public error404$ = new Subject();
   public error500$ = new Subject();
-
+  public errorStorage$ = new Subject();
+  
   public transferUpdated$ = new Subject();
 
   public noteUpdated$ = new Subject();
