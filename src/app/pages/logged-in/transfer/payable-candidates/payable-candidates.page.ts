@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { AwsService } from 'src/app/providers/aws.service';
 import { EventService } from 'src/app/providers/event.service';
-// models
 import {AuthService} from '../../../../providers/auth.service';
+// models
 import {Transfer} from '../../../../models/transfer';
 
 
