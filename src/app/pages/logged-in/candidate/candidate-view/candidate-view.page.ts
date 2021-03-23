@@ -55,6 +55,29 @@ export class CandidateViewPage implements OnInit {
   
     this.loadData();
 
+    this.eventService.markedAllUnpaid$.subscribe((userEventData: any) => {
+
+      if(!this.candidate) {
+        return null;
+      }
+
+      for(let transfer of userEventData.transferCandidateList) {
+        if(transfer.candidate_id == this.candidate_id) {
+          this.candidate.bank_id = null;
+          this.candidate.bank_account_name = null;
+          this.candidate.candidate_iban = null;
+        }
+      }
+    });
+
+    this.eventService.markedUnpaid$.subscribe((userEventData) => {
+      if(this.candidate && userEventData['candidate_id'] == this.candidate_id) {
+        this.candidate.bank_id = null;
+        this.candidate.bank_account_name = null;
+        this.candidate.candidate_iban = null;
+      }
+    });
+
     this.eventService.updatePayable$.subscribe((userEventData) => {
       if(this.candidate && (!userEventData || userEventData['candidate_id'] == this.candidate_id)) {
         this.loadTransfersData();
@@ -62,8 +85,14 @@ export class CandidateViewPage implements OnInit {
     });
   }
   
-  loadData() {
-    this.loading = true; 
+  /**
+   * load candidate details
+   * @param loading 
+   */
+  loadData(loading = true) {
+
+    if(loading)
+      this.loading = true; 
 
     this.candidateService.view(this.candidate_id).subscribe(bank => {
       
