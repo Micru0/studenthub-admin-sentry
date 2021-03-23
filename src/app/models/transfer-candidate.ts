@@ -23,6 +23,7 @@ export class TransferCandidate {
     hours: number;
     bonus: number;
     candidate_bonus: number;
+    bonus_commission: any;
     transfer_cost: number;
     paid: number;
     tc_created_at: string;
