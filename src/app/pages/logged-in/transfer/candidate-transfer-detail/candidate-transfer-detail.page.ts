@@ -101,8 +101,11 @@ export class CandidateTransferDetailPage implements OnInit {
             toast.present();
 
             //update review count 
+
             this._eventService.updatePayable$.next(this.transferCandidate);
             
+            this._eventService.markedUnpaid$.next(this.transferCandidate);
+
             this.markingUnPaid = false;
 
             this.navCtrl.pop();

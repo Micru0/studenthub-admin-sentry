@@ -23,5 +23,9 @@ export class EventService {
   public payableCandidate$ = new Subject();
   public reloadCompanyList$ = new Subject();
 
+  public markedUnpaid$ = new Subject();
+
+  public markedAllUnpaid$ = new Subject();
+
   constructor() { }
 }
