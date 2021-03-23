@@ -53,7 +53,7 @@
       <div tabindex="0"></div>
       <ion-label>
         <p *ngFor="let history of workHistory">
-        <ng-container *ngIf="history.store">
+        <ng-container *ngIf="history.store && history.store.store_id">
           <label tappable [routerLink]="['/store-view', history.store.store_id]">{{ history.store.store_name }}:
             {{ history.start_date | date }} </label> to
           <label *ngIf="history.end_date">{{ history.end_date | date }}</label>
