@@ -41,6 +41,86 @@
         <ion-item>
           <div tabindex="0"></div>
           <ion-label>
+            <h5>Amount Company Paid</h5>
+            <p>
+              KWD {{ transferCandidate.total_paid | number:'1.3-3' }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Profit</h5>
+            <p>
+              KWD {{ transferCandidate.profit | number:'1.3-3' }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Candidate Hourly Rate</h5>
+            <p>
+              {{ transferCandidate.candidate_hourly_rate }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Company Hourly Rate</h5>
+            <p>
+              {{ transferCandidate.company_hourly_rate }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Hours</h5>
+            <p>
+              {{ transferCandidate.hours }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Bonus</h5>
+            <p>
+              {{ transferCandidate.bonus }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Bonus Commission</h5>
+            <p>
+              {{ transferCandidate.bonus_commission }}
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Transfer Cost</h5>
+            <p>
+              {{ transferCandidate.transfer_cost }}
+            </p>
+          </ion-label>
+        </ion-item>
+ 
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
             <h5>Transfer Candidate ID</h5>
             <p>
               {{ transferCandidate.tc_id}}
@@ -58,22 +138,28 @@
           </ion-label>
         </ion-item>
 
-        <ion-item *ngIf="transferCandidate.bank">
+        <ion-item>
           <div tabindex="0"></div>
           <ion-label>
             <h5>Bank</h5>
-            <p>
+            <p *ngIf="transferCandidate.bank">
               {{ transferCandidate.transfer_benef_iban }} @ {{ transferCandidate.bank.bank_name }}
+            </p>
+            <p *ngIf="!transferCandidate.bank">
+              -
             </p>
           </ion-label>
         </ion-item>
 
-        <ion-item *ngIf="transferCandidate.transfer_benef_name">
+        <ion-item>
           <div tabindex="0"></div>
           <ion-label>
             <h5>Account name</h5>
-            <p>
+            <p *ngIf="transferCandidate.transfer_benef_name">
               {{ transferCandidate.transfer_benef_name }}
+            </p>
+            <p *ngIf="!transferCandidate.transfer_benef_name">
+              -
             </p>
           </ion-label>
         </ion-item>
