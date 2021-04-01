@@ -84,7 +84,7 @@
           {{ tc.candidate.candidate_name? tc.candidate.candidate_name: tc.candidate.candidate_name_ar }}
           <ng-container *ngIf="!tc.candidate.bank_id || !tc.candidate.isProfileCompleted">
             <br/><br/>
-            <ion-badge slot="start" color="danger" *ngIf="!tc.candidate.bank_id">Missing Bank Info</ion-badge>&nbsp;&nbsp;
+            <ion-badge slot="start" color="danger" *ngIf="!tc.candidate.bank_id">Missing Bank Info</ion-badge>
             <ion-badge slot="start" color="warning" *ngIf="!tc.candidate.isProfileCompleted">Incomplete Profile</ion-badge>
           </ng-container>
         </ion-label>
