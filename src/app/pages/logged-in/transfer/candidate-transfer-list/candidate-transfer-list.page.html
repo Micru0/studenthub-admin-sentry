@@ -27,7 +27,7 @@
           <ion-card-title tappable (click)="loadTransferDetail(transfer)"  class="candidate_name">
 
             {{ transfer.candidate.candidate_name? transfer.candidate.candidate_name: transfer.candidate.candidate_name_ar }}
-          
+            
             <ion-badge color="success" *ngIf="transfer.paid == 1">Paid</ion-badge>
             <ion-badge color="dark" *ngIf="transfer.paid == 0">Unpaid</ion-badge>
           
