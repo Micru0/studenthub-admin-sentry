@@ -39,6 +39,21 @@
             <ion-icon *ngIf="type != 'password'" name="eye-off"></ion-icon>
           </ion-button>
         </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Gmail Username</ion-label>
+          <ion-input type="text" formControlName="gmail_username"></ion-input>
+        </ion-item>
+
+      <ion-item class="field-password">
+          <ion-label position="floating">Gmail Password</ion-label>
+          <ion-input type="{{ type }}" formControlName="gmail_password"></ion-input>
+
+          <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility()">
+            <ion-icon *ngIf="type == 'password'" name="eye"></ion-icon>
+            <ion-icon *ngIf="type != 'password'" name="eye-off"></ion-icon>
+          </ion-button>
+        </ion-item>
     </ion-list>
   </form>
 
