@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthHttpService } from './authhttp.service';
 // Models
 import { Company } from '../../models/company';
-import {File} from '../../models/file';
+import { File } from '../../models/file';
 
 
 /**
@@ -23,7 +23,7 @@ export class CompanyService {
    * List of all companies
    * @returns {Observable<any>}
    */
-  list(page: number, searchParams: string): Observable<any>{
+  list(page: number, searchParams: string): Observable<any> {
     const url = this._companyEndpoint + '?page=' + page + searchParams + '&expand=files,notes,notes.staff,stores,subCompanies';
     return this._authhttp.get(url, true);
   }
@@ -33,7 +33,7 @@ export class CompanyService {
    * @param {Company} model
    * @returns {Observable<any>}
    */
-  create(model: Company): Observable<any>{
+  create(model: Company): Observable<any> {
     const postUrl = `${this._companyEndpoint}`;
     const params = {
       parent: model.parent_company_id,
@@ -41,12 +41,13 @@ export class CompanyService {
       email: model.company_email,
       bonus_commission: model.company_bonus_commission,
       hourly_rate: model.company_hourly_rate,
-      common_name_en : model.company_common_name_en,
-      common_name_ar : model.company_common_name_ar,
-      description_en : model.company_description_en,
-      description_ar : model.company_description_ar,
-      website : model.company_website,
-      logo : model.company_logo,
+      common_name_en: model.company_common_name_en,
+      common_name_ar: model.company_common_name_ar,
+      description_en: model.company_description_en,
+      description_ar: model.company_description_ar,
+      website: model.company_website,
+      logo: model.company_logo,
+      approved_to_hire: model.company_approved_to_hire
     };
 
     return this._authhttp.post(postUrl, params);
@@ -57,19 +58,20 @@ export class CompanyService {
    * @param {Company} model
    * @returns {Observable<any>}
    */
-  update(model: Company): Observable<any>{
+  update(model: Company): Observable<any> {
     const params = {
       parent: model.parent_company_id,
       name: model.company_name,
       email: model.company_email,
       bonus_commission: model.company_bonus_commission,
       hourly_rate: model.company_hourly_rate,
-      common_name_en : model.company_common_name_en,
-      common_name_ar : model.company_common_name_ar,
-      description_en : model.company_description_en,
-      description_ar : model.company_description_ar,
-      website : model.company_website,
-      logo : model.company_logo,
+      common_name_en: model.company_common_name_en,
+      common_name_ar: model.company_common_name_ar,
+      description_en: model.company_description_en,
+      description_ar: model.company_description_ar,
+      website: model.company_website,
+      logo: model.company_logo,
+      approved_to_hire: model.company_approved_to_hire
     };
 
     return this._authhttp.patch(`${this._companyEndpoint}/${model.company_id}`, params);
@@ -80,7 +82,7 @@ export class CompanyService {
    * @param {Company} model
    * @returns {Observable<any>}
    */
-  delete(model: Company): Observable<any>{
+  delete(model: Company): Observable<any> {
     return this._authhttp.delete(`${this._companyEndpoint}/${model.company_id}`);
   }
 
@@ -89,7 +91,7 @@ export class CompanyService {
    * @param string company_id
    * @returns {Observable<any>}
    */
-  view(company_id: string): Observable<any>{
+  view(company_id: string): Observable<any> {
     const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,notes,notes.createdBy,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
     return this._authhttp.get(url);
   }
@@ -109,7 +111,7 @@ export class CompanyService {
    * @param {Company} model
    * @returns {Observable<any>}
    */
-  createFile(model: File): Observable<any>{
+  createFile(model: File): Observable<any> {
     const url = `${this._companyEndpoint}/file-create/${model.company_id}`;
     const params = {
       file_title: model.file_title,
@@ -123,7 +125,7 @@ export class CompanyService {
    * update follow up
    * @param model 
    */
-  updateFollowup(model: Company): Observable<any>{
+  updateFollowup(model: Company): Observable<any> {
     const url = `${this._companyEndpoint}/update-followup/${model.company_id}`;
     const params = {
       followup: model.company_followup
@@ -136,7 +138,7 @@ export class CompanyService {
    * @param company_id 
    * @param company_followup_interval_weeks 
    */
-  updateFollowupInterval(company_id, company_followup_interval_weeks): Observable<any>{
+  updateFollowupInterval(company_id, company_followup_interval_weeks): Observable<any> {
     const url = `${this._companyEndpoint}/update-followup-interval/${company_id}`;
     const params = {
       followup_interval_weeks: company_followup_interval_weeks
@@ -149,7 +151,7 @@ export class CompanyService {
    * @param {Company} model
    * @returns {Observable<any>}
    */
-  updateFile(model: File): Observable<any>{
+  updateFile(model: File): Observable<any> {
     const url = `${this._companyEndpoint}/file-update/${model.file_uuid}`;
     const params = {
       file_title: model.file_title,
@@ -164,7 +166,7 @@ export class CompanyService {
    * @param {Company} model
    * @returns {Observable<any>}
    */
-  deleteDoc(model: File): Observable<any>{
+  deleteDoc(model: File): Observable<any> {
     const url = `${this._companyEndpoint}/remove-file/${model.file_uuid}`;
     return this._authhttp.delete(url);
   }
@@ -176,6 +178,6 @@ export class CompanyService {
    */
   changeStatus(model: Company, status: number = 10): Observable<any> {
     const url = `${this._companyEndpoint}/change-status/${model.company_id}`;
-    return this._authhttp.patch(url, {status});
+    return this._authhttp.patch(url, { status });
   }
 }
