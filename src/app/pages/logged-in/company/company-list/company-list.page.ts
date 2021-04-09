@@ -210,7 +210,7 @@ export class CompanyListPage implements OnInit {
   resetStatus() {
     this.filters = {
       name: this.filters.name,
-      status: null,
+      status: 4,
       approved_to_hire: null
     };
 
@@ -220,7 +220,7 @@ export class CompanyListPage implements OnInit {
   resetFilter() {
     this.filters = {
       name: null,
-      status: null,
+      status: 4,
       approved_to_hire: null
     };
 
@@ -241,7 +241,7 @@ export class CompanyListPage implements OnInit {
       urlParams += '&status=' + this.filters.status;
     }
 
-    if (this.filters.approved_to_hire) {
+    if ([0, 1].indexOf(this.filters.approved_to_hire) > -1) {
       urlParams += '&approved_to_hire=' + this.filters.approved_to_hire;
     }
 
