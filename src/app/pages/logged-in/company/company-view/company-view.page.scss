@@ -9,6 +9,13 @@
     }
 }
 
+ion-title ion-badge {
+    ion-icon {
+        position: relative;
+        top: 2px;
+    }
+}
+
 .meta-data {
     font-size: small;
     color: var(--ion-color-secondary);
