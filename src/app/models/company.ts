@@ -24,6 +24,7 @@ export class Company {
     company_last_followup_datetime: any;
     currency_pref: number;
     transferInLast40Days: number;
+    company_approved_to_hire: any;
     subcompanies: Company[];
     subCompanies: Company[];
     stores: Store[];

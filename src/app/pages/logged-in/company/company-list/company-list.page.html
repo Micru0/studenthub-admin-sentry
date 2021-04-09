@@ -53,6 +53,14 @@
           {{ company.total_stores }} stores
         </ion-badge>
 
+        <ion-badge slot="end" color="success" *ngIf="company.company_approved_to_hire">
+          <ion-icon name="checkmark-outline"></ion-icon> Approved to hire
+        </ion-badge>
+        
+        <ion-badge slot="end" color="warning" *ngIf="!company.company_approved_to_hire">
+          <ion-icon name="close-outline"></ion-icon> Not approved to hire
+        </ion-badge>
+        
         <ion-buttons slot="end" *ngIf="platform.width() > 768  && !authService.admin_limited_access">
 
           <ion-button color="danger" (click)="delete($event, company)">
