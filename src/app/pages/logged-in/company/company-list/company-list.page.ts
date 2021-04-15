@@ -6,11 +6,10 @@ import { Company } from 'src/app/models/company';
 // services
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import { AuthService } from 'src/app/providers/auth.service';
+import { AwsService } from '../../../../providers/aws.service';
+import { EventService } from '../../../../providers/event.service';
 // pages
 import { CompanyFormPage } from '../company-form/company-form.page';
-import {AwsService} from '../../../../providers/aws.service';
-import {EventService} from '../../../../providers/event.service';
-
 
 
 @Component({
@@ -29,13 +28,16 @@ export class CompanyListPage implements OnInit {
   public deleting = false;
 
   public loading = false;
+
   public filters: {
     name: string,
-    status: any
+    status: any,
+    approved_to_hire: any
   } = {
-    name: null,
-    status: 4
-  };
+      name: null,
+      status: 4,
+      approved_to_hire: null
+    };
 
   constructor(
     public router: Router,
@@ -205,10 +207,21 @@ export class CompanyListPage implements OnInit {
     company.company_logo = null;
   }
 
+  resetStatus() {
+    this.filters = {
+      name: this.filters.name,
+      status: 4,
+      approved_to_hire: null
+    };
+
+    this.loadData(1); // reload all result
+  }
+
   resetFilter() {
     this.filters = {
       name: null,
-      status: null
+      status: 4,
+      approved_to_hire: null
     };
 
     this.loadData(1); // reload all result
@@ -219,12 +232,17 @@ export class CompanyListPage implements OnInit {
    */
   urlParams() {
     let urlParams = '';
+
     if (this.filters.name) {
       urlParams += '&name=' + this.filters.name;
     }
 
     if (this.filters.status) {
       urlParams += '&status=' + this.filters.status;
+    }
+
+    if ([0, 1].indexOf(this.filters.approved_to_hire) > -1) {
+      urlParams += '&approved_to_hire=' + this.filters.approved_to_hire;
     }
 
     return urlParams;
@@ -236,7 +254,24 @@ export class CompanyListPage implements OnInit {
   }
 
   filterByStatus($event, status) {
-    this.filters.status = status;
+    
+    if(this.filters.status == status) {
+      this.filters.status = null;
+    } else {
+      this.filters.status = status;
+    }
+
+    this.loadData(1); // reload all result
+  }
+
+  filterByApprovedToHire($event, status) {
+
+    if(this.filters.approved_to_hire == status) {
+      this.filters.approved_to_hire = null;
+    } else {
+      this.filters.approved_to_hire = status;
+    }
+
     this.loadData(1); // reload all result
   }
 }

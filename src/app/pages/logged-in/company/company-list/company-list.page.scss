@@ -24,3 +24,10 @@
     color: #fff;
   }
 }
+
+ion-badge {
+  ion-icon {
+      position: relative;
+      top: 2px;
+  }
+}

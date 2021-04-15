@@ -1,11 +1,23 @@
 <ion-header>
+
   <ion-toolbar>
 
     <ion-buttons slot="start">
       <ion-back-button defaultHref="company-list"></ion-back-button>
     </ion-buttons>
 
-    <ion-title *ngIf="company">{{ company.company_name }}</ion-title>
+    <ion-title *ngIf="company">
+      {{ company.company_name }}
+    
+      <ion-badge color="success" *ngIf="company.company_approved_to_hire">
+        <ion-icon name="checkmark-outline"></ion-icon> Approved to hire
+      </ion-badge>
+      
+      <ion-badge color="warning" *ngIf="!company.company_approved_to_hire">
+        <ion-icon name="close-outline"></ion-icon> Not approved to hire
+      </ion-badge>
+    
+    </ion-title>
 
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button (click)="update()">
