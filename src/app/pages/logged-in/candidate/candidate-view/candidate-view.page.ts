@@ -188,6 +188,15 @@ export class CandidateViewPage implements OnInit {
     this.sections = $e.detail.value;
   }
 
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date)
+      return new Date(date.replace(/-/g, '/'));
+  }
+
   getResumeUrl(candidate) {
     return this.aws.permanentBucketUrl + 'candidate-resume/' + encodeURIComponent(candidate.candidate_resume);
   }
