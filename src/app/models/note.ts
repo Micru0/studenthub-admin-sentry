@@ -1,6 +1,5 @@
-import { Staff } from './staff';
-import {Company} from './company';
-import {Request} from './request';
+import { Company } from './company';
+import { Request } from './request';
 import { CompanyContact } from './company-contact';
 import { Fulltimer } from './fulltimer';
 import { Candidate } from './candidate';
@@ -25,6 +24,6 @@ export class Note {
     fulltimer: Fulltimer;
     company: Company;
     request: Request;
-    createdBy: Staff;
-    updatedBy: Staff;
+    createdBy: any;//Staff;
+    updatedBy: any;//Staff;
 }
