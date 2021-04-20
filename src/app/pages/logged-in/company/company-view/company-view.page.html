@@ -361,11 +361,12 @@
 
       <ion-list>
         <ion-item-sliding *ngFor="let note of company.notes" [disabled]="platform.width() > 768">
+
           <ion-item tappable (click)="addNote(note)">
             <div tabindex="0"></div>
             <ion-label>
               <label [innerHTML]="note.note_text"></label><br />
-              <p>By <span *ngIf="note && note.createdBy">{{ note.createdBy.staff_name}}</span> @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
+              <p>By <span *ngIf="note && note.updatedBy">{{ note.updatedBy.staff_name? note.updatedBy.staff_name: note.updatedBy.candidate_name }}</span> @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
             </ion-label>
   
             <ion-buttons slot="end" *ngIf="!authService.admin_limited_access && platform.width() > 768">
