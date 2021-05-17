@@ -133,6 +133,7 @@
           <p>{{ candidate.candidate_address_line1 }}</p>
         </ion-label>
       </ion-item>
+
       <ion-item [class.pending]="!candidate.candidate_hourly_rate">
         <div tabindex="0"></div>
         <ion-label>
@@ -179,6 +180,7 @@
           <p *ngIf="!candidate.nationality">-</p>
         </ion-label>
       </ion-item>
+
       <ion-item>
         <div tabindex="0"></div>
         <ion-label>
@@ -368,6 +370,7 @@
         </ion-label>
       </ion-item>
     </ng-container>
+    
     <ng-container *ngIf="sections == 'bank' && candidate">
       <ion-item [class.pending]="!candidate.bank">
         <div tabindex="0"></div>
