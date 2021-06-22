@@ -24,4 +24,13 @@ export class StatisticService {
     let url = this._endpoint;
     return this._authhttp.get(url);
   }
+
+  /**
+   * return transfer stats 
+   * @returns 
+   */
+  viewTransfers(): Observable<any>{
+    let url = this._endpoint + '/transfer';
+    return this._authhttp.get(url);
+  }
 }

@@ -345,6 +345,15 @@ const routes: Routes = [
   },
 
   {
+    path: 'stats',
+    loadChildren: () => import('./pages/logged-in/stats/stats.module').then( m => m.StatsPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StatsPage'
+    }
+  },
+
+  {
     path: 'app-error',
     loadChildren: () => import('./pages/errors/app-error/app-error.module').then( m => m.AppErrorPageModule)
   },
@@ -352,6 +361,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'not-found'
   },
+
 
 ];
 
