@@ -1,0 +1,39 @@
+small {
+    display: block;
+}
+
+.zeroHours {
+    color: white;
+    background: #F44336;
+    --background: #F44336;
+    --ion-item-background: #F44336;
+
+    h3 {
+        font-weight: bold;
+    }
+    
+    ion-label,
+    b,
+    p {
+        color: white;
+    }
+}
+
+.candidateList {
+    ion-grid {
+        font-size: 0.8em;
+    }
+
+    h2 {
+        font-size: 1.2em
+    }
+
+    .hoursWorked {
+        font-size: 1.2em;
+        margin-bottom: 8px;
+    }
+}
+.alert ion-item {
+    --background: rosybrown;
+    color: #fff;
+}
