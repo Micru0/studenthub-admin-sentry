@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Suspicious Transfer List</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="content">
+    <ion-badge tappable color="primary" (click)="filterByStatus($event, '0')" [class.active]="filters.transferStatus == '0'">All</ion-badge>
+    <ion-badge tappable color="primary" (click)="filterByStatus($event, '10')" [class.active]="filters.transferStatus == '10'">Draft</ion-badge>
+    <ion-badge tappable color="primary" (click)="filterByStatus($event, '5')" [class.active]="filters.transferStatus == '5'">Locked, Pending Payment</ion-badge>
+    <ion-badge tappable color="primary" (click)="filterByStatus($event, '1')" [class.active]="filters.transferStatus == '1'">Payment Sent, Confirm Received</ion-badge>
+    <ion-badge tappable color="primary" (click)="filterByStatus($event, '3')" [class.active]="filters.transferStatus == '3'">Received & Distribution in Progress</ion-badge>
+    <ion-badge tappable color="primary" (click)="filterByStatus($event, '4')" [class.active]="filters.transferStatus == '4'">Transfer Completed</ion-badge>
+  </div>
+  <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
+  <ion-button (click)="selectDate()" [color]="(filters.startDate) ? 'success' : 'primary'">
+    <span *ngIf="!filters.startDate">Select Start Date</span>
+    <span *ngIf="filters.startDate">Selected  : {{filters.startDate}}</span>
+  </ion-button>
+  <ion-button fill="clear" (click)="clearfilter(true)" *ngIf="filters.startDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
+  <ion-button (click)="selectDate(false)"  [color]="(filters.endDate) ? 'success' : 'primary'">
+    <span *ngIf="!filters.endDate">Select End Date</span>
+    <span *ngIf="filters.endDate">Selected  : {{filters.endDate}}</span>
+  </ion-button>
+  <ion-button fill="clear" (click)="clearfilter()" *ngIf="filters.endDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
+
+  <!-- Transfer List -->
+  <ion-list>
+    <ion-item tappable *ngFor="let transfer of transfers" (click)="transferDetails(transfer.transfer_id)">
+      <div tabindex="0"></div>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <p>Transfer #{{ transfer.transfer_id}}</p>
+            <h2>KWD {{ transfer.company_total | number:'1.3-3' }}</h2>
+            <b>{{ transfer.company_name }}</b>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" class='status'>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==10"> Draft </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==5"> Locked, Pending Payment </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==1"> Payment Sent, Confirm Received </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==3"> Received & Distribution in Progress </span>
+            <span class="status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==4"> Completed </span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="6">
+            <p>Employee Distribution</p> 
+            KWD {{ transfer.total - transfer.total_transfer_cost | number:'1.3-3' }}
+          </ion-col>
+          <ion-col size="12" size-sm="6" *ngIf="transfer.total_transfer_cost > 0">
+            <p>Transfer Cost</p>
+            KWD {{ transfer.total_transfer_cost | number:'1.3-3' }}<br>
+          </ion-col>
+          <ion-col size="12" size-sm="6">
+            <p>Profit</p>
+            KWD {{ transfer.profit | number:'1.3-3' }}<br>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="6">
+            <p>Created</p>
+            {{ transfer.transfer_created_at}}
+          </ion-col>
+          <ion-col size="12" size-sm="6">
+            <p>Updated</p>
+            {{ transfer.transfer_updated_at}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12" size-sm="6">
+            <p>Start Date</p>
+            <span *ngIf="transfer.start_date">{{ transfer.start_date}}</span>
+            <span *ngIf="!transfer.start_date">-</span>
+          </ion-col>
+          <ion-col size="12" size-sm="6">
+            <p>End Date</p>
+            <span *ngIf="transfer.end_date">{{ transfer.end_date}}</span>
+            <span *ngIf="!transfer.end_date">-</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <loading-modal [loading]="loading" type="transfer-list"></loading-modal>
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

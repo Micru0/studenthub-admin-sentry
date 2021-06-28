@@ -1,0 +1,256 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="suspicious-transfer-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>
+      Transfer 
+      <span *ngIf="transfer?.company_total">- KWD {{ transfer.company_total | number:'1.3-3' }}</span>
+    </ion-title>
+    
+    <ion-buttons slot="end">
+      <ion-button (click)="exportExcel()">
+        Download as Excel
+      </ion-button>
+    </ion-buttons>
+
+    <ion-progress-bar type="indeterminate" *ngIf="processing"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-toolbar class="ion-padding ion-text-center" *ngIf="transfer">
+    <ion-title>
+      {{transferStatus}}
+      <span *ngIf="transfer.transfer_status==3">
+        [ {{ (transfer.totalPaid / (transfer.totalUnpaid + transfer.totalPaid)) | percent }} complete ]
+      </span>
+    </ion-title>
+
+    <div>
+      {{transferStatusDescription}}
+      <span *ngIf="transfer.transfer_status==3">
+        <br />{{ transfer.totalPaid }} out of {{ transfer.totalUnpaid + transfer.totalPaid }} paid.
+      </span>
+    </div>
+
+    <!-- If Transfer Locked -->
+    <ion-button fill="outline" (click)="markUnlock()"
+      *ngIf="(transfer.transfer_status == 5 || transfer.transfer_status == 1) && !authService.admin_limited_access">
+      <ion-icon name="lock-open-outline" slot="start"></ion-icon>
+      Unlock Transfer, revert to draft
+    </ion-button>
+
+    <!-- If Transfer Payment Sent, You can either Mark Received or Revert Back to Locked -->
+    <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="(transfer.transfer_status == 1 || transfer.transfer_status == 5) && !authService.admin_limited_access">
+      Mark Received & Distributing Salary
+    </ion-button>
+
+    <ion-button fill="outline" (click)="revertBackToLock()" *ngIf="transfer.transfer_status === 1 && !authService.admin_limited_access">
+      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      Revert Back To Locked
+    </ion-button>
+
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="transfer">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" size-md="3">
+          <b>Transfer ID</b> <br /> {{ transfer.transfer_id}}
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <b>Total Paid</b> <br /> KWD {{ transfer.company_total | number:'1.3-3' }}
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <b>Created on</b> <br /> {{ transfer.transfer_created_at}}
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <b>Updated on</b> <br /> {{ transfer.transfer_updated_at}}
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <b>Total to Distribute</b> <br /> KWD {{ transfer.total - transfer.total_transfer_cost | number:'1.3-3' }}
+        </ion-col>
+        <ion-col size="6" size-md="3" *ngIf="transfer.total_transfer_cost > 0">
+          <b>Transfer Cost</b> <br /> KWD {{ transfer.total_transfer_cost | number:'1.3-3' }}
+        </ion-col>
+        <ion-col size="6" size-md="3">
+          <b>Profit</b> <br /> KWD {{ transfer.profit | number:'1.3-3' }}
+        </ion-col>
+        <ion-col size="6" size-sm="3">
+          <b>Start Date</b><br/>
+          <span *ngIf="transfer.start_date">{{ transfer.start_date}}</span>
+          <span *ngIf="!transfer.start_date">-</span>
+        </ion-col>
+        <ion-col size="6" size-sm="3">
+          <b>End Date</b><br/>
+          <span *ngIf="transfer.end_date">{{ transfer.end_date}}</span>
+          <span *ngIf="!transfer.end_date">-</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <loading-modal [loading]="loading && !transfer" type="transfer"></loading-modal>
+
+  <!-- either full access or limited access and received/completed -->
+  
+  <ng-container *ngIf="
+    this.authService.admin_limited_access == 0 ||
+    (
+      this.authService.admin_limited_access == 1 && 
+      transfer && 
+      (transfer.transfer_status==3 || this.transfer.transfer_status==4)
+    )
+    ">
+
+
+    <!-- Invoices -->
+    <div class="invoices ion-padding" *ngIf="invoices.length > 0">
+      <h3>Invoices</h3>
+      <ion-list>
+        <ion-item tappable *ngFor="let invoice of invoices" (click)="downloadInvoice(invoice)">
+          <div tabindex="0"></div>
+          <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
+          <ion-label>
+            Download Invoice #{{ invoice.invoice_id }} - KWD {{ invoice.invoice_total | number:'1.3-3' }}
+            <small>{{ invoice.company.company_name }}</small>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- Receipts -->
+    <div class="receipts ion-padding" *ngIf="receipts.length > 0">
+      <h3>Receipts</h3>
+      <ion-list>
+        <ion-item tappable *ngFor="let receipt of receipts" (click)="downloadReceipt(receipt)">
+          <div tabindex="0"></div>
+          <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
+          <ion-label>
+            Download Receipt #{{ receipt.invoice_id }} - KWD {{ receipt.invoice_total | number:'1.3-3' }}
+            <small>{{ receipt.company.company_name }}</small>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ng-container>
+
+  <!-- Transfer Details made to each Candidate -->
+  
+  <ion-list *ngIf="transfer && transferCandidates" class='candidateList'>
+    <!-- store_name pipe returns the transferCandidates grouped by store as object of following format: -->
+    <!-- {name: string, resources: TransferCandidate[]} -->
+    <ion-item-group *ngFor="let group of transferCandidates | store_name">
+      <ion-item-divider>
+        <ion-label>
+          <b>{{group.name}}</b>
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-card tappable *ngFor="let resource of group.resources" (click)="loadCandidateDetail(resource.candidate)"
+        [class.zeroHours]="resource.hours == 0 && resource.bonus == 0" [class.alert]="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">
+ 
+        <!-- If hours have been worked -->
+
+        <ion-card-content class="ion-no-padding">
+
+          <ion-item lines="none">
+            <div tabindex="0"></div>
+            <ion-avatar slot="start">
+              <img *ngIf="resource.candidate && resource.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + resource.candidate.candidate_personal_photo }}" (error)="loadLogo($event,resource.candidate)">
+              <img *ngIf="!resource.candidate || !resource.candidate.candidate_personal_photo" src="/assets/icon.png">
+            </ion-avatar>
+            
+            <ion-label>
+              <!-- If no hours worked by candidate -->
+  
+              <h3  class="candidate_name">
+                {{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}
+                <span *ngIf="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">
+                  <br/>( Current Rate : {{resource.candidate.candidate_hourly_rate}} KD/hr)<br/>
+                  ( Distribution Rate : {{ resource.candidate_hourly_rate }} KD/hr)
+                </span>
+              </h3>
+              <p *ngIf="resource.hours == 0 && resource.bonus == 0">Candidate hasn't worked any hours</p>
+            </ion-label>
+            
+            <ion-badge slot="end" [color]="resource.paid==1?'secondary':'dark'"
+              *ngIf="(transfer.transfer_status==3 || transfer.transfer_status==4) && (resource.hours > 0 || resource.bonus > 0)">
+              <ion-icon name="checkmark-circle-outline" *ngIf="resource.paid==1"></ion-icon>
+              <span *ngIf="resource.paid==0"> Transfer in progress </span>
+            </ion-badge>
+  
+          </ion-item>
+           
+          <ion-grid *ngIf="resource.hours > 0 || resource.bonus > 0">
+            <ion-row>
+              <ion-col size="12" class='hoursWorked'>
+                {{resource.hours}} hours worked
+              </ion-col>
+              <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+                <b>Company Pays {{ resource.company_hourly_rate }} KD/hr</b> <br />
+                KWD {{ totalCompanyPaysForCandidateWithoutBonus(resource) | number:'1.3-3' }}
+                <div *ngIf="resource.bonus > 0">
+                  + Bonus KWD {{ resource.bonus | number:'1.3-3' }}
+                </div>
+              </ion-col>
+              <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+                <b>We Distribute {{ resource.candidate_hourly_rate }} KD/hr</b> <br />
+                KWD {{ totalPaidToCandidateWithoutBonus(resource) | number:'1.3-3' }}
+                <div *ngIf="resource.candidate_bonus > 0">
+                  + Bonus KWD {{ resource.candidate_bonus | number:'1.3-3' }}
+                </div>
+              </ion-col>
+              <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngIf="resource.transfer_cost > 0">
+                <b>Transfer Cost</b> <br /> KWD {{ resource.transfer_cost | number:'1.3-3' }}
+              </ion-col>
+              <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+                <b>Profit</b> <br /> KWD
+                {{ (totalCompanyPaysForCandidateWithBonus(resource) - totalPaidToCandidateWithBoth(resource) - resource.transfer_cost) | number:'1.3-3' }}
+              </ion-col>
+
+              <ion-col *ngIf="resource.transfer_confirmation_id" size="12" size-sm="6" size-md="4" size-lg="3">
+                <b>Transfer Confirmation ID</b> <br /> 
+                {{ resource.transfer_confirmation_id }}
+              </ion-col>
+
+              <ion-col *ngIf="resource.bank" size="12" size-sm="6" size-md="4" size-lg="3">
+                <b>Bank</b> <br /> 
+                {{ resource.transfer_benef_iban }} @ {{ resource.bank.bank_name }}
+              </ion-col>
+
+              <ion-col *ngIf="resource.transfer_benef_name" size="12" size-sm="6" size-md="4" size-lg="3">
+                <b>Account name</b> <br /> 
+                {{ resource.transfer_benef_name }} 
+              </ion-col>
+
+              <ion-col *ngIf="resource.transferFile && !this.authService.admin_limited_access" size="12" size-sm="6" size-md="6" size-lg="6">
+                <b>Transfer File</b> <br /> 
+                <a [href]="aws.permanentBucketUrl + resource.transferFile.transfer_file_s3_path" (click)="doNothing($event)">
+                  {{ resource.transferFile.transfer_file_s3_path }}
+                </a> <br /> 
+                @ {{ toDate(resource.transferFile.transfer_file_created_at) | date: 'MMM d, y, h:mm:ss a' }}
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+
+        </ion-card-content>
+
+      </ion-card>
+    </ion-item-group>
+
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" *ngIf="candidatePage < candidatePageCount - 1"
+    (ionInfinite)="infiniteTransferCandidates($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

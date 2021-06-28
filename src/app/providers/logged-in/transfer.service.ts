@@ -62,6 +62,15 @@ export class TransferService {
     return this._authhttp.post(url, '');
   }
 
+  /*
+   * List of all Transfers
+   * @returns {Observable<any>}
+   */
+  suspiciousList(searchParams: string, page: number): Observable<any> {
+    let url = `${this._transferEndpoint}/suspicious?page=${page}&expand=profit${searchParams}`;
+    return this._authhttp.get(url, true);
+  }
+
   /**
    * Download excel
    * @param {Transfer} transfer
