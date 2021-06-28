@@ -38,6 +38,8 @@ export class TransferViewPage implements OnInit {
 
   public processing: boolean = false;
 
+  public updatingTransferFromFile: boolean = false; 
+
   public candidatePageCount: number;
   public candidatePage: number;
 
@@ -77,6 +79,7 @@ export class TransferViewPage implements OnInit {
     this.loading = true;
 
     this.transferService.transferIdDetails(this.transfer_id).subscribe(response => {
+
       this.transfer = response;
 
       this._updateTransferStatus();
@@ -232,6 +235,52 @@ export class TransferViewPage implements OnInit {
   }
 
   /**
+   * update candidate total from transfer file entries
+   */
+  async updateTransferFromFile() {
+
+    let alert = await this.alertCtrl.create({
+      header: 'Did you sattled?',
+      message: 'You may need to sattle difference between transfer file amount and transfer details',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: async () => {
+
+            this.updatingTransferFromFile = true;
+
+            this.transferService.updateTransferFromFile(this.transfer).subscribe(async response => {
+              
+              let toast = await this.toastCtrl.create({
+                message: response.message,
+                duration: 3000
+              });
+              toast.present();
+
+              this.eventService.transferUpdated$.next();
+
+              //this.navCtrl.pop();
+
+              this.updatingTransferFromFile = false;
+
+              this.loadData();
+
+              this.listTransferCandidates();
+
+              this.listInvoices();
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  
+  /**
    * Payment Sent. Revert back to locked.
    */
   async revertBackToLock() {
@@ -251,10 +300,9 @@ export class TransferViewPage implements OnInit {
             this.processing = true;
 
             this.transferService.markLocked(this.transfer).subscribe(async response => {
-              let result = response;
-
+              
               let toast = await this.toastCtrl.create({
-                message: result.message,
+                message: response.message,
                 duration: 3000
               });
               toast.present();
@@ -379,5 +427,9 @@ export class TransferViewPage implements OnInit {
    */
   loadLogo($event, candidate) {
     candidate.candidate_personal_photo = null;
+  }
+
+  isCandidateTransferSuspicious(resource) {
+    return resource.transferFileEntry && parseFloat(resource.transferFileEntry.credit_amount) != parseFloat(resource.candidate_total);
   }
 }

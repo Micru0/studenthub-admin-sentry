@@ -22,6 +22,7 @@ export class Transfer {
 	totalUnpaid: number;
 	profit: number;
 	remainingPaymentTransferTotal: any;
+	isSuspicious: boolean;
 	candidates: Candidate[];
 	transferCandidates: TransferCandidate[];
 	unPaidTransferCandidates: TransferCandidate[];
