@@ -171,7 +171,10 @@
   
               <h3  class="candidate_name">
                 {{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}
-                <span *ngIf="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">( Current Rate : {{resource.candidate.candidate_hourly_rate}} ) </span>
+                <span *ngIf="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">
+                  <br/>( Current Rate : {{resource.candidate.candidate_hourly_rate}} KD/hr)<br/>
+                  ( Distribution Rate : {{ resource.candidate_hourly_rate }} KD/hr)
+                </span>
               </h3>
               <p *ngIf="resource.hours == 0 && resource.bonus == 0">Candidate hasn't worked any hours</p>
             </ion-label>
