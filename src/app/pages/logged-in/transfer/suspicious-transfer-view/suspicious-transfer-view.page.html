@@ -2,13 +2,12 @@
   <ion-toolbar>
 
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="transfer-list"></ion-back-button>
+      <ion-back-button defaultHref="suspicious-transfer-list"></ion-back-button>
     </ion-buttons>
 
     <ion-title>
       Transfer 
       <span *ngIf="transfer?.company_total">- KWD {{ transfer.company_total | number:'1.3-3' }}</span>
-
     </ion-title>
     
     <ion-buttons slot="end">
@@ -30,8 +29,6 @@
       <span *ngIf="transfer.transfer_status==3">
         [ {{ (transfer.totalPaid / (transfer.totalUnpaid + transfer.totalPaid)) | percent }} complete ]
       </span>
-
-      <ion-badge *ngIf="transfer?.isSuspicious" color="danger">Suspicious</ion-badge>
     </ion-title>
 
     <div>
@@ -42,7 +39,6 @@
     </div>
 
     <!-- If Transfer Locked -->
-
     <ion-button fill="outline" (click)="markUnlock()"
       *ngIf="(transfer.transfer_status == 5 || transfer.transfer_status == 1) && !authService.admin_limited_access">
       <ion-icon name="lock-open-outline" slot="start"></ion-icon>
@@ -70,7 +66,6 @@
         <ion-col size="6" size-md="3">
           <b>Total Paid</b> <br /> KWD {{ transfer.company_total | number:'1.3-3' }}
         </ion-col>
-
         <ion-col size="6" size-md="3">
           <b>Created on</b> <br /> {{ transfer.transfer_created_at}}
         </ion-col>
@@ -80,26 +75,22 @@
         <ion-col size="6" size-md="3">
           <b>Total to Distribute</b> <br /> KWD {{ transfer.total - transfer.total_transfer_cost | number:'1.3-3' }}
         </ion-col>
-
         <ion-col size="6" size-md="3" *ngIf="transfer.total_transfer_cost > 0">
           <b>Transfer Cost</b> <br /> KWD {{ transfer.total_transfer_cost | number:'1.3-3' }}
         </ion-col>
         <ion-col size="6" size-md="3">
           <b>Profit</b> <br /> KWD {{ transfer.profit | number:'1.3-3' }}
         </ion-col>
-
         <ion-col size="6" size-sm="3">
           <b>Start Date</b><br/>
           <span *ngIf="transfer.start_date">{{ transfer.start_date}}</span>
           <span *ngIf="!transfer.start_date">-</span>
         </ion-col>
-
         <ion-col size="6" size-sm="3">
           <b>End Date</b><br/>
           <span *ngIf="transfer.end_date">{{ transfer.end_date}}</span>
           <span *ngIf="!transfer.end_date">-</span>
         </ion-col>
-
       </ion-row>
     </ion-grid>
   </ion-toolbar>
@@ -116,6 +107,7 @@
       (transfer.transfer_status==3 || this.transfer.transfer_status==4)
     )
     ">
+
 
     <!-- Invoices -->
     <div class="invoices ion-padding" *ngIf="invoices.length > 0">
@@ -161,16 +153,11 @@
       </ion-item-divider>
 
       <ion-card tappable *ngFor="let resource of group.resources" (click)="loadCandidateDetail(resource.candidate)"
-        [class.zeroHours]="resource.hours == 0 && resource.bonus == 0" 
-        [class.is-suspicious]="isCandidateTransferSuspicious(resource)">
+        [class.zeroHours]="resource.hours == 0 && resource.bonus == 0" [class.alert]="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">
  
         <!-- If hours have been worked -->
 
         <ion-card-content class="ion-no-padding">
-
-          <ion-badge *ngIf="isCandidateTransferSuspicious(resource)" color="danger">
-            Not matching with transfer file entry of {{ resource.transferFileEntry.credit_amount }} KWD 
-          </ion-badge>
 
           <ion-item lines="none">
             <div tabindex="0"></div>
@@ -182,7 +169,13 @@
             <ion-label>
               <!-- If no hours worked by candidate -->
   
-              <h3  class="candidate_name">{{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}</h3>
+              <h3  class="candidate_name">
+                {{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}
+                <span *ngIf="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">
+                  <br/>( Current Rate : {{resource.candidate.candidate_hourly_rate}} KD/hr)<br/>
+                  ( Distribution Rate : {{ resource.candidate_hourly_rate }} KD/hr)
+                </span>
+              </h3>
               <p *ngIf="resource.hours == 0 && resource.bonus == 0">Candidate hasn't worked any hours</p>
             </ion-label>
             
@@ -213,11 +206,9 @@
                   + Bonus KWD {{ resource.candidate_bonus | number:'1.3-3' }}
                 </div>
               </ion-col>
-
               <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngIf="resource.transfer_cost > 0">
                 <b>Transfer Cost</b> <br /> KWD {{ resource.transfer_cost | number:'1.3-3' }}
               </ion-col>
-
               <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
                 <b>Profit</b> <br /> KWD
                 {{ (totalCompanyPaysForCandidateWithBonus(resource) - totalPaidToCandidateWithBoth(resource) - resource.transfer_cost) | number:'1.3-3' }}
@@ -263,9 +254,3 @@
   </ion-infinite-scroll>
 
 </ion-content>
-<ion-footer *ngIf="transfer?.isSuspicious">
-    <ion-button expand="full" [disabled]="updatingTransferFromFile" (click)="updateTransferFromFile()">
-      <span *ngIf="!updatingTransferFromFile">Update Transfer from Transfer File</span>
-      <ion-spinner *ngIf="updatingTransferFromFile"></ion-spinner>
-    </ion-button> 
-</ion-footer>

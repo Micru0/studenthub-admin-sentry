@@ -14,13 +14,12 @@ import { Transfer } from 'src/app/models/transfer';
 import { EventService } from 'src/app/providers/event.service';
 import {ModalController, Platform} from '@ionic/angular';
 
-
 @Component({
-  selector: 'app-transfer-list',
-  templateUrl: './transfer-list.page.html',
-  styleUrls: ['./transfer-list.page.scss'],
+  selector: 'app-suspicious-transfer-list',
+  templateUrl: './suspicious-transfer-list.page.html',
+  styleUrls: ['./suspicious-transfer-list.page.scss'],
 })
-export class TransferListPage implements OnInit {
+export class SuspiciousTransferListPage implements OnInit {
 
   public transferStatus;
   public companyName = '';
@@ -43,17 +42,14 @@ export class TransferListPage implements OnInit {
   public filters: {
     companyName: string,
     transferStatus: any,
-    suspicious: boolean,
     startDate: string
     endDate: string
   } = {
     companyName: null,
     transferStatus: 0,
-    suspicious: false,
     startDate: null,
     endDate: null
   };
-
   constructor(
     private router: Router,
     public activatedRoute: ActivatedRoute,
@@ -104,7 +100,7 @@ export class TransferListPage implements OnInit {
 
     const searchParams = this.urlParams();
 
-    this.transferService.list(searchParams, page).subscribe(response => {
+    this.transferService.suspiciousList(searchParams, page).subscribe(response => {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
@@ -123,9 +119,7 @@ export class TransferListPage implements OnInit {
     this.loading = true;
 
     this.currentPage++;
-    
     const searchParams = this.urlParams();
-
     this.transferService.list(searchParams, this.currentPage).subscribe(response => {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
@@ -162,7 +156,7 @@ export class TransferListPage implements OnInit {
    * @param transferID
    */
   transferDetails(transferID: number) {
-    this.router.navigate(['transfer-view', transferID]);
+    this.router.navigate(['suspicious-transfer-view', transferID]);
   }
 
   /**
@@ -179,14 +173,9 @@ export class TransferListPage implements OnInit {
       urlParams += '&transfer_status=' + this.filters.transferStatus;
     }
 
-    if(this.filters.suspicious) {
-      urlParams += '&suspicious=' + this.filters.suspicious;
-    }
-
     if (this.filters.startDate) {
       urlParams += '&start_date=' + this.filters.startDate;
     }
-    
     if (this.filters.endDate) {
       urlParams += '&end_date=' + this.filters.endDate;
     }
@@ -201,7 +190,6 @@ export class TransferListPage implements OnInit {
     this.filters = {
       companyName: null,
       transferStatus: null,
-      suspicious: false,
       startDate: null,
       endDate: null
     };
@@ -209,21 +197,11 @@ export class TransferListPage implements OnInit {
     this.loadData(1); // reload all result
   }
 
-  filterSuspicious(event) {
-    this.filters.suspicious = !this.filters.suspicious;
-    this.loadData(1); // reload all result
-  }
 
   filterByStatus($event, status) {
     this.filters.transferStatus = status;
-
-    if(this.filters.transferStatus == 0) {
-      this.filters.suspicious = false;
-    }
-
     this.loadData(1); // reload all result
   }
-
   searchByName($event) {
     this.filters.companyName = $event.detail.value;
     this.loadData(1); // reload all result
@@ -242,6 +220,7 @@ export class TransferListPage implements OnInit {
     this.loadData(1); // reload all result
   }
 
+
   async selectDate(startDate = true) {
     const options: CalendarModalOptions = {
       title: 'Select Date',
@@ -256,9 +235,7 @@ export class TransferListPage implements OnInit {
     myCalendar.present();
 
     const event: any = await myCalendar.onDidDismiss();
-    
     const date: CalendarResult = event.data;
-
     if (date) {
       if (startDate) {
         this.filters.startDate = event.data.string;
@@ -268,5 +245,6 @@ export class TransferListPage implements OnInit {
         this.loadData(1); // reload all result
       }
     }
+    console.log(date);
   }
 }

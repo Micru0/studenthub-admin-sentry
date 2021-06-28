@@ -48,7 +48,26 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   list(searchParams: string, page: number): Observable<any> {
-    let url = `${this._transferEndpoint}?page=${page}&expand=profit${searchParams}`;
+    let url = `${this._transferEndpoint}?page=${page}&expand=isSuspicious,profit${searchParams}`;
+    return this._authhttp.get(url, true);
+  }
+
+  /**
+   * update candidate transfer total from transfer file 
+   * @param transfer 
+   * @returns 
+   */
+  updateTransferFromFile(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/update-transfer-from-file/${transfer.transfer_id}`;
+    return this._authhttp.post(url, '');
+  }
+
+  /*
+   * List of all Transfers
+   * @returns {Observable<any>}
+   */
+  suspiciousList(searchParams: string, page: number): Observable<any> {
+    let url = `${this._transferEndpoint}/suspicious?page=${page}&expand=profit${searchParams}`;
     return this._authhttp.get(url, true);
   }
 
@@ -77,7 +96,7 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   transferIdDetails(transfer_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${transfer_id}?expand=totalPaid,totalUnpaid,profit`;
+    let url = `${this._transferEndpoint}/${transfer_id}?expand=isSuspicious,totalPaid,totalUnpaid,profit`;
     return this._authhttp.get(url);
   }
 

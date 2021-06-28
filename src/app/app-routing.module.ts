@@ -225,6 +225,22 @@ const routes: Routes = [
     }
   },
   {
+    path: 'suspicious-transfer-list',
+    loadChildren: () => import('./pages/logged-in/transfer/suspicious-transfer-list/suspicious-transfer-list.module').then(m => m.SuspiciousTransferListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'SuspiciousTransferListPage'
+    }
+  },
+  {
+    path: 'suspicious-transfer-view',
+    loadChildren: () => import('./pages/logged-in/transfer/suspicious-transfer-view/suspicious-transfer-view.module').then(m => m.SuspiciousTransferViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'SuspiciousTransferViewPage'
+    }
+  },
+  {
     path: 'transfer-paid',
     loadChildren: () => import('./pages/logged-in/transfer/transfer-paid/transfer-paid.module').then(m => m.TransferPaidPageModule),
     canActivate: [AuthService],

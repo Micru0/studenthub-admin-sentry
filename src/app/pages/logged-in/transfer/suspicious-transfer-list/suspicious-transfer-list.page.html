@@ -9,7 +9,7 @@
       </ion-menu-toggle>
     </ion-buttons>
 
-    <ion-title>Transfer List</ion-title>
+    <ion-title>Suspicious Transfer List</ion-title>
 
     <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
 
@@ -19,15 +19,12 @@
 <ion-content>
 
   <div class="content">
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, '0')" [class.active]="!filters.suspicious && filters.transferStatus == '0'">All</ion-badge>
-    
+    <ion-badge tappable color="primary" (click)="filterByStatus($event, '0')" [class.active]="filters.transferStatus == '0'">All</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByStatus($event, '10')" [class.active]="filters.transferStatus == '10'">Draft</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByStatus($event, '5')" [class.active]="filters.transferStatus == '5'">Locked, Pending Payment</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByStatus($event, '1')" [class.active]="filters.transferStatus == '1'">Payment Sent, Confirm Received</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByStatus($event, '3')" [class.active]="filters.transferStatus == '3'">Received & Distribution in Progress</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByStatus($event, '4')" [class.active]="filters.transferStatus == '4'">Transfer Completed</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterSuspicious($event)" [class.active]="filters.suspicious">Suspicious</ion-badge>
-    
   </div>
   <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
   <ion-button (click)="selectDate()" [color]="(filters.startDate) ? 'success' : 'primary'">
@@ -42,17 +39,13 @@
   <ion-button fill="clear" (click)="clearfilter()" *ngIf="filters.endDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
 
   <!-- Transfer List -->
-
   <ion-list>
-    <ion-item [class.is-suspicious]="transfer.isSuspicious" tappable *ngFor="let transfer of transfers" (click)="transferDetails(transfer.transfer_id)">
+    <ion-item tappable *ngFor="let transfer of transfers" (click)="transferDetails(transfer.transfer_id)">
       <div tabindex="0"></div>
-
       <ion-grid>
         <ion-row>
           <ion-col class="ion-text-center">
-            <p>Transfer #{{ transfer.transfer_id}} 
-              <ion-badge *ngIf="transfer.isSuspicious" color="danger">Suspicious</ion-badge>
-            </p>
+            <p>Transfer #{{ transfer.transfer_id}}</p>
             <h2>KWD {{ transfer.company_total | number:'1.3-3' }}</h2>
             <b>{{ transfer.company_name }}</b>
           </ion-col>
