@@ -1,0 +1,65 @@
+h2 {
+    font-weight: bold !important;
+    font-size: 1.6em !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.status span {
+    display: block;
+    text-align: center;
+}
+
+.status_4 {
+    background: green;
+    color: #fff;
+    padding: 7px;
+}
+
+.status_10 {
+    background: grey;
+    color: #fff;
+    padding: 7px;
+}
+
+.status_5 {
+    background: burlywood;
+    color: #fff;
+    padding: 7px;
+}
+
+.status_1,
+.status_2 {
+    background: yellowgreen;
+    color: #fff;
+    padding: 7px;
+}
+
+.status_3 {
+    background: #387ef5;
+    color: #fff;
+    padding: 7px;
+}
+.content {
+    margin-top: 12px;
+    ion-badge {
+        border: solid 1px #4354a4;
+        background-color: #ffffff;
+        padding: 4px 17px;
+        margin: 0 7px 7px 0;
+        border-radius: 3px;
+        font-size: 14px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.44;
+        letter-spacing: normal;
+        text-align: center;
+        color: #4354a4;
+    }
+
+    ion-badge.active {
+        background-color: #4354a4;
+        color: #fff;
+    }
+}
