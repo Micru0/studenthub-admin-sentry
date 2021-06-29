@@ -31,7 +31,9 @@
         [ {{ (transfer.totalPaid / (transfer.totalUnpaid + transfer.totalPaid)) | percent }} complete ]
       </span>
 
-      <ion-badge *ngIf="transfer?.isSuspicious" color="danger">Suspicious</ion-badge>
+      <ion-badge *ngIf="transfer?.isSuspicious" color="danger">
+        Transfer file amount mismatch
+      </ion-badge>
     </ion-title>
 
     <div>
@@ -162,7 +164,9 @@
 
       <ion-card tappable *ngFor="let resource of group.resources" (click)="loadCandidateDetail(resource.candidate)"
         [class.zeroHours]="resource.hours == 0 && resource.bonus == 0" 
-        [class.is-suspicious]="isCandidateTransferSuspicious(resource)">
+        [class.is-suspicious]="isCandidateTransferSuspicious(resource)"
+        [class.alert]="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id"
+        >
  
         <!-- If hours have been worked -->
 
@@ -182,7 +186,16 @@
             <ion-label>
               <!-- If no hours worked by candidate -->
   
-              <h3  class="candidate_name">{{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}</h3>
+              <h3  class="candidate_name">
+                {{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}
+              
+                <span *ngIf="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">
+                  <br/>( Current Rate : {{resource.candidate.candidate_hourly_rate}} KD/hr)<br/>
+                  ( Distribution Rate : {{ resource.candidate_hourly_rate }} KD/hr)
+                </span>
+                
+              </h3>
+              
               <p *ngIf="resource.hours == 0 && resource.bonus == 0">Candidate hasn't worked any hours</p>
             </ion-label>
             
