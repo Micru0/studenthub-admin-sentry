@@ -26,6 +26,7 @@
   <ion-toolbar class="ion-padding ion-text-center" *ngIf="transfer">
     <ion-title>
       {{transferStatus}}
+      
       <span *ngIf="transfer.transfer_status==3">
         [ {{ (transfer.totalPaid / (transfer.totalUnpaid + transfer.totalPaid)) | percent }} complete ]
       </span>
@@ -107,7 +108,6 @@
       (transfer.transfer_status==3 || this.transfer.transfer_status==4)
     )
     ">
-
 
     <!-- Invoices -->
     <div class="invoices ion-padding" *ngIf="invoices.length > 0">

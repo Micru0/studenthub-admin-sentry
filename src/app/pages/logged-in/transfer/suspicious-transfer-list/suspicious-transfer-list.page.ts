@@ -156,7 +156,7 @@ export class SuspiciousTransferListPage implements OnInit {
    * @param transferID
    */
   transferDetails(transferID: number) {
-    this.router.navigate(['suspicious-transfer-view', transferID]);
+    this.router.navigate(['transfer-view', transferID]);
   }
 
   /**
