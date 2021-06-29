@@ -267,6 +267,7 @@ export class TransferViewPage implements OnInit {
 
               this.updatingTransferFromFile = false;
 
+              //update details 
               this.loadData();
 
               this.listTransferCandidates();
