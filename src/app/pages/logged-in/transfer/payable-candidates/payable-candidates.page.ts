@@ -135,11 +135,11 @@ export class PayableCandidatesPage  {
       transfer.unPaidTransferCandidates.forEach(transferCandidate => {
 
         if (!transferCandidate.candidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name) {
-          this.payableMissingAmount += transferCandidate.total_amount;//missing bank info
+          this.payableMissingAmount += transferCandidate.candidate_total;//missing bank info
         } else if (!transferCandidate.candidate.isProfileCompleted) {
-          this.payableIncompleteProfile += transferCandidate.total_amount;
+          this.payableIncompleteProfile += transferCandidate.candidate_total;
         } else {
-          this.payableAvailAmount += transferCandidate.total_amount;
+          this.payableAvailAmount += transferCandidate.candidate_total;
         }
       });
     });
