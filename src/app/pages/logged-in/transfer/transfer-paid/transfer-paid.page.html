@@ -32,7 +32,7 @@
         <h2  class="candidate_name">{{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}</h2>
         <p>{{ candidate.transfer_confirmation_id }}</p>
       </ion-label>
-      <ion-badge slot="end">KWD {{ candidate.total_amount | number:'1.3-3' }}</ion-badge>
+      <ion-badge slot="end">KWD {{ candidate.candidate_total | number:'1.3-3' }}</ion-badge>
     </ion-item> 
   </ion-list>
 
