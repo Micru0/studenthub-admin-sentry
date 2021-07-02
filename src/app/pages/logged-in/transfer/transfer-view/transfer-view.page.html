@@ -219,12 +219,17 @@
                   + Bonus KWD {{ resource.bonus | number:'1.3-3' }}
                 </div>
               </ion-col>
+
               <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
                 <b>We Distribute {{ resource.candidate_hourly_rate }} KD/hr</b> <br />
                 KWD {{ totalPaidToCandidateWithoutBonus(resource) | number:'1.3-3' }}
                 <div *ngIf="resource.candidate_bonus > 0">
                   + Bonus KWD {{ resource.candidate_bonus | number:'1.3-3' }}
                 </div>
+                
+                <ion-badge *ngIf="isCandidateTransferSuspicious(resource)" color="danger">
+                  Actual transferred {{ resource.transferFileEntry.credit_amount | number:'1.3-3' }}
+                </ion-badge>
               </ion-col>
 
               <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngIf="resource.transfer_cost > 0">
@@ -233,7 +238,14 @@
 
               <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
                 <b>Profit</b> <br /> KWD
-                {{ (totalCompanyPaysForCandidateWithBonus(resource) - totalPaidToCandidateWithBoth(resource) - resource.transfer_cost) | number:'1.3-3' }}
+                {{ (totalCompanyPaysForCandidateWithBonus(resource) 
+                    - totalPaidToCandidateWithBoth(resource) 
+                    - resource.transfer_cost) | number:'1.3-3' }} 
+
+                <ion-badge *ngIf="isCandidateTransferSuspicious(resource)" color="danger">
+                  Actual profit {{ resource.company_total - resource.candidate_total | number:'1.3-3' }}
+                </ion-badge>
+
               </ion-col>
 
               <ion-col *ngIf="resource.transfer_confirmation_id" size="12" size-sm="6" size-md="4" size-lg="3">
