@@ -82,9 +82,15 @@
         </ion-avatar>
         <ion-label  class="candidate_name" *ngIf="tc.candidate">
           {{ tc.candidate.candidate_name? tc.candidate.candidate_name: tc.candidate.candidate_name_ar }}
-          <ng-container *ngIf="!tc.candidate.bank_id || !tc.candidate.isProfileCompleted">
+          <ng-container *ngIf="!tc.candidate.bank_id || !tc.bank_id || !tc.transfer_benef_name || !tc.transfer_benef_iban || !tc.candidate.isProfileCompleted">
             <br/><br/>
-            <ion-badge slot="start" color="danger" *ngIf="!tc.candidate.bank_id">Missing Bank Info</ion-badge>
+            <ion-badge slot="start" color="danger" *ngIf="!tc.candidate.bank_id || !tc.bank_id || !tc.transfer_benef_name || !tc.transfer_benef_iban">
+              Missing Bank Info (
+              <small *ngIf="!tc.bank_id"> bank id, </small>
+              <small *ngIf="!tc.transfer_benef_name"> benef name, </small>
+              <small *ngIf="!tc.transfer_benef_iban"> benef_iban</small>
+              )
+            </ion-badge>
             <ion-badge slot="start" color="warning" *ngIf="!tc.candidate.isProfileCompleted">Incomplete Profile</ion-badge>
           </ng-container>
         </ion-label>
