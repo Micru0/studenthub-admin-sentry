@@ -22,6 +22,9 @@
         <div tabindex="0"></div>
         <ion-label>
           {{ staffMember.staff_name }} <br/>
+
+          <ion-badge *ngIf="staff.staff_role == 1">Manager</ion-badge>
+          <ion-badge *ngIf="staff.staff_role == 2">Consultant</ion-badge>
         </ion-label>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">

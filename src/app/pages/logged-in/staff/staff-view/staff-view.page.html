@@ -5,7 +5,12 @@
       <ion-back-button defaultHref="staff-list"></ion-back-button>
     </ion-buttons>
 
-    <ion-title *ngIf="staff">{{ staff.staff_name }}</ion-title>
+    <ion-title *ngIf="staff">
+      {{ staff.staff_name }}
+    
+      <ion-badge *ngIf="staff.staff_role == 1">Manager</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 2">Consultant</ion-badge>
+    </ion-title>
 
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button (click)="update()">
