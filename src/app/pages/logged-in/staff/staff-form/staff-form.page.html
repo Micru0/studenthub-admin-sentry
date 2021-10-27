@@ -54,6 +54,15 @@
             <ion-icon *ngIf="type != 'password'" name="eye-off"></ion-icon>
           </ion-button>
         </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Role</ion-label>
+          <ion-select formControlName="role">
+            <ion-select-option value="1">Manager</ion-select-option>
+            <ion-select-option value="2">Consultant</ion-select-option>
+          </ion-select>
+        </ion-item>
+
     </ion-list>
   </form>
 

@@ -83,7 +83,8 @@ export class StaffFormPage implements OnInit {
         email: ["", [Validators.required, CustomValidator.emailValidator]],
         password: ["", Validators.required],
         gmail_username: [""],
-        gmail_password: [""]
+        gmail_password: [""],
+        role: [null]
       });
     }else{ // Show Update Form
       this.operation = "Update Staff";
@@ -92,7 +93,8 @@ export class StaffFormPage implements OnInit {
         email: [this.model.staff_email, [Validators.required, CustomValidator.emailValidator]],
         password: [this.model.staff_password_hash], // not required,
         gmail_username: [this.model.staff_gmail_username],
-        gmail_password: [this.model.staff_gmail_password]
+        gmail_password: [this.model.staff_gmail_password],
+        role: [this.model.staff_role + '']
       });
     }
   }
@@ -106,6 +108,7 @@ export class StaffFormPage implements OnInit {
     this.model.staff_password_hash = this.form.value.password;
     this.model.staff_gmail_username = this.form.value.gmail_username;
     this.model.staff_gmail_password = this.form.value.gmail_password;
+    this.model.staff_role = this.form.value.role;
   }
 
   /**

@@ -45,6 +45,7 @@ export class StaffService {
       "password": model.staff_password_hash,
       "gmail_username": model.staff_gmail_username,
       "gmail_password": model.staff_gmail_password,
+      "role": model.staff_role
     };
 
     return this._authhttp.post(postUrl, params);
@@ -62,6 +63,7 @@ export class StaffService {
       "email": model.staff_email,
       "gmail_username": model.staff_gmail_username,
       "gmail_password": model.staff_gmail_password,
+      "role": model.staff_role
     };
 
     return this._authhttp.patch(url, params);
