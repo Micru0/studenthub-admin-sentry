@@ -370,15 +370,37 @@ const routes: Routes = [
   },
 
   {
+    path: 'request-checklist',
+    loadChildren: () => import('./pages/logged-in/requests/request-checklist/request-checklist-list/request-checklist-list.module').then( m => m.RequestChecklistListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'RequestChecklistListPage'
+    }
+  },
+  {
+    path: 'request-checklist-form',
+    loadChildren: () => import('./pages/logged-in/requests/request-checklist/request-checklist-form/request-checklist-form.module').then( m => m.RequestChecklistFormPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'RequestChecklistFormPage'
+    }
+  },
+  {
+    path: 'request-checklist-view',
+    loadChildren: () => import('./pages/logged-in/requests/request-checklist/request-checklist-view/request-checklist-view.module').then( m => m.RequestChecklistViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'RequestChecklistViewPage'
+    }
+  },
+  {
     path: 'app-error',
     loadChildren: () => import('./pages/errors/app-error/app-error.module').then( m => m.AppErrorPageModule)
   },
   {
     path: '**',
     redirectTo: 'not-found'
-  },
-
-
+  }
 ];
 
 @NgModule({
