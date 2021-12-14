@@ -27,7 +27,6 @@
           <p>{{ model.status_name_ar }}</p>
         </ion-label>
 
-
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
 
           <ion-button color="danger" (click)="delete($event, model)">

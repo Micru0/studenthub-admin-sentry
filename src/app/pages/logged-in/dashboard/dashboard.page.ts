@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 // services
 import { StatisticService } from 'src/app/providers/logged-in/statistics.service';
 import { EventService } from 'src/app/providers/event.service';
+
 
 @Component({
   selector: 'app-dashboard',
