@@ -19,7 +19,9 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding *ngFor="let university of universities" [disabled]="platform.width() > 768">
-      <ion-item tappable (click)="rowSelected(university)">
+      <ion-item [class.alert]="!university.university_name_en || 
+        !university.university_name_ar || 
+        university.university_name_en == university.university_name_ar" tappable (click)="rowSelected(university)">
         <div tabindex="0"></div>
         
         <ion-label>

@@ -87,6 +87,21 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+      
+      <ion-col size="12" size-md="6" *ngIf="statistics.totalUniversitiesToFix > 0">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.totalUniversitiesToFix }} university entry need attention
+          </ion-card-header>
+          <ion-card-content>
+            <p>to fix details</p>
+            <ion-button routerLink="/university-list">
+              Review Universities
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
     </ion-row>
   </ion-grid>
 </ion-content>
