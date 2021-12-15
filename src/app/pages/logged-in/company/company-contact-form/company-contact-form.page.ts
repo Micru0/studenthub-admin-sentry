@@ -109,12 +109,12 @@ export class CompanyContactFormPage implements OnInit {
         position: [this.companyContact?.contact_position, Validators.required],
         name: [this.model.contact_name, Validators.required],
         email: [this.model.contact_email, [CustomValidator.emailValidator, Validators.required]],
-        //password: [this.model.contact_position, Validators.required], 
+        password: [""], 
         receive_email: [this.model.contact_receive_email],
         receive_notification: [this.model.contact_receive_notification],
         emails: new FormArray(emailCtrls),
         phones: new FormArray(phoneCtrls),
-      });
+      }); 
     }
   }
 
@@ -219,6 +219,7 @@ export class CompanyContactFormPage implements OnInit {
     this.updateModelDataFromForm();
 
     let action;
+    
     if (!this.model.contact_uuid) {
       // Create
       action = this.companyContactService.create(this.model, this.companyContact);
