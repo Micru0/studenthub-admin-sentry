@@ -50,6 +50,7 @@ export class CompanyViewPage implements OnInit {
   public loading = false;
   public sendingNewPassword = false;
   public companyStatus = false;
+  public companyStatusOverride: boolean = false; 
 
   public followup = false;
 
@@ -101,6 +102,7 @@ export class CompanyViewPage implements OnInit {
 
     // if initialize
     this.companyStatus = !!(this.company && this.company.company_status);
+    this.companyStatusOverride = !!(this.company && this.company.company_status_override);
     this.followup = !!(this.company && this.company.company_followup);
 
     this.companyService.view(this.company_id).subscribe(response => {
@@ -112,6 +114,7 @@ export class CompanyViewPage implements OnInit {
 
       // if load
       this.companyStatus = !!(this.company.company_status);
+      this.companyStatusOverride = !!(this.company && this.company.company_status_override);
       this.followup = !!(this.company.company_followup);
 
       this.subCompanies = response.subCompanies;
@@ -832,13 +835,18 @@ export class CompanyViewPage implements OnInit {
     }
   }
 
+  /**
+   * update status
+   * @param $event 
+   */
   changeStatus($event) {
     
+    this.companyStatusOverride = $event.detail.checked;
     this.companyStatus = $event.detail.checked;
     
     this.updating = true;
     
-    const status = ($event.detail.checked) ? 10 : 0;
+    const status = ($event.detail.checked) ? 1 : 0;
 
     this.companyService.changeStatus(this.company, status).subscribe(async response => {
       
@@ -854,6 +862,7 @@ export class CompanyViewPage implements OnInit {
         });
         toast.present();
       }
+
     }, () => {
       this.updating = false;
     });
