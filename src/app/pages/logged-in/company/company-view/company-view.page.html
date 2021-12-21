@@ -151,7 +151,7 @@
           <div tabindex="0"></div>
           <ion-label>
             <h3>Description - English</h3>
-            <p *ngIf="company.company_description_en">{{ company.company_description_en }}</p>
+            <p *ngIf="company.company_description_en" [innerHTML]="company.company_description_en"></p>
             <p *ngIf="!company.company_description_en">-</p>
           </ion-label>
         </ion-item>
@@ -160,7 +160,7 @@
           <div tabindex="0"></div>
           <ion-label>
             <h3>Description - Arabic</h3>
-            <p *ngIf="company.company_description_ar">{{ company.company_description_ar }}</p>
+            <p *ngIf="company.company_description_ar" [innerHTML]="company.company_description_ar"></p>
             <p *ngIf="!company.company_description_ar">-</p>
           </ion-label>
         </ion-item>
