@@ -176,7 +176,7 @@ export class StaffListPage implements OnInit {
       {
         const alert = await this._alertCtrl.create({
             header: 'Reset Password',
-            subHeader: 'New password sent to candidate',
+            subHeader: 'New password sent to staff',
             buttons: ['Okay']
           });
         alert.present();
