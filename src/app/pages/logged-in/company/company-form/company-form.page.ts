@@ -122,6 +122,7 @@ export class CompanyFormPage implements OnInit {
           name: ['', Validators.required],
           common_name_ar: ['', Validators.required],
           common_name_en: ['', Validators.required],
+          password: ['', Validators.required],
           description_en: [''],
           description_ar: [''],
           website: ['', Validators.required],
@@ -150,7 +151,7 @@ export class CompanyFormPage implements OnInit {
         this.form = this._fb.group({
             name: [this.model.company_name, Validators.required],
             email: [this.model.company_email, [Validators.required, CustomValidator.emailValidator]],
-            //password: [this.model.company_password_hash], // not required
+            password: [''],
             bonus_commission: [this.model.company_bonus_commission],
             hourly_rate: [this.model.company_hourly_rate, Validators.required],
             common_name_en: [this.model.company_common_name_en, Validators.required],
@@ -180,6 +181,9 @@ export class CompanyFormPage implements OnInit {
     this.model.company_website = this.form.value.website;
     this.model.company_logo = this.form.value.logo;
     this.model.company_approved_to_hire = this.form.value.approved_to_hire;
+    if (!this.isSubCompany) {
+      this.model.password = this.form.value.password;
+    }
   }
 
   /**

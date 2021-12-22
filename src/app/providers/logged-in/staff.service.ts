@@ -71,11 +71,11 @@ export class StaffService {
 
   /**
    * Send new password to staff
-   * @param model 
+   * @param model
    */
   resetPassword(model: Staff): Observable<any>{
     let url = `${this._staffEndpoint}/reset-password/${model.staff_id}`;
-    return this._authhttp.patch(url, {});
+    return this._authhttp.patch(url, {password : model.staff_password_hash});
   }
 
   /**

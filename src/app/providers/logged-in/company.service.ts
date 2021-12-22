@@ -47,7 +47,8 @@ export class CompanyService {
       description_ar: model.company_description_ar,
       website: model.company_website,
       logo: model.company_logo,
-      approved_to_hire: model.company_approved_to_hire
+      approved_to_hire: model.company_approved_to_hire,
+      password: model.password
     };
 
     return this._authhttp.post(postUrl, params);
