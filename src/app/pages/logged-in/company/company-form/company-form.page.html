@@ -41,6 +41,11 @@
           <ion-input type="text" formControlName="common_name_ar"></ion-input>
         </ion-item>
 
+        <ion-item *ngIf="!this.isSubCompany">
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="text" formControlName="password"></ion-input>
+        </ion-item>
+
         <ion-item>
           <ion-label position="floating">Description - English</ion-label>
           <ion-textarea formControlName="description_en"></ion-textarea>

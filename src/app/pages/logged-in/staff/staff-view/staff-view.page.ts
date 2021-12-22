@@ -38,8 +38,8 @@ export class StaffViewPage implements OnInit {
   ngOnInit() {
 
     // Load the passed model if available
-    if(window['state']) {
-      this.staff = window['state']['model'];
+    if(window.history.state) {
+      this.staff = window.history.state.model;
     }
 
     this.staff_id = this.activateRoute.snapshot.paramMap.get('staff_id');
@@ -91,17 +91,26 @@ export class StaffViewPage implements OnInit {
   async resetPassword() {
     
     let confirm = await this._alertCtrl.create({
-      header: 'Confirm password reset',
-      message: 'Do you want to send new password to staff?',
+      header: 'Enter New Password',
+      inputs: [
+        {
+          name: 'password',
+          type: 'text',
+          placeholder: 'Please enter password'
+        },
+      ],
       buttons: [
         {
-          text: 'Yes',
-          handler: () => {
-            this.sendNewPassword();
+          text: 'Send',
+          handler: (data) => {
+            if (data && data.password) {
+              this.staff.staff_password_hash = data.password;
+              this.sendNewPassword();
+            }
           }
         },
         {
-          text: 'No',
+          text: 'Cancel',
           role: 'cancel'
         }
       ]

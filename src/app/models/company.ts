@@ -25,6 +25,7 @@ export class Company {
     currency_pref: number;
     transferInLast40Days: number;
     company_approved_to_hire: any;
+    password: any;
     subcompanies: Company[];
     subCompanies: Company[];
     stores: Store[];
