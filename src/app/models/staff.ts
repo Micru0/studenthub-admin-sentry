@@ -7,6 +7,7 @@ export class Staff{
     staff_gmail_password: string;
     staff_role: number;
     staff_status: string;
+    staff_notification: string;
     staff_created_at: string;
     staff_updated_at: string;
     deleted: number;
