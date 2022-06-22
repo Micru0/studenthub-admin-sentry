@@ -47,7 +47,14 @@
       <div tabindex="0"></div>
       <ion-label>
         <h5>Status</h5>
-        <p>{{ staff.staff_status }}</p>
+        <p>{{ (staff.staff_status == '10') ? 'Active' : staff.staff_status }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Recieve Notification ? </h5>
+        <p>{{ staff.staff_notification ? 'Yes' : 'No' }}</p>
       </ion-label>
     </ion-item>
 
