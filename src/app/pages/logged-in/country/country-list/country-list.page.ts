@@ -33,6 +33,8 @@ export class CountryListPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    window.analytics.page('Country List Page');
+
     this.loadData(this.currentPage);
   }
 

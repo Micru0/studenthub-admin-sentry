@@ -45,6 +45,7 @@ export class CompanyFormPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Company Form Page');
 
     // Load the passed model if available
     // if (window.history.state && window.history.state.model) {

@@ -38,8 +38,10 @@ export class AdminListPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Admin List Page');
     // this.loadData(this.currentPage);
   }
+
   ionViewDidEnter() {
     this.loadData(this.currentPage);
   }

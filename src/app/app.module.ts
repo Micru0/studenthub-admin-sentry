@@ -39,6 +39,10 @@ export function startupServiceFactory(authService) {
   return () => authService.load();
 }
 
+declare global {
+  interface Window { analytics: any; }
+}
+
 @NgModule({
   declarations: [
     AppComponent

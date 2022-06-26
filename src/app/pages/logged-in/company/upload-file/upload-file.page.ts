@@ -51,6 +51,7 @@ export class UploadFilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window.analytics.page('Upload File Page');
 
     if (this.file) {
       this.fileModel = this.file;

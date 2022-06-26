@@ -42,6 +42,7 @@ export class StaffFormPage implements OnInit {
   }
 
   ngOnInit() {
+    window.analytics.page('Staff Form Page');
 
     // Load the passed model if available
     if(window['state']) {

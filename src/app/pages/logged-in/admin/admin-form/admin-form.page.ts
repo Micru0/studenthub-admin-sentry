@@ -40,6 +40,7 @@ export class AdminFormPage implements OnInit {
   }
 
   ngOnInit() {
+    window.analytics.page('Admin Form Page');
 
     // Load the passed model if available
     if (window.history.state && window.history.state.model) {

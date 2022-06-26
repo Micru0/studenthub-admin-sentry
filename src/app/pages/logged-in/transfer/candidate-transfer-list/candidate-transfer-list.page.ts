@@ -41,6 +41,8 @@ export class CandidateTransferListPage implements OnInit {
   }
 
   ngOnInit() {
+    window.analytics.page('Candidate Transfert List Page');
+
     this.tc_id = this.activatedRoute.snapshot.paramMap.get('tc_id');
 
     this.loadData(1);

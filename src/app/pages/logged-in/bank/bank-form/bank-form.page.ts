@@ -43,6 +43,7 @@ export class BankFormPage implements OnInit {
   }
 
   ngOnInit() {
+    window.analytics.page('Bank Form Page');
 
     // Load the passed model if available
     if(window['state']) {

@@ -32,6 +32,7 @@ export class CompanyNoteFormPage implements OnInit {
   }
 
   ngOnInit() {
+    window.analytics.page('Company Note Form Page');
 
     if (this.note) {
       this.model = this.note;

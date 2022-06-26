@@ -74,6 +74,7 @@ export class CompanyViewPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Company View Page');
 
     // Load the passed model if available
     if (window.history.state) {

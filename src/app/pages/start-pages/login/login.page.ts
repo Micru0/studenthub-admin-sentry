@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/providers/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage  {
+export class LoginPage implements OnInit {
 
   public type: string = 'password';
 
@@ -36,6 +36,10 @@ export class LoginPage  {
       email: ['', [Validators.required, CustomValidator.emailValidator]],
       password: ['', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+    window.analytics.page('Login Page');
   }
 
   /**

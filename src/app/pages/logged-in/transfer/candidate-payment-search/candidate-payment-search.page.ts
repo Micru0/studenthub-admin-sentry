@@ -35,6 +35,7 @@ export class CandidatePaymentSearchPage implements OnInit {
     ) { }
 
     ngOnInit() {
+        window.analytics.page('Candidate Payment Search Page');
     }
 
     /**

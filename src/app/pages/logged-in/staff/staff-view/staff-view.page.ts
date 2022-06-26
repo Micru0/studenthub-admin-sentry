@@ -36,6 +36,7 @@ export class StaffViewPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Staff View Page');
 
     // Load the passed model if available
     if(window.history.state) {

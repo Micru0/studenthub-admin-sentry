@@ -36,6 +36,7 @@ export class StoreViewPage implements OnInit {
 
 
   ngOnInit() {
+    window.analytics.page('Store View Page');
 
     // Load the passed model if available
     // if(window['state']) {

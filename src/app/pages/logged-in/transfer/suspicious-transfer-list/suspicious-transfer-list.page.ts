@@ -64,7 +64,9 @@ export class SuspiciousTransferListPage implements OnInit {
     this.max = (this.platform.is('mobile')) ? d.getFullYear() + '-12-12' : d;
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    window.analytics.page('Suspicious Transfer List Page');
+  }
 
   ionViewWillEnter() {
 

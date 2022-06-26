@@ -38,6 +38,8 @@ export class InspectorListPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Inspector List Page');
+
     // this.loadData(this.currentPage);
   }
   ionViewDidEnter() {

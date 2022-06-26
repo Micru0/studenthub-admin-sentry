@@ -38,6 +38,8 @@ export class StaffListPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Staff List Page');
+
     this.loadData(this.currentPage);
   }
 

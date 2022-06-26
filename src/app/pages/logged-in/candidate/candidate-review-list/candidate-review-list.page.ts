@@ -30,6 +30,8 @@ export class CandidateReviewListPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    window.analytics.page('Candidate Review List Page');
+
     this.loadData(this.currentPage);
   }
 

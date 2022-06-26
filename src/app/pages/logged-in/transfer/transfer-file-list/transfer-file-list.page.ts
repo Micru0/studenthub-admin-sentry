@@ -32,6 +32,8 @@ export class TransferFileListPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Transfer File List Page');
+
     this.loadData(this.currentPage);
   }
 

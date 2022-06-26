@@ -40,6 +40,7 @@ export class TransferFileDetailPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Transfer File Detail Page');
 
     // Load the passed model if available
     if(window['state']) {

@@ -24,6 +24,8 @@ export class StatsPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Statistics Page');
+
     this.loadData();
   }
 
