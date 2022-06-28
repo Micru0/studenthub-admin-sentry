@@ -34,6 +34,7 @@ import {SelectiveLoadingStrategy} from "./util/SelectiveLoadingStrategy";
 import {CountryFormPageModule} from "./pages/logged-in/country/country-form/country-form.module";
 import {InspectorFormPageModule} from "./pages/logged-in/inspector/inspector-form/inspector-form.module";
 import { ModalPopPageModule } from './pages/logged-in/modal-pop/modal-pop.module';
+import { ExpenseFormPageModule } from './pages/logged-in/expense/expense-form/expense-form.module';
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -60,6 +61,7 @@ declare global {
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     BankFormPageModule,
+    ExpenseFormPageModule,
     CompanyFormPageModule,
     StaffFormPageModule,
     AdminFormPageModule,
