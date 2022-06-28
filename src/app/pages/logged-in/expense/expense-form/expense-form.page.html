@@ -7,8 +7,9 @@
     <ion-title>{{ operation }}</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button color="primary" [disabled]="!form.valid" (click)="save()">
-        Save
+      <ion-button color="primary" [disabled]="!form || !form.valid || saving" (click)="save()">
+        <span *ngIf="!saving">Save</span>
+        <ion-spinner *ngIf="saving"></ion-spinner>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -36,6 +37,13 @@
         <ion-label position="floating">Amount (KWD)</ion-label>
         <ion-input type="number" formControlName="amount"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Transaction  datetime</ion-label>
+        <ion-datetime pickerFormat="MMM DD, YYYY hh:mm A" displayFormat="MMM DD, YYYY hh:mm A" formControlName="transaction_datetime"></ion-datetime>
+        <small>Default will be current time</small>
+      </ion-item>
+
     </ion-list>
   </form>
 </ion-content>
