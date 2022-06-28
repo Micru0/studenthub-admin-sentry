@@ -36,13 +36,14 @@ export class CountryFormPage implements OnInit {
   ){
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     if (this.authService.admin_limited_access) {
       this.close();
     }
   }
 
   ngOnInit() {
+    window.analytics.page('Country Form Page');
 
     // Load the passed model if available
     if(window['state']) {

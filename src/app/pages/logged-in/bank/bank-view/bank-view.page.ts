@@ -34,6 +34,7 @@ export class BankViewPage implements OnInit {
   }
 
   ngOnInit() {
+    window.analytics.page('Bank View Page');
 
     // Load the passed model if available
     if (window.history.state) {

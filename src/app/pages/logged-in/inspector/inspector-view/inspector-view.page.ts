@@ -36,6 +36,7 @@ export class InspectorViewPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Inspector View Page');
 
     // Load the passed model if available
     if (window.history.state) {

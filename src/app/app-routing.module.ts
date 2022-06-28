@@ -394,6 +394,19 @@ const routes: Routes = [
     }
   },
   {
+    path: 'expense-view',
+    loadChildren: () => import('./pages/logged-in/expense/expense-view/expense-view.module').then( m => m.ExpenseViewPageModule)
+  },
+  {
+    path: 'expense-form',
+    loadChildren: () => import('./pages/logged-in/expense/expense-form/expense-form.module').then( m => m.ExpenseFormPageModule)
+  },
+  {
+    path: 'expense-list',
+    loadChildren: () => import('./pages/logged-in/expense/expense-list/expense-list.module').then( m => m.ExpenseListPageModule)
+  },
+
+  {
     path: 'app-error',
     loadChildren: () => import('./pages/errors/app-error/app-error.module').then( m => m.AppErrorPageModule)
   },

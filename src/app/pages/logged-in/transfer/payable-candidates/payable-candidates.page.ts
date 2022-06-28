@@ -36,6 +36,8 @@ export class PayableCandidatesPage  {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Payable Candidates Page');
+
     this.loadData();
 
     this.eventService.updatePayable$.subscribe(() => {

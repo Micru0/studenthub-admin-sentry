@@ -23,6 +23,8 @@ export class DashboardPage implements OnInit {
   ) {}
 
   ngOnInit(){
+    window.analytics.page('Dashboard Page');
+
     this.loadData();
 
     this.eventService.updatePayable$.subscribe((userEventData) => {

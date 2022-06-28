@@ -33,6 +33,8 @@ export class TransferPaidPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Transfer Paid Page');
+
     this.excel = this.activatedRoute.snapshot.paramMap.get('excel');
 
     this.loadData();

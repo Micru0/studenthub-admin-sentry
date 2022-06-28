@@ -75,6 +75,7 @@ export class CompanyContactViewPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Company Contact View Page');
 
     if(!this.contact_uuid)
       this.contact_uuid = this.route.snapshot.params.contact_uuid;

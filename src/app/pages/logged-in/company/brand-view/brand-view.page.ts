@@ -32,6 +32,8 @@ export class BrandViewPage implements OnInit {
   }
 
   ngOnInit() {
+    window.analytics.page('Brand View Page');
+
     this.brandID = this.activatedRoute.snapshot.paramMap.get('id');
     this.loadData();
   }

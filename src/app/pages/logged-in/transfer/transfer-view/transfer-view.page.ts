@@ -58,7 +58,9 @@ export class TransferViewPage implements OnInit {
     this.transfer_id = parseInt(this.activatedRoute.snapshot.paramMap.get('transfer_id'));
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    window.analytics.page('Transfer View Page');
+  }
 
   // Reload data when page is entering
   // Also used to reload data after paid to user

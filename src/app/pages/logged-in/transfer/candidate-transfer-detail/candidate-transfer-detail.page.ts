@@ -41,6 +41,8 @@ export class CandidateTransferDetailPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Transfer Detail Page');
+
     // Passed from Dashboard to show filtered status results
 
     // Load the passed model if available

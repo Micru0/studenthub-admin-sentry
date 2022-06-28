@@ -36,6 +36,7 @@ export class AdminViewPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('Admin View Page');
 
     // Load the passed model if available
     if (window.history.state) {

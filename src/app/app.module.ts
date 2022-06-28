@@ -35,9 +35,14 @@ import {CountryFormPageModule} from "./pages/logged-in/country/country-form/coun
 import {InspectorFormPageModule} from "./pages/logged-in/inspector/inspector-form/inspector-form.module";
 import { ModalPopPageModule } from './pages/logged-in/modal-pop/modal-pop.module';
 import { RequestChecklistFormPageModule } from './pages/logged-in/requests/request-checklist/request-checklist-form/request-checklist-form.module';
+import { ExpenseFormPageModule } from './pages/logged-in/expense/expense-form/expense-form.module';
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
+}
+
+declare global {
+  interface Window { analytics: any; }
 }
 
 @NgModule({
@@ -57,6 +62,7 @@ export function startupServiceFactory(authService) {
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     BankFormPageModule,
+    ExpenseFormPageModule,
     CompanyFormPageModule,
     StaffFormPageModule,
     AdminFormPageModule,

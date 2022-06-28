@@ -26,6 +26,7 @@ export class UniversityFormPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.analytics.page('University Form Page');
 
     if (!this.model || !this.model.university_id) { // Show Create Form
       this.operation = "Create";

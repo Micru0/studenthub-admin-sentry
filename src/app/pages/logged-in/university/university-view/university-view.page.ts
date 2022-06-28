@@ -42,6 +42,7 @@ export class UniversityViewPage implements OnInit {
   }
 
   public ngOnInit() {
+    window.analytics.page('University View Page');
 
     // Load the passed model if available
     if (window.history.state) {

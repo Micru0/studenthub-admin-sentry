@@ -196,6 +196,11 @@ export class AuthService {
     this.email = response.email;
     this.admin_limited_access = response.admin_limited_access;
 
+    window.analytics.identify(this.id, {
+      name: this.name,
+      email: this.email,
+    });
+    
     // Save to Storage
     this.saveInStorage();
 
