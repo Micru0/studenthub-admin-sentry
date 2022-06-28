@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="expense-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="expense">{{ expense.title }}</ion-title>
+
+    <!--
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>-->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list *ngIf="expense">
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Expense ID</h5>
+        <p>{{ expense.expense_uuid }}</p>
+      </ion-label>
+    </ion-item>
+    
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Title</h5>
+        <p>{{ expense.title }}</p>
+      </ion-label>
+    </ion-item>
+ 
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Type</h5>
+        <p>{{ expense.type }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Detail</h5>
+        <p>{{ expense.detail }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Amount</h5>
+        <p>{{ expense.amount }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Created at</h5>
+        <p>{{ expense.created_at }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Updated at</h5>
+        <p>{{ expense.updated_at }}</p>
+      </ion-label>
+    </ion-item>
+ 
+  </ion-list>
+</ion-content>

@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Expenses</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+  
+    <ion-item tappable *ngFor="let expense of expenses" (click)="rowSelected(expense)">
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>{{ expense.title }}</h5>
+        <p>{{ expense.type }}</p>
+      </ion-label>
+
+      <ion-note slot="end">KWD {{ expense.amount }}</ion-note>
+    </ion-item>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+
+    <no-items message = "No expenses yet!" *ngIf="expenses.length == 0 && !loading"></no-items>
+
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+    (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+<ion-footer *ngIf="!authService.admin_limited_access">
+  <ion-button expand="full" (click)="create()">
+    Add Expense
+  </ion-button>
+</ion-footer>
