@@ -83,7 +83,8 @@ export class ExpenseFormPage implements OnInit {
         title: ["", Validators.required],
         type: ["", Validators.required],
         detail: [""],
-        amount: ["", Validators.required]
+        amount: ["", Validators.required],
+        transaction_datetime: []
       });
     } else { // Show Update Form
       this.operation = "Update";
@@ -91,7 +92,8 @@ export class ExpenseFormPage implements OnInit {
         title: [this.model.title, Validators.required],
         type: [this.model.type, Validators.required],
         detail: [this.model.detail],
-        amount: [this.model.amount, Validators.required]
+        amount: [this.model.amount, Validators.required],
+        transaction_datetime: [this.model.transaction_datetime]
       });
     }
   }
@@ -104,6 +106,7 @@ export class ExpenseFormPage implements OnInit {
     this.model.type = this.form.value.type;
     this.model.detail = this.form.value.detail;
     this.model.amount = this.form.value.amount;
+    this.model.transaction_datetime = this.form.value.transaction_datetime;
   }
 
   /**

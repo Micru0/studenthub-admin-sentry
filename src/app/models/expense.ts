@@ -4,6 +4,7 @@ export class Expense {
     type: string;
     detail: string;
     amount: number;
+    transaction_datetime: string;
     created_by: number;
     updated_by: number; 
     created_at: string;
