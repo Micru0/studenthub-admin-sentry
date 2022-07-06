@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" (click)="dismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-text-center">
+
+  <h4>Upload the events by Excel file</h4>
+  
+  <ion-item>
+    <ion-label position="stacked">Event Name</ion-label>
+    <ion-input [(ngModel)]="eventName"></ion-input>
+  </ion-item>
+
+  <br/>
+
+  <!-- Upload Form -->
+  <input type='file' #fileInput (change)="browserUpload($event)" accept=".xlsx,.xls"/>
+
+  <ion-button (click)="upload()" [disabled]="uploading || !eventName">
+    <span *ngIf="!uploading">Upload</span>
+    <ion-spinner *ngIf="uploading">Uploading...</ion-spinner>
+  </ion-button>
+
+  <p>Please don't upload same excel twice to avoid duplicate data </p>
+</ion-content>

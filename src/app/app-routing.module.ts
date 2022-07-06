@@ -413,6 +413,12 @@ const routes: Routes = [
     path: 'app-error',
     loadChildren: () => import('./pages/errors/app-error/app-error.module').then( m => m.AppErrorPageModule)
   },
+  
+  {
+    path: 'import',
+    loadChildren: () => import('./pages/logged-in/events/import/import.module').then( m => m.ImportPageModule)
+  },
+
   {
     path: '**',
     redirectTo: 'not-found'
