@@ -24,7 +24,8 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   list(page: number, searchParams: string): Observable<any> {
-    const url = this._companyEndpoint + '?page=' + page + searchParams + '&expand=files,notes,notes.staff,stores,subCompanies';
+    // const url = this._companyEndpoint + '?page=' + page + searchParams + '&expand=files,notes,notes.staff,stores,subCompanies';
+    const url = this._companyEndpoint + '?page=' + page + searchParams;
     return this._authhttp.get(url, true);
   }
 
@@ -93,7 +94,8 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   view(company_id: string): Observable<any> {
-    const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,notes,notes.createdBy,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
+    // const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,notes,notes.createdBy,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
+    const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
     return this._authhttp.get(url);
   }
 

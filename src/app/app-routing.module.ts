@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SelectiveLoadingStrategy } from './util/SelectiveLoadingStrategy';
-//services
+// services
 import { AuthService } from './providers/auth.service';
-import { LoginGuard } from "./providers/guards/login-guard.service";
+import { LoginGuard } from './providers/guards/login-guard.service';
 
 
 const routes: Routes = [
@@ -55,6 +55,14 @@ const routes: Routes = [
     canActivate: [AuthService],
     data: {
       name: 'BankViewPage',
+    }
+  },
+  {
+    path: 'candidate-list',
+    loadChildren: () => import('./pages/logged-in/candidate/candidate-list/candidate-list.module').then(m => m.CandidateListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'CandidateListPage',
     }
   },
   {
@@ -207,7 +215,6 @@ const routes: Routes = [
       name: 'PayableCandidatesPage'
     }
   },
-
   {
     path: 'import-transfer-form',
     loadChildren: () => import('./pages/logged-in/transfer/import-transfer-form/import-transfer-form.module').then(m => m.ImportTransferFormPageModule),
@@ -350,7 +357,6 @@ const routes: Routes = [
       name: 'BrandViewPage'
     }
   },
-
   {
     path: 'company-contact-view',
     loadChildren: () => import('./pages/logged-in/company/company-contact-view/company-contact-view.module').then( m => m.CompanyContactViewPageModule),
@@ -359,7 +365,6 @@ const routes: Routes = [
       name: 'CompanyContactViewPage'
     }
   },
-
   {
     path: 'stats',
     loadChildren: () => import('./pages/logged-in/stats/stats.module').then( m => m.StatsPageModule),
@@ -368,7 +373,6 @@ const routes: Routes = [
       name: 'StatsPage'
     }
   },
-
   {
     path: 'request-checklist',
     loadChildren: () => import('./pages/logged-in/requests/request-checklist/request-checklist-list/request-checklist-list.module').then( m => m.RequestChecklistListPageModule),
@@ -405,7 +409,6 @@ const routes: Routes = [
     path: 'expense-list',
     loadChildren: () => import('./pages/logged-in/expense/expense-list/expense-list.module').then( m => m.ExpenseListPageModule)
   },
-
   {
     path: 'app-error',
     loadChildren: () => import('./pages/errors/app-error/app-error.module').then( m => m.AppErrorPageModule)

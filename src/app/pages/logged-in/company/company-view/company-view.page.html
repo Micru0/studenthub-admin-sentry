@@ -362,8 +362,8 @@
 
     <section *ngIf="segment == 'notes'">
 
-      <ion-list>
-        <ion-item-sliding *ngFor="let note of company.notes" [disabled]="platform.width() > 768">
+      <ion-list *ngIf="companyNotes && companyNotes.length > 0">
+        <ion-item-sliding *ngFor="let note of companyNotes" [disabled]="platform.width() > 768">
 
           <ion-item tappable (click)="addNote(note)">
             <div tabindex="0"></div>
@@ -405,7 +405,11 @@
           </ion-button>
         </ion-item>
       </ion-list>
-
+      <ion-infinite-scroll *ngIf="currentPage < pageCount"
+                           (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+      <loading-modal [loading]="loading" type="university-view"></loading-modal>
     </section>
 
     <!-- Brand List -->

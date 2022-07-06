@@ -25,8 +25,8 @@ export class CandidateService {
    * List of all candidates
    * @returns {Observable<any>}
    */
-  list(page: number): Observable<any>{
-    let url = this._candidateEndpoint + '?page=' + page;
+  list(search, page: number): Observable<any>{
+    const url = this._candidateEndpoint + '/search?page=' + page + search;
     return this._authhttp.get(url, true);
   }
 

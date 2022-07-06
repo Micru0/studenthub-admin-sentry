@@ -16,6 +16,15 @@ export class CompanyNoteService {
   constructor(private authhttp: AuthHttpService) { }
 
   /**
+   * List of all company notes
+   * @returns {Observable<any>}
+   */
+  list(page: number, searchParams: string): Observable<any> {
+    const url = this.companyNoteEndpoint + '?page=' + page + searchParams;
+    return this.authhttp.get(url, true);
+  }
+
+  /**
    * create note
    * @param model
    */

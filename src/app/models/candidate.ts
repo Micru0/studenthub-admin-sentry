@@ -35,6 +35,7 @@ export class Candidate {
     approved: number;
     deleted: boolean;
     isProfileCompleted: boolean;
+    candidate_email_verification: boolean;
     age: number;
     employee_id: number;
     candidate_mom_kuwaiti: number;

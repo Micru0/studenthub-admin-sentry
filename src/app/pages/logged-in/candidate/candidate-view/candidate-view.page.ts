@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Platform, ToastController } from '@ionic/angular';
+import {AlertController, Platform, ToastController} from '@ionic/angular';
 //services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -9,6 +9,7 @@ import { AwsService } from 'src/app/providers/aws.service';
 //models
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
 import { Candidate } from 'src/app/models/candidate';
+import {Bank} from "../../../../models/bank";
 
 
 @Component({
@@ -21,6 +22,7 @@ export class CandidateViewPage implements OnInit {
   public approving: boolean = false; 
   
   public loading: boolean = false; 
+  public deleting: boolean = false;
 
   public loadingSalaryTransfers: boolean = false;
   
@@ -41,7 +43,8 @@ export class CandidateViewPage implements OnInit {
     public activateRoute: ActivatedRoute,
     public candidateService: CandidateService,
     public eventService: EventService,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public _alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -145,9 +148,8 @@ export class CandidateViewPage implements OnInit {
     this.candidateService.approve(candidate).subscribe(async response => {
 
       this.approving = false;
-       
-      if(response.operation == 'error') {
-      
+
+      if (response.operation == 'error') {
         let toast = await this.toastCtrl.create({
           message: this.authService.errorMessage(response.message),
           duration: 3000
@@ -156,15 +158,69 @@ export class CandidateViewPage implements OnInit {
 
       } else {
 
-        //update review count 
+        // update review count
         this.eventService.totalCandidateToReview$.next();
 
-        //back to listing
+        // back to listing
         this.router.navigate(['/candidate-review-list']);
-      }      
+      }
     });
   }
-  
+
+  /**
+   * Delete the provided model
+   */
+  async delete(ev, candidate: Candidate) {
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const confirm = await this._alertCtrl.create({
+      header: 'Delete Candidate?',
+      message: 'Are you sure you want to delete this Candidate?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.deleting = true;
+
+            this.candidateService.delete(candidate).subscribe(async jsonResp => {
+console.log(jsonResp);
+              // if (jsonResp.operation == 'error') {
+              //
+              //   this.deleting = false;
+              //
+              //   const alert = await this._alertCtrl.create({
+              //     header: 'Deletion Error!',
+              //     subHeader: jsonResp.message,
+              //     buttons: ['OK']
+              //   });
+              //   alert.present();
+              // }
+              //
+              // if (jsonResp.operation == 'success') {
+              //   const toast = await this.toastCtrl.create({
+              //     message: jsonResp.message,
+              //     duration: 3000
+              //   });
+              //   toast.present();
+              //
+              //   this.router.navigate(['/candidate-list']);
+              // }
+            }, () => {
+              this.deleting = false;
+            });
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   /**
    * transfer to candidate transfer detail page
    * @param transfer 

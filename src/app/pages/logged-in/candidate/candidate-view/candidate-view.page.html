@@ -11,6 +11,10 @@
         <span *ngIf="!approving">Approve</span>
         <ion-spinner *ngIf="approving"></ion-spinner>
       </ion-button>
+      <ion-button *ngIf="candidate && !candidate.deleted" (click)="delete($event, candidate)">
+        <span *ngIf="!deleting">Delete</span>
+        <ion-spinner *ngIf="deleting"></ion-spinner>
+      </ion-button>
     </ion-buttons>
 
     <ion-progress-bar type="indeterminate" *ngIf="approving"></ion-progress-bar>
