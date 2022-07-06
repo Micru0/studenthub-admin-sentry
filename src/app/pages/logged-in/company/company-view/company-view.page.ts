@@ -36,6 +36,10 @@ export class CompanyViewPage implements OnInit {
 
   public company_id;
 
+  public pageCount = 0;
+  public currentPage = 1;
+  public companyNotes: Note[];
+
   public company: Company;
   public subCompanies: Company[] = [];
   public stores: Store[] = [];
@@ -128,6 +132,11 @@ export class CompanyViewPage implements OnInit {
 
   segmentChanged(event) {
     this.segment = event.detail.value;
+    if (this.segment == 'notes') {
+      if (!this.companyNotes || this.companyNotes.length == 0) {
+        this.loadNotesData(1);
+      }
+    }
   }
   
   /**
@@ -862,5 +871,52 @@ export class CompanyViewPage implements OnInit {
 
   loadLogo($event, company) {
     company.company_logo = null;
+  }
+
+  /**
+   * load company data
+   * @param page
+   * @param silent
+   */
+  async loadNotesData(page: number, silent = false) {
+
+    if (!silent) {
+      this.loading = true;
+    }
+    const searchParams = '&expand=createdBy,updatedBy&company_id=' + this.company_id;
+    this.noteService.list(page, searchParams).subscribe(response => {
+
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+
+      this.companyNotes = response.body;
+      this.loading = false;
+
+    }, () => {
+      this.loading = false;
+    });
+  }
+
+  /**
+   * load more companies on scroll to bottom
+   * @param event
+   */
+  doInfinite(event) {
+
+    this.currentPage++;
+
+    this.loading = true;
+    const searchParams = '&expand=createdBy,updatedBy&company_id=' + this.company_id;
+    this.noteService.list(this.currentPage, searchParams).subscribe(response => {
+
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+
+      const companies = response.body;
+      this.companyNotes = this.companyNotes.concat(companies);
+      this.loading = false;
+      event.target.complete();
+    }, () => {
+    });
   }
 }
