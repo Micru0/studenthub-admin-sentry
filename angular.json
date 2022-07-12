@@ -80,6 +80,17 @@
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
             },
+            "docker": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.docker.ts"
+                }
+              ],
+              "aot": true,
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
+            },
             "anil": {
               "fileReplacements": [
                 {
@@ -125,6 +136,9 @@
             },
             "anil": {
               "browserTarget": "app:build:anil"
+            },
+            "docker": {
+              "browserTarget": "app:build:docker"
             },
             "dev": {
               "browserTarget": "app:build:dev"
