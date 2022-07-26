@@ -77,6 +77,17 @@ export class PayableCandidatesPage  {
   }
 
   /**
+   * Export Payment Advice File
+   */
+  async downloadAdvice() {
+    this.processing = true;
+
+    this.transferService.downloadAdvice().subscribe(response => {
+      this.processing = false;
+    });
+  }
+
+  /**
    * Export Payable Candidates as Text
    */
   async exportText() {

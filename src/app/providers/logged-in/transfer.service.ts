@@ -164,6 +164,15 @@ export class TransferService {
   }
 
   /**
+   * download payment advice file
+   * @returns 
+   */
+  downloadAdvice() {
+    let url = `${this._transferEndpoint}/download-payment-advice`;
+    return this._authhttp.downloadTextFile(url);
+  }
+
+  /**
    * Mark the passed transfer as locked
    * @param {number} invoice_id
    * @returns {Observable<any>}
