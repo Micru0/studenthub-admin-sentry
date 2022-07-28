@@ -73,6 +73,12 @@
             <span *ngIf="history.end_date">Till {{ history.end_date }} </span>
             <span *ngIf="!history.end_date">Till Now </span>
           </p>
+          <p *ngIf="!history.store && history.company.company_name">
+            {{ history.company.company_name }}
+            <span *ngIf="history.start_date">From {{ history.start_date }} </span>
+            <span *ngIf="history.end_date">Till {{ history.end_date }} </span>
+            <span *ngIf="!history.end_date">Till Now </span>
+          </p>
 
           <p>
             <span *ngIf="history.store">{{ history.store.store_name }}</span>
