@@ -35,6 +35,7 @@ import {CountryFormPageModule} from "./pages/logged-in/country/country-form/coun
 import {InspectorFormPageModule} from "./pages/logged-in/inspector/inspector-form/inspector-form.module";
 import { ModalPopPageModule } from './pages/logged-in/modal-pop/modal-pop.module';
 import { ExpenseFormPageModule } from './pages/logged-in/expense/expense-form/expense-form.module';
+import {CompanyPageModule} from "./pages/logged-in/picker/company/company.module";
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -73,7 +74,8 @@ declare global {
     NoItemsModule,
     CountryFormPageModule,
     InspectorFormPageModule,
-    ModalPopPageModule
+    ModalPopPageModule,
+    CompanyPageModule
   ],
   providers: [
     {

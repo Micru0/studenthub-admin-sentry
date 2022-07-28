@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title>Candidate assignment Report ({{totalCount}})</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item (click)="selectCompany($event)">
+              <ion-label position="stacked" color="primary">Company Name</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="stacked" color="primary">Start Date</ion-label>
+              <ion-input type="date" [(ngModel)]="filters.start"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="stacked" color="primary">End Date</ion-label>
+              <ion-input type="date" [(ngModel)]="filters.end"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label>Currently Working</ion-label>
+              <ion-checkbox slot="end" [(ngModel)]="filters.currentlyWorking"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
+  <section>
+    <ion-list>
+      <ion-item *ngFor="let history of candidateWorkHistory" tappable (click)="rowSelected(history.candidate)">
+        <div tabindex="0"></div>
+        <ion-avatar slot="start">
+          <img *ngIf="history.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + history.candidate.candidate_personal_photo }}" (error)="loadLogo($event,history.candidate)">
+          <img *ngIf="!history.candidate.candidate_personal_photo" src="/assets/icon.png">
+        </ion-avatar>
+        <ion-label>
+          <h2 class="candidate_name">{{ history.candidate.candidate_name ?history.candidate.candidate_name : history.candidate.candidate_name_ar }}</h2>
+          <p *ngIf="history.store">
+            {{ history.store.store_name }}
+            <span *ngIf="history.start_date">From {{ history.start_date }} </span>
+            <span *ngIf="history.end_date">Till {{ history.end_date }} </span>
+            <span *ngIf="!history.end_date">Till Now </span>
+          </p>
+
+          <p *ngIf="history.store">
+            {{ history.store.store_name }}
+            <span *ngIf="history.company">@ {{ history.company.company_name }} </span>
+          </p>
+
+          <ion-badge *ngIf="history.candidate.isProfileCompleted == false" color="danger">
+            Incomplete Profile
+          </ion-badge>
+
+          <ion-badge *ngIf="!history.candidate.candidate_email_verification" color="danger">
+            Email Not Verified
+          </ion-badge>
+
+          <ion-badge *ngIf="!history.candidate.approved" color="danger">
+            Not Approved
+          </ion-badge>
+
+          <ion-badge *ngIf="history.candidate.deleted" color="danger">
+            Deleted
+          </ion-badge>
+        </ion-label>
+
+      </ion-item>
+
+      <loading-modal type="review-list" [loading]="loading"></loading-modal>
+    </ion-list>
+
+    <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  </section>
+
+</ion-content>
