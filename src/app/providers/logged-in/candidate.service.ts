@@ -26,7 +26,16 @@ export class CandidateService {
    * @returns {Observable<any>}
    */
   list(search, page: number): Observable<any>{
-    const url = this._candidateEndpoint + '/search?page=' + page + search;
+    const url = this._candidateEndpoint + '/search?page=' + page + search + '&expand=store,company';
+    return this._authhttp.get(url, true);
+  }
+
+  /**
+   * List of all candidates
+   * @returns {Observable<any>}
+   */
+  reportList(search, page: number): Observable<any>{
+    const url = this._candidateEndpoint + '/report-search?page=' + page + search + '&expand=candidate,store,company';
     return this._authhttp.get(url, true);
   }
 
@@ -50,7 +59,7 @@ export class CandidateService {
   }
   
   /**
-   * candidate transfer list 
+   * candidate transfer list
    * @returns {Observable<any>}
    */
   transfers(id:number): Observable<any> {
