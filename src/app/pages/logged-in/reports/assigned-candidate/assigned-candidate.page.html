@@ -74,8 +74,8 @@
             <span *ngIf="!history.end_date">Till Now </span>
           </p>
 
-          <p *ngIf="history.store">
-            {{ history.store.store_name }}
+          <p>
+            <span *ngIf="history.store">{{ history.store.store_name }}</span>
             <span *ngIf="history.company">@ {{ history.company.company_name }} </span>
           </p>
 
