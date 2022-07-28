@@ -420,6 +420,14 @@ const routes: Routes = [
   },
 
   {
+    path: 'assigned-candidate',
+    loadChildren: () => import('./pages/logged-in/reports/assigned-candidate/assigned-candidate.module').then( m => m.AssignedCandidatePageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'AssignedCandidatePage'
+    }
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
   }

@@ -36,6 +36,7 @@ import {InspectorFormPageModule} from "./pages/logged-in/inspector/inspector-for
 import { ModalPopPageModule } from './pages/logged-in/modal-pop/modal-pop.module';
 import { RequestChecklistFormPageModule } from './pages/logged-in/requests/request-checklist/request-checklist-form/request-checklist-form.module';
 import { ExpenseFormPageModule } from './pages/logged-in/expense/expense-form/expense-form.module';
+import {CompanyPageModule} from "./pages/logged-in/picker/company/company.module";
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -75,7 +76,8 @@ declare global {
     CountryFormPageModule,
     InspectorFormPageModule,
     ModalPopPageModule,
-    RequestChecklistFormPageModule
+    RequestChecklistFormPageModule,
+    CompanyPageModule
   ],
   providers: [
     {

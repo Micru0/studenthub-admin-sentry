@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="dismiss()" slot="start"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Companies List</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+    <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let company of companies" [disabled]="platform.width() > 768">
+      <ion-item tappable (click)="rowSelected(company)">
+        <div tabindex="0"></div>
+        <ion-label>
+          {{ company.company_name }}<br/>
+          <ion-badge class="company_status_badge" slot="start" color="danger" *ngIf="!company.company_status">
+            Inactive
+          </ion-badge>
+          <ion-badge class="company_status_badge" slot="start" color="success" *ngIf="company.company_status">
+            Active
+          </ion-badge>
+        </ion-label>
+        <ion-avatar slot="start">
+          <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
+          <img *ngIf="!company.company_logo" src="/assets/icon.png">
+        </ion-avatar>
+
+<!--        <ion-badge slot="end" *ngIf="company.total_candidates > 0">-->
+<!--          {{ company.total_candidates }} candidates-->
+<!--        </ion-badge>-->
+
+<!--        <ion-badge slot="end" *ngIf="company.total_subcompanies > 0">-->
+<!--          {{ company.total_subcompanies }} sub-companies-->
+<!--        </ion-badge>-->
+
+<!--        <ion-badge slot="end" *ngIf="company.total_stores > 0">-->
+<!--          {{ company.total_stores }} stores-->
+<!--        </ion-badge>-->
+
+<!--        <ion-badge slot="end" color="success" *ngIf="company.company_approved_to_hire">-->
+<!--          <ion-icon name="checkmark-outline"></ion-icon> Approved to hire-->
+<!--        </ion-badge>-->
+
+<!--        <ion-badge slot="end" color="warning" *ngIf="!company.company_approved_to_hire">-->
+<!--          <ion-icon name="close-outline"></ion-icon> Not approved to hire-->
+<!--        </ion-badge>-->
+
+      </ion-item>
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+
+  </ion-list>
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+                       (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
