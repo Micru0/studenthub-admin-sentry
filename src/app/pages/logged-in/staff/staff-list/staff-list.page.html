@@ -21,7 +21,10 @@
       <ion-item tappable (click)="rowSelected(staffMember)">
         <div tabindex="0"></div>
         <ion-label>
-          {{ staffMember.staff_name }} <br/>
+          {{ staffMember.staff_name }}
+          <p>Total Assigned Candidate {{staffMember.total_assigned}}</p>
+          <p>Total Request {{staffMember.total_requests}}</p>
+          <p>Total Notes {{staffMember.total_notes}}</p>
         </ion-label>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
