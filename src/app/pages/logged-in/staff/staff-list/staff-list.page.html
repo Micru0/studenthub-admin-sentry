@@ -22,9 +22,12 @@
         <div tabindex="0"></div>
         <ion-label>
           {{ staffMember.staff_name }} <br/>
-
           <ion-badge *ngIf="staffMember.staff_role == 1">Manager</ion-badge>
           <ion-badge *ngIf="staffMember.staff_role == 2">Consultant</ion-badge>
+          {{ staffMember.staff_name }}
+          <p>Total Assigned Candidate {{staffMember.total_assigned}}</p>
+          <p>Total Request {{staffMember.total_requests}}</p>
+          <p>Total Notes {{staffMember.total_notes}}</p>
         </ion-label>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
