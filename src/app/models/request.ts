@@ -11,7 +11,7 @@ export class Request {
     request_position_title: string;
     request_number_of_employees: number;
     request_additional_info: string;
-    request_status: Status;
+    request_status: any;
     request_feedback: string;
     request_created_datetime: string;
     request_updated_datetime: string;
