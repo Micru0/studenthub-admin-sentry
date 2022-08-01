@@ -1,0 +1,44 @@
+<ion-item tappable (click)="rowSelected(history.candidate)">
+  <div tabindex="0"></div>
+  <ion-avatar slot="start">
+    <img *ngIf="history.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + history.candidate.candidate_personal_photo }}" (error)="loadLogo($event,history.candidate)">
+    <img *ngIf="!history.candidate.candidate_personal_photo" src="/assets/icon.png">
+  </ion-avatar>
+  <ion-label>
+    <h2 class="candidate_name">{{ history.candidate.candidate_name ?history.candidate.candidate_name : history.candidate.candidate_name_ar }}</h2>
+    <p *ngIf="history.store">
+      {{ history.store.store_name }}
+      <span *ngIf="history.start_date">From {{ history.start_date }} </span>
+      <span *ngIf="history.end_date">Till {{ history.end_date }} </span>
+      <span *ngIf="!history.end_date">Till Now </span>
+    </p>
+    <p *ngIf="!history.store && history.company.company_name">
+      {{ history.company.company_name }}
+      <span *ngIf="history.start_date">From {{ history.start_date }} </span>
+      <span *ngIf="history.end_date">Till {{ history.end_date }} </span>
+      <span *ngIf="!history.end_date">Till Now </span>
+    </p>
+
+    <p>
+      <span *ngIf="history.store">{{ history.store.store_name }}</span>
+      <span *ngIf="history.company">@ {{ history.company.company_name }} </span>
+    </p>
+
+    <ion-badge *ngIf="history.candidate.isProfileCompleted == false" color="danger">
+      Incomplete Profile
+    </ion-badge>
+
+    <ion-badge *ngIf="!history.candidate.candidate_email_verification" color="danger">
+      Email Not Verified
+    </ion-badge>
+
+    <ion-badge *ngIf="!history.candidate.approved" color="danger">
+      Not Approved
+    </ion-badge>
+
+    <ion-badge *ngIf="history.candidate.deleted" color="danger">
+      Deleted
+    </ion-badge>
+  </ion-label>
+
+</ion-item>

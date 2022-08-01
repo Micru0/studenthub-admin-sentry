@@ -1,0 +1,61 @@
+<ion-card [class.pending]="request.request_status == 'pending'" tappable>
+  <ion-card-content>
+    <h1 *ngIf="request.company">
+      {{ request.company.company_common_name_en? request.company.company_common_name_en: request.company.company_name }}
+    </h1>
+
+    <ion-badge slot="end" class="suggested"  *ngIf="request.company && request.company.company_approved_to_hire">
+      <section *ngIf="request.request_status == 'pending'">Pending </section>
+      <section *ngIf="request.request_status == 'started'">Started </section>
+      <section *ngIf="request.request_status == 'delivered'">Delivered </section>
+      <section *ngIf="request.request_status == 'finished_by_recruitment'">Finished By Recruitment</section>
+      <section *ngIf="request.request_status == 're_work'">Re work </section>
+    </ion-badge>
+
+    <ion-badge slot="end" class="suggested" color="success" *ngIf="request.company && request.company.company_approved_to_hire">
+      <ion-icon name="checkmark-outline"></ion-icon> Approved to hire
+    </ion-badge>
+
+    <ion-badge slot="end" class="suggested" color="warning" *ngIf="request.company && !request.company.company_approved_to_hire">
+      <ion-icon name="close-outline"></ion-icon> Not approved to hire
+    </ion-badge>
+
+    <h3>
+      Looking for <b>{{ request.request_number_of_employees }}
+      <span *ngIf="request.request_position_type == 1">Full-time</span>
+      <span *ngIf="request.request_position_type == 2">Part-time</span>
+      {{ request.request_position_title }}</b>
+    </h3>
+
+    <p *ngIf="request.request_additional_info" [ngStyle]="{ 'white-space': 'pre-wrap' }" class="txt-additional-info" [innerHTML]="request.request_additional_info"></p>
+    <p *ngIf="request.num_hours_followup_interval" class="txt-additional-info">Number of Hours to Followup Interval: <strong>{{request.num_hours_followup_interval}} hours</strong></p>
+
+    <small class="time">Request made {{ request.request_created_datetime | timeAgo }} </small><br/>
+
+    <ion-badge *ngFor="let staff of request.staffs">
+      {{ staff.staff_name }}
+    </ion-badge>
+    <div *ngIf="request" class="content-footer" [class.background-grey]="active" [class.background-red]="!active" [class.background-green]="request.request_status == 'delivered'">
+
+      <p *ngIf="request.request_started_at && request.staff">
+        Started {{ request.request_started_at | timeAgo }} By {{ request.staff.staff_name }}
+      </p>
+
+      <p *ngIf="request.request_status == 'delivered'">Delivered {{ request.request_updated_datetime | timeAgo }} </p>
+      <p *ngIf="request.request_status == 'cancelled'">Cancelled {{ request.request_updated_datetime | timeAgo }} </p>
+      <p *ngIf="active && request.request_status == 'started'">Last updated {{ request.request_updated_datetime | timeAgo }} </p>
+      <p *ngIf="active && request.request_status == 'pending'">Last updated {{ request.request_updated_datetime | timeAgo }} </p>
+      <p *ngIf="!active && late">{{ getLateTime(late)}}</p>
+
+      <p *ngIf="request.request_started_at && request.request_cancelled_at">
+        Cancelled after {{ request.request_started_at | duration : request.request_cancelled_at }}
+      </p>
+
+      <p *ngIf="request.request_started_at && request.request_delivered_at">
+        Took {{ request.request_started_at | duration : request.request_delivered_at }} to complete
+      </p>
+
+    </div>
+  </ion-card-content>
+
+</ion-card>
