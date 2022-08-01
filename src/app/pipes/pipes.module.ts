@@ -3,6 +3,7 @@ import { FileSizePipe } from './filesize.pipe';
 import { GroupByPipe } from './groupby-pipe';
 import { TimeAgoPipe } from './timeago.pipe';
 import { SortPipe } from './timestamp-pipe';
+import { DurationPipe } from './duration.pipe';
 
 
 //import custom pipes here
@@ -11,14 +12,16 @@ import { SortPipe } from './timestamp-pipe';
         GroupByPipe,
         SortPipe,
         FileSizePipe,
-        TimeAgoPipe
+        TimeAgoPipe,
+        DurationPipe
     ],
     imports: [],
     exports: [
         GroupByPipe,
         SortPipe,
         FileSizePipe,
-        TimeAgoPipe
+        TimeAgoPipe,
+        DurationPipe
     ]
 })
 export class PipesModule {}

@@ -1,100 +1,181 @@
 <ion-header>
   <ion-toolbar>
-
     <ion-buttons slot="start">
       <ion-back-button defaultHref="staff-list"></ion-back-button>
     </ion-buttons>
-
     <ion-title *ngIf="staff">{{ staff.staff_name }}</ion-title>
-
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button (click)="update()">
         Update
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+
+    <ion-segment *ngIf="!platform.is('mobile')" (ionChange)="segmentChanged($event)" [value]="segment">
+      <ion-segment-button value="info">
+        <ion-label>Info</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="assign_candidate">
+        <ion-label>Assigned Candidate</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="request">
+        <ion-label>Request</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="note">
+        <ion-label>Notes</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-select *ngIf="platform.is('mobile')" interface="popover" (ionChange)="segmentChanged($event)" [value]="segment">
+      <ion-select-option value="info">Info</ion-select-option>
+      <ion-select-option value="assign_candidate">
+        Assigned Candidate
+      </ion-select-option>
+      <ion-select-option value="request">
+        Request
+      </ion-select-option>
+      <ion-select-option value="note">
+        Notes
+      </ion-select-option>
+    </ion-select>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
   <ion-list *ngIf="staff">
+    <section *ngIf="segment == 'info'">
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Id</h5>
+          <p>{{ staff.staff_id }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Staff Member</h5>
+          <p>{{ staff.staff_name }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Email</h5>
+          <p>{{ staff.staff_email }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Status</h5>
+          <p>{{ (staff.staff_status == '10') ? 'Active' : staff.staff_status }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Recieve Notification ? </h5>
+          <p>{{ staff.staff_notification ? 'Yes' : 'No' }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Gmail Username</h5>
+          <p>{{ staff.staff_gmail_username }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Gmail Password</h5>
+          <p>{{ staff.staff_gmail_password }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Created at</h5>
+          <p>{{ staff.staff_created_at }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Updated at</h5>
+          <p>{{ staff.staff_updated_at }}</p>
+        </ion-label>
+      </ion-item>
+    </section>
+    <section *ngIf="segment == 'assign_candidate'">
+      <loading-modal [loading]="loadCandidateWorkHistory" type="university-view"></loading-modal>
 
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Id</h5>
-        <p>{{ staff.staff_id }}</p>
-      </ion-label>
-    </ion-item>
+      <app-candidate-work-history *ngFor="let history of candidateWorkHistory"  [history]="history"></app-candidate-work-history>
+      <loading-modal type="review-list" [loading]="loadCandidateWorkHistory"></loading-modal>
+      <no-items *ngIf="!loadCandidateWorkHistory && candidateWorkHistory.length == 0" message='~ No Candidate Record Found ~'></no-items>
+      <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfiniteAssignedCandidateData($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
 
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Staff Member</h5>
-        <p>{{ staff.staff_name }}</p>
-      </ion-label>
-    </ion-item>
+    </section>
+    <section *ngIf="segment == 'request'" class="ion-padding">
+      <app-request *ngFor="let request of requests" [request]="request"></app-request>
+      <no-items *ngIf="!RLoading && requests.length == 0" message='~ No Request Record Found ~'></no-items>
+      <loading-modal type="review-list" [loading]="RLoading"></loading-modal>
+      <ion-infinite-scroll *ngIf="RCurrentPage < RPageCount" (ionInfinite)="doInfiniteRequest($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </section>
+    <section *ngIf="segment == 'note'" class="ion-padding">
+      <ion-card *ngFor="let note of notes">
+        <ion-badge>
+          {{ note.note_type }}
+        </ion-badge>
 
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Email</h5>
-        <p>{{ staff.staff_email }}</p>
-      </ion-label>
-    </ion-item>
+        <p class="note">
+          <b *ngIf="note.updatedBy">{{ note.updatedBy.staff_name? note.updatedBy.staff_name: note.updatedBy.candidate_name }}:&nbsp;</b>
+          <ng-container *ngIf="note.note_text.length > 100"><span [innerHTML]="note.note_text | slice:0:100"></span>...</ng-container>
+          <ng-container *ngIf="note.note_text.length < 100"><span [innerHTML]="note.note_text"></span></ng-container>
+        </p>
+        <hr/>
+        <div class="note" *ngIf="note.request">
+          For <b *ngIf="note.request">{{note.request.request_position_title}}</b>
+          <small>
+            Looking for <b>{{ note.request.request_number_of_employees }}
+            <span *ngIf="note.request.request_position_type == 1">Full-time</span>
+            <span *ngIf="note.request.request_position_type == 2">Part-time</span>
+            {{ note.request.request_position_title }}</b>
+          </small>
 
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Status</h5>
-        <p>{{ (staff.staff_status == '10') ? 'Active' : staff.staff_status }}</p>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Recieve Notification ? </h5>
-        <p>{{ staff.staff_notification ? 'Yes' : 'No' }}</p>
-      </ion-label>
-    </ion-item>
+        <p *ngIf="note.request.request_additional_info" [ngStyle]="{ 'white-space': 'pre-wrap' }" class="txt-additional-info" [innerHTML]="note.request.request_additional_info"></p>
+        <p *ngIf="note.request.num_hours_followup_interval" class="txt-additional-info">Number of Hours to Followup Interval: <strong>{{note.request.num_hours_followup_interval}} hours</strong></p>
 
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Gmail Username</h5>
-        <p>{{ staff.staff_gmail_username }}</p>
-      </ion-label>
-    </ion-item>
+        <small class="time">Request made {{ note.request.request_created_datetime | timeAgo }} </small><br/>
+        </div>
 
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Gmail Password</h5>
-        <p>{{ staff.staff_gmail_password }}</p>
-      </ion-label>
-    </ion-item>
+        <hr/>
 
-
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Created at</h5>
-        <p>{{ staff.staff_created_at }}</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-item>
-      <div tabindex="0"></div>
-      <ion-label>
-        <h5>Updated at</h5>
-        <p>{{ staff.staff_updated_at }}</p>
-      </ion-label>
-    </ion-item>
-
+        <p class="txt-time">
+          Note Update on {{ note.note_updated_datetime | timeAgo }} & Created on
+          {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}
+        </p>
+      </ion-card>
+      <no-items *ngIf="!NLoading && notes.length == 0" message='~ No Notes Record Found ~'></no-items>
+      <loading-modal type="review-list" [loading]="NLoading"></loading-modal>
+      <ion-infinite-scroll *ngIf="NCurrentPage < NPageCount" (ionInfinite)="doInfiniteNotes($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </section>
   </ion-list>
 
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
-  
+
 </ion-content>
 <ion-footer *ngIf="!authService.admin_limited_access">
   <ion-button expand="full" (click)="resetPassword()">
