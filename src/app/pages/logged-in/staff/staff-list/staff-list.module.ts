@@ -17,6 +17,8 @@ import { LoadingModalModule } from 'src/app/components/loading-modal/loading-mod
     IonicModule,
     StaffListPageRoutingModule
   ],
-  declarations: [StaffListPage]
+  declarations: [
+    StaffListPage
+  ]
 })
 export class StaffListPageModule {}

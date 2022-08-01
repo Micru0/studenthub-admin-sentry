@@ -1,13 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, AlertController, ToastController } from '@ionic/angular';
+import {ModalController, AlertController, ToastController, Platform} from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
-//services
+// services
 import { StaffService } from 'src/app/providers/logged-in/staff.service';
-//models
+// models
 import { Staff } from 'src/app/models/staff';
-//pages
+import { Request } from 'src/app/models/request';
+import { Note } from 'src/app/models/note';
+// pages
 import { StaffFormPage } from '../staff-form/staff-form.page';
-import {AuthService} from "../../../../providers/auth.service";
+import {AuthService} from '../../../../providers/auth.service';
+import {CandidateWorkHistoryService} from '../../../../providers/logged-in/candidate-work-history.service';
+import {CandidateWorkHistory} from '../../../../models/candidate-work-history';
+import {RequestService} from '../../../../providers/logged-in/request.service';
+import {NoteService} from '../../../../providers/logged-in/note.service';
 
 
 @Component({
@@ -16,14 +22,30 @@ import {AuthService} from "../../../../providers/auth.service";
   styleUrls: ['./staff-view.page.scss'],
 })
 export class StaffViewPage implements OnInit {
- 
+
   public staff: Staff;
 
   public staff_id;
+  public pageCount;
+  public currentPage;
+  public totalCount = 0;
 
-  public loading: boolean = false; 
-  
-  public sendingNewPassword: boolean = false;
+  public RPageCount;
+  public RCurrentPage;
+
+  public NPageCount;
+  public NCurrentPage;
+
+  public notes: Note[];
+  public requests: Request[];
+  public candidateWorkHistory: CandidateWorkHistory[];
+  public loadCandidateWorkHistory = false;
+  public loading = false;
+  public RLoading = false;
+  public NLoading = false;
+  public segment = 'info';
+
+  public sendingNewPassword = false;
 
   constructor(
     public router: Router,
@@ -32,35 +54,32 @@ export class StaffViewPage implements OnInit {
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
     public staffService: StaffService,
-    public authService: AuthService
+    public authService: AuthService,
+    public workHistoryService: CandidateWorkHistoryService,
+    public platform: Platform,
+    public requestService: RequestService,
+    public noteService: NoteService
   ) { }
 
   ngOnInit() {
     window.analytics.page('Staff View Page');
 
     // Load the passed model if available
-    if(window.history.state) {
+    if (window.history.state) {
       this.staff = window.history.state.model;
     }
-
     this.staff_id = this.activateRoute.snapshot.paramMap.get('staff_id');
-  
     this.loadData();
   }
 
   loadData() {
-    this.loading = true; 
-
+    this.loading = true;
     this.staffService.view(this.staff_id).subscribe(staff => {
-
-      this.staff = staff; 
-
+      this.staff = staff;
       this.loading = false;
-
     }, () => {
-
       this.loading = false;
-    })
+    });
   }
 
   /**
@@ -69,7 +88,7 @@ export class StaffViewPage implements OnInit {
   async update() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
-    let modal = await this._modalCtrl.create({
+    const modal = await this._modalCtrl.create({
       component: StaffFormPage,
       componentProps: {
         model: this.staff,
@@ -87,11 +106,11 @@ export class StaffViewPage implements OnInit {
   }
 
   /**
-   * Confirm password reset and send new password 
+   * Confirm password reset and send new password
    */
   async resetPassword() {
-    
-    let confirm = await this._alertCtrl.create({
+
+    const confirm = await this._alertCtrl.create({
       header: 'Enter New Password',
       inputs: [
         {
@@ -127,30 +146,182 @@ export class StaffViewPage implements OnInit {
     this.sendingNewPassword = true;
 
     this.staffService.resetPassword(this.staff).subscribe(async response => {
-      
       this.sendingNewPassword = false;
 
-      if(response.operation == 'error')
-      {
-        let toast = await this._toastCtrl.create({
+      if (response.operation == 'error') {
+        const toast = await this._toastCtrl.create({
           message: response.message,
           duration: 3000
         });
-        
         toast.present();
-      } 
-      else 
-      {
-        let alert = await this._alertCtrl.create({
+      } else {
+        const alert = await this._alertCtrl.create({
             header: 'Reset Password',
             subHeader: 'New password sent to staff',
             buttons: ['Okay']
           });
-          alert.present();
-      }      
-
+        alert.present();
+      }
     }, () => {
       this.sendingNewPassword = false;
     });
+  }
+
+  segmentChanged(event) {
+    this.segment = event.detail.value;
+    if (this.segment == 'assign_candidate') {
+        this.loadAssignedCandidateData(1);
+    }
+    if (this.segment == 'request') {
+        this.loadRequest(1);
+    }
+    if (this.segment == 'note') {
+        this.loadNotes(1);
+    }
+  }
+
+  /**
+   * load company data
+   * @param page
+   * @param silent
+   */
+  async loadAssignedCandidateData(page: number, silent = false) {
+
+    if (!silent) {
+      this.loadCandidateWorkHistory = true;
+    }
+    const params = '&expand=candidate,store,company,parentCompany&staff_id=' + this.staff_id;
+    this.workHistoryService.list(page, params).subscribe(response => {
+
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+      this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'), 10);
+
+      this.candidateWorkHistory = response.body;
+      this.loadCandidateWorkHistory = false;
+
+    }, () => {
+      this.loadCandidateWorkHistory = false;
+    });
+  }
+
+  /**
+   * load more companies on scroll to bottom
+   * @param event
+   */
+  doInfiniteAssignedCandidateData(event) {
+
+    this.currentPage++;
+
+    this.loadCandidateWorkHistory = true;
+    const params = '&expand=candidate,store,company,parentCompany&staff_id=' + this.staff_id;
+    this.workHistoryService.list(this.currentPage, params).subscribe(response => {
+
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+      this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'), 10);
+
+      const companies = response.body;
+      this.candidateWorkHistory = this.candidateWorkHistory.concat(companies);
+      this.loadCandidateWorkHistory = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+
+  /**
+   *
+   * @param page
+   * @param silent
+   */
+  async loadRequest(page: number, silent = false) {
+
+    if (!silent) {
+      this.RLoading = true;
+    }
+    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
+    this.requestService.list(page, params).subscribe(response => {
+
+      this.RPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.RCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.requests = response.body;
+      this.RLoading = false;
+
+    }, () => {
+      this.RLoading = false;
+    });
+  }
+
+  doInfiniteRequest(event) {
+
+    this.RCurrentPage++;
+
+    this.RLoading = true;
+    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
+    this.requestService.list(this.RCurrentPage, params).subscribe(response => {
+
+      this.RPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.RCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      const companies = response.body;
+      this.requests = this.requests.concat(companies);
+      this.RLoading = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+
+  /**
+   *
+   * @param page
+   * @param silent
+   */
+  async loadNotes(page: number, silent = false) {
+
+    if (!silent) {
+      this.NLoading = true;
+    }
+    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
+    this.noteService.list(params, page).subscribe(response => {
+
+      this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.NCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.notes = response.body;
+      this.NLoading = false;
+
+    }, () => {
+      this.NLoading = false;
+    });
+  }
+
+  doInfiniteNotes(event) {
+
+    this.NCurrentPage++;
+
+    this.NLoading = true;
+    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
+    this.noteService.list(params, this.NCurrentPage).subscribe(response => {
+
+      this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.NCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      const companies = response.body;
+      this.notes = this.notes.concat(companies);
+      this.NLoading = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date) {
+      return new Date(date.replace(/-/g, '/'));
+    }
   }
 }

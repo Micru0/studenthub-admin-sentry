@@ -52,45 +52,12 @@
   </ion-card>
   <section>
     <ion-list>
-      <ion-item *ngFor="let candidate of candidates" tappable (click)="rowSelected(candidate)">
-        <div tabindex="0"></div>
-        <ion-avatar slot="start">
-          <img *ngIf="candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + candidate.candidate_personal_photo }}" (error)="loadLogo($event,candidate)">
-          <img *ngIf="!candidate.candidate_personal_photo" src="/assets/icon.png">
-        </ion-avatar>
-        <ion-label>
-          <h2 class="candidate_name">{{ candidate.candidate_name ?candidate.candidate_name : candidate.candidate_name_ar }}</h2>
-          <p *ngIf="candidate.store">
-            {{ candidate.store.store_name }}
-            <span *ngIf="candidate.company">@ {{ candidate.company.company_name }} </span>
-          </p>
-
-          <ion-badge *ngIf="candidate.isProfileCompleted == false" color="danger">
-            Incomplete Profile
-          </ion-badge>
-
-          <ion-badge *ngIf="!candidate.candidate_email_verification" color="danger">
-            Email Not Verified
-          </ion-badge>
-
-          <ion-badge *ngIf="!candidate.approved" color="danger">
-            Not Approved
-          </ion-badge>
-
-          <ion-badge *ngIf="candidate.deleted" color="danger">
-            Deleted
-          </ion-badge>
-        </ion-label>
-
-      </ion-item>
-
+      <app-candidate *ngFor="let candidate of candidates"  [candidate]="candidate"></app-candidate>
       <loading-modal type="review-list" [loading]="loading"></loading-modal>
     </ion-list>
 
     <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-
   </section>
-
 </ion-content>

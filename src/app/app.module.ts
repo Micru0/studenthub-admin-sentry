@@ -29,13 +29,16 @@ import { SentryErrorhandlerService } from './providers/sentry.errorhandler.servi
 import { UploadFilePageModule } from './pages/logged-in/company/upload-file/upload-file.module';
 import { BrandFormPageModule } from './pages/logged-in/company/brand-form/brand-form.module';
 import { CompanyContactFormPageModule } from './pages/logged-in/company/company-contact-form/company-contact-form.module';
-import { NoItemsModule } from "./components/no-items/no-items.module";
-import {SelectiveLoadingStrategy} from "./util/SelectiveLoadingStrategy";
-import {CountryFormPageModule} from "./pages/logged-in/country/country-form/country-form.module";
-import {InspectorFormPageModule} from "./pages/logged-in/inspector/inspector-form/inspector-form.module";
+import { NoItemsModule } from './components/no-items/no-items.module';
+import {SelectiveLoadingStrategy} from './util/SelectiveLoadingStrategy';
+import {CountryFormPageModule} from './pages/logged-in/country/country-form/country-form.module';
+import {InspectorFormPageModule} from './pages/logged-in/inspector/inspector-form/inspector-form.module';
 import { ModalPopPageModule } from './pages/logged-in/modal-pop/modal-pop.module';
 import { ExpenseFormPageModule } from './pages/logged-in/expense/expense-form/expense-form.module';
-import {CompanyPageModule} from "./pages/logged-in/picker/company/company.module";
+import {CompanyPageModule} from './pages/logged-in/picker/company/company.module';
+import {CandidateModule} from './components/candidate/candidate.module';
+import {CandidateWorkHistoryModule} from './components/candidate-work-history/candidate-work-history.module';
+import {RequestModule} from './components/request/request.module';
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -75,7 +78,10 @@ declare global {
     CountryFormPageModule,
     InspectorFormPageModule,
     ModalPopPageModule,
-    CompanyPageModule
+    CompanyPageModule,
+    CandidateModule,
+    CandidateWorkHistoryModule,
+    RequestModule
   ],
   providers: [
     {
