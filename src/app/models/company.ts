@@ -21,6 +21,7 @@ export class Company {
     company_logo: string;
     company_status: number;
     total_candidates: number;
+    total_suggestions: number;
     total_stores: number;
     total_subcompanies: number;
     company_hourly_rate: number;
