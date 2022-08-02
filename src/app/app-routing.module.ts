@@ -428,9 +428,25 @@ const routes: Routes = [
     }
   },
   {
+    path: 'request-list',
+    loadChildren: () => import('./pages/logged-in/request/request-list/request-list.module').then( m => m.RequestListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'RequestListPage'
+    }
+  },
+  {
+    path: 'request-view',
+    loadChildren: () => import('./pages/logged-in/request/request-view/request-view.module').then( m => m.RequestViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'RequestViewPage'
+    }
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
-  }
+  },
 ];
 
 @NgModule({
