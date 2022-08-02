@@ -7,6 +7,12 @@ export class Company {
     parent_company_id: number;
     company_name: string;
     company_common_name_en: string;
+    company_created_at: string;
+    company_status_override: string;
+    company_updated_at: string;
+    is_request_updates_in_30_days: string;
+    no_of_active_requests: string;
+    total_candidate: string;
     company_common_name_ar: string;
     company_description_en: string;
     company_description_ar: string;
