@@ -69,7 +69,7 @@ export class CompanyPage implements OnInit {
    * load more companies on scroll to bottom
    * @param event
    */
-  doInfinite(event) {
+    doInfinite(event) {
 
     this.currentPage++;
 

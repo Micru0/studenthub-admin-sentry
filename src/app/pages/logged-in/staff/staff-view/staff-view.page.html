@@ -111,8 +111,6 @@
       </ion-item>
     </section>
     <section *ngIf="segment == 'assign_candidate'">
-      <loading-modal [loading]="loadCandidateWorkHistory" type="university-view"></loading-modal>
-
       <app-candidate-work-history *ngFor="let history of candidateWorkHistory"  [history]="history"></app-candidate-work-history>
       <loading-modal type="review-list" [loading]="loadCandidateWorkHistory"></loading-modal>
       <no-items *ngIf="!loadCandidateWorkHistory && candidateWorkHistory.length == 0" message='~ No Candidate Record Found ~'></no-items>

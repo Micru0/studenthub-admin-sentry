@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard" slot="start"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Request List</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item *ngFor="let request of requests" [routerLink]="['/request-view/' + request.request_uuid ]">
+      <ion-label>
+        <h1>{{request.request_position_title}}</h1>
+        <h2><b>By</b> {{request.company.company_common_name_en}}</h2>
+        <h3>
+          <span *ngIf="request.request_position_type == 1">Full Time</span>
+          <span *ngIf="request.request_position_type == 2">Part Timer</span>
+        </h3>
+        <h4><b>Employees:</b> {{request.request_number_of_employees}}</h4>
+        <h4><b>Status:</b> {{request.request_status}}</h4>
+        <h5><b>Created On:</b> {{request.request_created_datetime}} | Updated On {{request.request_updated_datetime}}</h5>
+        <h5 *ngIf="request.requestCreatedBy"><b>Created By</b> {{request.requestCreatedBy.staff_name}}</h5>
+      </ion-label>
+    </ion-item>
+    <ion-infinite-scroll *ngIf="currentPage < totalPage"
+                         (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-list>
+</ion-content>
