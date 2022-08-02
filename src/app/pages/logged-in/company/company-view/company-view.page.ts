@@ -40,6 +40,7 @@ export class CompanyViewPage implements OnInit {
   public currentPage = 1;
   public companyNotes: Note[];
   public companyYearlyReport: any[];
+  public loadingStats = false;
 
   public company: Company;
   public subCompanies: Company[] = [];
@@ -924,9 +925,14 @@ export class CompanyViewPage implements OnInit {
 
   yearlyReport(year = null) {
     this.currentYear = year;
+    this.loadingStats = true;
     this.companyService.viewYearReport(this.company_id, year).subscribe(response => {
       this.companyYearlyReport = response;
+      this.loadingStats = false;
     }, () => {
     });
+  }
+  convertStringToInt(str){
+    return parseInt(str);
   }
 }

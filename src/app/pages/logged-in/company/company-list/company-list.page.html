@@ -49,6 +49,10 @@
           <img *ngIf="!company.company_logo" src="/assets/icon.png">
         </ion-avatar>
 
+        <ion-badge color="medium" slot="end" *ngIf="company.total_suggestions > 0">
+          {{ company.total_suggestions }} suggestions
+        </ion-badge>
+
         <ion-badge slot="end" *ngIf="company.total_candidates > 0">
           {{ company.total_candidates }} candidates
         </ion-badge>
