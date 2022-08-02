@@ -59,6 +59,9 @@
       <ion-segment-button value="transfer" *ngIf="company && company.parentTransfers && company.parentTransfers.length > 0">
         <ion-label>Transfer</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="stats">
+        <ion-label>Yearly Stats</ion-label>
+      </ion-segment-button>
     </ion-segment>
 
     <ion-select *ngIf="platform.is('mobile')" interface="popover" (ionChange)="segmentChanged($event)" [value]="segment">
@@ -86,6 +89,9 @@
       </ion-select-option>
       <ion-select-option value="transfer" *ngIf="company && company.parentTransfers && company.parentTransfers.length > 0">
         Transfer
+      </ion-select-option>
+      <ion-select-option value="stats">
+        Yearly Stats
       </ion-select-option>
     </ion-select>
   </ion-toolbar>
@@ -165,14 +171,14 @@
           </ion-label>
         </ion-item>
 
-        <ion-item href='{{ company.company_website }}'>
+        <ion-item7 href='{{ company.company_website }}'>
           <div tabindex="0"></div>
           <ion-label>
             <h3>Website</h3>
             <p *ngIf="company.company_website">{{ company.company_website }}</p>
             <p *ngIf="!company.company_website">-</p>
           </ion-label>
-        </ion-item>
+        </ion-item7>
 
         <ion-item *ngIf="company && !company.parent_company_id">
           <div tabindex="0"></div>
@@ -589,6 +595,16 @@
 
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
 
+  <section *ngIf="segment == 'stats'">
+    <ion-list *ngIf="companyYearlyReport">
+      <ion-row *ngFor="let report of companyYearlyReport" tappable >
+        <ion-col>Month</ion-col><ion-col>{{report.month}}</ion-col>
+        <ion-col>Total Requests</ion-col><ion-col>{{report.request}}</ion-col>
+        <ion-col>Total Suggestions</ion-col><ion-col>{{report.suggestions}}</ion-col>
+        <ion-col>Total Hired</ion-col><ion-col>{{report.hired}}</ion-col>
+      </ion-row>
+    </ion-list>
+  </section>
 </ion-content>
 
 <ion-footer *ngIf="company && !authService.admin_limited_access">

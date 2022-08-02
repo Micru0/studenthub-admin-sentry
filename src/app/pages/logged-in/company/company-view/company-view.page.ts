@@ -39,6 +39,7 @@ export class CompanyViewPage implements OnInit {
   public pageCount = 0;
   public currentPage = 1;
   public companyNotes: Note[];
+  public companyYearlyReport: any[];
 
   public company: Company;
   public subCompanies: Company[] = [];
@@ -89,6 +90,7 @@ export class CompanyViewPage implements OnInit {
 
     this.loadData();
     this.loadContacts();
+    this.yearlyReport();
 
     this.eventService.transferUpdated$.subscribe(_ => {
       this.loadData();
@@ -916,6 +918,15 @@ export class CompanyViewPage implements OnInit {
       this.companyNotes = this.companyNotes.concat(companies);
       this.loading = false;
       event.target.complete();
+    }, () => {
+    });
+  }
+
+  yearlyReport(year = null) {
+
+    this.companyService.viewYearReport(this.company_id, year).subscribe(response => {
+
+      this.companyYearlyReport = response;
     }, () => {
     });
   }
