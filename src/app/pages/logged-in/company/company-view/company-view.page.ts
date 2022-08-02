@@ -55,8 +55,8 @@ export class CompanyViewPage implements OnInit {
   public loading = false;
   public sendingNewPassword = false;
   public companyStatus = false;
-  public companyStatusOverride: boolean = false; 
-
+  public companyStatusOverride: boolean = false;
+  public currentYear = new Date().getFullYear();
   public followup = false;
 
   public updating = false;
@@ -91,7 +91,7 @@ export class CompanyViewPage implements OnInit {
 
     this.loadData();
     this.loadContacts();
-    this.yearlyReport();
+    this.yearlyReport(this.currentYear);
 
     this.eventService.transferUpdated$.subscribe(_ => {
       this.loadData();
@@ -932,9 +932,8 @@ export class CompanyViewPage implements OnInit {
   }
 
   yearlyReport(year = null) {
-
+    this.currentYear = year;
     this.companyService.viewYearReport(this.company_id, year).subscribe(response => {
-
       this.companyYearlyReport = response;
     }, () => {
     });

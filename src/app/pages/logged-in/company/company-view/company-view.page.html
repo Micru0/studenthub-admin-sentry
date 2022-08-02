@@ -171,14 +171,14 @@
           </ion-label>
         </ion-item>
 
-        <ion-item7 href='{{ company.company_website }}'>
+        <ion-item href='{{ company.company_website }}'>
           <div tabindex="0"></div>
           <ion-label>
             <h3>Website</h3>
             <p *ngIf="company.company_website">{{ company.company_website }}</p>
             <p *ngIf="!company.company_website">-</p>
           </ion-label>
-        </ion-item7>
+        </ion-item>
 
         <ion-item *ngIf="company && !company.parent_company_id">
           <div tabindex="0"></div>
@@ -599,6 +599,16 @@
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
 
   <section *ngIf="segment == 'stats'">
+    <ion-item>
+      <ion-label>
+        <ion-button [class.selected]="currentYear == 2019" (click)="yearlyReport(2019)"> 2019</ion-button>
+        <ion-button [class.selected]="currentYear == 2020" (click)="yearlyReport(2020)"> 2020</ion-button>
+        <ion-button [class.selected]="currentYear == 2021" (click)="yearlyReport(2021)"> 2021</ion-button>
+        <ion-button [class.selected]="currentYear == 2022" (click)="yearlyReport(2022)"> 2022</ion-button>
+      </ion-label>
+
+    </ion-item>
+
     <ion-list *ngIf="companyYearlyReport">
       <ion-row *ngFor="let report of companyYearlyReport" tappable >
         <ion-col>Month</ion-col><ion-col>{{report.month}}</ion-col>
