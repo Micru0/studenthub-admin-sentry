@@ -594,9 +594,8 @@
         </ion-card>
       </ion-list>
     </section>
+    <loading-modal [loading]="loading" type="university-view"></loading-modal>
   </ion-list>
-
-  <loading-modal [loading]="loading" type="university-view"></loading-modal>
 
   <section *ngIf="segment == 'stats'">
     <ion-item>
@@ -609,12 +608,13 @@
 
     </ion-item>
 
-    <ion-list *ngIf="companyYearlyReport">
+    <loading-modal [loading]="loadingStats" type="stats-detail"></loading-modal>
+    <ion-list *ngIf="companyYearlyReport && !loadingStats">
       <ion-row *ngFor="let report of companyYearlyReport" tappable >
         <ion-col>Month</ion-col><ion-col>{{report.month}}</ion-col>
-        <ion-col>Total Requests</ion-col><ion-col>{{report.request}}</ion-col>
-        <ion-col>Total Suggestions</ion-col><ion-col>{{report.suggestions}}</ion-col>
-        <ion-col>Total Hired</ion-col><ion-col>{{report.hired}}</ion-col>
+        <ion-col [class.exist]="convertStringToInt(report.request) != 0">Total Requests</ion-col><ion-col [class.exist]="convertStringToInt(report.request) != 0">{{report.request}}</ion-col>
+        <ion-col [class.exist]="convertStringToInt(report.suggestions) != 0">Total Suggestions</ion-col><ion-col [class.exist]="convertStringToInt(report.suggestions) != 0">{{report.suggestions}}</ion-col>
+        <ion-col [class.exist]="convertStringToInt(report.hired) != 0">Total Hired</ion-col><ion-col [class.exist]="convertStringToInt(report.hired) != 0">{{report.hired}}</ion-col>
       </ion-row>
     </ion-list>
   </section>
