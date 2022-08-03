@@ -35,6 +35,7 @@ export class Request {
     requestUpdatedBy: Staff;
     staffs: Staff[];
     staff: Staff;
+    contact: any;
     company: Company;
     suggestions: Suggestion[];
     requestActivities: Note[];

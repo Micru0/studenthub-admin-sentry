@@ -7,9 +7,9 @@ import { AuthHttpService } from './authhttp.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RequestService {
+export class InvitationService {
 
-  private _endPoint = '/requests';
+  private _endPoint = '/invitations';
 
   constructor(private _authhttp: AuthHttpService) { }
 
@@ -20,14 +20,5 @@ export class RequestService {
   list(page: number, params): Observable<any>{
     const url = this._endPoint + '?page=' + page + params;
     return this._authhttp.get(url, true);
-  }
-
-  /**
-   * view data
-   * @returns {Observable<any>}
-   */
-  view(uuid): Observable<any>{
-    const url = this._endPoint + '/' + uuid + '?expand=requestCreatedBy,requestUpdatedBy,company,staffs,contact';
-    return this._authhttp.get(url);
   }
 }
