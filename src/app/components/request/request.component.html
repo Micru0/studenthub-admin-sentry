@@ -1,4 +1,4 @@
-<ion-card [class.pending]="request.request_status == 'pending'" tappable>
+<ion-card [class.pending]="request.request_status == 'pending'" tappable (click)="redirect()">
   <ion-card-content>
     <h1 *ngIf="request.company">
       {{ request.company.company_common_name_en? request.company.company_common_name_en: request.company.company_name }}

@@ -20,6 +20,9 @@
       <ion-segment-button value="notes">
         <ion-label>Notes</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="invitations">
+        <ion-label>Invitations</ion-label>
+      </ion-segment-button>
       <ion-segment-button value="staff">
         <ion-label>Staff</ion-label>
       </ion-segment-button>
@@ -34,6 +37,9 @@
       <ion-select-option value="notes">
         Notes
       </ion-select-option>
+      <ion-select-option value="invitations">
+        Invitations
+      </ion-select-option>
       <ion-select-option value="staff">
         Staffs
       </ion-select-option>
@@ -45,73 +51,66 @@
 
   <section *ngIf="segment == 'info'">
     <ion-list>
-      <ion-item>request_position_title:  {{request.request_position_title}}</ion-item>
-      <ion-item>request_position_type:  {{request.request_position_type}}</ion-item>
-      <ion-item>company_id: {{request.company_id}}</ion-item>
-      <ion-item>contact_uuid: {{request.contact_uuid}}</ion-item>
-      <ion-item>is_old: {{request.is_old ? 'Yes' : 'No'}}</ion-item>
-      <ion-item>num_hours_followup_interval: {{request.num_hours_followup_interval}}</ion-item>
-      <ion-item>request_additional_info: {{request.request_additional_info}}</ion-item>
-      <ion-item>request_assigned_at: {{request.request_assigned_at}}</ion-item>
-      <ion-item>request_cancelled_at: {{request.request_cancelled_at}}</ion-item>
-      <ion-item>request_compensation: {{request.request_compensation}}</ion-item>
-      <ion-item *ngIf="request.requestCreatedBy">request_created_by: {{request.requestCreatedBy.staff_name}}</ion-item>
-      <ion-item>request_created_datetime: {{request.request_created_datetime}}</ion-item>
-      <ion-item>request_delivered_at: {{request.request_delivered_at}}</ion-item>
-      <ion-item>request_feedback: {{request.request_feedback}}</ion-item>
-      <ion-item>request_finished_at:  {{request.request_finished_at}}</ion-item>
-      <ion-item>request_job_description:  {{request.request_job_description}}</ion-item>
-      <ion-item>request_location:  {{request.request_location}}</ion-item>
-      <ion-item>request_number_of_employees:  {{request.request_number_of_employees}}</ion-item>
-      <ion-item>request_priority: {{request.request_priority}}</ion-item>
-      <ion-item>request_re_worked_at: {{request.request_re_worked_at}}</ion-item>
-      <ion-item>request_started_at: {{request.request_started_at}}</ion-item>
-      <ion-item>request_status: {{request.request_status}}</ion-item>
-      <ion-item>request_time_spent: {{request.request_time_spent}}</ion-item>
-      <ion-item>request_updated_by: {{request.request_updated_by}}</ion-item>
-      <ion-item>request_updated_datetime: {{request.request_updated_datetime}}</ion-item>
-      <ion-item>request_uuid: {{request.request_uuid}}</ion-item>
-      <ion-item>staff_id:  {{request.staff_id}}</ion-item>
+      <ion-item>Position Title:  {{request.request_position_title}}</ion-item>
+      <ion-item>Position Type:  {{request.request_position_type == '1' ? 'Full Timer' : 'Part Timer'}}</ion-item>
+      <ion-item *ngIf="request.contact">Contact: {{request.contact.contact_name}}</ion-item>
+      <ion-item>Followup Interval: {{request.num_hours_followup_interval}}</ion-item>
+      <ion-item><span [innerHtml]="request.request_job_description"></span></ion-item>
+      <ion-item *ngIf="request.request_additional_info">Additional Info: {{request.request_additional_info}}</ion-item>
+      <ion-item *ngIf="request.request_assigned_at">Assigned at: {{request.request_assigned_at}}</ion-item>
+      <ion-item *ngIf="request.request_cancelled_at">Cancelled at: {{request.request_cancelled_at}}</ion-item>
+      <ion-item>Compensation: {{request.request_compensation}}</ion-item>
+      <ion-item *ngIf="request.requestCreatedBy">Created by: {{request.requestCreatedBy.staff_name}}</ion-item>
+      <ion-item *ngIf="request.requestUpdatedBy">Updated by: {{request.requestUpdatedBy.staff_name}}</ion-item>
+      <ion-item>Created At: {{request.request_created_datetime}}</ion-item>
+      <ion-item>Started At: {{request.request_started_at}}</ion-item>
+      <ion-item *ngIf="request.request_delivered_at">Delivered At: {{request.request_delivered_at}}</ion-item>
+      <ion-item *ngIf="request.request_finished_at">Finished At:  {{request.request_finished_at}}</ion-item>
+      <ion-item *ngIf="request.request_feedback">Feedback: {{request.request_feedback}}</ion-item>
+      <ion-item>Location:  {{request.request_location}}</ion-item>
+      <ion-item>Employees Required:  {{request.request_number_of_employees}}</ion-item>
+      <ion-item *ngIf="request.request_re_worked_at">Re-worked at: {{request.request_re_worked_at}}</ion-item>
+      <ion-item>Status: {{request.request_status}}</ion-item>
+      <ion-item *ngIf="request.request_time_spent">Time Spent: {{request.request_time_spent}}</ion-item>
+      <ion-item>Updated Datetime: {{request.request_updated_datetime}}</ion-item>
     </ion-list>
   </section>
   <section *ngIf="segment == 'company'">
     <ion-list>
-      <ion-item>company_approved_to_hire: {{request.company.company_approved_to_hire}}</ion-item>
-      <ion-item>company_bonus_commission:  {{request.company.company_bonus_commission}}</ion-item>
-      <ion-item>company_common_name_ar: {{request.company.company_common_name_ar}}</ion-item>
-      <ion-item>company_common_name_en: {{request.company.company_common_name_en}}</ion-item>
-      <ion-item>company_created_at: {{request.company.company_created_at}}</ion-item>
-      <ion-item>company_description_ar: {{request.company.company_description_ar}}</ion-item>
-      <ion-item>company_description_en: {{request.company.company_description_en}}</ion-item>
-      <ion-item>company_email: {{request.company.company_email}}</ion-item>
-      <ion-item>company_followup: {{request.company.company_followup}}</ion-item>
-      <ion-item>company_followup_interval_weeks: {{request.company.company_followup_interval_weeks}}</ion-item>
-      <ion-item>company_hourly_rate: {{request.company.company_hourly_rate}}</ion-item>
-      <ion-item>company_id: {{request.company.company_id}}</ion-item>
-      <ion-item>company_last_followup_datetime: {{request.company.company_last_followup_datetime}}</ion-item>
-      <ion-item>company_logo: {{request.company.company_logo}}</ion-item>
-      <ion-item>company_name: {{request.company.company_name}}</ion-item>
-      <ion-item>company_status: {{request.company.company_status}}</ion-item>
-      <ion-item>company_status_override: {{request.company.company_status_override}}</ion-item>
-      <ion-item>company_updated_at: {{request.company.company_updated_at}}</ion-item>
-      <ion-item>company_website: {{request.company.company_website}}</ion-item>
-      <ion-item>is_request_updates_in_30_days: {{request.company.is_request_updates_in_30_days}}</ion-item>
-      <ion-item>no_of_active_requests: {{request.company.no_of_active_requests}}</ion-item>
-      <ion-item>parent_company_id: {{request.company.parent_company_id}}</ion-item>
-      <ion-item>total_candidate: {{request.company.total_candidate}}</ion-item>
-      <ion-item>total_candidates: {{request.company.total_candidates}}</ion-item>
-      <ion-item>total_stores: {{request.company.total_stores}}</ion-item>
-      <ion-item>total_subcompanies: {{request.company.total_subcompanies}}</ion-item>
+      <ion-item>Name: {{request.company.company_name}}</ion-item>
+      <ion-item>Common Name Ar: {{request.company.company_common_name_ar}}</ion-item>
+      <ion-item>Common Name En: {{request.company.company_common_name_en}}</ion-item>
+      <ion-item>Email: {{request.company.company_email}}</ion-item>
+      <ion-item>Website: {{request.company.company_website}}</ion-item>
+      <ion-item>Total Candidates: {{request.company.total_candidates}}</ion-item>
+      <ion-item>Total Stores: {{request.company.total_stores}}</ion-item>
+      <ion-item>Total Subcompanies: {{request.company.total_subcompanies}}</ion-item>
     </ion-list>
   </section>
   <section *ngIf="segment == 'suggestions'">
-    <ion-list *ngIf="request && request.suggestions">
-        <app-candidate *ngFor="let suggestion of request.suggestions" [candidate]="suggestion.candidate"></app-candidate>
+    <ion-list *ngIf="suggestions && suggestions.length > 0">
+        <app-candidate *ngFor="let suggestion of suggestions" [candidate]="suggestion.candidate"></app-candidate>
     </ion-list>
-    <no-items *ngIf="!request.suggestions.length" message="~ No Suggestion found so far ~"></no-items>
+    <ion-infinite-scroll *ngIf="SCurrentPage < SPageCount"
+                         (ionInfinite)="doSuggestionsInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    <no-items *ngIf="suggestions && !suggestions.length && !loading" message="~ No Suggestion found so far ~"></no-items>
+  </section>
+  <section *ngIf="segment == 'invitations'">
+    <ion-list *ngIf="invitations && invitations.length > 0">
+        <app-candidate *ngFor="let invitation of invitations" [candidate]="invitation.candidate"></app-candidate>
+    </ion-list>
+    <ion-infinite-scroll *ngIf="ICurrentPage < IPageCount"
+                         (ionInfinite)="doInvitationInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    <no-items *ngIf="invitations && !invitations.length && !loading" message="~ No Invitation found so far ~"></no-items>
   </section>
   <section *ngIf="segment == 'notes'" class="ion-padding">
-    <ion-card *ngFor="let note of request.requestActivities">
+    <ion-card *ngFor="let note of notes">
       <ion-badge>
         {{ note.note_type }}
       </ion-badge>
@@ -126,7 +125,12 @@
         {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}
       </p>
     </ion-card>
-    <no-items *ngIf="!request.requestActivities.length" message="~ No Note found so far ~"></no-items>
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    <ion-infinite-scroll *ngIf="NCurrentPage < NPageCount"
+                         (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <no-items *ngIf="notes && !notes.length" message="~ No Note found so far ~"></no-items>
   </section>
   <section *ngIf="segment == 'staff'">
     <ion-list>

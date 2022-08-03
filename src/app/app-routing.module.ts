@@ -440,7 +440,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/request/request-view/request-view.module').then( m => m.RequestViewPageModule),
     canActivate: [AuthService],
     data: {
-      name: 'RequestViewPage'
+      name: 'RequestViewPage',
+      navDisable: true,
     }
   },
   {

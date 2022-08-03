@@ -10,6 +10,7 @@ import { RequestViewPage } from './request-view.page';
 import {NoItemsModule} from 'src/app/components/no-items/no-items.module';
 import {CandidateModule} from 'src/app/components/candidate/candidate.module';
 import {PipesModule} from 'src/app/pipes/pipes.module';
+import {LoadingModalModule} from "../../../../components/loading-modal/loading-modal.module";
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {PipesModule} from 'src/app/pipes/pipes.module';
     PipesModule,
     NoItemsModule,
     CandidateModule,
+    LoadingModalModule,
     RequestViewPageRoutingModule
   ],
   declarations: [RequestViewPage]
