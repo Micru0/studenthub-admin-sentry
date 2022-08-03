@@ -52,7 +52,10 @@
   <section *ngIf="segment == 'info'">
     <ion-list>
       <ion-item>Position Title:  {{request.request_position_title}}</ion-item>
-      <ion-item>Position Type:  {{request.request_position_type == '1' ? 'Full Timer' : 'Part Timer'}}</ion-item>
+      <ion-item>Position Type:
+        <span *ngIf="request.request_position_type == '1'">Full Timer</span>
+        <span *ngIf="request.request_position_type == '2'">Part Timer}}</span>
+      </ion-item>
       <ion-item *ngIf="request.contact">Contact: {{request.contact.contact_name}}</ion-item>
       <ion-item>Followup Interval: {{request.num_hours_followup_interval}}</ion-item>
       <ion-item><span [innerHtml]="request.request_job_description"></span></ion-item>
