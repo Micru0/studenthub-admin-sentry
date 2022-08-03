@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Request } from '../../models/request';
+import {Route, Router} from "@angular/router";
 
 
 @Component({
@@ -10,7 +11,9 @@ import { Request } from '../../models/request';
 export class RequestComponent implements OnInit {
 
   @Input() request: Request;
-  constructor() { }
+  constructor(
+      public route: Router
+  ) { }
 
   public active = false;
   public late = null;
@@ -92,4 +95,7 @@ export class RequestComponent implements OnInit {
     }
   }
 
+  redirect() {
+    return this.route.navigate(['/request-view/' + this.request.request_uuid]);
+  }
 }

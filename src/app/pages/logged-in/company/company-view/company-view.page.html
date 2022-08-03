@@ -278,7 +278,7 @@
     <section *ngIf="segment == 'requests'">
 
       <ion-list>
-        <ion-item *ngFor="let request of company.requests">
+        <ion-item *ngFor="let request of company.requests" [routerLink]="['/request-view/'+request.request_uuid]">
           <div tabindex="0"></div>
           <ion-label>
             {{ request.request_position_title }}<br />
