@@ -34,15 +34,14 @@ export class CompanyService {
    * @returns {Observable<any>}
    */
   viewYearReport(company_id: number, year: number): Observable<any> {
-    let url;
+    let url = `${this._companyEndpoint}/year-report?company_id=${company_id}`;
+    
     if (year) {
-      url = `${this._companyEndpoint}/year-report?year=${year}&company_id=${company_id}`;
-    } else {
-      url = `${this._companyEndpoint}/year-report?company_id=${company_id}`;
+      url += `&year=${year}`;
     }
+
     return this._authhttp.get(url);
   }
-
 
   /**
    * Create company
