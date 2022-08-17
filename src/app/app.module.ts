@@ -39,6 +39,7 @@ import {CompanyPageModule} from './pages/logged-in/picker/company/company.module
 import {CandidateModule} from './components/candidate/candidate.module';
 import {CandidateWorkHistoryModule} from './components/candidate-work-history/candidate-work-history.module';
 import {RequestModule} from './components/request/request.module';
+import {StaffPageModule} from "./pages/logged-in/picker/staff/staff.module";
 
 export function startupServiceFactory(authService) {
   return () => authService.load();
@@ -81,7 +82,8 @@ declare global {
     CompanyPageModule,
     CandidateModule,
     CandidateWorkHistoryModule,
-    RequestModule
+    RequestModule,
+    StaffPageModule
   ],
   providers: [
     {

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="close()" slot="start"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Staff Members</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-item tappable (click)="close(staff)" *ngFor="let staff of staff">
+        <div tabindex="0"></div>
+        <ion-label>
+          {{ staff.staff_name }}
+          <p>Total Assigned Candidate {{staff.total_assigned}}</p>
+          <p>Total Request {{staff.total_requests}}</p>
+          <p>Total Notes {{staff.total_notes}}</p>
+        </ion-label>
+      </ion-item>
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+</ion-list>
+
+<ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content>
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>

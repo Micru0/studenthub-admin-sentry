@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
+import {ModalController, AlertController, ToastController, Platform, NavController} from '@ionic/angular';
 // models
 import { Staff } from 'src/app/models/staff';
 // pages
@@ -30,16 +30,17 @@ export class StaffListPage implements OnInit {
   constructor(
     public platform: Platform,
     public router: Router,
+    public navCtrl: NavController,
     public staffService: StaffService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
-    public authService: AuthService
-  ) { }
+    public authService: AuthService,
+  ) {
+  }
 
   ngOnInit() {
     window.analytics.page('Staff List Page');
-
     this.loadData(this.currentPage);
   }
 
@@ -241,5 +242,23 @@ export class StaffListPage implements OnInit {
       ]
     });
     confirm.present();
+  }
+
+  /**
+   * Close the page
+   */
+  /**
+   * Close the page
+   */
+  close() {
+    this._modalCtrl.getTop().then(o => {
+      if(o) {
+        o.dismiss({ refresh: false });
+      }
+      else
+      {
+        this.navCtrl.back();
+      }
+    });
   }
 }

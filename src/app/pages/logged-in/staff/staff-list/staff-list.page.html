@@ -17,7 +17,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let staffMember of staff" [disabled]="platform.width() > 768">
+    <ion-item-sliding *ngFor="let staffMember of staff">
       <ion-item tappable (click)="rowSelected(staffMember)">
         <div tabindex="0"></div>
         <ion-label>
