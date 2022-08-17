@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; 
-//services
+import { Router } from '@angular/router';
+// services
 import { CandidateService } from 'src/app/providers/logged-in/candidate.service';
 import { AwsService } from 'src/app/providers/aws.service';
-//models
+// models
 import { Candidate } from 'src/app/models/candidate';
-import {AuthService} from "../../../../providers/auth.service";
+import {AuthService} from '../../../../providers/auth.service';
 
 
 @Component({
@@ -15,8 +15,8 @@ import {AuthService} from "../../../../providers/auth.service";
 })
 export class CandidateListPage implements OnInit {
 
-  public loading: boolean = false; 
-  
+  public loading = false;
+
   public pageCount = 0;
   public currentPage = 1;
 
@@ -25,11 +25,13 @@ export class CandidateListPage implements OnInit {
     name: string,
     email: string,
     phone: number,
+    civil: number,
     type: string
   } = {
     name: null,
     email: null,
     phone: null,
+    civil: null,
     type: null
   };
 
@@ -54,6 +56,7 @@ export class CandidateListPage implements OnInit {
       name: null,
       email: null,
       phone: null,
+      civil: null,
       type: null
     };
     this.loadData(1); // reload all result
@@ -76,12 +79,15 @@ export class CandidateListPage implements OnInit {
     if (this.filters.phone) {
       urlParams += '&phone=' + this.filters.phone;
     }
+    if (this.filters.civil) {
+      urlParams += '&civil=' + this.filters.civil;
+    }
     return urlParams;
   }
 
   /**
    * Load Candidate List
-   * @param page 
+   * @param page
    */
   async loadData(page: number) {
 
@@ -90,54 +96,54 @@ export class CandidateListPage implements OnInit {
     this.loading = true;
 
     this.candidateService.list(search, page).subscribe(response => {
-      
-      this.loading = false; 
+
+      this.loading = false;
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.candidates = response.body;
     }, () => {
-      this.loading = false; 
+      this.loading = false;
     });
   }
 
   /**
-   * load more on scroll to bottom 
-   * @param event 
+   * load more on scroll to bottom
+   * @param event
    */
   doInfinite(event) {
 
-    this.loading = true; 
+    this.loading = true;
 
     this.currentPage++;
     const search = this.urlParams();
 
     this.candidateService.list(search, this.currentPage).subscribe(response => {
-      
-      this.loading = false; 
+
+      this.loading = false;
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.candidates = this.candidates.concat(response.body);
 
-      event.target.complete(); 
+      event.target.complete();
 
     }, () => {
-      this.loading = false; 
+      this.loading = false;
     });
   }
 
   /**
    * When a candidate is selected
-   * @param model 
+   * @param model
    */
   rowSelected(model) {
-    
+
     this.router.navigate(['/candidate-view', model.candidate_id], {
       state: {
-        'model': model
+        model
       }
     });
   }

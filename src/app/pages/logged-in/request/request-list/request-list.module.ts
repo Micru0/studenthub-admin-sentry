@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { RequestListPageRoutingModule } from './request-list-routing.module';
 
 import { RequestListPage } from './request-list.page';
+import {NoItemsModule} from "../../../../components/no-items/no-items.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    NoItemsModule,
     RequestListPageRoutingModule
   ],
   declarations: [RequestListPage]

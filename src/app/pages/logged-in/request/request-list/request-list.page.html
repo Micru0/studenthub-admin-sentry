@@ -3,12 +3,71 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/dashboard" slot="start"></ion-back-button>
     </ion-buttons>
-    <ion-title>Request List</ion-title>
+    <ion-title>Request List ({{totalRequest}})</ion-title>
     <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="floating" color="primary">Title</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item>
+              <ion-label position="floating" color="primary">Status</ion-label>
+              <ion-select [(ngModel)]="filters.status">
+                <ion-select-option value="pending">Pending</ion-select-option>
+                <ion-select-option value="started">Started</ion-select-option>
+                <ion-select-option value="delivered">Delivered</ion-select-option>
+                <ion-select-option value="cancelled">Cancelled</ion-select-option>
+                <ion-select-option value="finished_by+recruitment">Finished By Recruitment</ion-select-option>
+                <ion-select-option value="re_work">Re Work</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item>
+              <ion-label position="floating" color="primary">Type</ion-label>
+              <ion-select [(ngModel)]="filters.type">
+                <ion-select-option value="1">Full Timer</ion-select-option>
+                <ion-select-option value="2">Part Timer</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item (click)="selectStaff($event)">
+              <ion-label position="floating" color="primary">Staff</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.staff"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item (click)="selectCompany($event)">
+              <ion-label position="floating" color="primary">Company</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.company"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
 
   <ion-list>
     <ion-item *ngFor="let request of requests" [routerLink]="['/request-view/' + request.request_uuid ]">
@@ -25,6 +84,7 @@
         <h5 *ngIf="request.requestCreatedBy"><b>Created By</b> {{request.requestCreatedBy.staff_name}}</h5>
       </ion-label>
     </ion-item>
+    <no-items *ngIf="!loading && requests.length == 0" message="~ No Data Found~"></no-items>
     <ion-infinite-scroll *ngIf="currentPage < totalPage"
                          (ionInfinite)="doInfinite($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
