@@ -10,6 +10,7 @@
       <ion-badge *ngIf="staff.staff_role == 2">Consultant</ion-badge>
     </ion-title>
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      
       <ion-button (click)="update()">
         Update
       </ion-button>
@@ -29,6 +30,9 @@
       </ion-segment-button>
       <ion-segment-button value="note">
         <ion-label>Notes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="salaries">
+        <ion-label>Salaries</ion-label>
       </ion-segment-button>
     </ion-segment>
 
@@ -125,6 +129,7 @@
       </ion-infinite-scroll>
 
     </section>
+    
     <section *ngIf="segment == 'request'" class="ion-padding">
       <app-request *ngFor="let request of requests" [request]="request"></app-request>
       <no-items *ngIf="!RLoading && requests.length == 0" message='~ No Request Record Found ~'></no-items>
@@ -134,6 +139,29 @@
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
     </section>
+    
+    <section *ngIf="segment == 'salaries'" class="ion-padding">
+
+      <ion-item *ngFor="let salary of salaries">
+        <ion-label>
+          <h5>{{ salary.salary }} {{ salary.salary_currency }}</h5>
+          <p *ngIf="salary.comment">{{ salary.comment }}</p>
+          <p>Paid at {{ toDate(salary.salary_date) | date: 'MMM d, y' }}</p>
+          <small>{{ toDate(salary.created_at) | date: 'MMM d, y' }}</small>
+        </ion-label>
+      </ion-item>
+      
+      <no-items *ngIf="!SLoading && salaries.length == 0" message='~ No Salary Record Found ~'></no-items>
+
+      <loading-modal type="review-list" [loading]="SLoading"></loading-modal>
+
+      <ion-infinite-scroll *ngIf="SCurrentPage < SPageCount" (ionInfinite)="doInfiniteSalary($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+    </section>
+
     <section *ngIf="segment == 'note'" class="ion-padding">
       <ion-card *ngFor="let note of notes">
         <ion-badge>
@@ -180,9 +208,24 @@
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
 
 </ion-content>
-<ion-footer *ngIf="!authService.admin_limited_access">
-  <ion-button expand="full" (click)="resetPassword()">
+<ion-footer *ngIf="!authService.admin_limited_access && ['info', 'salaries'].indexOf(segment) > -1">
+
+  <ion-button *ngIf="segment == 'info'" expand="full" (click)="resetPassword()">
     <span *ngIf="!sendingNewPassword">Send new password to staff</span>
     <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
   </ion-button>
+  
+  <ion-button *ngIf="segment == 'salaries'" expand="full" (click)="addSalary()">
+    Add salary entry
+  </ion-button>
+
 </ion-footer>
+
+<!-- 
+
+  todo
+
+  staff list show total paid to staff 
+
+  dashboard show total salary paid by months in graphs 
+-->
