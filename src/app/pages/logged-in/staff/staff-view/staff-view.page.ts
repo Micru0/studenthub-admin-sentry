@@ -14,6 +14,8 @@ import {CandidateWorkHistoryService} from '../../../../providers/logged-in/candi
 import {CandidateWorkHistory} from '../../../../models/candidate-work-history';
 import {RequestService} from '../../../../providers/logged-in/request.service';
 import {NoteService} from '../../../../providers/logged-in/note.service';
+import { StaffSalaryFormPage } from '../staff-salary-form/staff-salary-form.page';
+import { StaffSalary } from 'src/app/models/staff_salary';
 
 
 @Component({
@@ -33,16 +35,23 @@ export class StaffViewPage implements OnInit {
   public RPageCount;
   public RCurrentPage;
 
+  public SPageCount;
+  public SCurrentPage;
+
   public NPageCount;
   public NCurrentPage;
 
   public notes: Note[];
   public requests: Request[];
+  public salaries = [];
+
   public candidateWorkHistory: CandidateWorkHistory[];
   public loadCandidateWorkHistory = false;
   public loading = false;
   public RLoading = false;
   public NLoading = false;
+  public SLoading = false;
+
   public segment = 'info';
 
   public sendingNewPassword = false;
@@ -68,7 +77,9 @@ export class StaffViewPage implements OnInit {
     if (window.history.state) {
       this.staff = window.history.state.model;
     }
+    
     this.staff_id = this.activateRoute.snapshot.paramMap.get('staff_id');
+
     this.loadData();
   }
 
@@ -80,6 +91,33 @@ export class StaffViewPage implements OnInit {
     }, () => {
       this.loading = false;
     });
+  }
+
+  /**
+   * show popup to add salary 
+   */
+  async addSalary() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: StaffSalaryFormPage,
+      componentProps: {
+        model: new StaffSalary(),
+        staff_id: this.staff_id
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+
+      if (e && e.data && e.data.refresh) {
+        this.loadSalaries(1, true);
+      }
+    });
+    modal.present();
   }
 
   /**
@@ -169,14 +207,21 @@ export class StaffViewPage implements OnInit {
 
   segmentChanged(event) {
     this.segment = event.detail.value;
+
     if (this.segment == 'assign_candidate') {
         this.loadAssignedCandidateData(1);
     }
+
     if (this.segment == 'request') {
         this.loadRequest(1);
     }
+
     if (this.segment == 'note') {
         this.loadNotes(1);
+    }
+
+    if (this.segment == 'salaries') {
+        this.loadSalaries(1);
     }
   }
 
@@ -190,7 +235,9 @@ export class StaffViewPage implements OnInit {
     if (!silent) {
       this.loadCandidateWorkHistory = true;
     }
+    
     const params = '&expand=candidate,store,company,parentCompany&staff_id=' + this.staff_id;
+
     this.workHistoryService.list(page, params).subscribe(response => {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -224,6 +271,55 @@ export class StaffViewPage implements OnInit {
       const companies = response.body;
       this.candidateWorkHistory = this.candidateWorkHistory.concat(companies);
       this.loadCandidateWorkHistory = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+
+  /**
+   * load salaries
+   * @param page 
+   * @param silent 
+   */
+  async loadSalaries(page: number, silent = false) {
+
+    if (!silent) {
+      this.SLoading = true;
+    } 
+
+    this.staffService.listSalaries(this.staff_id, page).subscribe(response => {
+
+      this.SPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.SCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.salaries = response.body;
+
+      this.SLoading = false;
+
+    }, () => {
+      this.SLoading = false;
+    });
+  }
+
+  /**
+   * load more salary data on scroll to bottom
+   * @param event 
+   */
+  doInfiniteSalary(event) {
+
+    this.SCurrentPage++;
+
+    this.SLoading = true;
+
+    this.staffService.listSalaries(this.staff_id, this.SCurrentPage).subscribe(response => {
+    
+      this.SPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.SCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+ 
+      this.salaries = this.salaries.concat(response.body);
+
+      this.SLoading = false;
+
       event.target.complete();
     }, () => {
     });

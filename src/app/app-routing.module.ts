@@ -444,10 +444,20 @@ const routes: Routes = [
       navDisable: true,
     }
   },
+  
+  {
+    path: 'staff-salary-form',
+    loadChildren: () => import('./pages/logged-in/staff/staff-salary-form/staff-salary-form.module').then( m => m.StaffSalaryFormPageModule)
+  },
+  {
+    path: 'import-salary-form',
+    loadChildren: () => import('./pages/logged-in/staff/import-salary-form/import-salary-form.module').then( m => m.ImportSalaryFormPageModule)
+  },
+  
   {
     path: '**',
     redirectTo: 'not-found'
-  },
+  }
 ];
 
 @NgModule({

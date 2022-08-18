@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="staff-list" (click)="close()"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ operation }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button clear color="primary" 
+        [disabled]="!form.valid"
+        (click)="save()">
+        <span *ngIf="!saving">Save</span>
+        <ion-spinner *ngIf="saving"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" *ngIf="form">
+    <ion-list>
+        <ion-item>
+          <ion-label position="floating">Salary</ion-label>
+          <ion-input type="number" formControlName="salary"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Currency Code (3 letter ISO Code)</ion-label>
+          <ion-input type="text" formControlName="salary_currency"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Comment</ion-label>
+          <ion-input type="text" formControlName="comment"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Salary date</ion-label>
+          <ion-datetime formControlName="salary_date"></ion-datetime>
+        </ion-item>
+
+    </ion-list>
+  </form>
+
+  <loading-modal type="staff-form" [loading]="!form"></loading-modal>
+  
+</ion-content>

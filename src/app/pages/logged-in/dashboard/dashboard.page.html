@@ -16,6 +16,7 @@
 <ion-content>
   <ion-grid *ngIf="statistics">
     <ion-row>
+
       <!-- Payment Sent Notification Card -->
       <ion-col size="12" size-md="6" *ngIf="statistics.transfers.paymentSent.total > 0">
         <ion-card>
@@ -97,6 +98,19 @@
             <p>to fix details</p>
             <ion-button routerLink="/university-list">
               Review Universities
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.totalSalaryPaid }} KWD total salary paid
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button routerLink="/import-salary-form">
+              Import salary
             </ion-button>
           </ion-card-content>
         </ion-card>
