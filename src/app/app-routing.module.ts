@@ -440,11 +440,9 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/request/request-view/request-view.module').then( m => m.RequestViewPageModule),
     canActivate: [AuthService],
     data: {
-      name: 'RequestViewPage',
-      navDisable: true,
+      name: 'RequestViewPage'
     }
   },
-  
   {
     path: 'staff-salary-form',
     loadChildren: () => import('./pages/logged-in/staff/staff-salary-form/staff-salary-form.module').then( m => m.StaffSalaryFormPageModule)
@@ -453,7 +451,22 @@ const routes: Routes = [
     path: 'import-salary-form',
     loadChildren: () => import('./pages/logged-in/staff/import-salary-form/import-salary-form.module').then( m => m.ImportSalaryFormPageModule)
   },
-  
+  {
+    path: 'story-list',
+    loadChildren: () => import('./pages/logged-in/story/story-list/story-list.module').then( m => m.StoryListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StoryListPage'
+    }
+  },
+  {
+    path: 'story-view',
+    loadChildren: () => import('./pages/logged-in/story/story-view/story-view.module').then( m => m.StoryViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StoryViewPage'
+    }
+  },
   {
     path: '**',
     redirectTo: 'not-found'

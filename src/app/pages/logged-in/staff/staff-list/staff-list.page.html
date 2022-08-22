@@ -24,9 +24,9 @@
           {{ staffMember.staff_name }} <br/>
           <ion-badge *ngIf="staffMember.staff_role == 1">Manager</ion-badge>
           <ion-badge *ngIf="staffMember.staff_role == 2">Consultant</ion-badge>
-          {{ staffMember.staff_name }}
           <p>Total Assigned Candidate {{staffMember.total_assigned}}</p>
           <p>Total Request {{staffMember.total_requests}}</p>
+          <p>Total Story {{staffMember.total_stories}}</p>
           <p>Total Notes {{staffMember.total_notes}}</p>
         </ion-label>
 

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/" slot="start"></ion-back-button>
     </ion-buttons>
-    <ion-title>Request View</ion-title>
+    <ion-title>Story View</ion-title>
   </ion-toolbar>
   <ion-toolbar>
 
@@ -22,12 +22,6 @@
       </ion-segment-button>
       <ion-segment-button value="invitations">
         <ion-label>Invitations</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="staff">
-        <ion-label>Staff</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="stories">
-        <ion-label>Stories</ion-label>
       </ion-segment-button>
     </ion-segment>
 
@@ -50,47 +44,46 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="request">
+<ion-content *ngIf="story">
 
   <section *ngIf="segment == 'info'">
     <ion-list>
-      <ion-item>Position Title:  {{request.request_position_title}}</ion-item>
+      <ion-item>Position Title:  {{story.request.request_position_title}}</ion-item>
       <ion-item>Position Type:
-        <span *ngIf="request.request_position_type == 1">Full Timer</span>
-        <span *ngIf="request.request_position_type == 2">Part Timer</span>
+        <span *ngIf="story.request.request_position_type == 1">Full Timer</span>
+        <span *ngIf="story.request.request_position_type == 2">Part Timer</span>
       </ion-item>
-      <ion-item *ngIf="request.contact">Contact: {{request.contact.contact_name}}</ion-item>
-      <ion-item>Followup Interval: {{request.num_hours_followup_interval}}</ion-item>
-      <ion-item><span [innerHtml]="request.request_job_description"></span></ion-item>
-      <ion-item *ngIf="request.request_additional_info">Additional Info: {{request.request_additional_info}}</ion-item>
-      <ion-item *ngIf="request.request_assigned_at">Assigned at: {{request.request_assigned_at}}</ion-item>
-      <ion-item *ngIf="request.request_cancelled_at">Cancelled at: {{request.request_cancelled_at}}</ion-item>
-      <ion-item>Compensation: {{request.request_compensation}}</ion-item>
-      <ion-item *ngIf="request.requestCreatedBy">Created by: {{request.requestCreatedBy.staff_name}}</ion-item>
-      <ion-item *ngIf="request.requestUpdatedBy">Updated by: {{request.requestUpdatedBy.staff_name}}</ion-item>
-      <ion-item>Created At: {{request.request_created_datetime}}</ion-item>
-      <ion-item>Started At: {{request.request_started_at}}</ion-item>
-      <ion-item *ngIf="request.request_delivered_at">Delivered At: {{request.request_delivered_at}}</ion-item>
-      <ion-item *ngIf="request.request_finished_at">Finished At:  {{request.request_finished_at}}</ion-item>
-      <ion-item *ngIf="request.request_feedback">Feedback: {{request.request_feedback}}</ion-item>
-      <ion-item>Location:  {{request.request_location}}</ion-item>
-      <ion-item>Employees Required:  {{request.request_number_of_employees}}</ion-item>
-      <ion-item *ngIf="request.request_re_worked_at">Re-worked at: {{request.request_re_worked_at}}</ion-item>
-      <ion-item>Status: {{request.request_status}}</ion-item>
-      <ion-item *ngIf="request.request_time_spent">Time Spent: {{request.request_time_spent}}</ion-item>
-      <ion-item>Updated Datetime: {{request.request_updated_datetime}}</ion-item>
+      <ion-item *ngIf="story.request.contact">Contact: {{story.request.contact.contact_name}}</ion-item>
+      <ion-item>Followup Interval: {{story.request.num_hours_followup_interval}}</ion-item>
+      <ion-item><span [innerHtml]="story.request.request_job_description"></span></ion-item>
+      <ion-item *ngIf="story.request.request_additional_info">Additional Info: {{story.request.request_additional_info}}</ion-item>
+      <ion-item *ngIf="story.request.request_assigned_at">Assigned at: {{story.request.request_assigned_at}}</ion-item>
+      <ion-item *ngIf="story.request.request_cancelled_at">Cancelled at: {{story.request.request_cancelled_at}}</ion-item>
+      <ion-item>Compensation: {{story.request.request_compensation}}</ion-item>
+      <ion-item>Created At: {{story.request.request_created_datetime}}</ion-item>
+      <ion-item>Started At: {{story.request.request_started_at}}</ion-item>
+      <ion-item *ngIf="story.request.request_delivered_at">Delivered At: {{story.request.request_delivered_at}}</ion-item>
+      <ion-item *ngIf="story.request.request_finished_at">Finished At:  {{story.request.request_finished_at}}</ion-item>
+      <ion-item *ngIf="story.request.request_feedback">Feedback: {{story.request.request_feedback}}</ion-item>
+      <ion-item>Location:  {{story.request.request_location}}</ion-item>
+      <ion-item>Employees Required:  {{story.request.request_number_of_employees}}</ion-item>
+      <ion-item *ngIf="story.request.request_re_worked_at">Re-worked at: {{story.request.request_re_worked_at}}</ion-item>
+      <ion-item>Request Status: {{story.request.request_status}}</ion-item>
+      <ion-item>Story Status: {{getStatus(story.story_status)}}</ion-item>
+      <ion-item *ngIf="story.request.request_time_spent">Time Spent: {{story.request.request_time_spent}}</ion-item>
+      <ion-item>Updated Datetime: {{story.request.request_updated_datetime}}</ion-item>
     </ion-list>
   </section>
   <section *ngIf="segment == 'company'">
     <ion-list>
-      <ion-item>Name: {{request.company.company_name}}</ion-item>
-      <ion-item>Common Name Ar: {{request.company.company_common_name_ar}}</ion-item>
-      <ion-item>Common Name En: {{request.company.company_common_name_en}}</ion-item>
-      <ion-item>Email: {{request.company.company_email}}</ion-item>
-      <ion-item>Website: {{request.company.company_website}}</ion-item>
-      <ion-item>Total Candidates: {{request.company.total_candidates}}</ion-item>
-      <ion-item>Total Stores: {{request.company.total_stores}}</ion-item>
-      <ion-item>Total Subcompanies: {{request.company.total_subcompanies}}</ion-item>
+      <ion-item>Name: {{story.request.company.company_name}}</ion-item>
+      <ion-item>Common Name Ar: {{story.request.company.company_common_name_ar}}</ion-item>
+      <ion-item>Common Name En: {{story.request.company.company_common_name_en}}</ion-item>
+      <ion-item>Email: {{story.request.company.company_email}}</ion-item>
+      <ion-item>Website: {{story.request.company.company_website}}</ion-item>
+      <ion-item>Total Candidates: {{story.request.company.total_candidates}}</ion-item>
+      <ion-item>Total Stores: {{story.request.company.total_stores}}</ion-item>
+      <ion-item>Total Subcompanies: {{story.request.company.total_subcompanies}}</ion-item>
     </ion-list>
   </section>
   <section *ngIf="segment == 'suggestions'">
@@ -137,32 +130,5 @@
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
     <no-items *ngIf="notes && !notes.length" message="~ No Note found so far ~"></no-items>
-  </section>
-  <section *ngIf="segment == 'staff'">
-    <ion-list>
-      <ion-item *ngFor="let staff of request.staffs">
-        <ion-label>
-          {{ staff.staff_name }}
-        </ion-label>
-      </ion-item>
-    </ion-list>
-    <no-items *ngIf="!request.staffs.length" message="~ No staff found so far ~"></no-items>
-  </section>
-
-  <section *ngIf="segment == 'stories'">
-    <ion-list>
-      <ion-item *ngFor="let story of request.stories" [routerLink]="['/story-view/' + story.story_uuid ]" tappable>
-        <ion-label>
-          <p>Story ID : <b>{{ story.story_uuid }}</b></p>
-          <p>Is Old : <b>{{ story.is_old  ? 'Yes': 'No' }}</b></p>
-          <p>Time Spent:  <b>{{ story.story_time_spent}}</b></p>
-          <p>Status: <b>{{ getStatus(story.story_status)}}</b></p>
-          <p>Created at: <b>{{ story.story_created_at}}</b></p>
-          <p>Updated at: <b>{{ story.story_last_updated_at}}</b></p>
-          <p>Staff: <b>{{ story.staff.staff_name}}</b></p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-    <no-items *ngIf="!request.staffs.length" message="~ No Stories found so far ~"></no-items>
   </section>
 </ion-content>

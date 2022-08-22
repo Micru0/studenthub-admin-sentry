@@ -14,6 +14,7 @@ export class Staff{
     staff_updated_at: string;
     total_assigned: number;
     total_requests: number;
+    total_stories: number;
     total_notes: number;
     deleted: number;
 }

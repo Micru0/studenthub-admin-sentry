@@ -1,26 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Platform} from '@ionic/angular';
-import { Request } from 'src/app/models/request';
+import {Request, Story} from 'src/app/models/request';
 import { Note } from 'src/app/models/note';
 import {RequestService} from 'src/app/providers/logged-in/request.service';
 import { NoteService } from 'src/app/providers/logged-in/note.service';
 import {InvitationService} from 'src/app/providers/logged-in/invitation.service';
 import {SuggestionService} from 'src/app/providers/logged-in/suggestion.service';
+import {StoryService} from "../../../../providers/logged-in/story.service";
 
 @Component({
-  selector: 'app-request-view',
-  templateUrl: './request-view.page.html',
-  styleUrls: ['./request-view.page.scss'],
+  selector: 'app-story-view',
+  templateUrl: './story-view.page.html',
+  styleUrls: ['./story-view.page.scss'],
 })
-export class RequestViewPage implements OnInit {
+export class StoryViewPage implements OnInit {
 
-  public request: Request;
+  public story: Story;
   public notes: Note[];
   public invitations: any[];
   public suggestions: any[];
   public loading = false;
-  public request_uuid;
+  public story_uuid;
   public segment = 'info';
 
   public NPageCount;
@@ -33,14 +34,14 @@ export class RequestViewPage implements OnInit {
   public SCurrentPage = 1;
 
   constructor(
-      public requestService: RequestService,
+      public storyService: StoryService,
       private activateRoute: ActivatedRoute,
       private noteService: NoteService,
       private invitationService: InvitationService,
       private suggestionService: SuggestionService,
       public platform: Platform,
   ) {
-    this.request_uuid = this.activateRoute.snapshot.paramMap.get('request_uuid');
+    this.story_uuid = this.activateRoute.snapshot.paramMap.get('story_uuid');
   }
 
   ngOnInit() {
@@ -49,8 +50,9 @@ export class RequestViewPage implements OnInit {
 
   loadData() {
     this.loading = true;
-    this.requestService.view(this.request_uuid).subscribe(response => {
-        this.request = response;
+    let params = '?expand=staff,request,request.company,request.contact';
+    this.storyService.detail(this.story_uuid, params).subscribe(response => {
+        this.story = response;
     },
         error => this.loading = false,
         () => this.loading = false
@@ -90,7 +92,7 @@ export class RequestViewPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-    const searchParams = '&expand=createdBy,updatedBy&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=createdBy,updatedBy&story_uuid=' + this.story_uuid;
     this.noteService.list(searchParams, page).subscribe(response => {
 
       this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -113,7 +115,7 @@ export class RequestViewPage implements OnInit {
     this.NCurrentPage++;
 
     this.loading = true;
-    const searchParams = '&expand=createdBy,updatedBy&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=createdBy,updatedBy&story_uuid=' + this.story_uuid;
     this.noteService.list(searchParams, this.NCurrentPage).subscribe(response => {
 
       this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -136,7 +138,7 @@ export class RequestViewPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-    const searchParams = '&expand=candidate&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=candidate&story_uuid=' + this.story_uuid;
     this.invitationService.list(page, searchParams).subscribe(response => {
 
       this.IPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -159,7 +161,7 @@ export class RequestViewPage implements OnInit {
     this.ICurrentPage++;
 
     this.loading = true;
-    const searchParams = '&expand=candidate&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=candidate&story_uuid=' + this.story_uuid;
     this.invitationService.list(this.ICurrentPage, searchParams).subscribe(response => {
 
       this.IPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -182,7 +184,7 @@ export class RequestViewPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-    const searchParams = '&expand=candidate&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=candidate&story_uuid=' + this.story_uuid;
     this.suggestionService.list(page, searchParams).subscribe(response => {
 
       this.SPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -205,7 +207,7 @@ export class RequestViewPage implements OnInit {
     this.SCurrentPage++;
 
     this.loading = true;
-    const searchParams = '&expand=candidate&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=candidate&story_uuid=' + this.story_uuid;
     this.suggestionService.list(this.SCurrentPage, searchParams).subscribe(response => {
 
       this.SPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);

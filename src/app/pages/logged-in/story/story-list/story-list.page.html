@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard" slot="start"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Story List ({{totalRequest}})</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="floating" color="primary">Title</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item>
+              <ion-label position="floating" color="primary">Status</ion-label>
+              <ion-select [(ngModel)]="filters.status">
+                <ion-select-option value="9">Unstarted</ion-select-option>
+                <ion-select-option value="1">Started</ion-select-option>
+                <ion-select-option value="2">Finished</ion-select-option>
+                <ion-select-option value="3">Delivered</ion-select-option>
+                <ion-select-option value="4">Rejected</ion-select-option>
+                <ion-select-option value="5">Accepted</ion-select-option>
+                <ion-select-option value="6">Cancelled</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item>
+              <ion-label position="floating" color="primary">Type</ion-label>
+              <ion-select [(ngModel)]="filters.type">
+                <ion-select-option value="1">Full Timer</ion-select-option>
+                <ion-select-option value="2">Part Timer</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item (click)="selectStaff($event)">
+              <ion-label position="floating" color="primary">Staff</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.staff"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="2" size-lg="2" size-sm="3" size-xs="12">
+            <ion-item (click)="selectCompany($event)">
+              <ion-label position="floating" color="primary">Company</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.company"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let story of stories" [routerLink]="['/story-view/' + story.story_uuid ]">
+      <ion-label>
+        <h1>{{story.request.request_position_title}}</h1>
+        <h2><b>By</b> {{story.request.company.company_common_name_en}}</h2>
+        <h3>
+          <span *ngIf="story.request.request_position_type == 1">Full Time</span>
+          <span *ngIf="story.request.request_position_type == 2">Part Timer</span>
+        </h3>
+        <h4><b>Employees:</b> {{story.request.no_of_employees_per_story}}</h4>
+        <h4><b>Status:</b> {{getStatus(story.story_status)}}</h4>
+        <h5><b>Created On:</b> {{story.story_created_at}} | Updated On {{story.story_last_updated_at}}</h5>
+        <h5><b>Staff</b> : <span *ngIf="story.staff && story.staff.staff_name">{{story.staff.staff_name}}</span></h5>
+      </ion-label>
+    </ion-item>
+    <no-items *ngIf="!loading && stories.length == 0" message="~ No Data Found~"></no-items>
+    <ion-infinite-scroll *ngIf="currentPage < totalPage"
+                         (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-list>
+</ion-content>

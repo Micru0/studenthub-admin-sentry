@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StaffService } from 'src/app/providers/logged-in/staff.service';
 // models
 import { Staff } from 'src/app/models/staff';
-import { Request } from 'src/app/models/request';
+import {Request, Story} from 'src/app/models/request';
 import { Note } from 'src/app/models/note';
 // pages
 import { StaffFormPage } from '../staff-form/staff-form.page';
@@ -16,6 +16,7 @@ import {RequestService} from '../../../../providers/logged-in/request.service';
 import {NoteService} from '../../../../providers/logged-in/note.service';
 import { StaffSalaryFormPage } from '../staff-salary-form/staff-salary-form.page';
 import { StaffSalary } from 'src/app/models/staff_salary';
+import {StoryService} from "../../../../providers/logged-in/story.service";
 
 
 @Component({
@@ -38,11 +39,15 @@ export class StaffViewPage implements OnInit {
   public SPageCount;
   public SCurrentPage;
 
+  public STPageCount;
+  public STCurrentPage;
+
   public NPageCount;
   public NCurrentPage;
 
   public notes: Note[];
   public requests: Request[];
+  public stories: Story[];
   public salaries = [];
 
   public candidateWorkHistory: CandidateWorkHistory[];
@@ -51,6 +56,7 @@ export class StaffViewPage implements OnInit {
   public RLoading = false;
   public NLoading = false;
   public SLoading = false;
+  public STLoading = false;
 
   public segment = 'info';
 
@@ -67,7 +73,8 @@ export class StaffViewPage implements OnInit {
     public workHistoryService: CandidateWorkHistoryService,
     public platform: Platform,
     public requestService: RequestService,
-    public noteService: NoteService
+    public noteService: NoteService,
+    public storyService: StoryService
   ) { }
 
   ngOnInit() {
@@ -223,6 +230,9 @@ export class StaffViewPage implements OnInit {
     if (this.segment == 'salaries') {
         this.loadSalaries(1);
     }
+    if (this.segment == 'stories') {
+        this.loadStories(1);
+    }
   }
 
   /**
@@ -368,6 +378,49 @@ export class StaffViewPage implements OnInit {
     });
   }
 
+
+  /**
+   *
+   * @param page
+   * @param silent
+   */
+  async loadStories(page: number, silent = false) {
+
+    if (!silent) {
+      this.STLoading = true;
+    }
+    const params = '&staff_id=' + this.staff_id + '&expand=request,request.company,staff';
+    this.storyService.list(page, params).subscribe(response => {
+
+      this.STPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.STCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.stories = response.body;
+      this.STLoading = false;
+
+    }, () => {
+      this.STLoading = false;
+    });
+  }
+
+  doInfiniteStories(event) {
+
+    this.STCurrentPage++;
+
+    this.STLoading = true;
+    const params = '&staff_id=' + this.staff_id + '&expand=request,request.company,staff';
+    this.storyService.list(this.STCurrentPage, params).subscribe(response => {
+
+      this.STPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.STCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.stories = this.stories.concat(response.body);
+      this.STLoading = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+
   /**
    *
    * @param page
@@ -419,5 +472,36 @@ export class StaffViewPage implements OnInit {
     if (date) {
       return new Date(date.replace(/-/g, '/'));
     }
+  }
+
+  getStatus(status) {
+    let response;
+    switch (status) {
+      case 0:
+        response = 'Unstarted';
+        break;
+      case 1:
+        response = 'Started';
+        break;
+      case 2:
+        response = 'Finished';
+        break;
+      case 3:
+        response = 'Delivered';
+        break;
+      case 4:
+        response = 'Rejected';
+        break;
+      case 5:
+        response = 'Accepted';
+        break;
+      case 6:
+        response = 'Cancelled';
+        break;
+      default:
+        response = 'Invalid';
+        break;
+    }
+    return response;
   }
 }

@@ -34,6 +34,9 @@
       <ion-segment-button value="salaries">
         <ion-label>Salaries</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="stories">
+        <ion-label>Stories</ion-label>
+      </ion-segment-button>
     </ion-segment>
 
     <ion-select *ngIf="platform.is('mobile')" interface="popover" (ionChange)="segmentChanged($event)" [value]="segment">
@@ -46,6 +49,9 @@
       </ion-select-option>
       <ion-select-option value="note">
         Notes
+      </ion-select-option>
+      <ion-select-option value="stories">
+        Stories
       </ion-select-option>
     </ion-select>
   </ion-toolbar>
@@ -139,7 +145,34 @@
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
     </section>
-    
+
+    <section *ngIf="segment == 'stories'" class="ion-padding">
+
+      <ion-item *ngFor="let story of stories" [routerLink]="['/story-view/' + story.story_uuid ]" tappable>
+        <ion-label>
+          <p>Story ID : <b>{{ story.story_uuid }}</b></p>
+          <p>Is Old : <b>{{ story.is_old  ? 'Yes': 'No' }}</b></p>
+          <p>Time Spent:  <b>{{ story.story_time_spent}}</b></p>
+          <p>Status: <b>{{ getStatus(story.story_status)}}</b></p>
+          <p>Created at: <b>{{ story.story_created_at}}</b></p>
+          <p>Updated at: <b>{{ story.story_last_updated_at}}</b></p>
+          <p>Staff: <b>{{ story.staff.staff_name}}</b></p>
+          <p>Position Title:  {{story.request.request_position_title}}</p>
+          <p>Position Type:
+            <span *ngIf="story.request.request_position_type == 1">Full Timer</span>
+            <span *ngIf="story.request.request_position_type == 2">Part Timer</span>
+          </p>
+          <p>Company Name: {{story.request.company.company_name}}</p>
+        </ion-label>
+      </ion-item>
+      <no-items *ngIf="!STLoading && stories.length == 0" message='~ No Story Record Found ~'></no-items>
+      <loading-modal type="review-list" [loading]="STLoading"></loading-modal>
+      <ion-infinite-scroll *ngIf="STCurrentPage < STPageCount" (ionInfinite)="doInfiniteStories($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </section>
+
     <section *ngIf="segment == 'salaries'" class="ion-padding">
 
       <ion-item *ngFor="let salary of salaries">
