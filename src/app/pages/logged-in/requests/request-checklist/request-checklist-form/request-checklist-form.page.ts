@@ -5,6 +5,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { RequestChecklist } from 'src/app/models/request-checklist';
 //services
 import { RequestChecklistService } from 'src/app/providers/logged-in/request-checklist.service';
+import {AuthService} from "../../../../../providers/auth.service";
 
 
 @Component({
@@ -25,6 +26,7 @@ export class RequestChecklistFormPage implements OnInit {
     public requestChecklistService: RequestChecklistService,
     private _fb: FormBuilder,
     private modalCtrl: ModalController, 
+    private authService: AuthService,
     private _alertCtrl: AlertController
   ) { }
 
@@ -35,7 +37,7 @@ export class RequestChecklistFormPage implements OnInit {
       this.form = this._fb.group({
         status_name: ["", Validators.required],
         status_name_ar: [""],
-        is_require: [""],
+        is_require: [true],
         sort_order: [],
       });
     } else { // Show Update Form
@@ -55,7 +57,7 @@ export class RequestChecklistFormPage implements OnInit {
   updateModelDataFromForm() {
     this.model.status_name = this.form.value.status_name;
     this.model.status_name_ar = this.form.value.status_name_ar;
-    this.model.is_require = this.form.value.is_require;
+    this.model.is_require = this.form.value.is_require ? 1 : 0;
     this.model.sort_order = this.form.value.sort_order;
   }
 
@@ -73,7 +75,6 @@ export class RequestChecklistFormPage implements OnInit {
   async save() {
 
     this.saving = true;
-
     this.updateModelDataFromForm();
 
     let action;
@@ -99,7 +100,7 @@ export class RequestChecklistFormPage implements OnInit {
       // On Failure
       if (jsonResponse.operation == "error") {
         let prompt = await this._alertCtrl.create({
-          message: JSON.stringify(jsonResponse.message),
+          message: this.authService.errorMessage(jsonResponse.message),
           buttons: ["Ok"]
         });
         prompt.present();
