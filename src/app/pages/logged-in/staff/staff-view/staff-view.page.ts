@@ -168,9 +168,14 @@ export class StaffViewPage implements OnInit {
         {
           text: 'Send',
           handler: (data) => {
-            if (data && data.password) {
+            if (data && data.password.trim()) {
               this.staff.staff_password_hash = data.password;
               this.sendNewPassword();
+            } else {
+              this._toastCtrl.create({
+                message: 'Please enter password',
+                duration: 3000
+              }).then(toast => toast.present());
             }
           }
         },
