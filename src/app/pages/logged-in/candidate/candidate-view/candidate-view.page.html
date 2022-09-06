@@ -116,6 +116,14 @@
           </p>
         </ion-label>
       </ion-item>
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Preferred time to contact</h5>
+          <p>{{ candidate.candidate_preferred_time }}</p>
+        </ion-label>
+      </ion-item>
       
       <ion-item [class.pending]="[0, 1].indexOf(candidate.candidate_job_search_status) == -1">
         <div tabindex="0"></div>

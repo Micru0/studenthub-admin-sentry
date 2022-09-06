@@ -217,4 +217,35 @@ export class RequestViewPage implements OnInit {
     }, () => {
     });
   }
+
+  getStatus(status) {
+    let response;
+    switch (status) {
+      case 0:
+          response = 'Unstarted';
+          break;
+      case 1:
+          response = 'Started';
+          break;
+      case 2:
+          response = 'Finished';
+          break;
+      case 3:
+          response = 'Delivered';
+          break;
+      case 4:
+          response = 'Rejected';
+          break;
+      case 5:
+          response = 'Accepted';
+          break;
+      case 6:
+          response = 'Cancelled';
+          break;
+      default:
+          response = 'Invalid';
+          break;
+    }
+    return response;
+  }
 }

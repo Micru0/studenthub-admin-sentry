@@ -13,6 +13,7 @@ export class Request {
     request_job_description: string;
     request_position_title: string;
     request_number_of_employees: number;
+    no_of_employees_per_story: number;
     request_additional_info: string;
     request_status: any;
     request_feedback: string;
@@ -37,10 +38,40 @@ export class Request {
     staff: Staff;
     contact: any;
     company: Company;
+    stories: Story;
     suggestions: Suggestion[];
     requestActivities: Note[];
 }
 
+
+export class Story {
+    story_uuid: string;
+    is_old: string;
+    request_uuid: string;
+    suggestion_uuid: string;
+    staff_id: number;
+    story_status: number;
+    story_time_spent: number;
+    story_created_at: string;
+    story_last_updated_at: string;
+    request: Request;
+    staff: Staff;
+    company: Company;
+    storyActivities: StoryActivity[];
+    latestStoryActivity: StoryActivity;
+}
+
+export class StoryActivity {
+    story_activity_uuid: string;
+    story_uuid: string;
+    staff_id: number;
+    activity_time_spent: number;
+    activity_status	: string;
+    activity_created_at: string;
+    activity_last_updated_at: string;
+    story: Story;
+    staff: Staff;
+}
 enum Status {
     pending,
     started,

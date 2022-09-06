@@ -29,6 +29,7 @@ export class Candidate {
     candidate_civil_photo_back: string;
     candidate_hourly_rate: number;
     candidate_committed: any;
+    candidate_preferred_time: string;
     candidate_job_search_status: any;
     candidate_status: number;
     approved: number;

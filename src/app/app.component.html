@@ -31,6 +31,7 @@
                 </ion-label>
               </ion-item>
             </ion-menu-toggle>
+
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'transfer-list'">
                 <div tabindex="0"></div>
@@ -168,6 +169,13 @@
                 <ion-label>Request List</ion-label>
               </ion-item>
             </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" routerLink="story-list">
+                <div tabindex="0"></div>
+                <ion-icon name="people-outline" slot="start"></ion-icon>
+                <ion-label>Story List</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
           </ion-item-group>
 
           <ion-item-group>
@@ -212,6 +220,12 @@
             <div tabindex="0"></div>
             <ion-icon name="bar-chart-outline" slot="start"></ion-icon>
             <ion-label>Statistics</ion-label>
+          </ion-item>
+
+          <ion-item lines="none" routerLink="/request-checklist">
+            <div tabindex="0"></div>
+            <ion-icon name="list" slot="start"></ion-icon>
+            <ion-label>Request Checklist</ion-label>
           </ion-item>
 
           <ion-item-group>

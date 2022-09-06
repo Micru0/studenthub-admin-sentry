@@ -34,6 +34,7 @@ import {SelectiveLoadingStrategy} from './util/SelectiveLoadingStrategy';
 import {CountryFormPageModule} from './pages/logged-in/country/country-form/country-form.module';
 import {InspectorFormPageModule} from './pages/logged-in/inspector/inspector-form/inspector-form.module';
 import { ModalPopPageModule } from './pages/logged-in/modal-pop/modal-pop.module';
+import { RequestChecklistFormPageModule } from './pages/logged-in/requests/request-checklist/request-checklist-form/request-checklist-form.module';
 import { ExpenseFormPageModule } from './pages/logged-in/expense/expense-form/expense-form.module';
 import {CompanyPageModule} from './pages/logged-in/picker/company/company.module';
 import {CandidateModule} from './components/candidate/candidate.module';
@@ -79,6 +80,7 @@ declare global {
     CountryFormPageModule,
     InspectorFormPageModule,
     ModalPopPageModule,
+    RequestChecklistFormPageModule,
     CompanyPageModule,
     CandidateModule,
     CandidateWorkHistoryModule,

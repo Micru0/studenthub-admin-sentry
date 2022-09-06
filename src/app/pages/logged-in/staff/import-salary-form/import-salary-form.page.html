@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Import salary excel</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+ 
+  <h4>Upload the updated Excel file</h4>
+  
+  <!-- Upload Form -->
+  <input type='file' #fileInput (change)="browserUpload($event)" accept=".xlsx,.xls"/>
+  
+  <ion-button (click)="upload()" [disabled]="uploading">
+    <span *ngIf="!uploading">Upload</span>
+    <ion-spinner *ngIf="uploading">Uploading...</ion-spinner>
+  </ion-button>
+
+</ion-content>

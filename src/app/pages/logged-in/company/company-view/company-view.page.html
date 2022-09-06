@@ -157,7 +157,7 @@
           <div tabindex="0"></div>
           <ion-label>
             <h3>Description - English</h3>
-            <p *ngIf="company.company_description_en">{{ company.company_description_en }}</p>
+            <p *ngIf="company.company_description_en" [innerHTML]="company.company_description_en"></p>
             <p *ngIf="!company.company_description_en">-</p>
           </ion-label>
         </ion-item>
@@ -166,7 +166,7 @@
           <div tabindex="0"></div>
           <ion-label>
             <h3>Description - Arabic</h3>
-            <p *ngIf="company.company_description_ar">{{ company.company_description_ar }}</p>
+            <p *ngIf="company.company_description_ar" [innerHTML]="company.company_description_ar"></p>
             <p *ngIf="!company.company_description_ar">-</p>
           </ion-label>
         </ion-item>
@@ -221,10 +221,13 @@
 
         <ion-item *ngIf="company && !company.parent_company_id">
           <div tabindex="0"></div>
-          <ion-label>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</ion-label>
-          <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatus"
+          <ion-label>
+            <h5>Company Status (<small>{{companyStatus ? 'Active' : 'Inactive'}}</small>)</h5>
+            <p>toggle to override above status to active when not active</p>
+          </ion-label>
+          <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatusOverride"
             (ionChange)="changeStatus($event)"></ion-toggle>
-        </ion-item>
+        </ion-item> 
 
         <ion-item-divider color="light">
           <ion-label>
@@ -354,7 +357,7 @@
             </p>
           </ion-label>
 
-          <ion-badge slot="end" *ngIf="store.store_total_candidates > 0">
+          <ion-badge slot="end">
             {{ store.store_total_candidates }} candidates
           </ion-badge>
         </ion-item>

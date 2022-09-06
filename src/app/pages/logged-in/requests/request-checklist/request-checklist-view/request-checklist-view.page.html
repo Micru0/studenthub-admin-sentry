@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="request-checklist"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="model">
+      {{ model.status_name }}
+      <span *ngIf="!model.status_name">{{ model.status_name_ar }}</span>
+    </ion-title>
+
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list *ngIf="model">
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Request checklist uuid</h5>
+        <p>{{ model.request_checklist_uuid }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Status name</h5>
+        <p>{{ model.status_name }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Status name - Arabic</h5>
+        <p>{{ model.status_name_ar }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Is require?</h5>
+        <p>{{ model.is_require? 'Yes': 'No' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Sort order</h5>
+        <p>{{ model.sort_order }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Created at</h5>
+        <p>{{ model.created_at }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Updated at</h5>
+        <p>{{ model.updated_at }}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <loading-modal [loading]="loading" type="university-view"></loading-modal>
+ 
+</ion-content>

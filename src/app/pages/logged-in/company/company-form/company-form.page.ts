@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { CustomValidator } from 'src/app/validators/custom.validator';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
 import { CompanyService } from 'src/app/providers/logged-in/company.service';
@@ -10,13 +11,15 @@ import { Company } from 'src/app/models/company';
 import { ActivatedRoute } from '@angular/router';
 
 
-
 @Component({
   selector: 'app-company-form',
   templateUrl: './company-form.page.html',
   styleUrls: ['./company-form.page.scss'],
 })
 export class CompanyFormPage implements OnInit {
+
+  @ViewChild('ckeditor', { static: false }) ckeditor: ClassicEditor;
+  @ViewChild('ckeditor_ar', { static: false }) ckeditor_ar: ClassicEditor;
 
   public loading = false;
 
@@ -33,6 +36,15 @@ export class CompanyFormPage implements OnInit {
   public form: FormGroup;
 
   public type: string = 'password';
+
+  public editorConfig = {
+    placeholder: 'Click here add description...',
+    startupFocus: true,
+    width: '100%',
+    toolbar: ['Heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'indent', 'outdent'],
+  };
+  
+  public Editor = ClassicEditor;
 
   constructor(
     public activateRoute: ActivatedRoute,
@@ -176,9 +188,63 @@ export class CompanyFormPage implements OnInit {
   }
 
   /**
+   * on note editor change
+   * @param event
+   */
+   onChange(event) {
+
+    if (!event.editor) {
+      return event;
+    }
+
+    const data = event.editor.getData();
+
+    this.form.controls.description_en.setValue(data);
+    this.form.markAsDirty();
+    this.form.updateValueAndValidity();
+  }
+
+  /**
+   * on note editor change
+   * @param event
+   */
+   onArabicEditorChange(event) {
+
+    if (!event.editor) {
+      return event;
+    }
+
+    const data = event.editor.getData();
+
+    this.form.controls.description_ar.setValue(data);
+    this.form.markAsDirty();
+    this.form.updateValueAndValidity();
+  }
+
+  onEditorReady() {
+    const interval = setTimeout(() => {
+      if (this.ckeditor.editorInstance && this.form.value.description_en) {
+        this.ckeditor.editorInstance.setData(this.form.value.description_en);
+        // this.ckeditor.editorInstance.editing.view.focus();
+        // clearInterval(interval);
+      }
+    }, 200);
+  }
+
+  onArabicEditorReady() {
+    const interval = setTimeout(() => {
+      if (this.ckeditor_ar.editorInstance && this.form.value.description_ar) {
+        this.ckeditor_ar.editorInstance.setData(this.form.value.description_ar);
+        // this.ckeditor.editorInstance.editing.view.focus();
+        // clearInterval(interval);
+      }
+    }, 200);
+  }
+
+  /**
    * Close the page
    */
-  close(){
+  close() {
     this.modalCtrl.dismiss({ refresh: true });
   }
 

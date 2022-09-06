@@ -26,6 +26,9 @@
       <ion-segment-button value="staff">
         <ion-label>Staff</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="stories">
+        <ion-label>Stories</ion-label>
+      </ion-segment-button>
     </ion-segment>
 
     <ion-select *ngIf="platform.is('mobile')" interface="popover" (ionChange)="segmentChanged($event)" [value]="segment">
@@ -54,7 +57,7 @@
       <ion-item>Position Title:  {{request.request_position_title}}</ion-item>
       <ion-item>Position Type:
         <span *ngIf="request.request_position_type == 1">Full Timer</span>
-        <span *ngIf="request.request_position_type == 2">Part Timer}}</span>
+        <span *ngIf="request.request_position_type == 2">Part Timer</span>
       </ion-item>
       <ion-item *ngIf="request.contact">Contact: {{request.contact.contact_name}}</ion-item>
       <ion-item>Followup Interval: {{request.num_hours_followup_interval}}</ion-item>
@@ -144,5 +147,22 @@
       </ion-item>
     </ion-list>
     <no-items *ngIf="!request.staffs.length" message="~ No staff found so far ~"></no-items>
+  </section>
+
+  <section *ngIf="segment == 'stories'">
+    <ion-list>
+      <ion-item *ngFor="let story of request.stories" [routerLink]="['/story-view/' + story.story_uuid ]" tappable>
+        <ion-label>
+          <p>Story ID : <b>{{ story.story_uuid }}</b></p>
+          <p>Is Old : <b>{{ story.is_old  ? 'Yes': 'No' }}</b></p>
+          <p>Time Spent:  <b>{{ story.story_time_spent}}</b></p>
+          <p>Status: <b>{{ getStatus(story.story_status)}}</b></p>
+          <p>Created at: <b>{{ story.story_created_at}}</b></p>
+          <p>Updated at: <b>{{ story.story_last_updated_at}}</b></p>
+          <p>Staff: <b>{{ story.staff.staff_name}}</b></p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <no-items *ngIf="!request.staffs.length" message="~ No Stories found so far ~"></no-items>
   </section>
 </ion-content>
