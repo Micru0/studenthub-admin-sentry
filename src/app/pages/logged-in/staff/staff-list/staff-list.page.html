@@ -22,8 +22,17 @@
         <div tabindex="0"></div>
         <ion-label>
           {{ staffMember.staff_name }} <br/>
-          <ion-badge *ngIf="staffMember.staff_role == 1">Manager</ion-badge>
-          <ion-badge *ngIf="staffMember.staff_role == 2">Consultant</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 1">Management</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 2">Engineering</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 3">Sales</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 4">Business development/ Govt & PR</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 5">Marketing and Design</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 6">Recruitment</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 7">Finance</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 8">HR</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 9">Customer success</ion-badge>
+
+
           <p>Total Assigned Candidate {{staffMember.total_assigned}}</p>
           <p>Total Request {{staffMember.total_requests}}</p>
           <p>Total Story {{staffMember.total_stories}}</p>
