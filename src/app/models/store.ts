@@ -1,5 +1,6 @@
 import { Candidate } from './candidate';
 import {Brand} from "./brand";
+import {Company} from "./company";
 
 export class Store {
     store_id: number;
@@ -9,5 +10,6 @@ export class Store {
     store_total_candidates: number;
     store_status: string;
     candidates: Candidate[];
+    company: Company;
     brand: Brand;
 }

@@ -36,6 +36,7 @@
         <h2  class="candidate_name">{{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}</h2>
         <p *ngIf="candidate.candidate_name">{{ candidate.candidate_name_ar }}</p>
         <p>{{ candidate.employee_id }}</p>
+        <ion-button fill="clear" [routerLink]="['/log-date-list/',candidate.candidate_id]">View Working Log</ion-button>
       </ion-label>
     </ion-item>
 
