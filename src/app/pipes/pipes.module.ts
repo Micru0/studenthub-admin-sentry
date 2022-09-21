@@ -4,16 +4,18 @@ import { GroupByPipe } from './groupby-pipe';
 import { TimeAgoPipe } from './timeago.pipe';
 import { SortPipe } from './timestamp-pipe';
 import { DurationPipe } from './duration.pipe';
+import {TimeSpentPipe} from './timespent.pipe';
 
 
-//import custom pipes here
+// import custom pipes here
 @NgModule({
     declarations: [
         GroupByPipe,
         SortPipe,
         FileSizePipe,
         TimeAgoPipe,
-        DurationPipe
+        DurationPipe,
+        TimeSpentPipe
     ],
     imports: [],
     exports: [
@@ -21,7 +23,8 @@ import { DurationPipe } from './duration.pipe';
         SortPipe,
         FileSizePipe,
         TimeAgoPipe,
-        DurationPipe
+        DurationPipe,
+        TimeSpentPipe
     ]
 })
 export class PipesModule {}
