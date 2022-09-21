@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavController, Platform, IonContent } from '@ionic/angular';
 // services
-import { TranslateLabelService } from 'src/app/providers/translate-label.service';
+
 import { AuthService } from 'src/app/providers/auth.service';
 import { EventService } from 'src/app/providers/event.service';
 // models
@@ -24,7 +24,7 @@ export class LogDateListPage implements OnInit {
   public pageCount = 0;
   public currentPage = 1;
   public totalCount = 0;
-  public candidate_id = 0;
+  public candidate_id: any;
 
   public candidateWorkingHourData: CandidateWorkingHour[];
 

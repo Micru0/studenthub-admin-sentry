@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavController, Platform, IonContent } from '@ionic/angular';
 // services
-import { TranslateLabelService } from 'src/app/providers/translate-label.service';
 import { AuthService } from 'src/app/providers/auth.service';
 import { EventService } from 'src/app/providers/event.service';
 // models
@@ -26,7 +25,7 @@ export class LogHourListPage implements OnInit {
   public totalCount = 0;
   public totalHours = 0;
   public hour;
-  public candidate_id;
+  public candidate_id : any;
   public candidateWorkingHourData: CandidateWorkingHour[];
 
   constructor(
