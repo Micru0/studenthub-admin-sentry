@@ -68,4 +68,14 @@ export class CountryService {
 
     return this._authhttp.patch(url, params);
   }
+
+  /**
+   * Deletes country
+   * @param {country} model
+   * @returns {Observable<any>}
+   */
+  downloadExcel(param: any): Observable<any> {
+    const url = `${this._countryEndpoint}/download-list-excel?download=1${param}`;
+    return this._authhttp.excelget(url, `country-list.xlsx`);
+  }
 }

@@ -20,6 +20,7 @@ import { CompanyFormPage } from '../company-form/company-form.page';
 export class CompanyListPage implements OnInit {
 
   public pageCount = 0;
+  public totalCount = 0;
   public currentPage = 1;
   public segment = 1;
   public companies: Company[];
@@ -28,6 +29,7 @@ export class CompanyListPage implements OnInit {
   public deleting = false;
 
   public loading = false;
+  public exporting = false;
 
   public filters: {
     name: string,
@@ -76,6 +78,7 @@ export class CompanyListPage implements OnInit {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.companies = response.body;
       this.loading = false;
@@ -275,5 +278,32 @@ export class CompanyListPage implements OnInit {
     }
 
     this.loadData(1); // reload all result
+  }
+
+  async exportData(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const confirm = await this._alertCtrl.create({
+      header: 'Export Data?',
+      message: 'Do you really wants to export company data?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.exporting = true;
+            const searchParams = this.urlParams();
+            this.companyService.downloadExcel(searchParams).subscribe(async jsonResp => {
+              this.exporting = false;
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no'
+        }
+      ]
+    });
+    confirm.present();
   }
 }

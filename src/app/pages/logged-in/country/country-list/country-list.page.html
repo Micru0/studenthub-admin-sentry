@@ -9,8 +9,13 @@
       </ion-menu-toggle>
     </ion-buttons>
 
-    <ion-title>Countries </ion-title>
-
+    <ion-title>Countries <small>({{totalCount}})</small></ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="exportData($event)">
+        <span *ngIf="!exporting">Export</span>
+        <ion-spinner *ngIf="exporting"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

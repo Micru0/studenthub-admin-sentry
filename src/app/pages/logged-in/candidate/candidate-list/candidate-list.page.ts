@@ -18,6 +18,7 @@ export class CandidateListPage implements OnInit {
   public loading = false;
 
   public pageCount = 0;
+  public totalCount = 0;
   public currentPage = 1;
 
   public candidates: Candidate[] = [];
@@ -101,6 +102,7 @@ export class CandidateListPage implements OnInit {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.candidates = response.body;
     }, () => {
