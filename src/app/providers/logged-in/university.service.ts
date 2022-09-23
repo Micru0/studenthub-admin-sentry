@@ -75,4 +75,14 @@ export class UniversityService {
     let url = `${this._universityEndpoint}/${model.university_id}`;
     return this._authhttp.delete(url);
   }
+
+  /**
+   * Deletes university
+   * @param {university} model
+   * @returns {Observable<any>}
+   */
+  downloadExcel(param: any): Observable<any> {
+    const url = `${this._universityEndpoint}/download-list-excel?download=1${param}`;
+    return this._authhttp.excelget(url, `university-list.xlsx`);
+  }
 }

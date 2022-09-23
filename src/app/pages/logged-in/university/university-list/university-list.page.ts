@@ -20,8 +20,10 @@ export class UniversityListPage implements OnInit {
   public deleting = false;
   public loading = false;
 
+  public totalCount = 0;
   public pageCount = 0;
   public currentPage = 1;
+  public exporting = false;
 
   public universities: University[];
 
@@ -58,6 +60,7 @@ export class UniversityListPage implements OnInit {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.universities = response.body;
     }, () => {
@@ -178,6 +181,32 @@ export class UniversityListPage implements OnInit {
         },
         {
           text: 'No'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  async exportData(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const confirm = await this._alertCtrl.create({
+      header: 'Export Data?',
+      message: 'Do you really wants to export university data?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.exporting = true;
+            this.universityService.downloadExcel({}).subscribe(async jsonResp => {
+              this.exporting = false;
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no'
         }
       ]
     });
