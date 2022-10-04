@@ -1,6 +1,7 @@
 export class Staff{
     staff_id: number;
     staff_name: string;
+    staff_job_title: string;
     staff_email: string;
     staff_password_hash: string;
     staff_gmail_username: string;
