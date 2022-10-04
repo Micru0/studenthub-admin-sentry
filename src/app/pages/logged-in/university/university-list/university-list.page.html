@@ -9,8 +9,13 @@
       </ion-menu-toggle>
     </ion-buttons>
 
-    <ion-title>Universities </ion-title>
-
+    <ion-title>Universities <small>({{totalCount}})</small></ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="exportData($event)">
+        <span *ngIf="!exporting">Export</span>
+        <ion-spinner *ngIf="exporting"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
     <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
 
   </ion-toolbar>

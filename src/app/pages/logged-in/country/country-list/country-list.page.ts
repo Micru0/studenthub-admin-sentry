@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'; 
 import { Router } from '@angular/router';
-import {ModalController} from "@ionic/angular";
+import {AlertController, ModalController} from "@ionic/angular";
 //models
 import { Country } from 'src/app/models/country';
 import {Bank} from "../../../../models/bank";
@@ -19,9 +19,11 @@ import {CountryFormPage} from "../country-form/country-form.page";
 export class CountryListPage implements OnInit {
 
   public pageCount = 0;
+  public totalCount = 0;
   public currentPage = 1;
-  
-  public loading: boolean = false; 
+  public exporting = false;
+
+  public loading: boolean = false;
 
   public countries: Country[];
   public query = null;
@@ -29,7 +31,8 @@ export class CountryListPage implements OnInit {
     public router: Router,
     public countryService: CountryService,
     public authService: AuthService,
-    public _modalCtrl: ModalController
+    public _modalCtrl: ModalController,
+    public _alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -52,6 +55,7 @@ export class CountryListPage implements OnInit {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.countries = response.body;
     }, 
@@ -127,5 +131,31 @@ export class CountryListPage implements OnInit {
       }
     });
     modal.present();
+  }
+
+  async exportData(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const confirm = await this._alertCtrl.create({
+      header: 'Export Data?',
+      message: 'Do you really wants to export university data?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.exporting = true;
+            this.countryService.downloadExcel(null).subscribe(async jsonResp => {
+              this.exporting = false;
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no'
+        }
+      ]
+    });
+    confirm.present();
   }
 }

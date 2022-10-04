@@ -216,17 +216,29 @@
             </ion-menu-toggle>
           </ion-item-group>
 
-          <ion-item lines="none" routerLink="/stats">
-            <div tabindex="0"></div>
-            <ion-icon name="bar-chart-outline" slot="start"></ion-icon>
-            <ion-label>Statistics</ion-label>
-          </ion-item>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item lines="none" routerLink="/stats">
+              <div tabindex="0"></div>
+              <ion-icon name="bar-chart-outline" slot="start"></ion-icon>
+              <ion-label>Statistics</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
-          <ion-item lines="none" routerLink="/request-checklist">
-            <div tabindex="0"></div>
-            <ion-icon name="list" slot="start"></ion-icon>
-            <ion-label>Request Checklist</ion-label>
-          </ion-item>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item lines="none" routerLink="/request-checklist">
+              <div tabindex="0"></div>
+              <ion-icon name="list" slot="start"></ion-icon>
+              <ion-label>Request Checklist</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item lines="none" routerLink="/log-date-list">
+              <div tabindex="0"></div>
+              <ion-icon name="list" slot="start"></ion-icon>
+              <ion-label>Candidate Working Hours</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
           <ion-item-group>
             <ion-item-divider>

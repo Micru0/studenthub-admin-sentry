@@ -189,6 +189,16 @@ export class CompanyService {
   }
 
   /**
+   * Deletes company
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  downloadExcel(param: any): Observable<any> {
+    const url = `${this._companyEndpoint}/download-list-excel?download=1${param}`;
+    return this._authhttp.excelget(url, `company-list.xlsx`);
+  }
+
+  /**
    * change company status
    * @param model
    * @param status

@@ -5,9 +5,16 @@
     </ion-buttons>
     <ion-title *ngIf="staff">
       {{ staff.staff_name }}
-    
-      <ion-badge *ngIf="staff.staff_role == 1">Manager</ion-badge>
-      <ion-badge *ngIf="staff.staff_role == 2">Consultant</ion-badge>
+
+      <ion-badge *ngIf="staff.staff_role == 1">Management</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 2">Engineering</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 3">Sales</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 4">Business development/ Govt & PR</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 5">Marketing and Design</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 6">Recruitment</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 7">Finance</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 8">HR</ion-badge>
+      <ion-badge *ngIf="staff.staff_role == 9">Customer success</ion-badge>
     </ion-title>
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       
@@ -75,6 +82,23 @@
           <p>{{ staff.staff_name }}</p>
         </ion-label>
       </ion-item>
+      
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Job Title</h5>
+          <p>{{ staff.staff_job_title }}</p>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Salary</h5>
+          <p>{{ staff.staff_salary }} {{ staff.staff_salary_currency }}</p>
+        </ion-label>
+      </ion-item>
+
       <ion-item>
         <div tabindex="0"></div>
         <ion-label>
