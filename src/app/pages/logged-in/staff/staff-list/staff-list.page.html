@@ -57,6 +57,15 @@
             </ion-item>
           </ion-col>
           <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <ion-item>
+              <ion-label position="floating" color="primary">Deleted</ion-label>
+              <ion-select [(ngModel)]="filters.deleted">
+                <ion-select-option value="1">Deleted</ion-select-option>
+                <ion-select-option value="2">Non-Deleted</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
             <!-- Filter by Major -->
             <ion-item>
               <ion-label position="stacked" color="primary">Start Date</ion-label>
@@ -97,7 +106,8 @@
           <ion-badge *ngIf="staffMember.staff_role == 6">Recruitment</ion-badge>
           <ion-badge *ngIf="staffMember.staff_role == 7">Finance</ion-badge>
           <ion-badge *ngIf="staffMember.staff_role == 8">HR</ion-badge>
-          <ion-badge *ngIf="staffMember.staff_role == 9">Customer success</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 9">Customer success</ion-badge>&nbsp;
+          <ion-badge color="danger" *ngIf="staffMember.deleted">Deleted</ion-badge>
 
 
           <p>Total Assigned Candidate {{staffMember.totalAssigned}}</p>
@@ -119,6 +129,9 @@
           <ion-button color="danger" (click)="delete($event, staffMember)">
             <ion-icon slot="start" name="trash-outline"></ion-icon>
             Delete
+          </ion-button>
+          <ion-button color="warning" (click)="changeStatus($event, staffMember)">
+            <span *ngIf="!statusChanging">{{staffMember.staff_status == '10' ? 'De-Activate' : 'Activate'}}</span>
           </ion-button>
         </ion-buttons>
 

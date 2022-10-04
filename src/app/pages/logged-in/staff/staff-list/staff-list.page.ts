@@ -27,18 +27,21 @@ export class StaffListPage implements OnInit {
   public loading = false;
   public deleting = false;
   public sendingNewPassword = false;
+  public statusChanging = false;
 
   public filters: {
     name: string,
     start_date: string,
     end_date: string,
     status: number,
+    deleted: number,
     role: string
   } = {
     name: null,
     start_date: null,
     end_date: null,
     status: null,
+    deleted: null,
     role: null
   };
 
@@ -291,7 +294,8 @@ export class StaffListPage implements OnInit {
       start_date: null,
       end_date: null,
       status: null,
-      role: null
+      role: null,
+      deleted: null
     };
     this.loadData(1); // reload all result
   }
@@ -321,6 +325,48 @@ export class StaffListPage implements OnInit {
     if (this.filters.role) {
       urlParams += '&role=' + this.filters.role;
     }
+    if (this.filters.deleted) {
+      urlParams += '&deleted=' + this.filters.deleted;
+    }
     return urlParams;
+  }
+
+  async changeStatus(ev, staff: Staff) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const confirm = await this._alertCtrl.create({
+      header: 'Do you want to change status?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: (data) => {
+            this.statusChange(staff);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  statusChange(staff) {
+    let status = (staff.staff_status == '10') ? 0 : 10;
+    this.statusChanging = true;
+    this.staffService.changeStatus(staff, status).subscribe(response => {
+      this.statusChanging = false;
+
+      if (response.operation == 'success') {
+        staff.staff_status = status;
+      }
+      this._toastCtrl.create({
+        message: this.authService.errorMessage(response.message),
+        duration: 2000
+      }).then(toast => toast.present());
+    }, () => {
+      this.statusChanging = false;
+    });
   }
 }
