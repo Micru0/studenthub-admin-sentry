@@ -92,7 +92,10 @@
       </ion-col>
       <ion-col  size-md="6" size-lg="6" size-sm="12" size-xs="12">
         <ion-button expand="full" (click)="changeStatus()">
-          <span *ngIf="!statusChanging">{{admin.admin_status == '10' ? 'De-Activate' : 'Activate'}}</span>
+          <ng-container *ngIf="!statusChanging">
+            <span *ngIf="admin.admin_status == '10'">De-Activate</span>
+            <span *ngIf="admin.admin_status != '10'">Activate</span>
+          </ng-container>
           <ion-spinner *ngIf="statusChanging"></ion-spinner>
         </ion-button>
       </ion-col>
