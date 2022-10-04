@@ -20,8 +20,8 @@ export class NoteService {
    * @param page
    * @param searchParams
    */
-  list(searchParams = '', page = null): Observable<any> {
-    let url = this.noteEndpoint + '?' + searchParams + '&expand=companyContact,request,company,createdBy,updatedBy';
+  list(searchParams = '', page = null, expand = 'companyContact,request,company,createdBy,updatedBy'): Observable<any> {
+    let url = this.noteEndpoint + '?' + searchParams + expand;
 
     if(page) {
       url += '&page=' + page;

@@ -21,10 +21,11 @@ export class StaffService {
 
   /**
    * List of all staff
-   * @returns {Observable<any>}
+   * @param page
+   * @param param
    */
-  list(page: number): Observable<any>{
-    let url = this._staffEndpoint + '?page=' + page;
+  list(page: number, param: any = null): Observable<any>{
+    let url = this._staffEndpoint + '?page=' + page + param + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations';
     return this._authhttp.get(url, true);
   }
   
@@ -150,6 +151,11 @@ export class StaffService {
   resetPassword(model: Staff): Observable<any>{
     let url = `${this._staffEndpoint}/reset-password/${model.staff_id}`;
     return this._authhttp.patch(url, {password : model.staff_password_hash});
+  }
+
+  changeStatus(model: Staff, status): Observable<any>{
+    let url = `${this._staffEndpoint}/status-change/${model.staff_id}`;
+    return this._authhttp.patch(url, {status : status});
   }
 
   /**

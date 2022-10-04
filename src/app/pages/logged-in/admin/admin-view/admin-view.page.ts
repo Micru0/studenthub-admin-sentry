@@ -24,6 +24,7 @@ export class AdminViewPage implements OnInit {
   public loading = false;
 
   public sendingNewPassword = false;
+  public statusChanging = false;
 
   constructor(
     public router: Router,
@@ -147,5 +148,42 @@ export class AdminViewPage implements OnInit {
 
   dismiss() {
     this.modalCtrl.dismiss({});
+  }
+
+  async changeStatus() {
+    const confirm = await this.alertCtrl.create({
+      header: 'Do you want to change status?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: (data) => {
+            this.statusChange();
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  statusChange() {
+    const status = this.admin.admin_status == 10 ? 0 : 10;
+    this.statusChanging = true;
+    this.adminService.changeStatus(this.admin, status).subscribe(response => {
+      this.statusChanging = false;
+
+      if (response.operation == 'success') {
+        this.loadData();
+      }
+      this.toastCtrl.create({
+        message: this.authService.errorMessage(response.message),
+        duration: 2000
+      }).then(toast => toast.present());
+    }, () => {
+      this.statusChanging = false;
+    });
   }
 }

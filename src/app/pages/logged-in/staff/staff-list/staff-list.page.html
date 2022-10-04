@@ -8,7 +8,7 @@
       </ion-menu-toggle>
     </ion-buttons>
 
-    <ion-title>Staff Members</ion-title>
+    <ion-title>Staff Members <small>({{totalCount}})</small></ion-title>
 
     <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
 
@@ -16,12 +16,79 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="stacked" color="primary">Name</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="floating" color="primary">Type</ion-label>
+              <ion-select [(ngModel)]="filters.role">
+                <ion-select-option value="1">Management</ion-select-option>
+                <ion-select-option value="2">Engineering</ion-select-option>
+                <ion-select-option value="3">Sales</ion-select-option>
+                <ion-select-option value="4">Business development/ Govt & PR</ion-select-option>
+                <ion-select-option value="5">Marketing and Design</ion-select-option>
+                <ion-select-option value="6">Recruitment</ion-select-option>
+                <ion-select-option value="7">Finance</ion-select-option>
+                <ion-select-option value="8">HR</ion-select-option>
+                <ion-select-option value="9">Customer success</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <ion-item>
+              <ion-label position="floating" color="primary">Status</ion-label>
+              <ion-select [(ngModel)]="filters.status">
+                <ion-select-option value="10">Active</ion-select-option>
+                <ion-select-option value="0">In-Active</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="stacked" color="primary">Start Date</ion-label>
+              <ion-input type="date" [(ngModel)]="filters.start_date"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="stacked" color="primary">End Date</ion-label>
+              <ion-input type="date" [(ngModel)]="filters.end_date"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
   <ion-list>
     <ion-item-sliding *ngFor="let staffMember of staff">
       <ion-item tappable (click)="rowSelected(staffMember)">
         <div tabindex="0"></div>
         <ion-label>
-          {{ staffMember.staff_name }} <br/>
+          {{ staffMember.staff_name }}
+          <ion-icon name="checkmark-circle" class="active" *ngIf="staffMember.staff_status == '10'"></ion-icon>
+          <ion-icon name="close-circle" class="inactive" *ngIf="staffMember.staff_status != '10'"></ion-icon>
+          <br/>
           <ion-badge *ngIf="staffMember.staff_role == 1">Management</ion-badge>
           <ion-badge *ngIf="staffMember.staff_role == 2">Engineering</ion-badge>
           <ion-badge *ngIf="staffMember.staff_role == 3">Sales</ion-badge>
@@ -33,10 +100,14 @@
           <ion-badge *ngIf="staffMember.staff_role == 9">Customer success</ion-badge>
 
 
-          <p>Total Assigned Candidate {{staffMember.total_assigned}}</p>
-          <p>Total Request {{staffMember.total_requests}}</p>
-          <p>Total Story {{staffMember.total_stories}}</p>
-          <p>Total Notes {{staffMember.total_notes}}</p>
+          <p>Total Assigned Candidate {{staffMember.totalAssigned}}</p>
+          <p>Total Request {{staffMember.totalRequests}}</p>
+          <p>Total Story {{staffMember.totalStories}}</p>
+          <p>Total Notes {{staffMember.totalNotes}}</p>
+          <p>Total Suggestions {{staffMember.totalSuggestions}}</p>
+          <p>Total Invitations {{staffMember.totalInvitations}}</p>
+          <p>Total Rejected Invitations {{staffMember.totalRejectedInvitations}}</p>
+          <p>Total Accepted Invitations {{staffMember.totalAcceptedInvitations}}</p>
         </ion-label>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
