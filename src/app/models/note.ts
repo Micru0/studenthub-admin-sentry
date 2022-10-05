@@ -4,6 +4,7 @@ import { CompanyContact } from './company-contact';
 import { Fulltimer } from './fulltimer';
 import { Candidate } from './candidate';
 import { RequestChecklist } from './request-checklist';
+import {Suggestion} from "./suggestion";
 
 export class Note {
     note_uuid: string;
@@ -23,6 +24,7 @@ export class Note {
 
     companyContact: CompanyContact;
     candidate: Candidate;
+    suggestion: Suggestion;
     fulltimer: Fulltimer;
     company: Company;
     request: Request;

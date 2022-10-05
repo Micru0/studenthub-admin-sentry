@@ -1,5 +1,3 @@
-
-
 ion-item.field-password {
     ion-input {
         --padding-end: 30px;
@@ -19,6 +17,7 @@ ion-item.field-password {
             color: #000;
         } 
     }
-  }
-  
-  
+}
+ion-back-button {
+    display:inline-block;
+}

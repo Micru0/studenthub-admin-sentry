@@ -17,6 +17,8 @@ import {NoteService} from '../../../../providers/logged-in/note.service';
 import { StaffSalaryFormPage } from '../staff-salary-form/staff-salary-form.page';
 import { StaffSalary } from 'src/app/models/staff_salary';
 import {StoryService} from "../../../../providers/logged-in/story.service";
+import {AwsService} from "../../../../providers/aws.service";
+import {InvitationService} from "../../../../providers/logged-in/invitation.service";
 
 
 @Component({
@@ -29,6 +31,8 @@ export class StaffViewPage implements OnInit {
   public staff: Staff;
 
   public staff_id;
+  public start_date = null;
+  public end_date = null;
   public pageCount;
   public currentPage;
   public totalCount = 0;
@@ -45,10 +49,14 @@ export class StaffViewPage implements OnInit {
   public NPageCount;
   public NCurrentPage;
 
+  public IPageCount;
+  public ICurrentPage;
+
   public notes: Note[];
   public requests: Request[];
   public stories: Story[];
   public salaries = [];
+  public invitations = [];
 
   public candidateWorkHistory: CandidateWorkHistory[];
   public loadCandidateWorkHistory = false;
@@ -57,13 +65,16 @@ export class StaffViewPage implements OnInit {
   public NLoading = false;
   public SLoading = false;
   public STLoading = false;
+  public ILoading = false;
 
   public segment = 'info';
+  public statusChanging = null;
 
   public sendingNewPassword = false;
 
   constructor(
     public router: Router,
+    public aws: AwsService,
     public activateRoute: ActivatedRoute,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
@@ -74,6 +85,7 @@ export class StaffViewPage implements OnInit {
     public platform: Platform,
     public requestService: RequestService,
     public noteService: NoteService,
+    public invitationService: InvitationService,
     public storyService: StoryService
   ) { }
 
@@ -86,6 +98,8 @@ export class StaffViewPage implements OnInit {
     }
     
     this.staff_id = this.activateRoute.snapshot.paramMap.get('staff_id');
+    this.start_date = this.activateRoute.snapshot.paramMap.get('start_date');
+    this.end_date = this.activateRoute.snapshot.paramMap.get('end_date');
 
     this.loadData();
   }
@@ -238,6 +252,13 @@ export class StaffViewPage implements OnInit {
     if (this.segment == 'stories') {
         this.loadStories(1);
     }
+    if (this.segment == 'suggestions') {
+        this.loadSuggestions(1, false);
+    }
+
+    if (this.segment == 'invitations') {
+        this.loadInvitation(1, false);
+    }
   }
 
   /**
@@ -251,7 +272,7 @@ export class StaffViewPage implements OnInit {
       this.loadCandidateWorkHistory = true;
     }
     
-    const params = '&expand=candidate,store,company,parentCompany&staff_id=' + this.staff_id;
+    const params = '&expand=candidate,store,company,parentCompany' + this.urlParams();
 
     this.workHistoryService.list(page, params).subscribe(response => {
 
@@ -276,7 +297,7 @@ export class StaffViewPage implements OnInit {
     this.currentPage++;
 
     this.loadCandidateWorkHistory = true;
-    const params = '&expand=candidate,store,company,parentCompany&staff_id=' + this.staff_id;
+    const params = '&expand=candidate,store,company,parentCompany=' + this.urlParams();
     this.workHistoryService.list(this.currentPage, params).subscribe(response => {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -350,7 +371,7 @@ export class StaffViewPage implements OnInit {
     if (!silent) {
       this.RLoading = true;
     }
-    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
+    const params = this.urlParams() + '&expand=company,staffs,staff';
     this.requestService.list(page, params).subscribe(response => {
 
       this.RPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -369,7 +390,7 @@ export class StaffViewPage implements OnInit {
     this.RCurrentPage++;
 
     this.RLoading = true;
-    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
+    const params = this.urlParams() + '&expand=company,staffs,staff';
     this.requestService.list(this.RCurrentPage, params).subscribe(response => {
 
       this.RPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -394,7 +415,7 @@ export class StaffViewPage implements OnInit {
     if (!silent) {
       this.STLoading = true;
     }
-    const params = '&staff_id=' + this.staff_id + '&expand=request,request.company,staff';
+    const params =  this.urlParams() + '&expand=request,request.company,staff';
     this.storyService.list(page, params).subscribe(response => {
 
       this.STPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -413,7 +434,7 @@ export class StaffViewPage implements OnInit {
     this.STCurrentPage++;
 
     this.STLoading = true;
-    const params = '&staff_id=' + this.staff_id + '&expand=request,request.company,staff';
+    const params =  this.urlParams() + '&expand=request,request.company,staff';
     this.storyService.list(this.STCurrentPage, params).subscribe(response => {
 
       this.STPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -436,8 +457,10 @@ export class StaffViewPage implements OnInit {
     if (!silent) {
       this.NLoading = true;
     }
-    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
-    this.noteService.list(params, page).subscribe(response => {
+    let params = this.urlParams();
+    let expand = '&expand=companyContact,request,company,createdBy,updatedBy';
+
+    this.noteService.list(params, page, expand).subscribe(response => {
 
       this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
       this.NCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
@@ -455,8 +478,56 @@ export class StaffViewPage implements OnInit {
     this.NCurrentPage++;
 
     this.NLoading = true;
-    const params = '&staff_id=' + this.staff_id + '&expand=company,staffs,staff';
-    this.noteService.list(params, this.NCurrentPage).subscribe(response => {
+    let params = this.urlParams();
+    let expand = '&expand=companyContact,request,company,createdBy,updatedBy';
+
+    this.noteService.list(params, this.NCurrentPage,expand).subscribe(response => {
+
+      this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.NCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      const companies = response.body;
+      this.notes = this.notes.concat(companies);
+      this.NLoading = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+
+  /**
+   *
+   * @param page
+   * @param silent
+   */
+  async loadSuggestions(page: number, silent = false) {
+
+    if (!silent) {
+      this.NLoading = true;
+    }
+    let params = this.urlParams();
+    const expand = '&expand=company,staffs,staff,suggestion,candidate,fulltimer&type=Suggested';
+
+    this.noteService.list(params, page, expand).subscribe(response => {
+
+      this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.NCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.notes = response.body;
+      this.NLoading = false;
+
+    }, () => {
+      this.NLoading = false;
+    });
+  }
+
+  doInfiniteSuggestions(event) {
+
+    this.NCurrentPage++;
+
+    this.NLoading = true;
+    let params = this.urlParams();
+    let expand = '&expand=request,company,staffs,staff,suggestion,candidate,fulltimer&type=Suggested';
+    this.noteService.list(params, this.NCurrentPage,expand).subscribe(response => {
 
       this.NPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
       this.NCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
@@ -508,5 +579,118 @@ export class StaffViewPage implements OnInit {
         break;
     }
     return response;
+  }
+
+  async changeStatus() {
+    const confirm = await this._alertCtrl.create({
+      header: 'Do you want to change status?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: (data) => {
+            this.statusChange();
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  statusChange() {
+    let status = (this.staff.staff_status == '10') ? 0 : 10;
+    this.statusChanging = true;
+    this.staffService.changeStatus(this.staff, status).subscribe(response => {
+      this.statusChanging = false;
+
+      if (response.operation == 'success') {
+        this.loadData();
+      }
+      this._toastCtrl.create({
+        message: this.authService.errorMessage(response.message),
+        duration: 2000
+      }).then(toast => toast.present());
+    }, () => {
+      this.statusChanging = false;
+    });
+  }
+
+  rowSelected(model) {
+
+    this.router.navigate(['/candidate-view', model.candidate_id], {
+      state: {
+        model
+      }
+    });
+  }
+
+  /**
+   * @param $event
+   * @param candidate
+   */
+  loadLogo($event, candidate) {
+    candidate.candidate_personal_photo = null;
+  }
+
+
+  /**
+   *
+   * @param page
+   * @param silent
+   */
+  async loadInvitation(page: number, silent = false) {
+
+    if (!silent) {
+      this.ILoading = true;
+    }
+    let params = this.urlParams() + '&expand=candidate';
+
+    this.invitationService.list(page, params).subscribe(response => {
+
+      this.IPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.ICurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.invitations = response.body;
+      this.ILoading = false;
+
+    }, () => {
+      this.ILoading = false;
+    });
+  }
+
+  doInfiniteInvitation(event) {
+
+    this.ICurrentPage++;
+
+    this.ILoading = true;
+    let params = this.urlParams() + '&expand=candidate';
+
+    this.invitationService.list(this.ICurrentPage, params).subscribe(response => {
+
+      this.IPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.ICurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.invitations = this.invitations.concat(response.body);
+      this.ILoading = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+
+  urlParams() {
+    let urlParams = '';
+
+    urlParams += '&staff_id=' + this.staff_id;
+    if (this.start_date && this.start_date != 1) {
+      urlParams += '&start_date=' + this.start_date;
+    }
+    if (this.end_date && this.end_date != 1) {
+      urlParams += '&end_date=' + this.end_date;
+    }
+
+    return urlParams;
   }
 }

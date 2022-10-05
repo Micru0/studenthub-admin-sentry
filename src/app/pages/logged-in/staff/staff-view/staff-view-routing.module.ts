@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: ':staff_id',
     component: StaffViewPage
+  },
+  {
+    path: ':staff_id/:start_date/:end_date',
+    component: StaffViewPage
   }
 ];
 

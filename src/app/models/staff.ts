@@ -13,9 +13,13 @@ export class Staff{
     staff_notification: string;
     staff_created_at: string;
     staff_updated_at: string;
-    total_assigned: number;
-    total_requests: number;
-    total_stories: number;
-    total_notes: number;
+    totalAssigned: number;
+    totalRequests: number;
+    totalStories: number;
+    totalNotes: number;
     deleted: number;
+    totalInvitations: number;
+    totalSuggestions: number;
+    totalRejectedInvitations: number;
+    totalAcceptedInvitations:number;
 }

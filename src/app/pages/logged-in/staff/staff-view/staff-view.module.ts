@@ -13,6 +13,7 @@ import {RequestModule} from '../../../../components/request/request.module';
 import {NoteModule} from '../../../../components/note/note.module';
 import {NoItemsModule} from '../../../../components/no-items/no-items.module';
 import {PipesModule} from '../../../../pipes/pipes.module';
+import {CandidateModule} from "../../../../components/candidate/candidate.module";
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import {PipesModule} from '../../../../pipes/pipes.module';
     FormsModule,
     IonicModule,
     LoadingModalModule,
+    CandidateModule,
     CandidateWorkHistoryModule,
     RequestModule,
     NoteModule,

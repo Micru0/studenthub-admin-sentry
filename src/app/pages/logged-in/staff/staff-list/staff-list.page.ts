@@ -19,6 +19,7 @@ export class StaffListPage implements OnInit {
 
   public pageCount = 0;
   public currentPage = 1;
+  public totalCount = 0;
   public pages: number[] = [];
 
   public staff: Staff[];
@@ -26,6 +27,23 @@ export class StaffListPage implements OnInit {
   public loading = false;
   public deleting = false;
   public sendingNewPassword = false;
+  public statusChanging = false;
+
+  public filters: {
+    name: string,
+    start_date: string,
+    end_date: string,
+    status: number,
+    deleted: number,
+    role: string
+  } = {
+    name: null,
+    start_date: null,
+    end_date: null,
+    status: null,
+    deleted: null,
+    role: null
+  };
 
   constructor(
     public platform: Platform,
@@ -53,14 +71,15 @@ export class StaffListPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-
-    this.staffService.list(page).subscribe(response => {
+    const param = this.urlParams();
+    this.staffService.list(page, param).subscribe(response => {
 
       this.loading = false;
       this.deleting = false;
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.staff = response.body;
     }, () => {
@@ -74,8 +93,8 @@ export class StaffListPage implements OnInit {
     this.loading = true;
 
     this.currentPage++;
-
-    this.staffService.list(this.currentPage).subscribe(response => {
+    const param = this.urlParams();
+    this.staffService.list(this.currentPage, param).subscribe(response => {
 
       this.loading = false;
 
@@ -95,9 +114,13 @@ export class StaffListPage implements OnInit {
    * When its selected
    */
   rowSelected(model) {
-    this.router.navigate(['staff-view', model.staff_id], {
+    const start = this.filters.start_date || 1;
+    const end = this.filters.end_date || 1;
+    this.router.navigate(['staff-view', model.staff_id, start, end], {
       state: {
-        model: model
+        model,
+        start_date: start,
+        end_date: end
       }
     });
   }
@@ -259,6 +282,91 @@ export class StaffListPage implements OnInit {
       {
         this.navCtrl.back();
       }
+    });
+  }
+
+  /**
+   * Reset question filter
+   */
+  resetFilter() {
+    this.filters = {
+      name: null,
+      start_date: null,
+      end_date: null,
+      status: null,
+      role: null,
+      deleted: null
+    };
+    this.loadData(1); // reload all result
+  }
+
+  /**
+   * Return url string to filter list
+   */
+  urlParams() {
+    let urlParams = '';
+
+    if (this.filters.status) {
+      urlParams += '&status=' + this.filters.status;
+    }
+
+    if (this.filters.name) {
+      urlParams += '&name=' + this.filters.name;
+    }
+
+    if (this.filters.start_date) {
+      urlParams += '&start_date=' + this.filters.start_date;
+    }
+
+    if (this.filters.end_date) {
+      urlParams += '&end_date=' + this.filters.end_date;
+    }
+
+    if (this.filters.role) {
+      urlParams += '&role=' + this.filters.role;
+    }
+    if (this.filters.deleted) {
+      urlParams += '&deleted=' + this.filters.deleted;
+    }
+    return urlParams;
+  }
+
+  async changeStatus(ev, staff: Staff) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const confirm = await this._alertCtrl.create({
+      header: 'Do you want to change status?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: (data) => {
+            this.statusChange(staff);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  statusChange(staff) {
+    let status = (staff.staff_status == '10') ? 0 : 10;
+    this.statusChanging = true;
+    this.staffService.changeStatus(staff, status).subscribe(response => {
+      this.statusChanging = false;
+
+      if (response.operation == 'success') {
+        staff.staff_status = status;
+      }
+      this._toastCtrl.create({
+        message: this.authService.errorMessage(response.message),
+        duration: 2000
+      }).then(toast => toast.present());
+    }, () => {
+      this.statusChanging = false;
     });
   }
 }

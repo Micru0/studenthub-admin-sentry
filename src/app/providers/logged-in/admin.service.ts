@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthHttpService } from './authhttp.service';
 // Models
 import { Admin } from '../../models/admin';
+import {Staff} from "../../models/staff";
 
 /**
  * Manages Admin Functionality on the server
@@ -64,6 +65,11 @@ export class AdminService {
     return this.authHttp.patch(`${this.endpoint}/reset-password/${model.admin_id}`, {});
   }
 
+
+  changeStatus(model: Admin, status): Observable<any>{
+    let url = `${this.endpoint}/status-change/${model.admin_id}`;
+    return this.authHttp.patch(url, {status : status});
+  }
   /**
    * Deletes admin
    * @param {Admin} model

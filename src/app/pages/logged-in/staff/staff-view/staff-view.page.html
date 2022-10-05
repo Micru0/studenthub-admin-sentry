@@ -30,7 +30,7 @@
         <ion-label>Info</ion-label>
       </ion-segment-button>
       <ion-segment-button value="assign_candidate">
-        <ion-label>Assigned Candidate</ion-label>
+        <ion-label>Candidate</ion-label>
       </ion-segment-button>
       <ion-segment-button value="request">
         <ion-label>Request</ion-label>
@@ -43,6 +43,12 @@
       </ion-segment-button>
       <ion-segment-button value="stories">
         <ion-label>Stories</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="suggestions">
+        <ion-label>Suggestions</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="invitations">
+        <ion-label>Invitations</ion-label>
       </ion-segment-button>
     </ion-segment>
 
@@ -59,6 +65,12 @@
       </ion-select-option>
       <ion-select-option value="stories">
         Stories
+      </ion-select-option>
+      <ion-select-option value="suggestions">
+        Suggestions
+      </ion-select-option>
+      <ion-select-option value="invitations">
+        Invitations
       </ion-select-option>
     </ion-select>
   </ion-toolbar>
@@ -110,7 +122,7 @@
         <div tabindex="0"></div>
         <ion-label>
           <h5>Status</h5>
-          <p>{{ (staff.staff_status == '10') ? 'Active' : staff.staff_status }}</p>
+          <p>{{ (staff.staff_status == '10') ? 'Active' : 'In-Active' }}</p>
         </ion-label>
       </ion-item>
       <ion-item>
@@ -154,6 +166,124 @@
       <loading-modal type="review-list" [loading]="loadCandidateWorkHistory"></loading-modal>
       <no-items *ngIf="!loadCandidateWorkHistory && candidateWorkHistory.length == 0" message='~ No Candidate Record Found ~'></no-items>
       <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfiniteAssignedCandidateData($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+    </section>
+
+    <section *ngIf="segment == 'suggestions'">
+      <ng-container *ngFor="let note of notes">
+        <ion-item tappable (click)="rowSelected(note.candidate)" *ngIf="note.candidate">
+          <div tabindex="0"></div>
+          <ion-avatar slot="start">
+            <img *ngIf="note.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + note.candidate.candidate_personal_photo }}" (error)="loadLogo($event,note.candidate)">
+            <img *ngIf="!note.candidate.candidate_personal_photo" src="/assets/icon.png">
+          </ion-avatar>
+          <ion-label>
+            <h2 class="candidate_name">{{ note.candidate.candidate_name ?note.candidate.candidate_name : note.candidate.candidate_name_ar }}</h2>
+            <p *ngIf="note.candidate.store">
+              {{ note.candidate.store.store_name }}
+              <span *ngIf="note.candidate.company">@ {{ note.candidate.company.company_name }} </span>
+            </p>
+            <p>Suggested on : {{note.suggestion.suggestion_datetime}}</p>
+            <p>Status:
+              <span *ngIf="note.suggestion.suggestion_status == 1">Suggested</span>
+              <span *ngIf="note.suggestion.suggestion_status == 2">Rejected</span>
+              <span *ngIf="note.suggestion.suggestion_status == 3">Accepted</span>
+            </p>
+          </ion-label>
+
+        </ion-item>
+
+
+        <ion-item *ngIf="!note.candidate && note.fulltimer">
+          <div tabindex="0"></div>
+          <ion-avatar slot="start">
+            <img src="/assets/icon.png">
+          </ion-avatar>
+          <ion-label>
+            <h2 class="candidate_name">{{ note.fulltimer.fulltimer_name}}</h2>
+            <small>Fulltimer</small>
+            <p>Suggested on : {{note.suggestion.suggestion_datetime}}</p>
+            <p>Status:
+              <span *ngIf="note.suggestion.suggestion_status == 1">Suggested</span>
+              <span *ngIf="note.suggestion.suggestion_status == 2">Rejected</span>
+              <span *ngIf="note.suggestion.suggestion_status == 3">Accepted</span>
+            </p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="!note.candidate && !note.fulltimer">
+          <div tabindex="0"></div>
+          <ion-avatar slot="start">
+            <img src="/assets/icon.png">
+          </ion-avatar>
+          <ion-label>
+            <h2 class="candidate_name">Deleted Candidate</h2>
+            <p>Suggested on : {{note.suggestion.suggestion_datetime}}</p>
+            <p>Status:
+              <span *ngIf="note.suggestion.suggestion_status == 1">Suggested</span>
+              <span *ngIf="note.suggestion.suggestion_status == 2">Rejected</span>
+              <span *ngIf="note.suggestion.suggestion_status == 3">Accepted</span>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+
+      <loading-modal type="review-list" [loading]="NLoading"></loading-modal>
+<!--      <no-items *ngIf="!notes && notes.length == 0" message='~ No Candidate Record Found ~'></no-items>-->
+      <ion-infinite-scroll *ngIf="NCurrentPage < NPageCount" (ionInfinite)="doInfiniteSuggestions($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+    </section>
+
+    <section *ngIf="segment == 'invitations'">
+      <ng-container *ngFor="let invitation of invitations">
+        <ion-item tappable (click)="rowSelected(invitation.candidate)" *ngIf="invitation.candidate">
+          <div tabindex="0"></div>
+          <ion-avatar slot="start">
+            <img *ngIf="invitation.candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + invitation.candidate.candidate_personal_photo }}" (error)="loadLogo($event,invitation.candidate)">
+            <img *ngIf="!invitation.candidate.candidate_personal_photo" src="/assets/icon.png">
+          </ion-avatar>
+          <ion-label>
+            <h2 class="candidate_name">{{ invitation.candidate.candidate_name ?invitation.candidate.candidate_name : invitation.candidate.candidate_name_ar }}</h2>
+            <p *ngIf="invitation.candidate.store">
+              {{ invitation.candidate.store.store_name }}
+              <span *ngIf="invitation.candidate.company">@ {{ invitation.candidate.company.company_name }} </span>
+            </p>
+            <p>Invited on : {{invitation.invitation_created_at}}</p>
+            <p>Status:
+              <span *ngIf="invitation.invitation_status == 1">Invited</span>
+              <span *ngIf="invitation.invitation_status == 2">Rejected</span>
+              <span *ngIf="invitation.invitation_status == 3">Accepted</span>
+            </p>
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item *ngIf="!invitation.candidate">
+          <div tabindex="0"></div>
+          <ion-avatar slot="start">
+            <img src="/assets/icon.png">
+          </ion-avatar>
+          <ion-label>
+            <h2 class="candidate_name">Deleted Candidate</h2>
+            <p>Invited on : {{invitation.invitation_created_at}}</p>
+            <p>Status:
+              <span *ngIf="invitation.invitation_status == 1">Invited</span>
+              <span *ngIf="invitation.invitation_status == 2">Rejected</span>
+              <span *ngIf="invitation.invitation_status == 3">Accepted</span>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+
+      <loading-modal type="review-list" [loading]="ILoading"></loading-modal>
+      <no-items *ngIf="!invitations && invitations.length == 0" message='~ No Invitation Record Found ~'></no-items>
+      <ion-infinite-scroll *ngIf="ICurrentPage < IPageCount" (ionInfinite)="doInfiniteInvitation($event)">
         <ion-infinite-scroll-content>
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
@@ -265,13 +395,27 @@
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
 
 </ion-content>
-<ion-footer *ngIf="!authService.admin_limited_access && ['info', 'salaries'].indexOf(segment) > -1">
+<ion-footer *ngIf="staff && !authService.admin_limited_access">
 
-  <ion-button *ngIf="segment == 'info'" expand="full" (click)="resetPassword()">
-    <span *ngIf="!sendingNewPassword">Send new password to staff</span>
-    <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
-  </ion-button>
-  
+  <ng-container *ngIf="segment == 'info'" >
+    <ion-grid>
+      <ion-row>
+        <ion-col  size-md="6" size-lg="6" size-sm="12" size-xs="12">
+          <ion-button expand="full" (click)="resetPassword()">
+            <span *ngIf="!sendingNewPassword">Send new password to staff</span>
+            <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
+          </ion-button>
+        </ion-col>
+        <ion-col  size-md="6" size-lg="6" size-sm="12" size-xs="12">
+          <ion-button expand="full" (click)="changeStatus()">
+            <span *ngIf="!statusChanging">{{staff.staff_status == '10' ? 'De-Activate' : 'Activate'}}</span>
+            <ion-spinner *ngIf="statusChanging"></ion-spinner>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
   <ion-button *ngIf="segment == 'salaries'" expand="full" (click)="addSalary()">
     Add salary entry
   </ion-button>
