@@ -164,6 +164,11 @@ export class StaffService {
     return this._authhttp.patch(url, {status : status});
   }
 
+  recoverAccount(model: Staff): Observable<any>{
+    let url = `${this._staffEndpoint}/recover-account/${model.staff_id}`;
+    return this._authhttp.patch(url, {});
+  }
+
   /**
    * Deletes staff
    * @param {Staff} model

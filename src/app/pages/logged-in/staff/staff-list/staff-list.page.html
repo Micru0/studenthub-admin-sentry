@@ -126,7 +126,7 @@
             Send Password
           </ion-button>
   
-          <ion-button color="danger" (click)="delete($event, staffMember)">
+          <ion-button color="danger" *ngIf="!staffMember.deleted" (click)="delete($event, staffMember)">
             <ion-icon slot="start" name="trash-outline"></ion-icon>
             Delete
           </ion-button>

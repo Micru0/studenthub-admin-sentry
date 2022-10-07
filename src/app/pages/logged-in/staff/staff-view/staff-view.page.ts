@@ -618,6 +618,42 @@ export class StaffViewPage implements OnInit {
     });
   }
 
+  async recover() {
+    const confirm = await this._alertCtrl.create({
+      header: 'Do you want to recover this account?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: (data) => {
+            this.recoverAccount();
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  recoverAccount() {
+    this.statusChanging = true;
+    this.staffService.recoverAccount(this.staff).subscribe(response => {
+      this.statusChanging = false;
+
+      if (response.operation == 'success') {
+        this.loadData();
+      }
+      this._toastCtrl.create({
+        message: this.authService.errorMessage(response.message),
+        duration: 2000
+      }).then(toast => toast.present());
+    }, () => {
+      this.statusChanging = false;
+    });
+  }
+
   rowSelected(model) {
 
     this.router.navigate(['/candidate-view', model.candidate_id], {
