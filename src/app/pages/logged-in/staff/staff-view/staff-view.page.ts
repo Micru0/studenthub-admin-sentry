@@ -69,6 +69,7 @@ export class StaffViewPage implements OnInit {
 
   public segment = 'info';
   public statusChanging = null;
+  public deleting = null;
 
   public sendingNewPassword = false;
 
@@ -638,9 +639,9 @@ export class StaffViewPage implements OnInit {
   }
 
   recoverAccount() {
-    this.statusChanging = true;
+    this.deleting = true;
     this.staffService.recoverAccount(this.staff).subscribe(response => {
-      this.statusChanging = false;
+      this.deleting = false;
 
       if (response.operation == 'success') {
         this.loadData();
@@ -650,7 +651,7 @@ export class StaffViewPage implements OnInit {
         duration: 2000
       }).then(toast => toast.present());
     }, () => {
-      this.statusChanging = false;
+      this.deleting = false;
     });
   }
 
