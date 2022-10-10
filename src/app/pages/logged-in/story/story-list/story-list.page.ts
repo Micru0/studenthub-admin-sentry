@@ -197,6 +197,12 @@ export class StoryListPage implements OnInit {
       case 6:
         response = 'Cancelled';
         break;
+      case 7:
+        response = 'Re-work';
+        break;
+      case 8:
+        response = 'Stopped';
+        break;
       default:
         response = 'Invalid';
         break;
