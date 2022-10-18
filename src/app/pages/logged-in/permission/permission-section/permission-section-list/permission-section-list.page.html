@@ -66,13 +66,6 @@
         </ion-item>
       </ion-list>
 
-      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
-        <ion-button color="danger" (click)="delete($event, sub)">
-          <ion-icon slot="start" name="trash-outline"></ion-icon>
-          Delete
-        </ion-button>
-      </ion-item-options>
-
     </ion-item-sliding>
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
