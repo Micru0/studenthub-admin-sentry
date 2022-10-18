@@ -125,6 +125,16 @@ export class StaffListPage implements OnInit {
     });
   }
 
+  permission(ev, model) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    this.router.navigate(['/assign-permission/staff/', model.staff_id], {
+      state: {
+        model
+      }
+    });
+  }
+
   /**
    * Loads the create page
    */

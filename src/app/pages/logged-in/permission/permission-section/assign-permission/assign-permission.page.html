@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="staff-list"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="staff">{{this.staff.staff_name}} permissions </ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let section of permissionSection" [disabled]="platform.width() > 768">
+      <ion-item tappable>
+        <div tabindex="0"></div>
+
+        <ion-label>
+          <h5>{{ section.section_name }}</h5>
+        </ion-label>
+
+      </ion-item>
+      <ion-list  class="sub_section" *ngIf="section.permissionSubSections">
+        <ion-item tappable *ngFor="let sub of section.permissionSubSections">
+          <div tabindex="0"></div>
+
+          <ion-label>
+            <h5>{{ sub.sub_section_name }}</h5>
+            <p>{{ sub.sub_section_slug }}</p>
+          </ion-label>
+
+          <ion-checkbox
+                  [(ngModel)]="this.userPermission[sub.permission_sub_section_uuid]"
+                  [checked]="this.userPermission[sub.permission_sub_section_uuid]"
+                  [value]="sub.permission_sub_section_uuid"></ion-checkbox>
+
+        </ion-item>
+      </ion-list>
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+    (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" (click)="save()">
+    Save
+  </ion-button>
+</ion-footer>
