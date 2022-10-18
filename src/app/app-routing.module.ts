@@ -478,9 +478,25 @@ const routes: Routes = [
   {
     path: 'log-hour-list',
     canActivate: [AuthService],
-    loadChildren: () => import('./pages/logged-in/candidate/candidate-work-log/log-hour-list/log-hour-list.module').then( m => m.LogHourListPageModule),
+    loadChildren: () => import('./pages/logged-in/candidate/candidate-work-log/log-hour-list/log-hour-list.module').then(m => m.LogHourListPageModule),
     data: {
       name: 'LogHourListPage'
+    },
+  },
+  {
+    path: 'permission-section-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/permission/permission-section/permission-section-list/permission-section-list.module').then(m => m.PermissionSectionListPageModule),
+    data: {
+      name: 'PermissionSectionListPage'
+    }
+  },
+  {
+    path: 'assign-permission',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/permission/permission-section/assign-permission/assign-permission.module').then(m => m.AssignPermissionPageModule),
+    data: {
+      name: 'AssignPermissionPage'
     }
   },
   {

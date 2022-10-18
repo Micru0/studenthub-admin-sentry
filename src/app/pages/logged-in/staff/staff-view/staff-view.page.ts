@@ -19,6 +19,7 @@ import { StaffSalary } from 'src/app/models/staff_salary';
 import {StoryService} from "../../../../providers/logged-in/story.service";
 import {AwsService} from "../../../../providers/aws.service";
 import {InvitationService} from "../../../../providers/logged-in/invitation.service";
+import {PermissionService} from "../../../../providers/logged-in/permission.service";
 
 
 @Component({
@@ -81,6 +82,7 @@ export class StaffViewPage implements OnInit {
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
     public staffService: StaffService,
+    public permissionService: PermissionService,
     public authService: AuthService,
     public workHistoryService: CandidateWorkHistoryService,
     public platform: Platform,
@@ -730,4 +732,5 @@ export class StaffViewPage implements OnInit {
 
     return urlParams;
   }
+
 }
