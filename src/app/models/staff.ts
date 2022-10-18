@@ -22,4 +22,5 @@ export class Staff{
     totalSuggestions: number;
     totalRejectedInvitations: number;
     totalAcceptedInvitations:number;
+    permissions:any[];
 }

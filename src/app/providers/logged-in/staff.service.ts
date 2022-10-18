@@ -25,7 +25,7 @@ export class StaffService {
    * @param param
    */
   list(page: number, param: any = null): Observable<any>{
-    let url = this._staffEndpoint + '?page=' + page + param + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations';
+    let url = this._staffEndpoint + '?page=' + page + param + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions';
     return this._authhttp.get(url, true);
   }
   
@@ -35,7 +35,7 @@ export class StaffService {
    * @returns 
    */
   view(staff_id): Observable<any>{
-    let url = this._staffEndpoint + '/' + staff_id;
+    let url = this._staffEndpoint + '/' + staff_id + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions';
     return this._authhttp.get(url);
   }
   

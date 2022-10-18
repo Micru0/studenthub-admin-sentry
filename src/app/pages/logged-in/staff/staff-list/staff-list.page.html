@@ -130,6 +130,9 @@
             <ion-icon slot="start" name="trash-outline"></ion-icon>
             Delete
           </ion-button>
+          <ion-button color="danger" (click)="permission($event, staffMember)">
+            Permission
+          </ion-button>
           <ion-button color="warning" (click)="changeStatus($event, staffMember)">
             <span *ngIf="!statusChanging">{{staffMember.staff_status == '10' ? 'De-Activate' : 'Activate'}}</span>
           </ion-button>

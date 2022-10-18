@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Permission Section <small>({{totalCount}})</small></ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let section of permissionSection" [disabled]="platform.width() > 768">
+      <ion-item tappable>
+        <div tabindex="0"></div>
+
+        <ion-label>
+          <h5>{{ section.section_name }}</h5>
+        </ion-label>
+
+        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
+
+          <ion-button color="danger" (click)="delete($event, section)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+
+          <ion-button (click)="edit($event, section)">
+            Edit
+          </ion-button>
+
+          <ion-button (click)="addSubSection($event, section)">
+            Add Sub
+          </ion-button>
+        </ion-buttons>
+
+      </ion-item>
+      <ion-list  class="sub_section" *ngIf="section.permissionSubSections">
+        <ion-item tappable *ngFor="let sub of section.permissionSubSections">
+          <div tabindex="0"></div>
+
+          <ion-label>
+            <h5>{{ sub.sub_section_name }}</h5>
+            <p>{{ sub.sub_section_slug }}</p>
+          </ion-label>
+
+          <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
+
+            <ion-button color="danger" (click)="deleteSub($event, sub)">
+              <ion-icon slot="start" name="trash-outline"></ion-icon>
+              Delete
+            </ion-button>
+
+            <ion-button (click)="editSub($event, sub)">
+              Edit
+            </ion-button>
+          </ion-buttons>
+
+        </ion-item>
+      </ion-list>
+
+      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+        <ion-button color="danger" (click)="delete($event, sub)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+    (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer *ngIf="!authService.admin_limited_access">
+  <ion-grid>
+    <ion-row>
+      <ion-col><ion-button expand="full" (click)="create()">Create</ion-button></ion-col>
+      <ion-col><ion-button expand="full" [routerLink]="['/assign-permission']">Assign</ion-button></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
