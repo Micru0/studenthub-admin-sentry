@@ -186,28 +186,27 @@ export class CandidateViewPage implements OnInit {
             this.deleting = true;
 
             this.candidateService.delete(candidate).subscribe(async jsonResp => {
-console.log(jsonResp);
-              // if (jsonResp.operation == 'error') {
-              //
-              //   this.deleting = false;
-              //
-              //   const alert = await this._alertCtrl.create({
-              //     header: 'Deletion Error!',
-              //     subHeader: jsonResp.message,
-              //     buttons: ['OK']
-              //   });
-              //   alert.present();
-              // }
-              //
-              // if (jsonResp.operation == 'success') {
-              //   const toast = await this.toastCtrl.create({
-              //     message: jsonResp.message,
-              //     duration: 3000
-              //   });
-              //   toast.present();
-              //
-              //   this.router.navigate(['/candidate-list']);
-              // }
+              if (jsonResp.operation == 'error') {
+
+                this.deleting = false;
+
+                const alert = await this._alertCtrl.create({
+                  header: 'Deletion Error!',
+                  subHeader: jsonResp.message,
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+
+              if (jsonResp.operation == 'success') {
+                const toast = await this.toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
+
+                this.router.navigate(['/candidate-list']);
+              }
             }, () => {
               this.deleting = false;
             });

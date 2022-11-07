@@ -4,10 +4,10 @@
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
 
-    <ion-title *ngIf="candidate" class="candidate_name"> {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}</ion-title>
+    <ion-title *ngIf="candidate" class="candidate_name"> {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }} <ion-badge color="danger" *ngIf="candidate.deleted">Deleted</ion-badge></ion-title>
 
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
-      <ion-button *ngIf="candidate && !candidate.approved" (click)="approve(candidate)">
+      <ion-button *ngIf="candidate && !candidate.approved && !candidate.deleted" (click)="approve(candidate)">
         <span *ngIf="!approving">Approve</span>
         <ion-spinner *ngIf="approving"></ion-spinner>
       </ion-button>
