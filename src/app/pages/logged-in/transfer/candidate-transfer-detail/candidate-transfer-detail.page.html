@@ -186,11 +186,16 @@
           <span *ngIf="!markingUnPaid">Mark Unpaid</span>
         </ion-button>
 
-        <ion-button [disabled]="markingPaid" *ngIf="transferCandidate.paid == 0" (click)="markPaid($event)">
+        <ion-button [disabled]="markingPaid || payingToWallet" *ngIf="transferCandidate.paid == 0" (click)="markPaid($event)">
           <span *ngIf="!markingPaid">Mark As Paid</span>
           <ion-spinner *ngIf="markingPaid"></ion-spinner>
         </ion-button>
- 
+        
+        <ion-button [disabled]="payingToWallet || markingPaid" *ngIf="transferCandidate.paid == 0" (click)="payToWallet($event)">
+          <span *ngIf="!payingToWallet">Pay by wallet</span>
+          <ion-spinner *ngIf="payingToWallet"></ion-spinner>
+        </ion-button>
+
       </ion-card-header>
     </ion-card>
 
