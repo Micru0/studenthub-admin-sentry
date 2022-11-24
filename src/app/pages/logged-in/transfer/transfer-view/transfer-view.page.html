@@ -56,6 +56,11 @@
     <ion-button fill="outline" (click)="markReceivedAndDistribute()" *ngIf="(transfer.transfer_status == 1 || transfer.transfer_status == 5) && !authService.admin_limited_access">
       Mark Received & Distributing Salary
     </ion-button>
+    
+    <ion-button fill="outline" [disabled]="payingByWallet" (click)="payByWallet()" *ngIf="transfer.transfer_status == 3 && !authService.admin_limited_access">
+      <span *ngIf="!payingByWallet">Pay by Wallet</span>
+      <ion-spinner *ngIf="payingByWallet"></ion-spinner>
+    </ion-button>
 
     <ion-button fill="outline" (click)="revertBackToLock()" *ngIf="transfer.transfer_status === 1 && !authService.admin_limited_access">
       <ion-icon name="lock-closed-outline" slot="start"></ion-icon>

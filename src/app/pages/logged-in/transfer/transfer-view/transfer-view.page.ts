@@ -36,6 +36,8 @@ export class TransferViewPage implements OnInit {
 
   public loadingCandidates = false;
 
+  public payingByWallet: boolean = false;
+
   public processing: boolean = false;
 
   public updatingTransferFromFile: boolean = false; 
@@ -192,6 +194,34 @@ export class TransferViewPage implements OnInit {
         this.transferStatusDescription = "All done!";
         break;
     }
+  }
+
+  /**
+   * pay transfer by adding money in candidates' wallet 
+   */
+  async payByWallet() {
+
+    this.processing = true;
+    this.payingByWallet = true;
+
+    this.transferService.payByWallet(this.transfer).subscribe(async response => {
+
+      let toast = await this.toastCtrl.create({
+        message: response.message,
+        duration: 3000
+      });
+      toast.present();
+
+      //update review count 
+      this.eventService.updatePayable$.next();
+
+      this.eventService.transferUpdated$.next();
+
+      this.navCtrl.pop();
+
+      this.payingByWallet = false;
+      this.processing = false;
+    });
   }
 
   /**
