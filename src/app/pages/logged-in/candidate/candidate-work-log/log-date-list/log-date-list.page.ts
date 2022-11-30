@@ -41,22 +41,16 @@ export class LogDateListPage implements OnInit {
   ngOnInit() {
     this.candidate_id = this.activateRoute.snapshot.paramMap.get('candidate_id') || 0;
     window.analytics.page('Candidate Working Hours');
-  }
-
-  ionViewWillEnter() {
-    this.loadData();
-  }
-
-  ionViewWillLeave() {
+    this.loadData(0);
   }
 
   /**
    * load invitations for request
    */
-  loadData() {
+  loadData(page) {
     this.loading = true;
     const param = `&candidate_id=${this.candidate_id}`;
-    this.candidateWorkingHour.list(this.currentPage, param).subscribe(response => {
+    this.candidateWorkingHour.list(page, param).subscribe(response => {
       this.loading =  false;
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
