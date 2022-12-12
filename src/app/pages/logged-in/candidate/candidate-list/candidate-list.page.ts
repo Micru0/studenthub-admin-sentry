@@ -26,12 +26,14 @@ export class CandidateListPage implements OnInit {
     name: string,
     email: string,
     phone: number,
+    id: number,
     civil: number,
     type: string
   } = {
     name: null,
     email: null,
     phone: null,
+    id: null,
     civil: null,
     type: null
   };
@@ -57,6 +59,7 @@ export class CandidateListPage implements OnInit {
       name: null,
       email: null,
       phone: null,
+      id: null,
       civil: null,
       type: null
     };
@@ -82,6 +85,9 @@ export class CandidateListPage implements OnInit {
     }
     if (this.filters.civil) {
       urlParams += '&civil=' + this.filters.civil;
+    }
+    if (this.filters.id) {
+      urlParams += '&id=' + this.filters.id;
     }
     return urlParams;
   }

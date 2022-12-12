@@ -22,6 +22,13 @@
           <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
             <!-- Filter by Major -->
             <ion-item>
+              <ion-label position="floating" color="primary">Candidate ID</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.id"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
               <ion-label position="floating" color="primary">Name</ion-label>
               <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
             </ion-item>
