@@ -28,6 +28,8 @@ export class CandidateTransferDetailPage implements OnInit {
   
   public markingUnPaid: boolean = false;
 
+  public payingToWallet: boolean = false; 
+  
   constructor(
     public navCtrl: NavController,
     public router: Router,
@@ -114,6 +116,52 @@ export class CandidateTransferDetailPage implements OnInit {
 
           }, () => {
             this.markingUnPaid = false;
+          });
+        }
+      }
+    ]
+    });
+    alert.present(); 
+  }
+ 
+
+  /**
+   * mark single transfer candiate as paid + add amount to wallet
+   */
+   async payToWallet(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+   const alert = await this.alertCtrl.create({
+    header: 'Pay by wallet',
+    message: 'Are you sure you want to mark this transfer candidate as Paid and pay by wallet?',
+    buttons: [
+      {
+        text: 'No',
+        role: 'cancel'
+      },
+      {
+        text: 'Yes',
+        handler: async (data) => {
+          
+          this.payingToWallet = true;
+
+          this._candidateTransferService.payByWallet(this.transferCandidate).subscribe(async response => {
+            
+            let toast = await this.toastCtrl.create({
+              message: response.message,
+              duration: 3000
+            });
+            toast.present();
+
+            //update review count 
+            this._eventService.updatePayable$.next(this.transferCandidate);
+            
+            this.payingToWallet = false;
+
+            this.navCtrl.pop();
+          }, () => {
+            this.payingToWallet = false;
           });
         }
       }

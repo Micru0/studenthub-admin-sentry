@@ -76,6 +76,19 @@ export class CandidateTransferService {
     return this._authhttp.patch(url, {});
   }
   
+  
+  /**
+   * mark paid candidate and amount to wallet
+   * @param {Candidate} model
+   * @returns {Observable<any>}
+   */
+   payByWallet(model: TransferCandidate): Observable<any>{
+    let url = `${this._transferEndpoint}/pay-by-wallet/${model.tc_id}`;
+    return this._authhttp.patch(url, {
+      transfer_confirmation_id: model.transfer_confirmation_id
+    });
+  }
+
   /**
    * mark paid candidate
    * @param {Candidate} model

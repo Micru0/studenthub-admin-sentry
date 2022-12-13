@@ -101,6 +101,18 @@ export class TransferService {
   }
 
   /**
+   * pay transfer by wallet
+   * @param transfer 
+   * @returns 
+   */
+  payByWallet(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/pay-by-wallet/${transfer.transfer_id}`;
+    return this._authhttp.patch(url, {
+      'init_transfer': false
+    });
+  }
+
+  /**
    * Mark as Payment Received and distributing 
    * @param {Transfer} transfer
    * @returns {Observable<any>}
