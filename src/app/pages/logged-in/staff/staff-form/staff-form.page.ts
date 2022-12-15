@@ -89,6 +89,9 @@ export class StaffFormPage implements OnInit {
         job_title: ['', Validators.required],
         salary: ['', Validators.required],
         salary_currency: ['KWD', Validators.required],
+        hours_per_day: ['', Validators.required],
+        week_start_day: ['', Validators.required],
+        work_days: ['', Validators.required],
       });
     }else{ // Show Update Form
       this.operation = "Update Staff";
@@ -102,6 +105,9 @@ export class StaffFormPage implements OnInit {
         job_title: [this.model.staff_job_title, Validators.required],
         salary: [this.model.staff_salary, Validators.required],
         salary_currency: [this.model.staff_salary_currency, Validators.required],
+        hours_per_day: [this.model.hours_per_day, Validators.required],
+        week_start_day: [this.model.week_start_day, Validators.required],
+        work_days: [this.model.work_days, Validators.required],
       });
     }
   }
@@ -119,6 +125,9 @@ export class StaffFormPage implements OnInit {
     this.model.staff_job_title = this.form.value.job_title;
     this.model.staff_salary = this.form.value.salary;
     this.model.staff_salary_currency = this.form.value.salary_currency;
+    this.model.hours_per_day  = this.form.value.hours_per_day;
+    this.model.week_start_day  = this.form.value.week_start_day;
+    this.model.work_days  = this.form.value.work_days;
   }
 
   /**

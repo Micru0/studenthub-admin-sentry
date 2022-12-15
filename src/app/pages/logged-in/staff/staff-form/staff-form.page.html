@@ -85,6 +85,28 @@
           <ion-input type="text" formControlName="salary_currency"></ion-input>
         </ion-item>
 
+        <ion-item>
+          <ion-label position="floating">Hours per day</ion-label>
+          <ion-input type="number" formControlName="hours_per_day"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label position="floating">Week start day</ion-label>
+          <ion-select formControlName="week_start_day">
+            <ion-select-option value="1">Monday</ion-select-option>
+            <ion-select-option value="2">Tuesday</ion-select-option>
+            <ion-select-option value="3">Wednesday</ion-select-option>
+            <ion-select-option value="4">Thursday</ion-select-option>
+            <ion-select-option value="5">Friday</ion-select-option>
+            <ion-select-option value="6">Saturday</ion-select-option>
+            <ion-select-option value="7">Sunday</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">No of days per week </ion-label>
+          <ion-input type="number" formControlName="work_days"></ion-input>
+        </ion-item>
 
     </ion-list>
   </form>

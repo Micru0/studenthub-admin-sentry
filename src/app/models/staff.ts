@@ -9,6 +9,9 @@ export class Staff{
     staff_role: number;
     staff_salary: string;
     staff_salary_currency: string;
+    hours_per_day: number;
+    week_start_day: number;
+    work_days: number;
     staff_status: string;
     staff_notification: string;
     staff_created_at: string;

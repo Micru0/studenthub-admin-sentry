@@ -123,7 +123,10 @@ export class StaffService {
       "role": model.staff_role,
       'job_title': model.staff_job_title,
       'salary': model.staff_salary,
-      'salary_currency': model.staff_salary_currency
+      'salary_currency': model.staff_salary_currency,
+      'hours_per_day': model.hours_per_day,
+      'week_start_day': model.week_start_day,
+      'work_days': model.work_days,
     };
 
     return this._authhttp.post(postUrl, params);
@@ -144,7 +147,10 @@ export class StaffService {
       "role": model.staff_role,
       'job_title': model.staff_job_title,
       'salary': model.staff_salary,
-      'salary_currency': model.staff_salary_currency
+      'salary_currency': model.staff_salary_currency,
+      'hours_per_day': model.hours_per_day,
+      'week_start_day': model.week_start_day,
+      'work_days': model.work_days,
     };
 
     return this._authhttp.patch(url, params);
