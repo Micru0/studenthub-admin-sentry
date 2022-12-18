@@ -500,9 +500,17 @@ const routes: Routes = [
     }
   },
   {
+    path: 'daily-standup-question-list',
+    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-list/daily-standup-question-list.module').then( m => m.DailyStandupQuestionListPageModule)
+  },
+  {
+    path: 'daily-standup-question-form',
+    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module').then( m => m.DailyStandupQuestionFormPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
-  }
+  },
 ];
 
 @NgModule({
