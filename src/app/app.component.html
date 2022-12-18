@@ -107,6 +107,7 @@
                 </ion-label>
               </ion-item>
             </ion-menu-toggle>
+
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'company-list'">
                 <div tabindex="0"></div>
@@ -146,6 +147,14 @@
             <ion-item-divider>
               <ion-label>Report </ion-label>
             </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'daily-standup-question-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="chatbox-outline" slot="start"></ion-icon>
+                <ion-label>Daily Stand-up Question</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'import'">
