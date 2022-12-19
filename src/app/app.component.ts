@@ -1,4 +1,4 @@
-import { Component, OnInit, ApplicationRef } from '@angular/core';
+import { Component, OnInit, ApplicationRef, NgZone } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { interval, concat } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -9,9 +9,10 @@ import { environment } from 'src/environments/environment';
 import { EventService } from './providers/event.service';
 import { AuthService } from './providers/auth.service';
 import { CandidateService } from './providers/logged-in/candidate.service';
+import { Router } from '@angular/router';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 
-
-const { SplashScreen } = Plugins;
+const { App, SplashScreen } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
   public totalPayableCandidate: any = 0;
 
   constructor(
+    public router: Router,
     public updates: SwUpdate,
     public appRef: ApplicationRef,
     private platform: Platform,
@@ -36,13 +38,48 @@ export class AppComponent implements OnInit {
     public _alertCtrl: AlertController,
     public authService: AuthService,
     public eventService: EventService,
-    public candidateService: CandidateService
+    public candidateService: CandidateService,
+    public auth: Auth0Service,
+    public zone: NgZone,
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
-   
+    App.addListener('appUrlOpen', (event) => {
+      this.zone.run(() => {
+          // Example url: https://beerswift.app/tabs/tab2
+          // slug = /tabs/tab2
+         
+          // If no match, do nothing - let regular routing
+          // logic take over
+
+          //if (event.url?.startsWith(callbackUri)) {
+            // If the URL is an authentication callback URL..
+            if (
+              event.url.includes('state=') &&
+              (event.url.includes('error=') || event.url.includes('code='))
+            ) {
+              // Call handleRedirectCallback and close the browser
+              this.auth
+                .handleRedirectCallback(event.url)
+                //.pipe(mergeMap(() => Browser.close()))
+                .subscribe((result) => {
+                });
+            } else {
+              const slug = event.url.split(".co").pop();
+
+              if (slug) {
+                //this.navCtrl.
+                this.router.navigateByUrl(slug);
+              }
+
+              //Browser.close();
+            }
+          //}
+      });
+    });
+
     window.onpopstate = e => {
 
       if (window['history-back-from'] == 'onDidDismiss') {
@@ -71,6 +108,20 @@ export class AppComponent implements OnInit {
     };
 
     this.platform.ready().then(() => {
+
+      /**
+       * todo: need to test in mobile app
+       * when user comming back from auth0
+       */
+      this.auth.isAuthenticated$.subscribe(isAuthenticated => {
+        
+        if(!isAuthenticated || this.authService.isLogin) return null;
+      
+        //this.auth.idTokenClaims$.subscribe(r => {
+        this.auth.getAccessTokenSilently().subscribe(r => {  
+          this.authService.useTokenForAuth(r).then();
+        });
+      });
 
       if (this.platform.is('hybrid')) {
         SplashScreen.hide();
@@ -138,14 +189,23 @@ export class AppComponent implements OnInit {
     });
 
     // On Logout Event, set root to Login Page
-    this.eventService.userLogout$.subscribe((logoutReason) => {
+    this.eventService.userLogout$.subscribe((response: any) => {
 
       // Set root to Login Page
       this.navCtrl.navigateRoot(['/login']);
 
+      if(!response.silent) {
+        this.auth.isAuthenticated$.subscribe(isAuthenticated => {
+        
+          if(isAuthenticated) {
+            this.auth.logout({ returnTo: document.location.origin });
+          }
+        })
+      }
+      
       // Show Message explaining logout reason if there's one set
-      if (logoutReason) {
-        console.log(logoutReason);
+      if (response.logoutReason) {
+        console.log(response.logoutReason);
       }
     });
   }

@@ -1,13 +1,16 @@
 import { Injectable, RendererFactory2 } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-
+import { Plugins } from '@capacitor/core';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError, first, take, map, retryWhen } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { empty, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RouterStateSnapshot, ActivatedRouteSnapshot, UrlTree, Router } from '@angular/router';
 // services
 import { EventService } from './event.service';
-import { Plugins } from '@capacitor/core';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+
+
 const { Storage } = Plugins;
 
 @Injectable({
@@ -29,11 +32,15 @@ export class AuthService {
   public theme: string;
 
   private _urlBasicAuth = '/auth/login';
+  public _urlLoginAuth0 = '/auth/login-auth0';
 
   constructor(
+    public auth: Auth0Service,
     public rendererFactory: RendererFactory2,
     public _http: HttpClient,
     public router: Router,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
     private eventService: EventService
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
@@ -43,7 +50,6 @@ export class AuthService {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
 
     /**
      * new router changes don't wait for startup service
@@ -60,7 +66,7 @@ export class AuthService {
       if (this.isLogin) {
         resolve(true);
       }
-
+ 
       Storage.get({ key: 'loggedInAdmin' }).then(ret => {
 
         const user = JSON.parse(ret.value);
@@ -78,7 +84,8 @@ export class AuthService {
           resolve(true);
         } else {
           resolve(false);
-          this.logout('invalid access');
+          this.router.navigate(['login']);
+          //this.logout('invalid access from canActivate');
         }
       }).catch(r => {
         this.eventService.errorStorage$.next();
@@ -158,7 +165,10 @@ export class AuthService {
     });
 
     if (!silent) {
-      this.eventService.userLogout$.next(reason ? reason : false);
+      this.eventService.userLogout$.next({
+        'logoutReason': reason,
+        'silent': silent
+      });
     }
   }
 
@@ -254,6 +264,82 @@ export class AuthService {
   }
 
   /**
+   * Login by Auth0 accessToken
+   */
+  async useTokenForAuth(accessToken, showLoader = true) {
+
+    let loading;
+
+    if (showLoader) {
+      loading = await this.loadingCtrl.create({
+        spinner: 'crescent',
+        message: 'Logging in...'
+      });
+      loading.present();
+    }
+
+    const url = environment.apiEndpoint + this._urlLoginAuth0;
+
+    const headers = this._buildAuthHeaders();
+
+    return this._http.post(url, {
+      accessToken: accessToken,
+    }, {
+      headers: headers
+    })
+      .pipe(
+        //retryWhen(genericRetryStrategy()),
+        catchError((err) => this._handleError(err)),
+        first(),
+        map((res) => res)
+      )
+      .subscribe(async (response: any) => {
+
+        if (response.operation == 'success') {
+
+          this.setAccessToken(response, true);
+
+        } else if (response.code == 1) {
+ 
+          const alert = await this.alertCtrl.create({
+            message: 'No account with login email', // JSON.stringify(err)
+            buttons: ['Okay']
+          });
+          await alert.present();
+
+          this.auth.logout({ returnTo: document.location.origin });
+
+        } else if (response.operation == 'error') {
+
+          const alert = await this.alertCtrl.create({
+            message: 'Error getting login by Auth0 API', // JSON.stringify(err)
+            buttons: ['Okay']
+          });
+          await alert.present();
+
+        }
+
+        //this.eventService.googleLoginFinished$.next({});
+
+      }, err => {
+
+        //this.eventService.googleLoginFinished$.next(err);
+      },
+      () => {
+        if (loading) {
+          loading.dismiss();
+        }
+      });
+  }
+
+  _buildAuthHeaders() {
+    return new HttpHeaders({
+      //Language: this.language_pref || 'en',
+      'Content-Type': 'application/json'
+    });
+  }
+
+  /**
    * json to string error message
    * @param message
    */
@@ -278,5 +364,60 @@ export class AuthService {
     }
 
     return a.join('<br />');
+  }
+  
+  /**
+   * Handles Caught Errors from All Authorized Requests Made to Server
+   * @returns {Observable} 
+   */
+  public _handleError(error: any): Observable<any> {
+
+    let errMsg = (error.message) ? error.message :
+      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+
+    // Handle Bad Requests
+    // This error usually appears when agent attempts to handle an 
+    // account that he's been removed from assigning
+    if (error.status === 400) {
+      //this.eventService.agentRemoved$.next();
+      return empty();
+    }
+
+    // Handle No Internet Connection Error
+
+    if (error.status == 0 || error.status == 504) {
+      this.eventService.internetOffline$.next();
+      //this._auth.logout("Unable to connect to Pogi servers. Please check your internet connection.");
+      return empty();
+    }
+
+    if (!navigator.onLine) {
+      this.eventService.internetOffline$.next();
+      return empty();
+    }
+
+    // Handle Expired Session Error
+    if (error.status === 401) {
+      this.logout('Session expired, please log back in.');
+      return empty();
+    }
+
+    // Handle internal server error - 500  
+    if (error.status === 500) {
+      this.eventService.error500$.next({
+        message: error.message
+      });
+      return empty();
+    }
+
+    // Handle page not found - 404 error 
+    if (error.status === 404) {
+      this.eventService.error404$.next();
+      return empty();
+    }
+
+    console.error(JSON.stringify(error));
+
+    return throwError(errMsg);
   }
 }

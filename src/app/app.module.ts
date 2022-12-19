@@ -7,7 +7,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { IOSFilePicker } from '@ionic-native/file-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
-
+import { AuthModule } from '@auth0/auth0-angular';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -57,6 +57,10 @@ declare global {
   ],
   entryComponents: [],
   imports: [
+    AuthModule.forRoot({
+      domain: 'bawes.us.auth0.com',
+      clientId: 'sDIOpy1be7Y59ocKoXxHVL5euFNdJN3e'
+    }),
     CKEditorModule,
     HttpClientModule,
     BrowserModule,

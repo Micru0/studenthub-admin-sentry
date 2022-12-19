@@ -163,8 +163,8 @@ export class StoryListPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
+      
       if (e.data) {
-        console.log(e.data);
         this.filters.company = e.data.company.company_common_name_en;
         this.filters.company_id = e.data.company.company_id;
       }

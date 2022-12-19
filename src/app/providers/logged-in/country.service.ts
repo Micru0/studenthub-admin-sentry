@@ -22,7 +22,7 @@ export class CountryService {
    */
   list(page: number, query: string = null): Observable<any>{
     let url = this._countryEndpoint + '?page=' + page;
-    console.log(query);
+
     if (query) {
         url += '&query='+query
     }
