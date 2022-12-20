@@ -2,7 +2,7 @@ import { NgModule, APP_INITIALIZER, Injector, ErrorHandler } from '@angular/core
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
+import { AuthModule } from '@auth0/auth0-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
@@ -55,6 +55,10 @@ declare global {
   ],
   entryComponents: [],
   imports: [
+    AuthModule.forRoot({
+      domain: 'bawes.us.auth0.com',
+      clientId: 'sDIOpy1be7Y59ocKoXxHVL5euFNdJN3e'
+    }),
     CKEditorModule,
     HttpClientModule,
     BrowserModule,

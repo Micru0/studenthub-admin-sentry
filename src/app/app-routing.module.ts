@@ -290,7 +290,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/start-pages/login/login.module').then(m => m.LoginPageModule),
-    canActivate: [LoginGuard],
+    //canActivate: [LoginGuard],
     data: {
       name: 'LoginPage'
     }

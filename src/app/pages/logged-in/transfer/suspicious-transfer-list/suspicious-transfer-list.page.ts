@@ -247,6 +247,5 @@ export class SuspiciousTransferListPage implements OnInit {
         this.loadData(1); // reload all result
       }
     }
-    console.log(date);
   }
 }
