@@ -105,7 +105,7 @@ export class TransferPaidPage implements OnInit {
       toast.present();
 
       //update review count 
-      this._eventService.updatePayable$.next();
+      this._eventService.updatePayable$.next({});
 
       this.navCtrl.navigateRoot(['payable-candidates']);
 

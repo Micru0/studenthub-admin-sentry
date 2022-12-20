@@ -1,14 +1,15 @@
 import { Injectable, RendererFactory2 } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { catchError, first, take, map, retryWhen } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Storage } from '@ionic/storage-angular';
 import { RouterStateSnapshot, ActivatedRouteSnapshot, UrlTree, Router } from '@angular/router';
 // services
 import { EventService } from './event.service';
-import { Plugins } from '@capacitor/core';
-const { Storage } = Plugins;
+import { StorageService } from './storage.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,8 @@ export class AuthService {
   private _urlBasicAuth = '/auth/login';
 
   constructor(
+    public storage: Storage,
+    public storageService: StorageService,
     public rendererFactory: RendererFactory2,
     public _http: HttpClient,
     public router: Router,
@@ -53,7 +56,7 @@ export class AuthService {
 
       this.navEnable = true;
 
-      if (route.data.navDisable) {
+      if (route.data['navDisable']) {
         this.navEnable = false;
       }
 
@@ -61,9 +64,9 @@ export class AuthService {
         resolve(true);
       }
 
-      Storage.get({ key: 'loggedInAdmin' }).then(ret => {
+      this.storageService.get('loggedInAdmin').then(ret => {
 
-        const user = JSON.parse(ret.value);
+        const user = ret;//JSON.parse(ret.value);
 
         if (user) {
 
@@ -81,16 +84,19 @@ export class AuthService {
           this.logout('invalid access');
         }
       }).catch(r => {
-        this.eventService.errorStorage$.next();
+        this.eventService.errorStorage$.next({});
       });
     });
   }
 
   // This is the method you want to call at bootstrap
   async load(): Promise<any> {
-    Storage.get({ key: 'loggedInAdmin' }).then(ret => {
+    if(!this.storageService._storage)
+      this.storageService._storage = await this.storage.create();
 
-      const admin = JSON.parse(ret.value);
+    this.storageService.get('loggedInAdmin').then(ret => {
+
+      const admin = ret;// JSON.parse(ret.value);
 
       if (admin && admin.token) {
         return this.setAccessToken(admin);
@@ -98,16 +104,16 @@ export class AuthService {
         // return this.logout('error with store variables',true);
       }
     }).catch(r => {
-      this.eventService.errorStorage$.next();
+      this.eventService.errorStorage$.next({});
     });
 
-    Storage.get({ key: 'theme' }).then(ret => {
+    this.storageService.get('theme').then(ret => {
 
-      if (ret.value) {
-        this.setTheme(ret.value);
+      if (ret) {
+        this.setTheme(ret);
       }
     }).catch(r => {
-      this.eventService.errorStorage$.next();
+      this.eventService.errorStorage$.next({});
     });
   }
 
@@ -122,15 +128,15 @@ export class AuthService {
       return this._accessToken;
     }
 
-    Storage.get({ key: 'loggedInAdmin' }).then(ret => {
-      const user = JSON.parse(ret.value);
+    this.storageService.get('loggedInAdmin').then(ret => {
+      const user = ret;//JSON.parse(ret.value);
 
       if (user) {
         this.setAccessToken(user, redirect);
         this._accessToken = user.token;
       }
     }).catch(r => {
-      this.eventService.errorStorage$.next();
+      this.eventService.errorStorage$.next({});
     });
 
     return this._accessToken;
@@ -153,8 +159,8 @@ export class AuthService {
     this.email = null;
     this.admin_limited_access = null;
 
-    Storage.clear().catch(r => {
-      this.eventService.errorStorage$.next();
+    this.storageService.clear().catch(r => {
+      this.eventService.errorStorage$.next({});
     });
 
     if (!silent) {
@@ -167,11 +173,9 @@ export class AuthService {
    * @param theme
    */
   setTheme(theme) {
-    Storage.set({
-      key: 'theme',
-      value: theme
+    this.storageService.set('theme', theme).then(() => {
     }).catch(r => {
-      this.eventService.errorStorage$.next();
+      this.eventService.errorStorage$.next({});
     });
 
     this.theme = theme;
@@ -214,17 +218,14 @@ export class AuthService {
    * Save user data in storage
    */
   saveInStorage() {
-    Storage.set({
-      key: 'loggedInAdmin',
-      value: JSON.stringify({
+    this.storageService.set('loggedInAdmin', {
         token: this._accessToken,
         id: this.id,
         name: this.name,
         email: this.email,
         admin_limited_access: this.admin_limited_access
-      })
     }).catch(r => {
-      this.eventService.errorStorage$.next();
+      this.eventService.errorStorage$.next({});
     });
   }
 

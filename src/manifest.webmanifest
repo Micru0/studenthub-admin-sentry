@@ -1,11 +1,11 @@
 {
-  "name": "Payroll Admin",
-  "short_name": "Payroll Admin",
-  "start_url": "index.html",
-  "display": "standalone",
+  "name": "Studenthub - Admin",
+  "short_name": "Studenthub Admin",
   "background_color": "#4e8ef7",
   "theme_color": "#4e8ef7",
+  "display": "standalone",
   "scope": "./",
+  "start_url": "./",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

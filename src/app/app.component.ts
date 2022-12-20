@@ -1,17 +1,17 @@
 import { Component, OnInit, ApplicationRef } from '@angular/core';
-import { Plugins } from '@capacitor/core';
 import { interval, concat } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Platform, AlertController, NavController, ToastController, PopoverController, ModalController } from '@ionic/angular';
 import { SwUpdate } from '@angular/service-worker';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { environment } from 'src/environments/environment';
+import { Storage } from '@ionic/storage-angular';
 //services
 import { EventService } from './providers/event.service';
 import { AuthService } from './providers/auth.service';
 import { CandidateService } from './providers/logged-in/candidate.service';
+import { StorageService } from './providers/storage.service';
 
-
-const { SplashScreen } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
   public totalPayableCandidate: any = 0;
 
   constructor(
+    public storage: Storage,
+    public storageService: StorageService,
     public updates: SwUpdate,
     public appRef: ApplicationRef,
     private platform: Platform,
@@ -41,9 +43,10 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
 
-  initializeApp() {
-   
-    window.onpopstate = e => {
+  async initializeApp() {
+    this.storageService._storage = await this.storage.create();
+
+    window.onpopstate = (e: any) => {
 
       if (window['history-back-from'] == 'onDidDismiss') {
         window['history-back-from'] = null;

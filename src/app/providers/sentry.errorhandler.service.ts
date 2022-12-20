@@ -73,7 +73,7 @@ export class SentryErrorhandlerService extends ErrorHandler {
 		return null;
 	}
 
-	handleError(error) {
+	public override handleError(error) {
 		
 		const chunkFailedMessage = /Loading chunk [\d]+ failed/;
 

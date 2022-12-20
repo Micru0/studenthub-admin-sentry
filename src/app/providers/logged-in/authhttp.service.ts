@@ -272,20 +272,20 @@ export class AuthHttpService {
     // This error usually appears when agent attempts to handle an 
     // account that he's been removed from assigning
     if (error.status === 400) {
-      //this.eventService.agentRemoved$.next();
+      //this.eventService.agentRemoved$.next({});
       return empty();
     }
 
     // Handle No Internet Connection Error
 
     if (error.status == 0 || error.status == 504) {
-      this.eventService.internetOffline$.next();
+      this.eventService.internetOffline$.next({});
       //this._auth.logout("Unable to connect to Pogi servers. Please check your internet connection.");
       return empty();
     }
 
     if (!navigator.onLine) {
-      this.eventService.internetOffline$.next();
+      this.eventService.internetOffline$.next({});
       return empty();
     }
 
@@ -305,7 +305,7 @@ export class AuthHttpService {
 
     // Handle page not found - 404 error 
     if (error.status === 404) {
-      this.eventService.error404$.next();
+      this.eventService.error404$.next({});
       return empty();
     }
 

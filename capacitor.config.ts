@@ -1,10 +1,11 @@
-{
-  "appId": "io.ionic.starter",
-  "appName": "payroll-admin",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www",
-  "plugins": {
+import { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  appId: 'co.studenthub.admin',
+  appName: 'Studenthub Admin',
+  webDir: 'www',
+  bundledWebRuntime: false,
+  plugins: {
     "SplashScreen": {
       "launchAutoHide": false,
       "showSpinner": false,
@@ -18,6 +19,7 @@
       "splashFullScreen": true,
       "splashImmersive": true
     }
-  },
-  "cordova": {}
-}
+  }
+};
+
+export default config;

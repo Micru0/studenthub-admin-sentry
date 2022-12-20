@@ -78,9 +78,9 @@ export class CompanyContactViewPage implements OnInit {
     window.analytics.page('Company Contact View Page');
 
     if(!this.contact_uuid)
-      this.contact_uuid = this.route.snapshot.params.contact_uuid;
+      this.contact_uuid = this.route.snapshot.params['contact_uuid'];
 
-    this.company_id = this.route.snapshot.params.company_id;
+    this.company_id = this.route.snapshot.params['company_id'];
 
     const model = window.history.state.model;
 
@@ -217,8 +217,8 @@ export class CompanyContactViewPage implements OnInit {
   async editNote(note: Note) {
     this.editNoteData = note;
 
-    this.noteForm.controls.note.setValue(note.note_text);
-    this.noteForm.controls.type.setValue(note.note_type);
+    this.noteForm.controls['note'].setValue(note.note_text);
+    this.noteForm.controls['type'].setValue(note.note_type);
 
     this.ckeditor.editorInstance.setData(note.note_text);
     this.editorFocused = true;
@@ -285,11 +285,11 @@ export class CompanyContactViewPage implements OnInit {
   resetNoteForm() {
     this.editNoteData = new Note();
 
-    this.noteForm.controls.note.setValue('');
+    this.noteForm.controls['note'].setValue('');
     this.ckeditor.editorInstance.setData('');
     this.editorFocused = false;
 
-    this.noteForm.controls.type.setValue('Internal Note');
+    this.noteForm.controls['type'].setValue('Internal Note');
   }
 
   /**
@@ -343,9 +343,9 @@ export class CompanyContactViewPage implements OnInit {
 
     const model = new Note();
     model.company_id = this.company_id;
-    model.note_type = this.noteForm.controls.type.value;
+    model.note_type = this.noteForm.controls['type'].value;
     model.contact_uuid = this.contact_uuid;
-    model.note_text = this.noteForm.controls.note.value;
+    model.note_text = this.noteForm.controls['note'].value;
 
     let response = null;
 
@@ -393,7 +393,7 @@ export class CompanyContactViewPage implements OnInit {
 
     const data = event.editor.getData();
 
-    this.noteForm.controls.note.setValue(data);
+    this.noteForm.controls['note'].setValue(data);
     this.noteForm.markAsDirty();
     this.noteForm.updateValueAndValidity();
   }

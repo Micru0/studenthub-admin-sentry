@@ -115,7 +115,7 @@ export class CandidateTransferListPage implements OnInit {
               toast.present();
 
               //update review count 
-              this._eventService.updatePayable$.next();
+              this._eventService.updatePayable$.next({});
 
               //pop
               this.navCtrl.pop();
@@ -169,7 +169,7 @@ export class CandidateTransferListPage implements OnInit {
               toast.present();
 
               //update review count 
-              this._eventService.updatePayable$.next();
+              this._eventService.updatePayable$.next({});
               
               this._eventService.markedAllUnpaid$.next({
                 transferCandidateList: transferCandidateList

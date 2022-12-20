@@ -3,12 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
-import { FileChooser } from '@ionic-native/file-chooser/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
-import { IOSFilePicker } from '@ionic-native/file-picker/ngx';
-import { File } from '@ionic-native/file/ngx';
-
-
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
@@ -42,8 +36,12 @@ import {CandidateWorkHistoryModule} from './components/candidate-work-history/ca
 import {RequestModule} from './components/request/request.module';
 import {StaffPageModule} from "./pages/logged-in/picker/staff/staff.module";
 import { DailyStandupQuestionFormPageModule } from './pages/logged-in/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module';
+import { CompanyNoteFormPageModule } from './pages/logged-in/company/company-note-form/company-note-form.module';
+import { File } from '@awesome-cordova-plugins/file/ngx';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
-export function startupServiceFactory(authService) {
+export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
 }
 
@@ -62,11 +60,16 @@ declare global {
     BrowserModule,
     CalendarModule,
     IonicModule.forRoot(),
-    // IonicStorageModule.forRoot({
-    //   name: '__payroll_admin'
-    // }),
+    IonicStorageModule.forRoot({
+      name: '__payroll_admin'
+    }),
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
+    ServiceWorkerModule.register('ngsw-worker.js', { 
+      enabled: environment.serviceWorker,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
     BankFormPageModule,
     ExpenseFormPageModule,
     CompanyFormPageModule,
@@ -80,6 +83,7 @@ declare global {
     NoItemsModule,
     CountryFormPageModule,
     InspectorFormPageModule,
+    CompanyNoteFormPageModule,
     ModalPopPageModule,
     RequestChecklistFormPageModule,
     CompanyPageModule,
@@ -98,9 +102,7 @@ declare global {
       multi: true
     },
     File,
-    FileChooser,
-    FilePath,
-    IOSFilePicker,
+    NativeStorage,
     SwUpdate,
     SelectiveLoadingStrategy,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -116,3 +118,4 @@ export class AppModule {
     AppModule.injector = injector;
   }
 }
+
