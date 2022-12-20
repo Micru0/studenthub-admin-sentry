@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, ModalController } from '@ionic/angular';
+import { format, parseISO } from 'date-fns';
 //models
 import { StaffSalary } from 'src/app/models/staff_salary';
 //services
@@ -109,13 +110,18 @@ export class StaffSalaryFormPage implements OnInit {
     
     this.saving = true;
 
+    let params = this.form.value;
+
+    params.salary_date = format(parseISO(this.form.controls['salary_date'].value), 
+      'yyyy-MM-dd HH:mm:ss');//, { timeZone: '+3:30' }
+
     let action;
     if(!this.model.staff_id){
       // Create
-      action = this.staffService.addSalary(this.staff_id, this.form.value);
+      action = this.staffService.addSalary(this.staff_id, params);
     }else{
       // Update
-      action = this.staffService.updateSalary(this.staff_salary_uuid, this.form.value);
+      action = this.staffService.updateSalary(this.staff_salary_uuid, params);
     }
 
     action.subscribe(async jsonResponse => {
