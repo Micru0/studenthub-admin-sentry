@@ -93,13 +93,36 @@ export class DailyStandupQuestionListPage implements OnInit {
   /**
    * When its selected
    */
-  rowSelected(model) {
-    // Load Detail Page
-    this.router.navigate(['/bank-view', model.bank_id], {
-      state: {
+  async rowSelected(model) {
+
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: DailyStandupQuestionFormPage,
+      componentProps: {
         model: model
       }
     });
+    // Refresh List if required
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+
+      if (e && e.data && e.data.refresh) {
+        this.loadData(this.currentPage);
+      }
+    });
+    modal.present();
+
+    // // Load Detail Page
+    // this.router.navigate(['/bank-view', model.bank_id], {
+    //   state: {
+    //     model: model
+    //   }
+    // });
   }
 
   /**

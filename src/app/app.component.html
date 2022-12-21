@@ -15,7 +15,7 @@
             <ion-icon *ngIf="authService.theme == 'night'" slot="icon-only" name="moon-outline"></ion-icon>
             <ion-icon *ngIf="authService.theme != 'night'" slot="icon-only" name="partly-sunny-outline"></ion-icon>
           </ion-button>
-          
+
           <!-- Main Action Points -->
           <ion-item-group>
             <ion-item-divider>
@@ -43,7 +43,7 @@
               <ion-item lines="none" [routerLink]="'suspicious-transfer-list'">
                 <div tabindex="0"></div>
                 <ion-icon name="globe-outline" slot="start"></ion-icon>
-                <ion-label>Transfers with wrong hourly</ion-label>
+                <ion-label class="ion-text-wrap">Transfers with wrong hourly</ion-label>
               </ion-item>
             </ion-menu-toggle>
           </ion-item-group>
@@ -59,7 +59,7 @@
               <ion-item lines="none" [routerLink]="'payable-candidates'">
                 <div tabindex="0"></div>
                 <ion-icon name="people-outline" slot="start"></ion-icon>
-                <ion-label>
+                <ion-label class="ion-text-wrap">
                   Payable Candidates
                 </ion-label>
 
@@ -82,13 +82,13 @@
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'transfer-file-list'">
                 <div tabindex="0"></div>
-                <ion-icon name="folder-open-outline" slot="start"></ion-icon> 
+                <ion-icon name="folder-open-outline" slot="start"></ion-icon>
                 <ion-label>
                   Transfer Files
                 </ion-label>
               </ion-item>
             </ion-menu-toggle>
- 
+
           </ion-item-group>
 
           <!-- Accounts Management -->
@@ -152,7 +152,7 @@
               <ion-item lines="none" [routerLink]="'daily-standup-question-list'">
                 <div tabindex="0"></div>
                 <ion-icon name="chatbox-outline" slot="start"></ion-icon>
-                <ion-label>Daily Stand-up Question</ion-label>
+                <ion-label class="ion-text-wrap">Daily Stand-up Question</ion-label>
               </ion-item>
             </ion-menu-toggle>
 
@@ -245,7 +245,7 @@
             <ion-item lines="none" routerLink="/log-date-list">
               <div tabindex="0"></div>
               <ion-icon name="list" slot="start"></ion-icon>
-              <ion-label>Candidate Working Hours</ion-label>
+              <ion-label class="ion-text-wrap">Candidate Working Hours</ion-label>
             </ion-item>
           </ion-menu-toggle>
 

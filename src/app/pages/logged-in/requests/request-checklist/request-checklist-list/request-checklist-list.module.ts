@@ -15,7 +15,8 @@ import { LoadingModalModule } from 'src/app/components/loading-modal/loading-mod
     FormsModule,
     IonicModule,
     RequestChecklistListPageRoutingModule,
-    LoadingModalModule
+    LoadingModalModule,
+    IonicModule
   ],
   declarations: [RequestChecklistListPage]
 })

@@ -20,20 +20,19 @@ export class CandidateListPage implements OnInit {
   public pageCount = 0;
   public totalCount = 0;
   public currentPage = 1;
+  public showFilter = false;
 
   public candidates: Candidate[] = [];
   public filters: {
     name: string,
     email: string,
     phone: number,
-    id: number,
     civil: number,
     type: string
   } = {
     name: null,
     email: null,
     phone: null,
-    id: null,
     civil: null,
     type: null
   };
@@ -51,6 +50,10 @@ export class CandidateListPage implements OnInit {
     this.loadData(this.currentPage);
   }
 
+  showFilterPanel() {
+    this.showFilter = !this.showFilter;
+  }
+
   /**
    * Reset question filter
    */
@@ -59,7 +62,6 @@ export class CandidateListPage implements OnInit {
       name: null,
       email: null,
       phone: null,
-      id: null,
       civil: null,
       type: null
     };
@@ -85,9 +87,6 @@ export class CandidateListPage implements OnInit {
     }
     if (this.filters.civil) {
       urlParams += '&civil=' + this.filters.civil;
-    }
-    if (this.filters.id) {
-      urlParams += '&id=' + this.filters.id;
     }
     return urlParams;
   }

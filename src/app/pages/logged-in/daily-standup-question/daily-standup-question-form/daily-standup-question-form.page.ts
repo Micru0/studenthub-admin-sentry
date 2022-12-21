@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-//services 
+//services
 import { AuthService } from 'src/app/providers/auth.service';
 import { DailyStandupQuestionService } from 'src/app/providers/logged-in/daily-standup-question.service';
 //models
 import { DailyStandupQuestion } from 'src/app/models/daily-standup-question';
- 
+
 
 @Component({
   selector: 'app-daily-standup-question-form',
@@ -16,10 +16,10 @@ import { DailyStandupQuestion } from 'src/app/models/daily-standup-question';
 })
 export class DailyStandupQuestionFormPage implements OnInit {
 
-  public loading: boolean = false; 
+  public loading: boolean = false;
 
-  public saving: boolean = false; 
-  
+  public saving: boolean = false;
+
   public question_uuid;
 
   public model: DailyStandupQuestion;
@@ -28,7 +28,7 @@ export class DailyStandupQuestionFormPage implements OnInit {
 
   public form: FormGroup;
 
-  constructor( 
+  constructor(
     public activateRoute: ActivatedRoute,
     public questionService: DailyStandupQuestionService,
     public authService: AuthService,
@@ -47,10 +47,14 @@ export class DailyStandupQuestionFormPage implements OnInit {
   ngOnInit() {
     window.analytics.page('Daily Standup Question Form Page');
 
-    // Load the passed model if available
-    if(window['state']) {
-      this.model = window['state']['model'];
+    if (this.model && this.model.question_uuid) {
+      this.question_uuid = this.model.question_uuid;
     }
+
+    // Load the passed model if available
+    // if(window['state']) {
+    //   this.model = window['state']['model'];
+    // }
 
     //this.question_uuid = this.activateRoute.snapshot.paramMap.get('question_uuid');
 
@@ -62,10 +66,10 @@ export class DailyStandupQuestionFormPage implements OnInit {
   }
 
   loadData(question_uuid) {
-    this.loading = true; 
+    this.loading = true;
 
     this.questionService.view(question_uuid).subscribe(bank => {
-      this.model = bank; 
+      this.model = bank;
 
       this.loading = false;
 
@@ -126,7 +130,7 @@ export class DailyStandupQuestionFormPage implements OnInit {
     }
 
     action.subscribe(async jsonResponse => {
-      
+
       this.saving = false;
 
       // On Success
@@ -138,7 +142,7 @@ export class DailyStandupQuestionFormPage implements OnInit {
 
       // On Failure
       if (jsonResponse.operation == "error") {
-        
+
         //failer text
         let prompt = await this._alertCtrl.create({
           message: this.authService.errorMessage(jsonResponse.message),
@@ -149,5 +153,5 @@ export class DailyStandupQuestionFormPage implements OnInit {
     }, () => {
       this.saving = false;
     });
-  }  
+  }
 }
