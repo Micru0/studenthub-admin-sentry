@@ -8,37 +8,44 @@
         </ion-button>
       </ion-menu-toggle>
     </ion-buttons>
- 
-    <ion-title>Suspicious Transfer List </ion-title>
-    <ion-title size="small">Transfers with wrong hourly</ion-title>
+
+    <ion-title>
+      Suspicious Transfer List<br/>
+      <small>Transfers with wrong hourly</small>
+    </ion-title>
+
 
     <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
-
+    <ion-buttons slot="end">
+      <ion-button (click)="showFilterPanel()">
+        Filter
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
-  <div class="content">
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, '0')" [class.active]="filters.transferStatus == '0'">All</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, '10')" [class.active]="filters.transferStatus == '10'">Draft</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, '5')" [class.active]="filters.transferStatus == '5'">Locked, Pending Payment</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, '1')" [class.active]="filters.transferStatus == '1'">Payment Sent, Confirm Received</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, '3')" [class.active]="filters.transferStatus == '3'">Received & Distribution in Progress</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, '4')" [class.active]="filters.transferStatus == '4'">Transfer Completed</ion-badge>
-  </div>
-  <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
-  <ion-button (click)="selectDate()" [color]="(filters.startDate) ? 'success' : 'primary'">
-    <span *ngIf="!filters.startDate">Select Start Date</span>
-    <span *ngIf="filters.startDate">Selected  : {{filters.startDate}}</span>
-  </ion-button>
-  <ion-button fill="clear" (click)="clearfilter(true)" *ngIf="filters.startDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
-  <ion-button (click)="selectDate(false)"  [color]="(filters.endDate) ? 'success' : 'primary'">
-    <span *ngIf="!filters.endDate">Select End Date</span>
-    <span *ngIf="filters.endDate">Selected  : {{filters.endDate}}</span>
-  </ion-button>
-  <ion-button fill="clear" (click)="clearfilter()" *ngIf="filters.endDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
-
+  <ng-container *ngIf="showFilter">
+    <div class="content">
+      <ion-badge tappable color="primary" (click)="filterByStatus($event, '0')" [class.active]="filters.transferStatus == '0'">All</ion-badge>
+      <ion-badge tappable color="primary" (click)="filterByStatus($event, '10')" [class.active]="filters.transferStatus == '10'">Draft</ion-badge>
+      <ion-badge tappable color="primary" (click)="filterByStatus($event, '5')" [class.active]="filters.transferStatus == '5'">Locked, Pending Payment</ion-badge>
+      <ion-badge tappable color="primary" (click)="filterByStatus($event, '1')" [class.active]="filters.transferStatus == '1'">Payment Sent, Confirm Received</ion-badge>
+      <ion-badge tappable color="primary" (click)="filterByStatus($event, '3')" [class.active]="filters.transferStatus == '3'">Received & Distribution in Progress</ion-badge>
+      <ion-badge tappable color="primary" (click)="filterByStatus($event, '4')" [class.active]="filters.transferStatus == '4'">Transfer Completed</ion-badge>
+    </div>
+    <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
+    <ion-button (click)="selectDate()" [color]="(filters.startDate) ? 'success' : 'primary'">
+      <span *ngIf="!filters.startDate">Select Start Date</span>
+      <span *ngIf="filters.startDate">Selected  : {{filters.startDate}}</span>
+    </ion-button>
+    <ion-button fill="clear" (click)="clearfilter(true)" *ngIf="filters.startDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
+    <ion-button (click)="selectDate(false)"  [color]="(filters.endDate) ? 'success' : 'primary'">
+      <span *ngIf="!filters.endDate">Select End Date</span>
+      <span *ngIf="filters.endDate">Selected  : {{filters.endDate}}</span>
+    </ion-button>
+    <ion-button fill="clear" (click)="clearfilter()" *ngIf="filters.endDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
+  </ng-container>
   <!-- Transfer List -->
   <ion-list>
     <ion-item tappable *ngFor="let transfer of transfers" (click)="transferDetails(transfer.transfer_id)">
@@ -62,7 +69,7 @@
         </ion-row>
         <ion-row>
           <ion-col size="12" size-sm="6">
-            <p>Employee Distribution</p> 
+            <p>Employee Distribution</p>
             KWD {{ transfer.total - transfer.total_transfer_cost | number:'1.3-3' }}
           </ion-col>
           <ion-col size="12" size-sm="6" *ngIf="transfer.total_transfer_cost > 0">

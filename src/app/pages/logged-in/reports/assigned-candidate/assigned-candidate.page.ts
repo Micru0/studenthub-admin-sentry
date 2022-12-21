@@ -15,7 +15,7 @@ import {CandidateWorkHistory} from '../../../../models/candidate-work-history';
 export class AssignedCandidatePage implements OnInit {
 
   public loading = false;
-
+  public showFilter = false;
   public pageCount = 0;
   public totalCount = 0;
   public currentPage = 1;
@@ -49,6 +49,10 @@ export class AssignedCandidatePage implements OnInit {
 
   ionViewWillEnter() {
     this.loadData(this.currentPage);
+  }
+
+  showFilterPanel() {
+    this.showFilter = !this.showFilter;
   }
 
   /**

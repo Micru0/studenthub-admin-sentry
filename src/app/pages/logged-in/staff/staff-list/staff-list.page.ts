@@ -28,6 +28,7 @@ export class StaffListPage implements OnInit {
   public deleting = false;
   public sendingNewPassword = false;
   public statusChanging = false;
+  public showFilter = false;
 
   public filters: {
     name: string,
@@ -60,6 +61,10 @@ export class StaffListPage implements OnInit {
   ngOnInit() {
     window.analytics.page('Staff List Page');
     this.loadData(this.currentPage);
+  }
+
+  showFilterPanel() {
+    this.showFilter = !this.showFilter;
   }
 
   /**

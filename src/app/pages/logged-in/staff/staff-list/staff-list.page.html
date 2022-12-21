@@ -11,12 +11,16 @@
     <ion-title>Staff Members <small>({{totalCount}})</small></ion-title>
 
     <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
-
+    <ion-buttons slot="end">
+      <ion-button (click)="showFilterPanel()">
+        Filter
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card *ngIf="showFilter">
     <ion-card-header>
       <ion-card-title>Filter by</ion-card-title>
     </ion-card-header>
@@ -125,7 +129,7 @@
             <ion-icon slot="start" name="key-outline"></ion-icon>
             Send Password
           </ion-button>
-  
+
           <ion-button color="danger" *ngIf="!staffMember.deleted" (click)="delete($event, staffMember)">
             <ion-icon slot="start" name="trash-outline"></ion-icon>
             Delete
@@ -138,7 +142,7 @@
           </ion-button>
         </ion-buttons>
 
-      </ion-item>  
+      </ion-item>
 
       <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
         <ion-button (click)="resetPassword($event, staffMember)">

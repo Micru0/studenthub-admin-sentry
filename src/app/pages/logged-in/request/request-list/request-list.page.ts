@@ -14,6 +14,7 @@ export class RequestListPage implements OnInit {
 
   public requests: Request[];
   public loading = false;
+  public showFilter = false;
   public currentPage;
   public totalPage;
   public totalRequest = 0;
@@ -41,6 +42,10 @@ export class RequestListPage implements OnInit {
 
   ngOnInit() {
     this.loadData(1);
+  }
+
+  showFilterPanel() {
+    this.showFilter = !this.showFilter;
   }
 
   async loadData(page) {
@@ -162,7 +167,7 @@ export class RequestListPage implements OnInit {
         window['history-back-from'] = 'onDidDismiss';
         window.history.back();
       }
-      
+
       if (e.data) {
         this.filters.company = e.data.company.company_common_name_en;
         this.filters.company_id = e.data.company.company_id;

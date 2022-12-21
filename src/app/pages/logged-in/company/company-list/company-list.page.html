@@ -25,7 +25,7 @@
   <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
 
   <div class="content ion-padding">
-    
+
     <ion-badge tappable color="primary" (click)="resetStatus()" [class.active]="filters.status == 4 && [1, 0].indexOf(filters.approved_to_hire) == -1">
       All clients
     </ion-badge>
@@ -33,7 +33,7 @@
     <ion-badge tappable color="primary" (click)="filterByStatus($event, 1)" [class.active]="filters.status == 1">Active</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByStatus($event, 2)" [class.active]="filters.status == 2">Inactive</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByStatus($event, 3)" [class.active]="filters.status == 3">Active + 40 days no payment</ion-badge>
-    
+
     <ion-badge tappable color="primary" (click)="filterByApprovedToHire($event, 1)" [class.active]="filters.approved_to_hire == 1">Approved to hire</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByApprovedToHire($event, 0)" [class.active]="filters.approved_to_hire == 0">Not approved to hire</ion-badge>
 
@@ -42,7 +42,7 @@
     <ion-item-sliding *ngFor="let company of companies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
         <div tabindex="0"></div>
-        <ion-label>
+        <ion-label class="ion-text-wrap">
           {{ company.company_name }}<br/>
           <ion-badge class="company_status_badge" slot="start" color="danger" *ngIf="!company.company_status">
             Inactive
@@ -50,36 +50,35 @@
           <ion-badge class="company_status_badge" slot="start" color="success" *ngIf="company.company_status">
             Active
           </ion-badge>
+          <ion-badge color="medium" slot="start" *ngIf="company.total_suggestions > 0">
+            {{ company.total_suggestions }} suggestions
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.total_candidates > 0">
+            {{ company.total_candidates }} candidates
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.total_subcompanies > 0">
+            {{ company.total_subcompanies }} sub-companies
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.total_stores > 0">
+            {{ company.total_stores }} stores
+          </ion-badge>
+
+          <ion-badge slot="start" color="success" *ngIf="company.company_approved_to_hire">
+            <ion-icon name="checkmark-outline"></ion-icon> Approved to hire
+          </ion-badge>
+
+          <ion-badge slot="start" color="warning" *ngIf="!company.company_approved_to_hire">
+            <ion-icon name="close-outline"></ion-icon> Not approved to hire
+          </ion-badge>
         </ion-label>
         <ion-avatar slot="start">
           <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
           <img *ngIf="!company.company_logo" src="/assets/icon.png">
         </ion-avatar>
 
-        <ion-badge color="medium" slot="end" *ngIf="company.total_suggestions > 0">
-          {{ company.total_suggestions }} suggestions
-        </ion-badge>
-
-        <ion-badge slot="end" *ngIf="company.total_candidates > 0">
-          {{ company.total_candidates }} candidates
-        </ion-badge>
-
-        <ion-badge slot="end" *ngIf="company.total_subcompanies > 0">
-          {{ company.total_subcompanies }} sub-companies
-        </ion-badge>
-
-        <ion-badge slot="end" *ngIf="company.total_stores > 0">
-          {{ company.total_stores }} stores
-        </ion-badge>
-
-        <ion-badge slot="end" color="success" *ngIf="company.company_approved_to_hire">
-          <ion-icon name="checkmark-outline"></ion-icon> Approved to hire
-        </ion-badge>
-        
-        <ion-badge slot="end" color="warning" *ngIf="!company.company_approved_to_hire">
-          <ion-icon name="close-outline"></ion-icon> Not approved to hire
-        </ion-badge>
-        
         <ion-buttons slot="end" *ngIf="platform.width() > 768  && !authService.admin_limited_access">
 
           <ion-button color="danger" (click)="delete($event, company)">
