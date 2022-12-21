@@ -19,14 +19,14 @@ import {Bank} from "../../../../models/bank";
 })
 export class CandidateViewPage implements OnInit {
 
-  public approving: boolean = false; 
-  
-  public loading: boolean = false; 
+  public approving: boolean = false;
+
+  public loading: boolean = false;
   public deleting: boolean = false;
 
   public loadingSalaryTransfers: boolean = false;
-  
-  public candidate_id; 
+
+  public candidate_id;
 
   public candidate: Candidate;
 
@@ -56,7 +56,7 @@ export class CandidateViewPage implements OnInit {
     }
 
     this.candidate_id = this.activateRoute.snapshot.paramMap.get('candidate_id');
-  
+
     this.loadData();
 
     this.eventService.markedAllUnpaid$.subscribe((userEventData: any) => {
@@ -88,23 +88,23 @@ export class CandidateViewPage implements OnInit {
       }
     });
   }
-  
+
   /**
    * load candidate details
-   * @param loading 
+   * @param loading
    */
   loadData(loading = true) {
 
     if(loading)
-      this.loading = true; 
+      this.loading = true;
 
     this.candidateService.view(this.candidate_id).subscribe(bank => {
-      
-      this.candidate = bank; 
+
+      this.candidate = bank;
 
       this.loadTransfersData();
       this.loadWorkHistoryData();
-      
+
       this.loading = false;
 
     }, () => {
@@ -222,13 +222,13 @@ export class CandidateViewPage implements OnInit {
 
   /**
    * transfer to candidate transfer detail page
-   * @param transfer 
+   * @param transfer
    */
   candidateTransferDetails(transferCandidate: TransferCandidate) {
     this.router.navigate(['candidate-transfer-detail', transferCandidate.tc_id], {
       state: {
         'transferCandidate': transferCandidate
-      }      
+      }
     });
   }
 
@@ -255,5 +255,51 @@ export class CandidateViewPage implements OnInit {
 
   getResumeUrl(candidate) {
     return this.aws.permanentBucketUrl + 'candidate-resume/' + encodeURIComponent(candidate.candidate_resume);
+  }
+
+  async restore ($event, candidate) {
+    const confirm = await this._alertCtrl.create({
+      header: 'Restore Candidate?',
+      message: 'Are you sure you want to restore this Candidate?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.deleting = true;
+
+            this.candidateService.restore(candidate).subscribe(async jsonResp => {
+
+              this.deleting = false;
+              if (jsonResp.operation == 'error') {
+
+                const alert = await this._alertCtrl.create({
+                  header: 'Restore Error!',
+                  subHeader: jsonResp.message,
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+
+              if (jsonResp.operation == 'success') {
+                const toast = await this.toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
+
+                this.loadData();
+              }
+            }, () => {
+              this.deleting = false;
+            });
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
+    });
+    confirm.present();
   }
 }

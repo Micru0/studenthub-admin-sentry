@@ -16,7 +16,7 @@ import { University } from '../../models/university';
   providedIn: 'root'
 })
 export class CandidateService {
-  
+
   private _candidateEndpoint: string = "/candidates";
 
   constructor(private _authhttp: AuthHttpService) { }
@@ -57,7 +57,17 @@ export class CandidateService {
     let url = `${this._candidateEndpoint}/${model.candidate_id}`;
     return this._authhttp.delete(url);
   }
-  
+
+  /**
+   * Deletes Candidate
+   * @param {Candidate} model
+   * @returns {Observable<any>}
+   */
+  restore(model: Candidate): Observable<any>{
+    let url = `${this._candidateEndpoint}/restore/${model.candidate_id}`;
+    return this._authhttp.patch(url,{});
+  }
+
   /**
    * candidate transfer list
    * @returns {Observable<any>}
@@ -76,11 +86,11 @@ export class CandidateService {
     let url = `${this._candidateEndpoint}/approve/${model.candidate_id}`;
     return this._authhttp.patch(url, {});
   }
-  
+
   /**
    * Filter data by country
-   * @param country 
-   * @param page 
+   * @param country
+   * @param page
    */
   listByCountry(country: Country, page: number): Observable<any>{
     let url = `${this._candidateEndpoint}/search?by=country_id&country_id=${country.country_id} &page=$page`;
@@ -97,16 +107,16 @@ export class CandidateService {
   }
 
   /**
-   * No. of all candidate to review changes 
+   * No. of all candidate to review changes
    * @returns {Observable<any>}
    */
   totalToReview(): Observable<any>{
     let url = this._candidateEndpoint + '/total-to-review';
     return this._authhttp.get(url);
   }
-  
+
   /**
-   * List of all candidate to review changes 
+   * List of all candidate to review changes
    * @returns {Observable<any>}
    */
   listToReview(page: number): Observable<any>{
@@ -116,8 +126,8 @@ export class CandidateService {
 
   /**
    * filter data by university
-   * @param university 
-   * @param page 
+   * @param university
+   * @param page
    */
   listByUniversity(university: University, page: number): Observable<any>{
     let url = `${this._candidateEndpoint}/search?by=university_id&university_id= ${university.university_id}&page=${page}`;
@@ -126,7 +136,7 @@ export class CandidateService {
 
   /**
    * return work history
-   * @param candidate 
+   * @param candidate
    */
   workHistory(candidate:Candidate): Observable<any> {
     let url = this._candidateEndpoint +'/work-history/'+ candidate.candidate_id + '?expand=store';
