@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "serve-kk": "ionic serve --configuration=krushn",
     "build:devserver": "ng build --configuration=dev",
-    "build:production": "ng build --configuration=production --prod",
+    "build:production": "ng build --configuration=production",
     "ionic:serve:khalid": "ionic serve --configuration=khalid"
   },
   "private": true,
