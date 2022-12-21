@@ -35,13 +35,7 @@
                 <ion-item lines="none" *ngIf="!progress && !fileModel.file_uuid">
                     <div tabindex="0"></div>
                     
-                    <ion-button class="fileUpload" (click)="mobileUpload();" *ngIf="platform.is('hybrid')">
-                        <ion-icon name="cloud-upload-outline"></ion-icon>&nbsp;&nbsp;
-                        <span *ngIf="this.fileModel.file_s3_path">Replace File</span>
-                        <span *ngIf="!this.fileModel.file_s3_path">Select file</span>
-                    </ion-button>
-
-                    <ion-button  class="fileUpload" *ngIf="!platform.is('hybrid') || platform.is('desktop')">
+                    <ion-button  class="fileUpload">
                         <ion-icon name="cloud-upload-outline"></ion-icon>&nbsp;&nbsp;
                         <span *ngIf="this.fileModel.file_s3_path">Replace File</span>
                         <span *ngIf="!this.fileModel.file_s3_path">Select file</span>

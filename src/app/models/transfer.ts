@@ -1,5 +1,6 @@
 import { TransferCandidate } from './transfer-candidate';
 import { Candidate } from './candidate';
+import { Company } from './company';
 
 export class Transfer {
 	transfer_id: number;
@@ -35,4 +36,5 @@ export class Invoice {
     invoice_date: string;
     invoice_status: string;
 	invoice_total: number;
+	company: Company
 }

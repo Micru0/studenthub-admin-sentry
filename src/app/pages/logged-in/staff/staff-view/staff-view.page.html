@@ -50,6 +50,9 @@
       <ion-segment-button value="invitations">
         <ion-label>Invitations</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="stand-up">
+        <ion-label>Stand-up</ion-label>
+      </ion-segment-button>
     </ion-segment>
 
     <ion-select *ngIf="platform.is('mobile')" interface="popover" (ionChange)="segmentChanged($event)" [value]="segment">
@@ -71,6 +74,9 @@
       </ion-select-option>
       <ion-select-option value="invitations">
         Invitations
+      </ion-select-option>
+      <ion-select-option value="stand-up">
+        Stand-up
       </ion-select-option>
     </ion-select>
   </ion-toolbar>
@@ -162,10 +168,41 @@
         </ion-label>
       </ion-item>
     </section>
+
+    <section *ngIf="segment == 'stand-up'">
+
+      <ion-card *ngFor="let answer of daily_standup_answers">
+        <ion-card-header>
+          <ion-card-title>
+            {{ answer.question }}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          
+          <p>{{ answer.answer }}</p>
+
+          <small>{{ toDate(answer.created_at) | date: 'MMM d, y' }}</small>
+        </ion-card-content>
+      </ion-card>
+      
+      <loading-modal type="review-list" [loading]="loadStandup"></loading-modal>
+      
+      <no-items *ngIf="!loadStandup && daily_standup_answers.length == 0" message='~ No Record Found ~'></no-items>
+
+      <ion-infinite-scroll *ngIf="currentPageStandup < pageCountStandup" (ionInfinite)="doInfiniteStandup($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+    </section>
+
     <section *ngIf="segment == 'assign_candidate'">
       <app-candidate-work-history *ngFor="let history of candidateWorkHistory"  [history]="history"></app-candidate-work-history>
+      
       <loading-modal type="review-list" [loading]="loadCandidateWorkHistory"></loading-modal>
+      
       <no-items *ngIf="!loadCandidateWorkHistory && candidateWorkHistory.length == 0" message='~ No Candidate Record Found ~'></no-items>
+
       <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfiniteAssignedCandidateData($event)">
         <ion-infinite-scroll-content>
         </ion-infinite-scroll-content>

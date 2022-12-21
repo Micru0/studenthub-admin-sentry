@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController, NavController, LoadingController, ModalController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { StorageService } from 'src/app/providers/storage.service';
 
-const { Storage } = Plugins;
 
 @Component({
   selector: 'pogi-app-error',
@@ -12,6 +12,7 @@ const { Storage } = Plugins;
 export class AppErrorPage implements OnInit {
 
   constructor(
+    public storageService: StorageService,
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     public toastCtrl: ToastController,
@@ -41,10 +42,12 @@ export class AppErrorPage implements OnInit {
    */
   async home() {
     
-    Storage.get({ key: 'loggedInUser' }).then(ret => {
+    this.storageService.get('loggedInUser').then(ret => {
 
       this.navCtrl.navigateRoot('/');
     }).catch(r => {
+
+      console.error(r);
 
       this.toastCtrl.create({
         message: 'Please, enable cookies/ storage.',

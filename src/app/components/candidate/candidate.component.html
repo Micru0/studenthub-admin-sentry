@@ -4,8 +4,8 @@
     <img *ngIf="candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + candidate.candidate_personal_photo }}" (error)="loadLogo($event,candidate)">
     <img *ngIf="!candidate.candidate_personal_photo" src="/assets/icon.png">
   </ion-avatar>
-  <ion-label>
-    <h2 class="candidate_name">{{ candidate.candidate_name ?candidate.candidate_name : candidate.candidate_name_ar }}</h2>
+  <ion-label class="ion-text-wrap">
+    <h2 class="candidate_name">{{ candidate.candidate_name ?candidate.candidate_name : candidate.candidate_name_ar }}  <small>({{candidate.candidate_id}})</small></h2>
     <p *ngIf="candidate.store">
       {{ candidate.store.store_name }}
       <span *ngIf="candidate.company">@ {{ candidate.company.company_name }} </span>

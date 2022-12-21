@@ -213,9 +213,9 @@ export class TransferViewPage implements OnInit {
       toast.present();
 
       //update review count 
-      this.eventService.updatePayable$.next();
+      this.eventService.updatePayable$.next({});
 
-      this.eventService.transferUpdated$.next();
+      this.eventService.transferUpdated$.next({});
 
       this.navCtrl.pop();
 
@@ -240,9 +240,9 @@ export class TransferViewPage implements OnInit {
       toast.present();
 
       //update review count 
-      this.eventService.updatePayable$.next();
+      this.eventService.updatePayable$.next({});
 
-      this.eventService.transferUpdated$.next();
+      this.eventService.transferUpdated$.next({});
 
       this.navCtrl.pop();
 
@@ -258,7 +258,7 @@ export class TransferViewPage implements OnInit {
 
     this.transferService.markUnlock(this.transfer).subscribe(response => {
 
-      this.eventService.transferUpdated$.next();
+      this.eventService.transferUpdated$.next({});
 
       this.navCtrl.pop();
 
@@ -293,7 +293,7 @@ export class TransferViewPage implements OnInit {
               });
               toast.present();
 
-              this.eventService.transferUpdated$.next();
+              this.eventService.transferUpdated$.next({});
 
               //this.navCtrl.pop();
 
@@ -340,7 +340,7 @@ export class TransferViewPage implements OnInit {
               });
               toast.present();
 
-              this.eventService.transferUpdated$.next();
+              this.eventService.transferUpdated$.next({});
 
               this.navCtrl.pop();
 

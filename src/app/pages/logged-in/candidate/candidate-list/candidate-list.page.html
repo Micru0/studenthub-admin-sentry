@@ -8,11 +8,16 @@
       </ion-menu-toggle>
     </ion-buttons>
     <ion-title>Candidates List <small>({{totalCount}})</small></ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showFilterPanel()">
+        Filter
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card  *ngIf="showFilter">
     <ion-card-header>
       <ion-card-title>Filter by</ion-card-title>
     </ion-card-header>
@@ -22,14 +27,7 @@
           <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
             <!-- Filter by Major -->
             <ion-item>
-              <ion-label position="floating" color="primary">Candidate ID</ion-label>
-              <ion-input type="text" [(ngModel)]="filters.id"></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
-            <!-- Filter by Major -->
-            <ion-item>
-              <ion-label position="floating" color="primary">Name</ion-label>
+              <ion-label position="floating" color="primary">Name/id</ion-label>
               <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
             </ion-item>
           </ion-col>

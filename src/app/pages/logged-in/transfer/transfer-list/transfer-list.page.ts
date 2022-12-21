@@ -36,6 +36,7 @@ export class TransferListPage implements OnInit {
   public loading = false;
 
   public deleting = false;
+  public showFilter = false;
 
   public min; // min date
   public max; // max date
@@ -68,8 +69,12 @@ export class TransferListPage implements OnInit {
     this.max = (this.platform.is('mobile')) ? d.getFullYear() + '-12-12' : d;
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     window.analytics.page('Transfer List Page');
+  }
+
+  showFilterPanel() {
+    this.showFilter = !this.showFilter;
   }
 
   ionViewWillEnter() {
@@ -125,7 +130,7 @@ export class TransferListPage implements OnInit {
     this.loading = true;
 
     this.currentPage++;
-    
+
     const searchParams = this.urlParams();
 
     this.transferService.list(searchParams, this.currentPage).subscribe(response => {
@@ -188,7 +193,7 @@ export class TransferListPage implements OnInit {
     if (this.filters.startDate) {
       urlParams += '&start_date=' + this.filters.startDate;
     }
-    
+
     if (this.filters.endDate) {
       urlParams += '&end_date=' + this.filters.endDate;
     }
@@ -258,7 +263,7 @@ export class TransferListPage implements OnInit {
     myCalendar.present();
 
     const event: any = await myCalendar.onDidDismiss();
-    
+
     const date: CalendarResult = event.data;
 
     if (date) {

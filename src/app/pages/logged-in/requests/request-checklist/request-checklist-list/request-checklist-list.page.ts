@@ -95,7 +95,7 @@ export class RequestChecklistListPage implements OnInit {
    */
   rowSelected(model) {
 
-    this.router.navigate(['request-checklist-view', model.university_id], {
+    this.router.navigate(['request-checklist-view', model.request_checklist_uuid], {
       state: {
         model: model
       }

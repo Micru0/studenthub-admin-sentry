@@ -63,13 +63,13 @@
 
   <h5 *ngIf="candidates && candidates.length > 0">Candidates</h5>
 
-  <ion-list> 
+  <ion-list>
     <ion-item tappable *ngFor="let candidate of candidates" (click)="candidateSelected(candidate)">
       <div tabindex="0"></div>
       <ion-label class="candidate_name">
-        {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}
+        {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }} <small>({{candidate.candidate_id}})</small>
       </ion-label>
-    </ion-item> 
+    </ion-item>
 
     <loading-modal type="text-list" [loading]="loadingCandidates"></loading-modal>
 

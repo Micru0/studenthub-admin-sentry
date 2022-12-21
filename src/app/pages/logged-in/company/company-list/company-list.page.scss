@@ -31,3 +31,8 @@ ion-badge {
       top: 2px;
   }
 }
+ion-label {
+  ion-badge {
+    margin-right: 12px;
+  }
+}

@@ -7,6 +7,7 @@ import { StaffService } from 'src/app/providers/logged-in/staff.service';
 import { Staff } from 'src/app/models/staff';
 import {Request, Story} from 'src/app/models/request';
 import { Note } from 'src/app/models/note';
+import { DailyStandupAnswer } from 'src/app/models/daily-standup-answer';
 // pages
 import { StaffFormPage } from '../staff-form/staff-form.page';
 import {AuthService} from '../../../../providers/auth.service';
@@ -20,6 +21,7 @@ import {StoryService} from "../../../../providers/logged-in/story.service";
 import {AwsService} from "../../../../providers/aws.service";
 import {InvitationService} from "../../../../providers/logged-in/invitation.service";
 import {PermissionService} from "../../../../providers/logged-in/permission.service";
+import { DailyStandupQuestionService } from 'src/app/providers/logged-in/daily-standup-question.service';
 
 
 @Component({
@@ -31,12 +33,18 @@ export class StaffViewPage implements OnInit {
 
   public staff: Staff;
 
+  public daily_standup_answers: DailyStandupAnswer[] = [];
+
   public staff_id;
   public start_date = null;
   public end_date = null;
   public pageCount;
   public currentPage;
   public totalCount = 0;
+
+  currentPageStandup
+  pageCountStandup
+  loadStandup
 
   public RPageCount;
   public RCurrentPage;
@@ -89,7 +97,8 @@ export class StaffViewPage implements OnInit {
     public requestService: RequestService,
     public noteService: NoteService,
     public invitationService: InvitationService,
-    public storyService: StoryService
+    public storyService: StoryService,
+    public standupService: DailyStandupQuestionService
   ) { }
 
   ngOnInit() {
@@ -252,15 +261,21 @@ export class StaffViewPage implements OnInit {
     if (this.segment == 'salaries') {
         this.loadSalaries(1);
     }
+
     if (this.segment == 'stories') {
         this.loadStories(1);
     }
+
     if (this.segment == 'suggestions') {
         this.loadSuggestions(1, false);
     }
 
     if (this.segment == 'invitations') {
         this.loadInvitation(1, false);
+    }
+
+    if (this.segment == 'stand-up') {
+        this.loadStandupData();
     }
   }
 
@@ -312,6 +327,46 @@ export class StaffViewPage implements OnInit {
       this.loadCandidateWorkHistory = false;
       event.target.complete();
     }, () => {
+    });
+  }
+
+  loadStandupData() {
+
+    this.loadStandup = true;
+
+    this.standupService.listAnswers(1).subscribe(response => {
+
+      this.loadStandup = false;
+    
+      this.pageCountStandup = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.currentPageStandup = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+     // this.totalCountStandup = parseInt(response.headers.get('X-Pagination-Total-Count'), 10);
+
+      this.daily_standup_answers = response.body;
+    });
+  }
+
+  doInfiniteStandup(event) {
+
+    if(this.currentPageStandup == this.pageCountStandup) {
+      return event.target.complete();
+    }
+
+    this.currentPageStandup++;
+
+    this.loadStandup = true;
+
+    this.standupService.listAnswers(this.currentPageStandup).subscribe(response => {
+
+      this.loadStandup = false;
+    
+      this.pageCountStandup = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.currentPageStandup = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+      //this.totalCountStandup = parseInt(response.headers.get('X-Pagination-Total-Count'), 10);
+
+      this.daily_standup_answers = this.daily_standup_answers.concat(response.body);
+
+      event.target.complete();
     });
   }
 

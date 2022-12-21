@@ -144,7 +144,7 @@ export class InspectorFormPage implements OnInit {
 
         // success toast
         const toast = await this.toastCtrl.create({
-          message: 'Inspector Member ' + this.model.inspector_name + ' account created successfully',
+          message: `${this.model.inspector_name} ${jsonResponse.message}`,
           duration: 3000
         });
         toast.present();
