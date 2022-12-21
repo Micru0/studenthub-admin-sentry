@@ -14,6 +14,11 @@ export class DailyStandupQuestionService {
   private _endpoint: string = "/daily-standup-questions";
 
   constructor(private _authhttp: AuthHttpService) { }
+  
+  listAnswers(page: number): Observable<any>{
+    let url = this._endpoint + '/list-answers?page=' + page;
+    return this._authhttp.get(url, true);
+  }
 
   /**
    * load bank detail
@@ -25,7 +30,7 @@ export class DailyStandupQuestionService {
   }
 
   /**
-   * List of all staff
+   * List of all question
    * @returns {Observable<any>}
    */
   list(page: number): Observable<any>{

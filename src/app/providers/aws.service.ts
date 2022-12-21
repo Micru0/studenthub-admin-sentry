@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { File as NativeFile, Entry, FileEntry } from '@ionic-native/file/ngx';
+import { File as NativeFile, Entry, FileEntry } from '@awesome-cordova-plugins/file/ngx';
 import { Observable, Observer } from 'rxjs';
 import * as AWS from 'aws-sdk';
-import { Plugins } from '@capacitor/core';
+import { Filesystem, Encoding } from '@capacitor/filesystem';
 import { Platform, AlertController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 
-
-const { Filesystem, FilesystemEncoding } = Plugins;
 
 @Injectable({
     providedIn: 'root'
@@ -19,20 +17,20 @@ export class AwsService {
 
     // https://studenthub-uploads.s3.amazonaws.com/
 
-    public bucketUrl = 'https://studenthub-public-anyone-can-upload-24hr-expiry.s3.eu-west-2.amazonaws.com/';
+    public bucketUrl = 'https://plugn-public-anyone-can-upload-24hr-expiry.s3.eu-west-2.amazonaws.com/';
     public permanentBucketUrl = environment.permanentBucketUrl;
     public cloudinaryUrl = environment.cloudinaryUrl;
-  
+
     public urlResume = environment.permanentBucketUrl + 'candidate-resume/';
 
     private _region = 'eu-west-2'; // London
     private _access_key_id = 'AKIAJXOMRCDE65WKBPUA';
     private _secret_access_key = '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';
-    private _bucket_name = 'studenthub-public-anyone-can-upload-24hr-expiry';
+    private _bucket_name = 'plugn-public-anyone-can-upload-24hr-expiry';
 
-    public maxUploadSize = 18874368; // 18 MB
+    public maxUploadSize = 5242880; // 5 MB
 
-    public txtMaxUploadSize = '18MB';
+    public txtMaxUploadSize = '5MB';
 
     constructor(
         public platform: Platform,
@@ -157,7 +155,7 @@ export class AwsService {
             apiVersion: '2006-03-01'
         });
 
-        const extension = this._getFileExtension(file.name);
+        const extension = this.getFileExtension(file.name);
 
         let prefix = this._getFileNameWithoutExtension(file.name);
 
@@ -221,7 +219,7 @@ export class AwsService {
     /**
      * Take file name / path and return the file extension.
      */
-    private _getFileExtension(path) {
+    getFileExtension(path) {
         const basename = path.split(/[\\/]/).pop(),  // extract file name from full path ...
                                                 // (supports `\\` and `/` separators)
             pos = basename.lastIndexOf('.');       // get last position of `.`

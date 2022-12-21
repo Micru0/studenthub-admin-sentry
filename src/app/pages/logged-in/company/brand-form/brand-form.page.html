@@ -23,11 +23,11 @@
 
         <div *ngIf="!progress">
           <img tappable (click)="triggerUpdatePhoto($event)"
-            *ngIf="form.controls.logo.value && form.controls.logo.value.length > 0"
-            src="{{ form.controls.logo_path.value }}"><br />
+            *ngIf="form.controls['logo'].value && form.controls['logo'].value.length > 0"
+            src="{{ form.controls['logo_path'].value }}"><br />
 
           <div tappable (click)="triggerUpdatePhoto($event)" class="no-logo"
-            *ngIf="!form.controls.logo.value || form.controls.logo.value.length == 0">
+            *ngIf="!form.controls['logo'].value || form.controls['logo'].value.length == 0">
             <ion-icon src="assets/images/placeholder.png"></ion-icon>
           </div>
 

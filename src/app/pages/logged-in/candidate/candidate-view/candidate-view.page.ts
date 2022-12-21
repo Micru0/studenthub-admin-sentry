@@ -159,7 +159,7 @@ export class CandidateViewPage implements OnInit {
       } else {
 
         // update review count
-        this.eventService.totalCandidateToReview$.next();
+        this.eventService.totalCandidateToReview$.next({});
 
         // back to listing
         this.router.navigate(['/candidate-review-list']);

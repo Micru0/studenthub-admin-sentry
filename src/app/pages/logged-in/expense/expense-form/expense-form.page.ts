@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { format, parseISO } from 'date-fns';
 //services
 import { ExpenseService } from 'src/app/providers/logged-in/expense.service';
 import { AuthService } from 'src/app/providers/auth.service';
 //models
 import { Expense } from 'src/app/models/expense';
+
 
 @Component({
   selector: 'app-expense-form',
@@ -107,6 +109,9 @@ export class ExpenseFormPage implements OnInit {
     this.model.detail = this.form.value.detail;
     this.model.amount = this.form.value.amount;
     this.model.transaction_datetime = this.form.value.transaction_datetime;
+    
+    this.model.transaction_datetime = format(parseISO(this.form.controls['transaction_datetime'].value), 
+      'yyyy-MM-dd HH:mm:ss');//, { timeZone: '+3:30' }
   }
 
   /**

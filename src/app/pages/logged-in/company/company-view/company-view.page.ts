@@ -830,7 +830,7 @@ export class CompanyViewPage implements OnInit {
           duration: 3000
         });
         toast.present();
-        this.eventService.reloadCompanyList$.next();
+        this.eventService.reloadCompanyList$.next({});
       }
 
     }, () => {
@@ -867,7 +867,7 @@ export class CompanyViewPage implements OnInit {
 
       if (response && response.operation == 'success') {
         
-        this.eventService.reloadCompanyList$.next();
+        this.eventService.reloadCompanyList$.next({});
 
         const toast = await this._toastCtrl.create({
           message: response.message,

@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild, ElementRef, OnDestroy, Input} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {AlertController, ModalController, Platform, ToastController} from '@ionic/angular';
-
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // Services
 import { SentryErrorhandlerService } from 'src/app/providers/sentry.errorhandler.service';
-import { FilepickerService } from 'src/app/providers/logged-in/filepicker.service';
 import { AwsService } from 'src/app/providers/aws.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {File} from '../../../../models/file';
 import {CompanyService} from '../../../../providers/logged-in/company.service';
+//models
+import {File} from '../../../../models/file';
+
 
 @Component({
   selector: 'app-upload-file',
@@ -44,7 +44,6 @@ export class UploadFilePage implements OnInit, OnDestroy {
     public fb: FormBuilder,
     public companyService: CompanyService,
     public sentryService: SentryErrorhandlerService,
-    public filepickerService: FilepickerService,
     public awsService: AwsService
   ) {
 
@@ -93,85 +92,6 @@ export class UploadFilePage implements OnInit, OnDestroy {
   }
 
   /**
-   * Upload file in mobile device
-   */
-  mobileUpload() {
-
-    this.filePickSubscription = this.filepickerService.pick().subscribe(async uri => {
-
-      // validate extension
-
-      /*let extension = uri.split('.').pop();
-
-      if(!this.isValidExtension(extension)) {
-
-          const alert = await this._alertCtrl.create({
-              header: this.translateService.transform('Invalid file'),
-              message: this.translateService.transform('txt_invalid_file_format', { value: this.allwedFormats() }),
-              buttons: [this.translateService.transform('Okay')]
-          });
-
-          return alert.present();
-      }*/
-
-      this.progress = 1; // show loader
-
-      this.awsService.uploadNativePath(uri).then(o => {
-        o.subscribe(event => {
-          this._handleFileSuccess(event);
-        }, async err => {
-
-          const ignoreErrors = [
-            'No image picked',
-            'User cancelled photos app',
-          ];
-
-          if (err && ignoreErrors.indexOf(err.message) > -1) {
-            return null;
-          }
-
-          // log to slack/sentry to know how many user getting file upload error
-
-          this.sentryService.handleError(err);
-
-          // always show abstract error message
-
-          let message;
-
-          const networkErrors = [
-            '504:null',
-            'NetworkingError: Network Failure'
-          ];
-
-          // networking errors
-          if (err && networkErrors.indexOf(err.message) > -1) {
-            message = 'Error uploading file';
-            // system errors
-          } else if (err.message && err.message.indexOf(':') > -1) {
-            message = 'Error getting file from Library';
-            // plugin errors
-          } else if (err.message) {
-            message = err.message;
-            // custom file validation errors
-          } else {
-            message = err;
-          }
-
-          const alert = await this.alertCtrl.create({
-            header: 'Error',
-            message,
-            buttons: ['Okay']
-          });
-
-          await alert.present();
-
-          this.progress = null;
-        });
-      });
-    });
-  }
-
-  /**
    * Upload file in browser platform
    * @param event
    */
@@ -180,7 +100,7 @@ export class UploadFilePage implements OnInit, OnDestroy {
     const fileList: FileList = event.target.files;
 
     if (fileList.length == 0) {
-      return false;
+      return null;
     }
 
     this.progress = 1; // show loader
@@ -227,8 +147,8 @@ export class UploadFilePage implements OnInit, OnDestroy {
         this.fileInput.nativeElement.value = null;
       }
       this.dirty = true;
-      this.form.controls.file.setValue(event.Key);
-      this.form.controls.file.markAsDirty();
+      this.form.controls['file'].setValue(event.Key);
+      this.form.controls['file'].markAsDirty();
       this.fileModel.file_s3_path = event.Key;
       this.tempLocation = event.Location;
       this.progress = false;
@@ -272,6 +192,8 @@ export class UploadFilePage implements OnInit, OnDestroy {
     if (a) {
       return a[a.length - 1];
     }
+
+    return null;
   }
 
   /**
