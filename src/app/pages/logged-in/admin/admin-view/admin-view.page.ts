@@ -170,7 +170,7 @@ export class AdminViewPage implements OnInit {
   }
 
   statusChange() {
-    const status = this.admin.admin_status == 10 ? 0 : 10;
+    const status = (this.admin && this.admin.admin_status) == 10 ? 0 : 10;
     this.statusChanging = true;
     this.adminService.changeStatus(this.admin, status).subscribe(response => {
       this.statusChanging = false;
