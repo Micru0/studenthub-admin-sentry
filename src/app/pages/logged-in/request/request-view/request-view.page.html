@@ -159,7 +159,7 @@
           <p>Status: <b>{{ getStatus(story.story_status)}}</b></p>
           <p>Created at: <b>{{ story.story_created_at}}</b></p>
           <p>Updated at: <b>{{ story.story_last_updated_at}}</b></p>
-          <p>Staff: <b>{{ story.staff.staff_name}}</b></p>
+          <p>Staff: <b *ngIf="story.staff">{{ story.staff.staff_name}}</b></p>
         </ion-label>
       </ion-item>
     </ion-list>
