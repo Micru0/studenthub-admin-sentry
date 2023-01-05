@@ -413,7 +413,7 @@ const routes: Routes = [
     path: 'app-error',
     loadChildren: () => import('./pages/errors/app-error/app-error.module').then( m => m.AppErrorPageModule)
   },
-  
+
   {
     path: 'import',
     loadChildren: () => import('./pages/logged-in/events/import/import.module').then( m => m.ImportPageModule)
@@ -501,11 +501,41 @@ const routes: Routes = [
   },
   {
     path: 'daily-standup-question-list',
-    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-list/daily-standup-question-list.module').then( m => m.DailyStandupQuestionListPageModule)
+    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-list/daily-standup-question-list.module').then( m => m.DailyStandupQuestionListPageModule),
+    data: {
+      name: 'DailyStandupQuestionListPage'
+    }
   },
   {
     path: 'daily-standup-question-form',
-    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module').then( m => m.DailyStandupQuestionFormPageModule)
+    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module').then( m => m.DailyStandupQuestionFormPageModule),
+    data: {
+      name: 'DailyStandupQuestionFormPage'
+    }
+  },
+  {
+    path: 'company-contact-list',
+    loadChildren: () => import('./pages/logged-in/company/company-contact-list/company-contact-list.module').then( m => m.CompanyContactListModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'CompanyContactListPage'
+    }
+  },
+  {
+    path: 'fulltimer-list',
+    loadChildren: () => import('./pages/logged-in/fulltimer/fulltimer-list/fulltimer-list.module').then( m => m.FulltimerListModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'FulltimerListPage'
+    }
+  },
+  {
+    path: 'fulltimer-view',
+    loadChildren: () => import('./pages/logged-in/fulltimer/fulltimer-view/fulltimer-view.module').then( m => m.FulltimerViewModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'FulltimerViewPage'
+    }
   },
   {
     path: '**',

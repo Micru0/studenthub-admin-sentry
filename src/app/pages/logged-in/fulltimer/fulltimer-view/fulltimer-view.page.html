@@ -1,0 +1,162 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="fulltimer" class="candidate_name"> {{ fulltimer.fulltimer_name}} <small>({{fulltimer.fulltimer_uuid}})</small></ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="approving"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group *ngIf="fulltimer">
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h2  class="candidate_name">{{ fulltimer.fulltimer_name}}</h2>
+      </ion-label>
+    </ion-item>
+
+    <ion-item href='tel:{{ fulltimer.fulltimer_phone }}' target='_blank'>
+      <div tabindex="0"></div>
+        <ion-icon name="call-outline" slot="start"></ion-icon>
+        {{ fulltimer.fulltimer_phone }}
+    </ion-item>
+
+    <ion-item href='mailto:{{ fulltimer.fulltimer_email }}' target='_blank'>
+      <div tabindex="0"></div>
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        {{ fulltimer.fulltimer_email }}
+    </ion-item>
+
+    <!-- Default Segment -->
+    <ion-item-divider color="light">
+
+      <ion-segment *ngIf="!platform.is('mobile')" (ionChange)="segmentChanged($event)" [value]="sections">
+        <ion-segment-button value="personal">
+          <ion-label>Personal</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <ion-select *ngIf="platform.is('mobile')" interface="popover" (ionChange)="segmentChanged($event)" [value]="sections">
+        <ion-select-option value="personal">
+          Personal
+        </ion-select-option>
+      </ion-select>
+
+    </ion-item-divider>
+
+    <ng-container *ngIf="sections == 'personal' && fulltimer">
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Date Of Birth</h5>
+          <p>{{ fulltimer.fulltimer_birth_date }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Current / Expected Salary</h5>
+          <p>Current : {{ fulltimer.fulltimer_current_salary }} / Expected : {{ fulltimer.fulltimer_expected_salary }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Nationality</h5>
+          <p *ngIf="fulltimer.nationality">{{ fulltimer.nationality.country_name_en }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Country</h5>
+          <p *ngIf="fulltimer.country">{{ fulltimer.country.country_name_en }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>University</h5>
+          <p *ngIf="fulltimer.university">
+            {{ fulltimer.university.university_name_en }}
+            <span *ngIf="!fulltimer.university.university_name_en">{{ fulltimer.university.university_name_ar }}</span>
+          </p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Home location</h5>
+          <p *ngIf="fulltimer.area">
+            {{ fulltimer.area.area_name_en }}<span *ngIf="fulltimer.country">,
+              {{ fulltimer.country.country_name_en }}
+            </span>
+          </p>
+        </ion-label>
+      </ion-item>
+
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Gender</h5>
+          <p *ngIf="fulltimer.fulltimer_gender == 1">Male</p>
+          <p *ngIf="fulltimer.fulltimer_gender == 2">Female</p>
+          <p *ngIf="fulltimer.fulltimer_gender == 3">Other</p>
+          <p *ngIf="!fulltimer.fulltimer_gender">-</p>
+        </ion-label>
+      </ion-item>
+
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Driving License Available?</h5>
+          <p *ngIf="fulltimer.fulltimer_driving_license == 1">Yes</p>
+          <p *ngIf="fulltimer.fulltimer_driving_license == 2">No</p>
+          <p *ngIf="!fulltimer.fulltimer_driving_license">-</p>
+        </ion-label>
+      </ion-item>
+
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Candidate CV</h5>
+          <a target="_blank" *ngIf="fulltimer.fulltimer_pdf_cv" href="{{ getResumeUrl(fulltimer) }}">
+            {{ fulltimer.fulltimer_pdf_cv }}
+          </a>
+        </ion-label>
+      </ion-item>
+
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Created On</h5>
+          <p>{{fulltimer.fulltimer_created_datetime}}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>Updated On</h5>
+          <p>{{fulltimer.fulltimer_updated_datetime}}</p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-item-group>
+
+  <loading-modal [loading]="loading" type="university-view"></loading-modal>
+</ion-content>
