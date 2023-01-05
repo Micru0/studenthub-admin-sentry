@@ -23,7 +23,8 @@ export class FulltimerService {
    * @returns {Observable<any>}
    */
   list(search, page: number): Observable<any>{
-    const url = this._candidateEndpoint + '?page=' + page + search + '&expand=nationality,country';
+    // const url = this._candidateEndpoint + '?page=' + page + search + '&expand=nationality,country';
+    const url = this._candidateEndpoint + '?page=' + page + search;
     return this._authhttp.get(url, true);
   }
 
