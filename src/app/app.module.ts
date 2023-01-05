@@ -35,7 +35,7 @@ import {CandidateModule} from './components/candidate/candidate.module';
 import {CandidateWorkHistoryModule} from './components/candidate-work-history/candidate-work-history.module';
 import {RequestModule} from './components/request/request.module';
 import {StaffPageModule} from "./pages/logged-in/picker/staff/staff.module";
-import { DailyStandupQuestionFormPageModule } from './pages/logged-in/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module';
+import { DailyStandupQuestionFormPageModule } from './pages/logged-in/daily-standup/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module';
 import { CompanyNoteFormPageModule } from './pages/logged-in/company/company-note-form/company-note-form.module';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';

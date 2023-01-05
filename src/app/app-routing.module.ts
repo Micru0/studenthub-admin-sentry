@@ -501,24 +501,38 @@ const routes: Routes = [
   },
   {
     path: 'daily-standup-question-list',
-    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-list/daily-standup-question-list.module').then( m => m.DailyStandupQuestionListPageModule),
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/daily-standup/daily-standup-question/daily-standup-question-list/daily-standup-question-list.module').then( m => m.DailyStandupQuestionListPageModule),
     data: {
-      name: 'DailyStandupQuestionListPage'
+      name: 'DailyStandupQuestionListPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'daily-standup-answer-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/daily-standup/daily-standup-answer/daily-standup-answer-list/daily-standup-answer-list.module').then( m => m.DailyStandupAnswerListModule),
+    data: {
+      name: 'DailyStandupAnswerListPage',
+      navDisable: false,
     }
   },
   {
     path: 'daily-standup-question-form',
-    loadChildren: () => import('./pages/logged-in/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module').then( m => m.DailyStandupQuestionFormPageModule),
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/daily-standup/daily-standup-question/daily-standup-question-form/daily-standup-question-form.module').then( m => m.DailyStandupQuestionFormPageModule),
     data: {
-      name: 'DailyStandupQuestionFormPage'
+      name: 'DailyStandupQuestionFormPage',
+      navDisable: false,
     }
   },
   {
     path: 'company-contact-list',
-    loadChildren: () => import('./pages/logged-in/company/company-contact-list/company-contact-list.module').then( m => m.CompanyContactListModule),
     canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/company/company-contact-list/company-contact-list.module').then( m => m.CompanyContactListModule),
     data: {
-      name: 'CompanyContactListPage'
+      name: 'CompanyContactListPage',
+      navDisable: false,
     }
   },
   {
@@ -526,7 +540,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/fulltimer/fulltimer-list/fulltimer-list.module').then( m => m.FulltimerListModule),
     canActivate: [AuthService],
     data: {
-      name: 'FulltimerListPage'
+      name: 'FulltimerListPage',
+      navDisable: false,
     }
   },
   {
@@ -534,7 +549,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/fulltimer/fulltimer-view/fulltimer-view.module').then( m => m.FulltimerViewModule),
     canActivate: [AuthService],
     data: {
-      name: 'FulltimerViewPage'
+      name: 'FulltimerViewPage',
+      navDisable: false,
     }
   },
   {
