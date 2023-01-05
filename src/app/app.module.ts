@@ -40,6 +40,7 @@ import { CompanyNoteFormPageModule } from './pages/logged-in/company/company-not
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import {FulltimerModule} from "./components/fulltimer/fulltimer.module";
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -68,7 +69,7 @@ declare global {
       name: '__payroll_admin'
     }),
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { 
+    ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.serviceWorker,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
@@ -95,7 +96,8 @@ declare global {
     CandidateWorkHistoryModule,
     RequestModule,
     StaffPageModule,
-    DailyStandupQuestionFormPageModule
+    DailyStandupQuestionFormPageModule,
+    FulltimerModule
   ],
   providers: [
     {

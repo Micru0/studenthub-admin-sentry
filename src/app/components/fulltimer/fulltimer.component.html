@@ -1,0 +1,14 @@
+<ion-item tappable (click)="rowSelected(fulltimer)">
+  <div tabindex="0"></div>
+  <ion-label class="ion-text-wrap">
+    <h2 class="candidate_name">{{ fulltimer.fulltimer_name}}</h2>
+    <p>{{ fulltimer.fulltimer_email}}</p>
+    <p>Registered On: {{ fulltimer.fulltimer_created_datetime}}</p>
+    <p>Expected Salary : {{ fulltimer.fulltimer_expected_salary}}</p>
+    <p>Gender: {{ (fulltimer.fulltimer_gender == 1) ? 'Male' : 'Female' }}</p>
+    <p>Phone: {{ fulltimer.fulltimer_phone}}</p>
+<!--    <p>CV : <a target="_blank" href='{{this.resume}}'>{{ fulltimer.fulltimer_pdf_cv}}</a></p>-->
+    <p>Country: {{ fulltimer.country_id}}</p>
+    <p>Nationality: {{ fulltimer.nationality_id}}</p>
+  </ion-label>
+</ion-item>

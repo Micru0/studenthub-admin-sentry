@@ -18,11 +18,21 @@ export class CompanyContactService {
 
   /**
    * get company contacts
-   * @param company_id 
+   * @param company_id
    */
-  companyContacts(company_id) : Observable<any>{
-    const url = `${this._endpoint}?expand=contact,contactEmails,contactPhones&company_id=${company_id}`;
+  companyContacts(company_id, page = 1) : Observable<any>{
+    const url = `${this._endpoint}?expand=contact,contactEmails,contactPhones,company&company_id=${company_id}&page=${page}`;
     return this._authhttp.get(url);
+  }
+
+  /**
+   * @param page
+   * @param query
+   * @param company_id
+   */
+  list(page = 1, query = '' ) : Observable<any>{
+    const url = `${this._endpoint}?expand=contact,contactEmails,contactPhones,company&page=${page}&${query}`;
+    return this._authhttp.get(url, true);
   }
 
   /**
@@ -36,13 +46,13 @@ export class CompanyContactService {
 
   /**
    * load contact role detail
-   * @param contact_uuid 
+   * @param contact_uuid
    */
   viewCompanyContact(contact_uuid, company_id): Observable<any>{
     const url = `${this._endpoint}/view-company-contact?contact_uuid=${contact_uuid}&company_id=${company_id}`;
     return this._authhttp.get(url);
   }
-  
+
   /**
    * check if email already exists
    * @param email
@@ -101,7 +111,7 @@ export class CompanyContactService {
    */
   update(model: Contact, companyContact: CompanyContact = null): Observable<any>{
     let url = `${this._endpoint}/${model.contact_uuid}`;
-    
+
     const params = {
       company_id: companyContact?.company_id,
       allow_access: companyContact?.allow_access,
