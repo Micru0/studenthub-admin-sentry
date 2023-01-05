@@ -116,6 +116,13 @@
                   Companies
                 </ion-label>
               </ion-item>
+              <ion-item lines="none" [routerLink]="'company-contact-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Companies Contacts
+                </ion-label>
+              </ion-item>
             </ion-menu-toggle>
 
             <ion-menu-toggle auto-hide="false">
@@ -139,6 +146,13 @@
                 <div tabindex="0"></div>
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>Candidate</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'fulltimer-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="people-outline" slot="start"></ion-icon>
+                <ion-label>Fulltimer</ion-label>
               </ion-item>
             </ion-menu-toggle>
           </ion-item-group>

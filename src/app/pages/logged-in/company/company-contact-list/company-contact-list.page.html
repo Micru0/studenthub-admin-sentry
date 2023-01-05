@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title>Candidates List <small>({{totalCount}})</small></ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showFilterPanel()">
+        Filter
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card  *ngIf="showFilter">
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item>
+              <ion-label position="floating" color="primary">Name</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Tag -->
+            <ion-item (click)="selectCompany($event)">
+              <ion-label position="floating" color="primary">Company</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.company_name"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
+  <section>
+    <ion-list *ngIf="contacts && contacts.length > 0">
+      <ion-item tappable *ngFor="let contact of contacts" (click)="rowSelected(contact)">
+        <div tabindex="0"></div>
+        <ion-label class="ion-text-wrap">
+          <h2>{{contact.contact.contact_name}}</h2>
+          <h4>{{contact.contact_position}}</h4>
+          <p>{{contact.contact.contact_email}}</p>
+          <p>{{contact.contact.contact_created_at}}</p>
+          <p>{{ contact.company.company_name }} </p>
+        </ion-label>
+
+      </ion-item>
+
+      <loading-modal type="review-list" [loading]="loading"></loading-modal>
+    </ion-list>
+
+    <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </section>
+</ion-content>

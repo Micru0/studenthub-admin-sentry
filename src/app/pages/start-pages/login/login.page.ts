@@ -60,7 +60,7 @@ export class LoginPage implements OnInit {
 
       if (res.operation == 'success') {
         // Successfully logged in, set the access token within AuthService
-        this.auth.setAccessToken(res);
+        this.auth.setAccessToken(res, true);
       } else if (res.operation == 'error') {
         const alert = await this.alertCtrl.create({
           header: 'Unable to Log In',
@@ -107,7 +107,7 @@ export class LoginPage implements OnInit {
       }
     });
   }
-  
+
   /**
    * redirec to auth0
    */
