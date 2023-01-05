@@ -7,8 +7,7 @@
     <p>Expected Salary : {{ fulltimer.fulltimer_expected_salary}}</p>
     <p>Gender: {{ (fulltimer.fulltimer_gender == 1) ? 'Male' : 'Female' }}</p>
     <p>Phone: {{ fulltimer.fulltimer_phone}}</p>
-<!--    <p>CV : <a target="_blank" href='{{this.resume}}'>{{ fulltimer.fulltimer_pdf_cv}}</a></p>-->
-    <p>Country: {{ fulltimer.country_id}}</p>
-    <p>Nationality: {{ fulltimer.nationality_id}}</p>
+    <p *ngIf="fulltimer.country">Country : {{ fulltimer.country.country_name_en }}</p>
+    <p *ngIf="fulltimer.nationality">Nationality : {{ fulltimer.nationality.country_name_en }}</p>
   </ion-label>
 </ion-item>
