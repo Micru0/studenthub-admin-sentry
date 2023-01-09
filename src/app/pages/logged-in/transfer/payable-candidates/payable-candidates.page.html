@@ -93,6 +93,7 @@
             </ion-badge>
             <ion-badge slot="start" color="warning" *ngIf="!tc.candidate.isProfileCompleted">Incomplete Profile</ion-badge>
           </ng-container>
+          <p><small>Credit Narrative/TC_ID : {{tc.tc_id}}</small></p>
         </ion-label>
 
         <ion-badge slot="end">KWD {{ tc.candidate_total | number:'1.3-3' }}</ion-badge>
