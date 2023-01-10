@@ -553,15 +553,15 @@ const routes: Routes = [
       navDisable: false,
     }
   },
-  // {
-  //   path: 'staff-work-session',
-  //   loadChildren: () => import('./pages/logged-in/staff-work-session/staff-work-session-list/staff-work-session-list-routing.module').then( m => m.StaffWorkSessionListRoutingModule),
-  //   canActivate: [AuthService],
-  //   data: {
-  //     name: 'StaffWorkSessionListPage',
-  //     navDisable: false,
-  //   }
-  // },
+  {
+    path: 'staff-work-session-list',
+    loadChildren: () => import('./pages/logged-in/staff-work-session/staff-work-session-list/staff-work-session-list.module').then( m => m.StaffWorkSessionListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StaffWorkSessionListPage',
+      navDisable: false,
+    }
+  },
   {
     path: '**',
     redirectTo: 'not-found'

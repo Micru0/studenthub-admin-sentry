@@ -8,15 +8,17 @@ import { StoreViewPageRoutingModule } from './store-view-routing.module';
 
 import { StoreViewPage } from './store-view.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
+import {CandidateModule} from "../../../../components/candidate/candidate.module";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    LoadingModalModule,
-    IonicModule,
-    StoreViewPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        LoadingModalModule,
+        IonicModule,
+        StoreViewPageRoutingModule,
+        CandidateModule
+    ],
   declarations: [StoreViewPage]
 })
 export class StoreViewPageModule {}
