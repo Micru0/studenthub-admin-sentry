@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="staff-list" (click)="close()"></ion-back-button>
+      <ion-back-button (click)="close()"></ion-back-button>
     </ion-buttons>
 
     <ion-title>{{ operation }}</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button clear color="primary" 
+      <ion-button clear color="primary"
         [disabled]="!form.valid"
         (click)="save()">
         <span *ngIf="!saving">Save</span>
@@ -35,16 +35,16 @@
           <ion-input type="text" formControlName="comment"></ion-input>
         </ion-item>
 
-        
+
         <h6>Salary date</h6>
 
         <ion-item>
-          <ion-datetime formControlName="salary_date"></ion-datetime>
+          <ion-datetime presentation="date" formControlName="salary_date"></ion-datetime>
         </ion-item>
 
     </ion-list>
   </form>
 
   <loading-modal type="staff-form" [loading]="!form"></loading-modal>
-  
+
 </ion-content>

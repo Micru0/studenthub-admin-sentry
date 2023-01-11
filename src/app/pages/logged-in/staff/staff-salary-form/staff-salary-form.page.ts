@@ -5,8 +5,9 @@ import { format, parseISO } from 'date-fns';
 //models
 import { StaffSalary } from 'src/app/models/staff_salary';
 //services
-import { StaffService } from 'src/app/providers/logged-in/staff.service';
 import { AuthService } from 'src/app/providers/auth.service';
+import {StaffSalaryService} from "src/app/providers/logged-in/staff.salary.service";
+import {StaffService} from "../../../../providers/logged-in/staff.service";
 
 
 @Component({
@@ -16,10 +17,10 @@ import { AuthService } from 'src/app/providers/auth.service';
 })
 export class StaffSalaryFormPage implements OnInit {
 
-  public loading: boolean = false; 
+  public loading: boolean = false;
 
-  public saving: boolean = false; 
-  
+  public saving: boolean = false;
+
   public staff_id;
 
   public staff_salary_uuid;
@@ -30,10 +31,11 @@ export class StaffSalaryFormPage implements OnInit {
 
   public form: FormGroup;
 
-  constructor( 
+  constructor(
     private authService: AuthService,
     public staffService: StaffService,
-    private _fb: FormBuilder, 
+    public staffSalaryService: StaffSalaryService,
+    private _fb: FormBuilder,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
     public modalCtrl: ModalController
@@ -59,10 +61,10 @@ export class StaffSalaryFormPage implements OnInit {
 
   loadData(staff_salary_uuid) {
 
-    this.loading = true; 
+    this.loading = true;
 
     this.staffService.viewSalary(staff_salary_uuid).subscribe(model => {
-      this.model = model; 
+      this.model = model;
 
       this.loading = false;
 
@@ -107,34 +109,34 @@ export class StaffSalaryFormPage implements OnInit {
    * Save the model
    */
   async save() {
-    
+
     this.saving = true;
 
     let params = this.form.value;
 
-    params.salary_date = format(parseISO(this.form.controls['salary_date'].value), 
+    params.salary_date = format(parseISO(this.form.controls['salary_date'].value),
       'yyyy-MM-dd HH:mm:ss');//, { timeZone: '+3:30' }
 
     let action;
     if(!this.model.staff_id){
       // Create
-      action = this.staffService.addSalary(this.staff_id, params);
+      action = this.staffSalaryService.addSalary(this.staff_id, params);
     }else{
       // Update
-      action = this.staffService.updateSalary(this.staff_salary_uuid, params);
+      action = this.staffSalaryService.updateSalary(this.staff_salary_uuid, params);
     }
 
     action.subscribe(async jsonResponse => {
-      
+
       this.saving = false;
 
       // On Success
       if(jsonResponse.operation == "success") {
-        
+
         // Close the page
         let data = { 'refresh': true };
         this.modalCtrl.dismiss(data);
-        
+
         //success toast
         /*let toast = await this._toastCtrl.create({
           message: "Staff Member "+this.model.staff_name+' account created successfully',
