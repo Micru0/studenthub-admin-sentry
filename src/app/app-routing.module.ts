@@ -563,6 +563,24 @@ const routes: Routes = [
     }
   },
   {
+    path: 'staff-salary-list',
+    loadChildren: () => import('./pages/logged-in/salary/staff-salary-list/staff-salary-list.module').then( m => m.StaffSalaryListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StaffSalaryListPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'staff-salary-register',
+    loadChildren: () => import('./pages/logged-in/salary/staff-salary-register/staff-salary-register.module').then( m => m.StaffSalaryRegisterPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StaffSalaryRegisterPage',
+      navDisable: false,
+    }
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
   },
