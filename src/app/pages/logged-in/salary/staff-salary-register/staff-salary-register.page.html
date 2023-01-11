@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Staff Salary Register</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save($event)">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-item>
+        <ion-label position="floating" color="primary">Select Date/Month</ion-label>
+        <ion-input
+          class="month_date"
+          [(ngModel)]="monthLabel"
+          placeholder="select time"
+          id="date"
+        ></ion-input>
+        <ion-popover trigger="date" size="cover">
+          <ng-template>
+            <ion-datetime
+              (ionChange) = "close($event)"
+              presentation="date"
+              [(ngModel)]="month"
+              [showDefaultButtons]="true"
+            ></ion-datetime>
+          </ng-template>
+        </ion-popover>
+      </ion-item>
+
+
+      <ion-item  *ngFor="let staffMember of staffList">
+        <div tabindex="0"></div>
+        <ion-label>
+          {{ staffMember.staff_name }}
+          <ion-icon name="checkmark-circle" class="active" *ngIf="staffMember.staff_status == '10'"></ion-icon>
+          <ion-icon name="close-circle" class="inactive" *ngIf="staffMember.staff_status != '10'"></ion-icon>
+          <br/>
+          <ion-badge *ngIf="staffMember.staff_role == 1">Management</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 2">Engineering</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 3">Sales</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 4">Business development/ Govt & PR</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 5">Marketing and Design</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 6">Recruitment</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 7">Finance</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 8">HR</ion-badge>
+          <ion-badge *ngIf="staffMember.staff_role == 9">Customer success</ion-badge>&nbsp;
+          <ion-badge color="danger" *ngIf="staffMember.deleted">Deleted</ion-badge>
+        </ion-label>
+        <ion-checkbox (click)="$event.preventDefault();$event.stopPropagation();" slot="start"
+                      (ionChange)="onSelected($event)"
+                      [value]="staffMember.staff_id"></ion-checkbox>
+      </ion-item>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+
+    <ion-infinite-scroll *ngIf="currentPage < totalPages"
+                         (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-list>
+</ion-content>

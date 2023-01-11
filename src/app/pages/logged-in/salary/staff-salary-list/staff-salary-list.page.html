@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Staff Salary List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showFilterPanel()">
+        Filter
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngIf="showFilter">
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label position="floating" color="primary">Select Date/Month</ion-label>
+            <ion-input
+              class="month_date"
+              [(ngModel)]="date"
+              placeholder="select time"
+              id="date"
+            ></ion-input>
+            <ion-popover trigger="date" size="cover">
+              <ng-template>
+                <ion-datetime
+                  (ionChange) = "close($event)"
+                  presentation="month-year"
+                  [(ngModel)]="filters.month"
+                  [showDefaultButtons]="true"
+                ></ion-datetime>
+              </ng-template>
+            </ion-popover>
+          </ion-col>
+          <ion-col>
+            <ion-item (click)="selectStaff($event)">
+              <ion-label position="floating" color="primary">Staff</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.staff"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1, true);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
+
+  <ion-list *ngIf="staffSalaries && staffSalaries.length > 0">
+    <ion-item tappable *ngFor="let salary of staffSalaries">
+      <div tabindex="0"></div>
+      <ion-label>
+        {{ salary.staff.staff_name }}
+        <p>Salary: {{salary.salary_currency}}{{salary.salary}}</p>
+        <p>Salary Date: {{salary.salary_date}}</p>
+        <p>Comment: {{salary.comment}}</p>
+        <p>Created: {{salary.created_at}}</p>
+      </ion-label>
+      <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+        <ion-button color="danger" (click)="delete($event, salary.staff_salary_uuid)">
+          Delete
+        </ion-button>
+        <ion-button color="primary" (click)="editSalary($event, salary)">
+          Edit
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <no-items *ngIf="!loading && !staffSalaries.length" message="~ No Record Found ~"></no-items>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+
+    <ion-infinite-scroll *ngIf="currentPage < totalPage"
+                         (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  </ion-list>
+</ion-content>
+<ion-footer *ngIf="!authService.admin_limited_access">
+    <ion-button expand="full" routerLink="/staff-salary-register">Salary Entries</ion-button>
+</ion-footer>
