@@ -1,9 +1,85 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>staff-work-session-list</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title>
+      Daily Working Hours for  : {{filters.date | date}}
+      <ion-button (click)="adjustDate(0);"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
+      <ion-button (click)="adjustDate(1);"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
+    </ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="2" size-lg="2" size-sm="6" size-xs="12">
+            <!-- Filter by Major -->
+            <ion-item (click)="selectStaff($event)">
+              <ion-label position="stacked" color="primary">Staff</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.staff_name"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Tag -->
+            <ion-item>
+              <ion-label position="stacked" color="primary">Date</ion-label>
+              <ion-input type="date" [(ngModel)]="filters.date"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="4" size-lg="4" size-sm="6" size-xs="12" class="btn-ctrl">
+            <!-- Filter by Tag -->
+            <ion-button (click)="loadData(1, true);">Submit</ion-button>
+            <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+  </ion-card>
+  <ion-list>
+    <ion-card tappable *ngFor="let work of staffWorkSessions">
+      <ion-card-header>
+        <ion-card-title>{{ work.staff.staff_name }}</ion-card-title>
+        <ion-card-subtitle>
+          <span *ngIf="work.staff.staff_role == 1">Management</span>
+          <span *ngIf="work.staff.staff_role == 2">Engineering</span>
+          <span *ngIf="work.staff.staff_role == 3">Sales</span>
+          <span *ngIf="work.staff.staff_role == 4">Business development/ Govt & PR</span>
+          <span *ngIf="work.staff.staff_role == 5">Marketing and Design</span>
+          <span *ngIf="work.staff.staff_role == 6">Recruitment</span>
+          <span *ngIf="work.staff.staff_role == 7">Finance</span>
+          <span *ngIf="work.staff.staff_role == 8">HR</span>
+          <span *ngIf="work.staff.staff_role == 9">Customer success</span>
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item *ngFor="let time of work.dayActivity">
+          <ion-label>
+            {{time.created_at | date : 'mediumTime'}} => <span *ngIf="time.total_minutes">{{time.updated_at | date : 'mediumTime'}}</span>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+      <ion-card-content>
+        Total : {{getTotal(work.dayActivity) | timeSpent}}
+      </ion-card-content>
+    </ion-card>
+    <no-items *ngIf="!loading && !staffWorkSessions.length" message="No Record Found For {{filters.date | date}}"></no-items>
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+                       (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
