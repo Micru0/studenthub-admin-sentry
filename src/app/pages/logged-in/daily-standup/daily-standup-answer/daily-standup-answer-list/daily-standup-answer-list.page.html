@@ -59,16 +59,16 @@
     <ion-card-header>
       <ion-button (click)="loadData(1);">Submit</ion-button>
       <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+      <ion-button (click)="toggleFilter($event)" color="warning">Hide Filter</ion-button>
     </ion-card-header>
 
   </ion-card>
   <ion-list>
-      <ion-item tappable *ngFor="let answer of answers" >
+      <ion-item tappable *ngFor="let answer of answers" (click)="viewAnswer(answer)">
         <div tabindex="0"></div>
         <ion-label>
-          <h3>{{ answer.answer }}</h3>
-          <p>Question: {{ answer.question }}</p>
           <p *ngIf="answer.staff">By {{ answer.staff.staff_name }}</p>
+          <p>Date: {{ answer.created_at | date }}</p> <ion-badge *ngIf="todayCheck(answer)" color="primary">Today</ion-badge>
         </ion-label>
       </ion-item>
 

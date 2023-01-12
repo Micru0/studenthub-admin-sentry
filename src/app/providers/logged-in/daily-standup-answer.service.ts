@@ -19,11 +19,11 @@ export class DailyStandupAnswerService {
   }
 
   /**
-   * load detail
-   * @param question_uuid
+   * @param staffId
+   * @param date
    */
-  view(question_uuid) {
-    let url = this._endpoint + '/' + question_uuid;
+  view(staffId, date) {
+    let url = `${this._endpoint}/${staffId}/${date}`;
     return this._authhttp.get(url);
   }
 
