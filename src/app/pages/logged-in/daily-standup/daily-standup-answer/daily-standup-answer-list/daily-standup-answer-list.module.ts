@@ -7,15 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { DailyStandupAnswerListPage } from './daily-standup-answer-list.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 import {dailyStandupAnswerListRoutingModule} from "./daily-standup-answer-list-routing.module";
+import {NoItemsModule} from "../../../../../components/no-items/no-items.module";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    LoadingModalModule,
-    dailyStandupAnswerListRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        LoadingModalModule,
+        dailyStandupAnswerListRoutingModule,
+        NoItemsModule
+    ],
   declarations: [DailyStandupAnswerListPage]
 })
 export class DailyStandupAnswerListModule {}

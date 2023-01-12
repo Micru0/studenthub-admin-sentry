@@ -74,7 +74,7 @@
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
   </ion-list>
-
+  <no-items *ngIf="!loading && !answers.length" message="No Record Found"></no-items>
   <ion-infinite-scroll *ngIf="currentPage < pageCount"
     (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
