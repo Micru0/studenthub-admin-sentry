@@ -67,7 +67,18 @@
       <ion-item tappable *ngFor="let answer of answers" (click)="viewAnswer(answer)">
         <div tabindex="0"></div>
         <ion-label>
-          <p *ngIf="answer.staff">By {{ answer.staff.staff_name }}</p>
+          <h3 *ngIf="answer.staff">{{ answer.staff.staff_name }}</h3>
+          <p>
+            <span *ngIf="answer.staff.staff_role == 1">Management</span>
+            <span *ngIf="answer.staff.staff_role == 2">Engineering</span>
+            <span *ngIf="answer.staff.staff_role == 3">Sales</span>
+            <span *ngIf="answer.staff.staff_role == 4">Business development/ Govt & PR</span>
+            <span *ngIf="answer.staff.staff_role == 5">Marketing and Design</span>
+            <span *ngIf="answer.staff.staff_role == 6">Recruitment</span>
+            <span *ngIf="answer.staff.staff_role == 7">Finance</span>
+            <span *ngIf="answer.staff.staff_role == 8">HR</span>
+            <span *ngIf="answer.staff.staff_role == 9">Customer success</span>
+          </p>
           <p>Date: {{ answer.created_at | date }}</p> <ion-badge *ngIf="todayCheck(answer)" color="primary">Today</ion-badge>
         </ion-label>
       </ion-item>
