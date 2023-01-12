@@ -41,6 +41,7 @@ import { File } from '@awesome-cordova-plugins/file/ngx';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import {FulltimerModule} from "./components/fulltimer/fulltimer.module";
+import {DailyStandupAnswerViewPageModule} from "./pages/logged-in/daily-standup/daily-standup-answer/daily-standup-answer-view/daily-standup-answer-view.module";
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -97,6 +98,7 @@ declare global {
     RequestModule,
     StaffPageModule,
     DailyStandupQuestionFormPageModule,
+    DailyStandupAnswerViewPageModule,
     FulltimerModule
   ],
   providers: [
