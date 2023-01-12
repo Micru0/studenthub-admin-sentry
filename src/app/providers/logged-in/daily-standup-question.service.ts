@@ -14,15 +14,15 @@ export class DailyStandupQuestionService {
   private _endpoint: string = "/daily-standup-questions";
 
   constructor(private _authhttp: AuthHttpService) { }
-  
-  listAnswers(page: number): Observable<any>{
-    let url = this._endpoint + '/list-answers?page=' + page;
+
+  listAnswers(page: number, param): Observable<any>{
+    let url = this._endpoint + '/list-answers?page=' + page + param;
     return this._authhttp.get(url, true);
   }
 
   /**
    * load bank detail
-   * @param question_uuid 
+   * @param question_uuid
    */
   view(question_uuid) {
     let url = this._endpoint + '/' + question_uuid;

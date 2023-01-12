@@ -108,7 +108,7 @@ export class StaffViewPage implements OnInit {
     if (window.history.state) {
       this.staff = window.history.state.model;
     }
-    
+
     this.staff_id = this.activateRoute.snapshot.paramMap.get('staff_id');
     this.start_date = this.activateRoute.snapshot.paramMap.get('start_date');
     this.end_date = this.activateRoute.snapshot.paramMap.get('end_date');
@@ -127,7 +127,7 @@ export class StaffViewPage implements OnInit {
   }
 
   /**
-   * show popup to add salary 
+   * show popup to add salary
    */
   async addSalary() {
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
@@ -289,7 +289,7 @@ export class StaffViewPage implements OnInit {
     if (!silent) {
       this.loadCandidateWorkHistory = true;
     }
-    
+
     const params = '&expand=candidate,store,company,parentCompany' + this.urlParams();
 
     this.workHistoryService.list(page, params).subscribe(response => {
@@ -333,11 +333,11 @@ export class StaffViewPage implements OnInit {
   loadStandupData() {
 
     this.loadStandup = true;
-
-    this.standupService.listAnswers(1).subscribe(response => {
+    let param = `&staff_id=${this.staff_id}`;
+    this.standupService.listAnswers(1, param).subscribe(response => {
 
       this.loadStandup = false;
-    
+
       this.pageCountStandup = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
       this.currentPageStandup = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
      // this.totalCountStandup = parseInt(response.headers.get('X-Pagination-Total-Count'), 10);
@@ -355,11 +355,11 @@ export class StaffViewPage implements OnInit {
     this.currentPageStandup++;
 
     this.loadStandup = true;
-
-    this.standupService.listAnswers(this.currentPageStandup).subscribe(response => {
+    let param = `&staff_id=${this.staff_id}`;
+    this.standupService.listAnswers(this.currentPageStandup, param).subscribe(response => {
 
       this.loadStandup = false;
-    
+
       this.pageCountStandup = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
       this.currentPageStandup = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
       //this.totalCountStandup = parseInt(response.headers.get('X-Pagination-Total-Count'), 10);
@@ -372,14 +372,14 @@ export class StaffViewPage implements OnInit {
 
   /**
    * load salaries
-   * @param page 
-   * @param silent 
+   * @param page
+   * @param silent
    */
   async loadSalaries(page: number, silent = false) {
 
     if (!silent) {
       this.SLoading = true;
-    } 
+    }
 
     this.staffService.listSalaries(this.staff_id, page).subscribe(response => {
 
@@ -397,7 +397,7 @@ export class StaffViewPage implements OnInit {
 
   /**
    * load more salary data on scroll to bottom
-   * @param event 
+   * @param event
    */
   doInfiniteSalary(event) {
 
@@ -406,10 +406,10 @@ export class StaffViewPage implements OnInit {
     this.SLoading = true;
 
     this.staffService.listSalaries(this.staff_id, this.SCurrentPage).subscribe(response => {
-    
+
       this.SPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
       this.SCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
- 
+
       this.salaries = this.salaries.concat(response.body);
 
       this.SLoading = false;

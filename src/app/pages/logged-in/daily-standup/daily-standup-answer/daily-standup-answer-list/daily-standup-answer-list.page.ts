@@ -4,11 +4,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
 // models
-import {DailyStandupAnswerService} from "../../../../../providers/logged-in/daily-standup-answer.service";
-import {DailyStandupAnswer} from "../../../../../models/daily-standup-answer";
+import {DailyStandupAnswerService} from "src/app/providers/logged-in/daily-standup-answer.service";
+import {DailyStandupAnswer} from "src/app/models/daily-standup-answer";
+import {DailyStandupQuestionService} from "src/app/providers/logged-in/daily-standup-question.service";
+import {DailyStandupQuestion} from "src/app/models/daily-standup-question";
+import { isToday } from "date-fns";
+import {DailyStandupAnswerViewPage} from "../daily-standup-answer-view/daily-standup-answer-view.page";
 import {StaffPage} from "../../../picker/staff/staff.page";
-import {DailyStandupQuestionService} from "../../../../../providers/logged-in/daily-standup-question.service";
-import {DailyStandupQuestion} from "../../../../../models/daily-standup-question";
 
 @Component({
   selector: 'app-daily-standup-answer-list',
@@ -174,6 +176,32 @@ export class DailyStandupAnswerListPage implements OnInit {
       if (e.data) {
         this.filters.staff_name = e.data.staff_name;
         this.filters.staff_id = e.data.staff_id;
+      }
+    });
+    modal.present();
+  }
+
+  todayCheck(answer) {
+    return isToday(new Date(answer.created_at));
+  }
+
+  /**
+   * Loads the create page
+   */
+  async viewAnswer(answers) {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: DailyStandupAnswerViewPage,
+      componentProps: {
+        model: answers
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
       }
     });
     modal.present();
