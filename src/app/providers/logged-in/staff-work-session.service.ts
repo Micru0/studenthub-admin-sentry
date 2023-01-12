@@ -1,0 +1,33 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+//services
+import { AuthHttpService } from './authhttp.service';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StaffWorkSessionService {
+
+  private _endpoint: string = "/staff-work-sessions";
+
+  constructor(private _authhttp: AuthHttpService) { }
+
+  /**
+   * @param staffId
+   * @param date
+   */
+  view(staffId, date) {
+    let url = `${this._endpoint}/${staffId}/${date}`;
+    return this._authhttp.get(url);
+  }
+
+  /**
+   * List of all answer
+   * @returns {Observable<any>}
+   */
+  list(page: number, param = ' '): Observable<any>{
+    let url = this._endpoint + '?page=' + page + '&expand=staff,dayActivity' + param;
+    return this._authhttp.get(url, true);
+  }
+}
