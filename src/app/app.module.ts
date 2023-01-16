@@ -42,6 +42,7 @@ import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import {FulltimerModule} from "./components/fulltimer/fulltimer.module";
 import {DailyStandupAnswerViewPageModule} from "./pages/logged-in/daily-standup/daily-standup-answer/daily-standup-answer-view/daily-standup-answer-view.module";
+import {CanEvalQuesDeptFormPageModule} from "./pages/logged-in/candidate/evaluation/can-eval-ques-dept-form/can-eval-ques-dept-form.module";
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -99,6 +100,7 @@ declare global {
     StaffPageModule,
     DailyStandupQuestionFormPageModule,
     DailyStandupAnswerViewPageModule,
+    CanEvalQuesDeptFormPageModule,
     FulltimerModule
   ],
   providers: [

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Candidate Evaluation Department Question List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addUpdateQuestion($event)">Add Question</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="questions && questions.length != 0">
+    <ion-item *ngFor="let dept of questions">
+      <ion-label>
+        {{dept.department}}
+        <ion-item *ngFor="let deptQues of dept.departmentQuestion">
+          <ion-label>
+            {{deptQues.question.question}}
+          </ion-label>
+          <ion-button slot="end" (click)="addUpdateQuestion($event, deptQues.question)"> Edit</ion-button>
+          <ion-button slot="end" (click)="delete($event, deptQues.ceq_uuid)"> Delete</ion-button>
+        </ion-item>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <loading-modal type="type" [loading]="loading"></loading-modal>
+</ion-content>
