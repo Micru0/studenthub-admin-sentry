@@ -581,6 +581,34 @@ const routes: Routes = [
     }
   },
   {
+    path: 'can-eval-ques-list',
+    loadChildren: () => import('./pages/logged-in/candidate/evaluation/can-eval-ques-list/can-eval-ques-list.module').then( m => m.CanEvalQuesListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'CanEvalQuesListPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'can-eval-list',
+    loadChildren: () => import('./pages/logged-in/candidate/evaluation/can-eval-list/can-eval-list.module').then( m => m.CanEvalListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'CanEvalListPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'can-eval-ques-dept-form',
+    loadChildren: () => import('./pages/logged-in/candidate/evaluation/can-eval-ques-dept-form/can-eval-ques-dept-form.module').then( m => m.CanEvalQuesDeptFormPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'CanEvalQuesDeptFormPage',
+      navDisable: false,
+    }
+  },
+
+  {
     path: '**',
     redirectTo: 'not-found'
   },
