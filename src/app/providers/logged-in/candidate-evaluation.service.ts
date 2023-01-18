@@ -62,4 +62,15 @@ export class CandidateEvaluationService {
       deptIDs: data.deptIDs,
     });
   }
+
+  /**
+   * View report
+   * @param canEvalUUID
+   * @constructor
+   */
+  viewReport(canEvalUUID: string) {
+    let url = `${this.endpoint}/report/${canEvalUUID}?expand=department,staff,candidate,questionAnswer`;
+    return this.authHttpService.get(url);
+  }
+
 }

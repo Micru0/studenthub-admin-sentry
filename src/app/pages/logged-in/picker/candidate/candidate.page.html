@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="close()" slot="start"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Candidate</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
+    <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item tappable (click)="close(candidate)" *ngFor="let candidate of candidates">
+      <div tabindex="0"></div>
+      <ion-avatar slot="start">
+        <img *ngIf="candidate.candidate_personal_photo" src="{{ aws.cloudinaryUrl + 'candidate-photo/' + candidate.candidate_personal_photo }}" (error)="loadLogo($event,candidate)">
+        <img *ngIf="!candidate.candidate_personal_photo" src="/assets/icon.png">
+      </ion-avatar>
+      <ion-label class="ion-text-wrap">
+        <h2 class="candidate_name">{{ candidate.candidate_name ?candidate.candidate_name : candidate.candidate_name_ar }}  <small>({{candidate.candidate_id}})</small></h2>
+        <p *ngIf="candidate.store">
+          {{ candidate.store.store_name }}
+          <span *ngIf="candidate.company">@ {{ candidate.company.company_name }} </span>
+        </p>
+
+        <ion-badge *ngIf="candidate.isProfileCompleted == false" color="danger">
+          Incomplete Profile
+        </ion-badge>
+
+        <ion-badge *ngIf="!candidate.candidate_email_verification" color="danger">
+          Email Not Verified
+        </ion-badge>
+
+        <ion-badge *ngIf="!candidate.approved" color="danger">
+          Not Approved
+        </ion-badge>
+
+        <ion-badge *ngIf="candidate.deleted" color="danger">
+          Deleted
+        </ion-badge>
+      </ion-label>
+
+    </ion-item>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+</ion-list>
+
+<ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content>
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>
