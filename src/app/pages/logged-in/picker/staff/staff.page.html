@@ -7,7 +7,7 @@
     <ion-title>Staff Members</ion-title>
 
     <ion-progress-bar type="indeterminate" *ngIf="deleting || sendingNewPassword"></ion-progress-bar>
-
+    <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 

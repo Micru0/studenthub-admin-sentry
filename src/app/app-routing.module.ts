@@ -612,6 +612,10 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'not-found'
   },
+  {
+    path: 'evaluation-report-view',
+    loadChildren: () => import('./pages/logged-in/candidate/evaluation/evaluation-report-view/evaluation-report-view.module').then( m => m.EvaluationReportViewPageModule)
+  },
 ];
 
 @NgModule({
