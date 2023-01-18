@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Evaluation Report List</ion-title>
+    <ion-title>Evaluation Report List <small>({{totalRecord}})</small></ion-title>
     <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
     <ion-buttons slot="end">
       <ion-button (click)="showFilterPanel()">
