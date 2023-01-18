@@ -1,46 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {ModalController, AlertController, ToastController, Platform, NavController} from '@ionic/angular';
+import {ModalController, NavController} from '@ionic/angular';
 // models
-import { Staff } from 'src/app/models/staff';
-// pages
-// services
-import { StaffService } from 'src/app/providers/logged-in/staff.service';
 import {AuthService} from 'src/app/providers/auth.service';
+import {Candidate} from "../../../../models/candidate";
+import {CandidateService} from "../../../../providers/logged-in/candidate.service";
+import {AwsService} from "../../../../providers/aws.service";
 
 
 @Component({
-  selector: 'app-staff',
-  templateUrl: './staff.page.html',
-  styleUrls: ['./staff.page.scss'],
+  selector: 'app-candidate',
+  templateUrl: './candidate.page.html',
+  styleUrls: ['./candidate.page.scss'],
 })
-export class StaffPage implements OnInit {
+export class CandidatePage implements OnInit {
 
   public pageCount = 0;
   public currentPage = 1;
   public pages: number[] = [];
   public searchName;
 
-  public staff: Staff[];
+  public candidates: Candidate[];
 
   public loading = false;
   public deleting = false;
   public sendingNewPassword = false;
 
   constructor(
-    public platform: Platform,
     public router: Router,
     public navCtrl: NavController,
-    public staffService: StaffService,
+    public candidateService: CandidateService,
     private _modalCtrl: ModalController,
-    private _alertCtrl: AlertController,
-    private _toastCtrl: ToastController,
     public authService: AuthService,
+    public aws: AwsService,
   ) {
   }
 
   ngOnInit() {
-    window.analytics.page('Staff List Page');
+    window.analytics.page('Candidate List Page');
     this.loadData(this.currentPage);
   }
 
@@ -55,9 +52,10 @@ export class StaffPage implements OnInit {
     }
     let param;
     if (this.searchName) {
-      param = '&name=' + this.searchName;
+        param = '&name='+this.searchName
     }
-    this.staffService.list(page, param).subscribe(response => {
+
+    this.candidateService.list(param, page).subscribe(response => {
 
       this.loading = false;
       this.deleting = false;
@@ -65,7 +63,7 @@ export class StaffPage implements OnInit {
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
-      this.staff = response.body;
+      this.candidates = response.body;
     }, () => {
       this.loading = false;
       this.deleting = false;
@@ -77,15 +75,18 @@ export class StaffPage implements OnInit {
     this.loading = true;
 
     this.currentPage++;
-
-    this.staffService.list(this.currentPage).subscribe(response => {
+    let param;
+    if (this.searchName) {
+      param = '&name='+this.searchName
+    }
+    this.candidateService.list(param, this.currentPage).subscribe(response => {
 
       this.loading = false;
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
-      this.staff = this.staff.concat(response.body);
+      this.candidates = this.candidates.concat(response.body);
 
       event.target.complete();
 
@@ -111,5 +112,13 @@ export class StaffPage implements OnInit {
   searchByName($event) {
     this.searchName = $event.detail.value;
     this.loadData(1); // reload all result
+  }
+
+  /**
+   * @param $event
+   * @param candidate
+   */
+  loadLogo($event, candidate) {
+    candidate.candidate_personal_photo = null;
   }
 }

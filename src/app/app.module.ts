@@ -43,6 +43,8 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import {FulltimerModule} from "./components/fulltimer/fulltimer.module";
 import {DailyStandupAnswerViewPageModule} from "./pages/logged-in/daily-standup/daily-standup-answer/daily-standup-answer-view/daily-standup-answer-view.module";
 import {CanEvalQuesDeptFormPageModule} from "./pages/logged-in/candidate/evaluation/can-eval-ques-dept-form/can-eval-ques-dept-form.module";
+import {EvaluationReportViewPageModule} from "./pages/logged-in/candidate/evaluation/evaluation-report-view/evaluation-report-view.module";
+import { CandidatePageModule } from "./pages/logged-in/picker/candidate/candidate.module";
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -101,7 +103,9 @@ declare global {
     DailyStandupQuestionFormPageModule,
     DailyStandupAnswerViewPageModule,
     CanEvalQuesDeptFormPageModule,
-    FulltimerModule
+    FulltimerModule,
+    EvaluationReportViewPageModule,
+    CandidatePageModule
   ],
   providers: [
     {

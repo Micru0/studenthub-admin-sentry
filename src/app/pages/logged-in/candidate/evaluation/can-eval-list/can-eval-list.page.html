@@ -3,13 +3,78 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>can-eval-list</ion-title>
+    <ion-title>Evaluation Report List</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="loading"></ion-progress-bar>
+    <ion-buttons slot="end">
+      <ion-button (click)="showFilterPanel()">
+        Filter
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card  *ngIf="showFilter">
+    <ion-card-header>
+      <ion-card-title>Filter by</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <ion-item (click)="selectStaff($event)">
+              <ion-label position="floating" color="primary">Staff</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.staff"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <ion-item (click)="selectCandidate($event)">
+              <ion-label position="floating" color="primary">Candidate</ion-label>
+              <ion-input type="text" [(ngModel)]="filters.candidate"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <ion-item>
+              <ion-label position="floating" color="primary">Department</ion-label>
+              <ion-select [(ngModel)]="filters.departmentID">
+                <ion-select-option value="1">Sales Associate</ion-select-option>
+                <ion-select-option value="2">IT</ion-select-option>
+                <ion-select-option value="3">Call Centre Agent</ion-select-option>
+                <ion-select-option value="4">Social Media</ion-select-option>
+                <ion-select-option value="5">Outdoor Sales Representative</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+      <ion-button (click)="loadData(1);">Submit</ion-button>
+      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+    </ion-card-header>
+
+  </ion-card>
+  <ion-list *ngIf="candidateReport && candidateReport.length > 0">
+    <ion-item *ngFor="let report of candidateReport" (click)="viewDetail(report)" tappable>
+      <ion-label>
+        <h3>Department: {{report.department}}</h3>
+        <p>Created by: {{report.staff.staff_name}}</p>
+        <p>Created For: {{report.candidate.candidate_name}}</p>
+        <small>Date: {{report.date}}</small>
+        <p>Created On: {{report.created_at | date}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <no-items message="~ No record found ~" *ngIf="!loading && candidateReport && candidateReport.length == 0"></no-items>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" *ngIf="currentPage < totalPage">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
+
 <ion-footer>
   <ion-button routerLink="/can-eval-ques-list" color="primary" expand="full">Question List</ion-button>
 </ion-footer>
