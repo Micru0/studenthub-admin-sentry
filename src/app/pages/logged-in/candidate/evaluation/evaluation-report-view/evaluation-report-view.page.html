@@ -13,8 +13,8 @@
   <ion-list>
     <ion-item *ngFor="let answer of report.questionAnswer">
       <ion-label>
-        <h3>{{answer.question}}</h3>
-        <p>{{answer.answer}}</p>
+        <h3 class="ion-text-wrap">{{answer.question}} (Rating: {{answer.rating}})</h3>
+        <p class="ion-text-wrap">{{answer.answer}}</p>
       </ion-label>
     </ion-item>
   </ion-list>
