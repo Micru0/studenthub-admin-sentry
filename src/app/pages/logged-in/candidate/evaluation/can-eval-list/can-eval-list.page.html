@@ -61,9 +61,12 @@
         <h3>Department: {{report.department}}</h3>
         <p>Created by: {{report.staff.staff_name}}</p>
         <p>Created For: {{report.candidate.candidate_name}}</p>
-        <small>Date: {{report.date}}</small>
+        <p><small>Duration: {{report.start_date}} - {{report.end_date}}</small></p>
         <p>Created On: {{report.created_at | date}}</p>
       </ion-label>
+      <ion-button (click)="downloadPdf($event, report)">
+        <ion-icon slot="start" name="cloud-download-outline"></ion-icon> Download
+      </ion-button>
     </ion-item>
   </ion-list>
 

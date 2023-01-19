@@ -73,4 +73,13 @@ export class CandidateEvaluationService {
     return this.authHttpService.get(url);
   }
 
+  /**
+   * download file
+   * @param reportUUID
+   * @param name
+   */
+  downloadReport(reportUUID,name) {
+    let url = `${this.endpoint}/pdf/${reportUUID}`
+    return this.authHttpService.pdfget(url,name);
+  }
 }
