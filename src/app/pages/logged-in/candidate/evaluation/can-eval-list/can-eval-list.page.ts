@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ModalController} from "@ionic/angular";
+import {LoadingController, ModalController} from "@ionic/angular";
 import {CandidateEvaluationService} from "src/app/providers/logged-in/candidate-evaluation.service";
 import {EvaluationReportViewPage} from "../evaluation-report-view/evaluation-report-view.page";
 import {StaffPage} from "../../../picker/staff/staff.page";
@@ -34,7 +34,8 @@ export class CanEvalListPage implements OnInit {
   }
   constructor(
     public candidateEvaluationService: CandidateEvaluationService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public loadingCtrl: LoadingController
   ) { }
 
   ngOnInit() {
@@ -176,6 +177,21 @@ export class CanEvalListPage implements OnInit {
       }
     });
     modal.present();
+  }
+
+  async downloadPdf($event, report) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    const loading = await this.loadingCtrl.create();
+    loading.present();
+    let candidateName = report.candidate.candidate_name.replaceAll(' ', '-').toLowerCase();
+    let dept = report.department.replaceAll(' ', '-').toLowerCase();
+    let name = `${candidateName}_${dept}-report`;
+    this.candidateEvaluationService.downloadReport(report.can_eval_uuid,name).subscribe(response => {
+        console.log('download file');
+      },err => loading.dismiss(),
+      () => loading.dismiss()
+    )
   }
 
 }
