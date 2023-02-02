@@ -607,6 +607,24 @@ const routes: Routes = [
       navDisable: false,
     }
   },
+  {
+    path: 'staff-expense-list',
+    loadChildren: () => import('./pages/logged-in/staff/expenses/staff-expense-list/staff-expense-list.module').then( m => m.StaffExpenseListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StaffExpenseListPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'staff-expense-view',
+    loadChildren: () => import('./pages/logged-in/staff/expenses/staff-expense-view/staff-expense-view.module').then( m => m.StaffExpenseViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StaffExpenseViewPage',
+      navDisable: false,
+    }
+  },
 
   {
     path: '**',

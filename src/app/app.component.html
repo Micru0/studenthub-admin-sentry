@@ -222,10 +222,17 @@
             </ion-item-divider>
 
             <ion-menu-toggle auto-hide="false">
-              <ion-item lines="none" [routerLink]="'expense-list'">
+              <ion-item lines="none" [routerLink]="'staff-expense-list'">
                 <div tabindex="0"></div>
                 <ion-icon name="cash-outline" slot="start"></ion-icon>
-                <ion-label>Expenses</ion-label>
+                <ion-label>Staff Expenses</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" routerLink="expense-list">
+                <div tabindex="0"></div>
+                <ion-icon name="cash-outline" slot="start"></ion-icon>
+                <ion-label>Office Expenses</ion-label>
               </ion-item>
             </ion-menu-toggle>
 
