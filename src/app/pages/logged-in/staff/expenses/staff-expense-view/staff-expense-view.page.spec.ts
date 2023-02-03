@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { StaffStaffExpenseViewPage } from './staff-expense-view.page';
+import { StaffExpenseViewPage } from './staff-expense-view.page';
 
 describe('StaffExpenseViewPage', () => {
   let component: StaffExpenseViewPage;
