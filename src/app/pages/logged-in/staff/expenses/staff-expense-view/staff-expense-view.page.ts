@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/providers/auth.service';
 // pages
 import { StaffExpense } from 'src/app/models/staff-expense';
 import {StaffExpenseService} from "../../../../../providers/logged-in/staff.expense.service";
+import {AwsService} from "../../../../../providers/aws.service";
 
 
 @Component({
@@ -29,6 +30,7 @@ export class StaffExpenseViewPage implements OnInit {
     private alertCtrl: AlertController,
     public authService: AuthService,
     public loadingCtrl: LoadingController,
+    public awsService: AwsService,
 
   ) {
     // this.expense = params.get('model');
@@ -130,5 +132,9 @@ export class StaffExpenseViewPage implements OnInit {
       ]
     })
     alert.present();
+  }
+
+  getFileUrl() {
+    return this.awsService.permanentBucketUrl + 'staff-expenses/' + encodeURIComponent(this.expense.file);
   }
 }
