@@ -22,6 +22,7 @@
             <p><b>Staff:</b> {{expense.staff.staff_name}}</p>
           </ion-text>
         </ion-label>
+        <ion-button color="danger" slot="end" (click)="delete($event, expense)">Delete</ion-button>
       </ion-item>
     </section>
   </ion-list>

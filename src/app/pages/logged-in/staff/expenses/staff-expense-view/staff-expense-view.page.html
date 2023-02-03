@@ -78,6 +78,10 @@
       <ion-label>
         <h5>File</h5>
         <p>{{ expense.file }}</p>
+        <ion-button *ngIf="expense.file"
+                    [href]="getFileUrl()" target="_blank">
+          <ion-icon name="cloud-download-outline"></ion-icon>
+        </ion-button>
       </ion-label>
     </ion-item>
 
