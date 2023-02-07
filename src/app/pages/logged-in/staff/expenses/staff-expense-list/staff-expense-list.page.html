@@ -25,6 +25,7 @@
         <ion-button color="danger" slot="end" (click)="delete($event, expense)">Delete</ion-button>
       </ion-item>
     </section>
+    <no-items message = "No expenses yet!" *ngIf="expenses.length == 0 && !loading"></no-items>
   </ion-list>
 
   <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">

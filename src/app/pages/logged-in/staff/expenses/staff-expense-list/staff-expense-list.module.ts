@@ -8,6 +8,7 @@ import { StaffExpenseListPageRoutingModule } from './staff-expense-list-routing.
 
 import { StaffExpenseListPage } from './staff-expense-list.page';
 import {RouterModule} from "@angular/router";
+import {NoItemsModule} from "src/app/components/no-items/no-items.module";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {RouterModule} from "@angular/router";
         FormsModule,
         IonicModule,
         StaffExpenseListPageRoutingModule,
-        RouterModule
+        RouterModule,
+        NoItemsModule
     ],
   declarations: [StaffExpenseListPage]
 })
