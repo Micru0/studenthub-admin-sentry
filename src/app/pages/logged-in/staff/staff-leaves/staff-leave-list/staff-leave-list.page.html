@@ -26,7 +26,7 @@
           </ion-text>
           <ion-button color="success" *ngIf="!leave.status" (click)="changeStatus($event, leave.staff_leave_uuid, 1)">Approve</ion-button>
           <ion-button color="danger" *ngIf="!leave.status" (click)="changeStatus($event, leave.staff_leave_uuid, 2)">Declined</ion-button>
-          <ion-button color="danger" *ngIf="leave.status" (click)="delete($event, leave.staff_leave_uuid)">Delete</ion-button>
+          <ion-button color="danger" (click)="delete($event, leave.staff_leave_uuid)">Delete</ion-button>
         </ion-label>
       </ion-item>
     </ion-list>
