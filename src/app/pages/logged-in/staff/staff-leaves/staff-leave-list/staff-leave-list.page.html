@@ -22,7 +22,7 @@
               <ion-badge color ="danger" *ngIf="leave.status == 2">{{leave.statusLbl}}</ion-badge>
             </p>
             <p><b>Staff: </b> {{leave.staff.staff_name}}</p>
-            <p><b>File: </b> <a target="_blank" href="{{getFileUrl(leave)}}">Download</a></p>
+            <p *ngIf="leave.file"><b>File: </b> <a target="_blank" href="{{getFileUrl(leave)}}">Download</a></p>
           </ion-text>
           <ion-button color="success" *ngIf="!leave.status" (click)="changeStatus($event, leave.staff_leave_uuid, 1)">Approve</ion-button>
           <ion-button color="danger" *ngIf="!leave.status" (click)="changeStatus($event, leave.staff_leave_uuid, 2)">Declined</ion-button>
