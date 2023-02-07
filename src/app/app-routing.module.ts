@@ -625,22 +625,27 @@ const routes: Routes = [
       navDisable: false,
     }
   },
-
-  {
-    path: '**',
-    redirectTo: 'not-found'
-  },
   {
     path: 'evaluation-report-view',
-    loadChildren: () => import('./pages/logged-in/candidate/evaluation/evaluation-report-view/evaluation-report-view.module').then( m => m.EvaluationReportViewPageModule)
+    loadChildren: () => import('./pages/logged-in/candidate/evaluation/evaluation-report-view/evaluation-report-view.module').then( m => m.EvaluationReportViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'EvaluationReportViewPage',
+      navDisable: false,
+    }
   },
   {
     path: 'staff-leave-list',
-    loadChildren: () => import('./pages/logged-in/staff/staff-leaves/staff-leave-list/staff-leave-list.module').then( m => m.StaffLeaveListPageModule)
+    loadChildren: () => import('./pages/logged-in/staff/staff-leaves/staff-leave-list/staff-leave-list.module').then( m => m.StaffLeaveListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'StaffLeaveListPage',
+      navDisable: false,
+    }
   },
   {
-    path: 'staff-leave-view',
-    loadChildren: () => import('./pages/logged-in/staff/staff-leaves/staff-leave-view/staff-leave-view.module').then( m => m.StaffLeaveViewPageModule)
+    path: '**',
+    redirectTo: 'not-found'
   },
 ];
 
