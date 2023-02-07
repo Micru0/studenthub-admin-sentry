@@ -1,9 +1,38 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>staff-leave-list</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Leave Request List <small>({{totalCount}})</small></ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
+  <div class="container">
+    <ion-list *ngIf="!loading">
+      <ion-item *ngFor="let leave of staffLeaves">
+        <div tabindex="0"></div>
+        <ion-label>
+          <ion-text>
+            <p><b>Duration: </b> {{ leave.from_date }} - {{ leave.to_date }}</p>
+            <p><b>Category: </b> {{leave.categoryLbl}}</p>
+            <p class="ion-text-wrap"><b>Note: </b> {{leave.note}}</p>
+            <p><b>Status: </b>
+              <ion-badge color ="warning" *ngIf="!leave.status">{{leave.statusLbl}}</ion-badge>
+              <ion-badge color ="success" *ngIf="leave.status == 1">{{leave.statusLbl}}</ion-badge>
+              <ion-badge color ="danger" *ngIf="leave.status == 2">{{leave.statusLbl}}</ion-badge>
+            </p>
+            <p><b>Staff: </b> {{leave.staff.staff_name}}</p>
+            <p><b>File: </b> <a target="_blank" href="{{getFileUrl(leave)}}">Download</a></p>
+          </ion-text>
+          <ion-button color="success" *ngIf="!leave.status" (click)="changeStatus($event, leave.staff_leave_uuid, 1)">Approve</ion-button>
+          <ion-button color="danger" *ngIf="!leave.status" (click)="changeStatus($event, leave.staff_leave_uuid, 2)">Declined</ion-button>
+          <ion-button color="danger" *ngIf="leave.status" (click)="delete($event, leave.staff_leave_uuid)">Delete</ion-button>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <loading-modal [loading]="loading || loadMore" type="mall-list"></loading-modal>
+  </div>
+  <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
