@@ -555,7 +555,7 @@ const routes: Routes = [
   },
   {
     path: 'staff-work-session-list',
-    loadChildren: () => import('./pages/logged-in/staff-work-session/staff-work-session-list/staff-work-session-list.module').then( m => m.StaffWorkSessionListPageModule),
+    loadChildren: () => import('./pages/logged-in/staff/staff-work-session/staff-work-session-list/staff-work-session-list.module').then( m => m.StaffWorkSessionListPageModule),
     canActivate: [AuthService],
     data: {
       name: 'StaffWorkSessionListPage',
@@ -633,6 +633,14 @@ const routes: Routes = [
   {
     path: 'evaluation-report-view',
     loadChildren: () => import('./pages/logged-in/candidate/evaluation/evaluation-report-view/evaluation-report-view.module').then( m => m.EvaluationReportViewPageModule)
+  },
+  {
+    path: 'staff-leave-list',
+    loadChildren: () => import('./pages/logged-in/staff/staff-leaves/staff-leave-list/staff-leave-list.module').then( m => m.StaffLeaveListPageModule)
+  },
+  {
+    path: 'staff-leave-view',
+    loadChildren: () => import('./pages/logged-in/staff/staff-leaves/staff-leave-view/staff-leave-view.module').then( m => m.StaffLeaveViewPageModule)
   },
 ];
 

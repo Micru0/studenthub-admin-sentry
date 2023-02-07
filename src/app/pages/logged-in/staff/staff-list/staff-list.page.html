@@ -168,7 +168,7 @@
 
 </ion-content>
 
-<ion-footer *ngIf="!authService.admin_limited_access">
+<ion-footer *ngIf="!authService.admin_limited_access && authService.restrictedAccess()">
   <ion-grid>
     <ion-row>
       <ion-col><ion-button expand="full" (click)="create()">Create</ion-button></ion-col>

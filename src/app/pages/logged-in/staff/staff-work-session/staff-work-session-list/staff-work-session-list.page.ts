@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {AlertController, ModalController, Platform, ToastController} from "@ionic/angular";
 import { Router } from "@angular/router";
-import {AuthService} from "../../../../providers/auth.service";
-import {StaffPage} from "../../picker/staff/staff.page";
+import {AuthService} from "src/app/providers/auth.service";
 import {isToday} from "date-fns";
-import {StaffWorkSessionService} from "../../../../providers/logged-in/staff-work-session.service";
+import {StaffWorkSessionService} from "src/app/providers/logged-in/staff-work-session.service";
 import { addDays,subDays,format } from 'date-fns'
+import {StaffPage} from "../../../picker/staff/staff.page";
 
 @Component({
   selector: 'app-staff-work-session-list',

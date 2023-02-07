@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 // services
 import { StatisticService } from 'src/app/providers/logged-in/statistics.service';
 import { EventService } from 'src/app/providers/event.service';
+import {AuthService} from "../../../providers/auth.service";
 
 
 @Component({
@@ -15,11 +16,12 @@ export class DashboardPage implements OnInit {
   public statistics: any;
 
   public loading: boolean = false;
-  
+
   constructor(
   	public router: Router,
   	public statisticService: StatisticService,
     private eventService: EventService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(){
@@ -38,7 +40,7 @@ export class DashboardPage implements OnInit {
   async loadData(loading = true) {
 
     this.loading = loading;
-    
+
     this.statisticService.get().subscribe(response => {
       this.loading = false;
       this.statistics = response;
