@@ -214,7 +214,7 @@ export class AuthService {
       name: this.name,
       email: this.email,
     });
-    
+
     // Save to Storage
     this.saveInStorage();
 
@@ -301,7 +301,7 @@ export class AuthService {
           this.setAccessToken(response, true);
 
         } else if (response.code == 1) {
- 
+
           const alert = await this.alertCtrl.create({
             message: 'No account with login email', // JSON.stringify(err)
             buttons: ['Okay']
@@ -366,10 +366,10 @@ export class AuthService {
 
     return a.join('<br />');
   }
-  
+
   /**
    * Handles Caught Errors from All Authorized Requests Made to Server
-   * @returns {Observable} 
+   * @returns {Observable}
    */
   public _handleError(error: any): Observable<any> {
 
@@ -377,7 +377,7 @@ export class AuthService {
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
 
     // Handle Bad Requests
-    // This error usually appears when agent attempts to handle an 
+    // This error usually appears when agent attempts to handle an
     // account that he's been removed from assigning
     if (error.status === 400) {
       //this.eventService.agentRemoved$.next({});
@@ -403,7 +403,7 @@ export class AuthService {
       return empty();
     }
 
-    // Handle internal server error - 500  
+    // Handle internal server error - 500
     if (error.status === 500) {
       this.eventService.error500$.next({
         message: error.message
@@ -411,7 +411,7 @@ export class AuthService {
       return empty();
     }
 
-    // Handle page not found - 404 error 
+    // Handle page not found - 404 error
     if (error.status === 404) {
       this.eventService.error404$.next({});
       return empty();
@@ -420,5 +420,13 @@ export class AuthService {
     console.error(JSON.stringify(error));
 
     return throwError(errMsg);
+  }
+
+  restrictedAccess() {
+    // khalid and meet access
+    if (this.id == 1 || this.id == 7 || this.id == 10) {
+      return true;
+    }
+    return false;
   }
 }
