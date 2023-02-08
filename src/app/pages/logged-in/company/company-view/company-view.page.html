@@ -8,15 +8,15 @@
 
     <ion-title *ngIf="company">
       {{ company.company_name }}
-    
+
       <ion-badge color="success" *ngIf="company.company_approved_to_hire">
         <ion-icon name="checkmark-outline"></ion-icon> Approved to hire
       </ion-badge>
-      
+
       <ion-badge color="warning" *ngIf="!company.company_approved_to_hire">
         <ion-icon name="close-outline"></ion-icon> Not approved to hire
       </ion-badge>
-    
+
     </ion-title>
 
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
@@ -28,7 +28,7 @@
     <ion-progress-bar type="indeterminate" *ngIf="deleting || updating"></ion-progress-bar>
 
   </ion-toolbar>
-  
+
   <ion-toolbar>
 
     <ion-segment *ngIf="!platform.is('mobile')" (ionChange)="segmentChanged($event)" [value]="segment">
@@ -227,7 +227,15 @@
           </ion-label>
           <ion-toggle *ngIf="!authService.admin_limited_access" [checked]="companyStatusOverride"
             (ionChange)="changeStatus($event)"></ion-toggle>
-        </ion-item> 
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
+            <h5>Total Employed</h5>
+            <p>{{company.total_candidates}}</p>
+          </ion-label>
+        </ion-item>
 
         <ion-item-divider color="light">
           <ion-label>
@@ -377,27 +385,27 @@
               <label [innerHTML]="note.note_text"></label><br />
               <p>By <span *ngIf="note && note.updatedBy">{{ note.updatedBy.staff_name? note.updatedBy.staff_name: note.updatedBy.candidate_name }}</span> @ {{ toDate(note.note_created_datetime) | date: 'MMM d, y' }}</p>
             </ion-label>
-  
+
             <ion-buttons slot="end" *ngIf="!authService.admin_limited_access && platform.width() > 768">
 
               <ion-button>
                 <ion-icon slot="start" name="pencil-outline"></ion-icon>
                 Edit
               </ion-button>
-  
+
               <ion-button color="danger" (click)="removeNote($event, note)">
                 <ion-icon slot="start" name="trash-outline"></ion-icon>
                 Delete
               </ion-button>
             </ion-buttons>
-  
+
           </ion-item>
           <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
             <ion-button (click)="addNote(note)">
               <ion-icon slot="start" name="pencil-outline"></ion-icon>
               Edit
             </ion-button>
-  
+
             <ion-button color="danger" (click)="removeNote($event, note)">
               <ion-icon slot="start" name="trash-outline"></ion-icon>
               Delete
@@ -537,7 +545,7 @@
             <p class="meta-data">{{ file.file_size | filesize }} {{ file.file_type }}</p>
 
             <p>{{file.file_description}}</p>
-            
+
             <p class="date">{{ toDate(file.file_created_datetime) | date: 'MMM d, y, h:mm:ss a' }}</p>
 
           </ion-label>
@@ -552,7 +560,7 @@
             </ion-button>
           </ion-buttons>
         </ion-item>
-   
+
         <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
           <ion-button (click)="editDoc($event, file)">
             <ion-icon slot="start" name="pencil-outline"></ion-icon>
@@ -573,7 +581,7 @@
       </ion-item>
 
     </section>
-    
+
     <!--    Transfer List-->
     <section *ngIf="segment == 'transfer'">
       <ion-list *ngIf="company.parentTransfers">
