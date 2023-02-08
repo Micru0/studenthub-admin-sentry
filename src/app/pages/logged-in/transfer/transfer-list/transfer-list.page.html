@@ -13,7 +13,7 @@
 
     <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
     <ion-buttons slot="end">
-      <ion-button (click)="showFilterPanel()">
+      <ion-button fill="outline" (click)="showFilterPanel()">
         Filter
       </ion-button>
     </ion-buttons>
@@ -24,7 +24,7 @@
 
   <ng-container *ngIf="showFilter">
 
-  <div class="content">
+  <div class="content ion-text-center">
     <ion-badge tappable color="primary" (click)="filterByStatus($event, '0')" [class.active]="!filters.suspicious && filters.transferStatus == '0'">All</ion-badge>
 
     <ion-badge tappable color="primary" (click)="filterByStatus($event, '10')" [class.active]="filters.transferStatus == '10'">Draft</ion-badge>
@@ -35,17 +35,19 @@
     <ion-badge tappable color="primary" (click)="filterSuspicious($event)" [class.active]="filters.suspicious">Transfer file amount mismatch</ion-badge>
 
     </div>
-    <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
-    <ion-button (click)="selectDate()" [color]="(filters.startDate) ? 'success' : 'primary'">
-      <span *ngIf="!filters.startDate">Select Start Date</span>
-      <span *ngIf="filters.startDate">Selected  : {{filters.startDate}}</span>
-    </ion-button>
-    <ion-button fill="clear" (click)="clearfilter(true)" *ngIf="filters.startDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
-    <ion-button (click)="selectDate(false)"  [color]="(filters.endDate) ? 'success' : 'primary'">
-      <span *ngIf="!filters.endDate">Select End Date</span>
-      <span *ngIf="filters.endDate">Selected  : {{filters.endDate}}</span>
-    </ion-button>
-    <ion-button fill="clear" (click)="clearfilter()" *ngIf="filters.endDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>
+    <ion-searchbar debounce="500" placeholder="Type to search invoice id, client…" (ionChange)="searchByName($event)"></ion-searchbar>
+    <div class="content ion-text-center">
+      <ion-badge tappable color="primary" (click)="selectDate()" fill="outline" [class.active]="filters.startDate">
+        <span *ngIf="!filters.startDate">Select Start Date</span>
+        <span *ngIf="filters.startDate">Selected : {{filters.startDate}}</span>
+      </ion-badge>
+      <!--    <ion-button fill="clear" (click)="clearfilter(true)" *ngIf="filters.startDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>-->
+      <ion-badge tappable color="primary" (click)="selectDate(false)"  fill="outline"  [class.active]="filters.endDate">
+        <span *ngIf="!filters.endDate">Select End Date</span>
+        <span *ngIf="filters.endDate">Selected : {{filters.endDate}}</span>
+      </ion-badge>
+      <!--    <ion-button fill="clear" (click)="clearfilter()" *ngIf="filters.endDate"><ion-icon name="refresh-outline"></ion-icon></ion-button>-->
+    </div>
   </ng-container>
 
   <!-- Transfer List -->
@@ -117,6 +119,7 @@
     </ion-card>
 
     <loading-modal [loading]="loading" type="transfer-list"></loading-modal>
+    <no-items *ngIf="!loading && transfers.length == 0" message="~ No Record Found ~"></no-items>
   </ion-list>
 
   <ion-infinite-scroll *ngIf="currentPage < pageCount" (ionInfinite)="doInfinite($event)">
