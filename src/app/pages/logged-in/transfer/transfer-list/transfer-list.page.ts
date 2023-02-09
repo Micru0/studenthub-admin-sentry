@@ -250,6 +250,17 @@ export class TransferListPage implements OnInit {
   }
 
   async selectDate(startDate = true) {
+
+    if (startDate && this.filters.startDate) {
+      this.filters.startDate = null;
+      this.loadData(1); // reload all result
+      return true;
+    } else if (!startDate && this.filters.endDate) {
+      this.filters.endDate = null;
+      this.loadData(1); // reload all result
+      return true;
+    }
+
     const options: CalendarModalOptions = {
       title: 'Select Date',
       canBackwardsSelected: true,
