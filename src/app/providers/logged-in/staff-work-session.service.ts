@@ -30,4 +30,13 @@ export class StaffWorkSessionService {
     let url = this._endpoint + '?page=' + page + '&expand=staff,dayActivity' + param;
     return this._authhttp.get(url, true);
   }
+
+  /**
+   * List of all inactive
+   * @returns {Observable<any>}
+   */
+  listInactive(page: number, param = ' '): Observable<any>{
+    let url = this._endpoint + '/list-inactive?page=' + page + '&expand=staff,dayActivity' + param;
+    return this._authhttp.get(url, true);
+  }
 }

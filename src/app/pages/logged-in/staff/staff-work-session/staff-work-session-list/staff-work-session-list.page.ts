@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {AlertController, ModalController, Platform, ToastController} from "@ionic/angular";
 import { Router } from "@angular/router";
 import {AuthService} from "src/app/providers/auth.service";
+
 import {isToday} from "date-fns";
 import {StaffWorkSessionService} from "src/app/providers/logged-in/staff-work-session.service";
 import { addDays,subDays,format } from 'date-fns'
-import {StaffPage} from "../../../picker/staff/staff.page";
+import {StaffPage} from "src/app/pages/logged-in/picker/staff/staff.page";
 
 @Component({
   selector: 'app-staff-work-session-list',
@@ -22,8 +23,14 @@ export class StaffWorkSessionListPage implements OnInit {
   public pageCount = 0;
   public currentPage = 1;
 
-  public staffWorkSessions:any[];
+  public inActivePageCount = 0;
+  public inActiveCurrentPage = 1;
+  public totalWorking = 0;
+  public totalNonWorking = 0;
 
+  public staffWorkSessions:any[];
+  public inActiveStaff:any[];
+  public selected = 'working';
   public filters: {
     staff_name: string,
     staff_id: string,
@@ -51,7 +58,8 @@ export class StaffWorkSessionListPage implements OnInit {
     this.filters.date = new Date();
     window.analytics.page('Daily working List Page');
 
-    this.loadData(this.currentPage);
+    this.loadData(1);
+    this.loadInactiveData(1);
   }
 
   resetFilter() {
@@ -73,7 +81,6 @@ export class StaffWorkSessionListPage implements OnInit {
     if (this.filters.staff_id) {
       urlParams += '&staff_id=' + this.filters.staff_id;
     }
-    console.log(this.filters.date);
 
     if (this.filters.date) {
       urlParams += '&date=' + format(new Date(this.filters.date),'dd-MM-yyyy');
@@ -97,12 +104,35 @@ export class StaffWorkSessionListPage implements OnInit {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalWorking = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.staffWorkSessions = response.body;
 
     }, () => {
       this.loading = false;
       this.deleting = false;
+    });
+  }
+
+  /**
+   * list banks
+   * @param page
+   */
+  async loadInactiveData(page, filter = false) {
+
+    this.loading = true;
+    const search = this.urlParams(filter);
+    this.staffWorkService.listInactive(page, search).subscribe(response => {
+
+      this.inActivePageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.inActiveCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalNonWorking = parseInt(response.headers.get('X-Pagination-Total-Count'));
+
+      this.loading = false;
+      this.inActiveStaff = response.body;
+
+    }, () => {
+      this.loading = false;
     });
   }
 
@@ -120,6 +150,28 @@ export class StaffWorkSessionListPage implements OnInit {
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
       this.staffWorkSessions = this.staffWorkSessions.concat(response.body);
+
+      event.target.complete();
+
+    }, () => {
+      this.loading = false;
+    });
+  }
+
+  doInfiniteInActive(event) {
+
+    this.loading = true;
+
+    this.inActiveCurrentPage++;
+    const search = this.urlParams();
+    this.staffWorkService.listInactive(this.inActiveCurrentPage, search).subscribe(response => {
+
+      this.loading = false;
+
+      this.inActivePageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.inActiveCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+
+      this.inActiveStaff = this.inActiveStaff.concat(response.body);
 
       event.target.complete();
 
@@ -169,10 +221,15 @@ export class StaffWorkSessionListPage implements OnInit {
       this.filters.date = subDays(new Date(this.filters.date), 1);
     }
     this.loadData(1);
+    this.loadInactiveData(1);
   }
 
   getTotal(dayActivity) {
     let total = dayActivity.reduce((prev, next) => (prev + next.total_minutes), 0);
     return (total * 60); //convert into seconds
+  }
+
+  tabChange(event) {
+    this.selected = event.detail.value;
   }
 }
