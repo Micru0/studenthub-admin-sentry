@@ -14,7 +14,11 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Daily Stand-up Answer</ion-title>
+    <ion-title>
+      Daily Stand-up Answer for  : {{filters.date | date}}
+      <ion-button (click)="adjustDate(0);"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
+      <ion-button (click)="adjustDate(1);"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
+    </ion-title>
 
     <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
 
@@ -22,10 +26,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card  *ngIf="showFilter">
-    <ion-card-header>
-      <ion-card-title>Filter by</ion-card-title>
-    </ion-card-header>
+  <ion-card>
     <ion-card-content>
       <ion-grid>
         <ion-row>
@@ -36,15 +37,15 @@
               <ion-input type="text" [(ngModel)]="filters.staff_name"></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
-            <!-- Filter by Tag -->
-            <ion-item>
-              <ion-label position="stacked" color="primary">Question</ion-label>
-              <ion-select [(ngModel)]="filters.question_uuid">
-                <ion-select-option [value]="question.question_uuid" *ngFor="let question of questions">{{question.question}}</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
+<!--          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">-->
+<!--            &lt;!&ndash; Filter by Tag &ndash;&gt;-->
+<!--            <ion-item>-->
+<!--              <ion-label position="stacked" color="primary">Question</ion-label>-->
+<!--              <ion-select [(ngModel)]="filters.question_uuid">-->
+<!--                <ion-select-option [value]="question.question_uuid" *ngFor="let question of questions">{{question.question}}</ion-select-option>-->
+<!--              </ion-select>-->
+<!--            </ion-item>-->
+<!--          </ion-col>-->
           <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
             <!-- Filter by Tag -->
             <ion-item>
@@ -52,18 +53,26 @@
               <ion-input type="date" [(ngModel)]="filters.date"></ion-input>
             </ion-item>
           </ion-col>
+          <ion-col size-md="4" size-lg="4" size-sm="6" size-xs="12" class="btn-ctrl">
+            <!-- Filter by Tag -->
+            <ion-button (click)="loadData(1);">Submit</ion-button>
+            <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-content>
 
-    <ion-card-header>
-      <ion-button (click)="loadData(1);">Submit</ion-button>
-      <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
-      <ion-button (click)="toggleFilter($event)" color="warning">Hide Filter</ion-button>
-    </ion-card-header>
-
   </ion-card>
-  <ion-list>
+  <ion-segment [value]="selected" (ionChange)="tabChange($event)">
+    <ion-segment-button value="working">
+      <ion-label>Working ({{totalWorking}})</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="non-working">
+      <ion-label>Non Working ({{totalNonWorking}})</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div class="active" *ngIf="selected == 'working'">
+    <ion-list>
       <ion-item tappable *ngFor="let answer of answers" (click)="viewAnswer(answer)">
         <div tabindex="0"></div>
         <ion-label>
@@ -83,12 +92,41 @@
         </ion-label>
       </ion-item>
 
-    <loading-modal [loading]="loading" type="text-list"></loading-modal>
-  </ion-list>
-  <no-items *ngIf="!loading && !answers.length" message="No Record Found"></no-items>
-  <ion-infinite-scroll *ngIf="currentPage < pageCount"
-    (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+      <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    </ion-list>
+    <no-items *ngIf="!loading && answers.length == 0" message="No Record Found"></no-items>
+    <ion-infinite-scroll *ngIf="currentPage < pageCount"
+                         (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+  <div class="in-active" *ngIf="selected == 'non-working'">
+    <ion-list>
+      <ion-card tappable *ngFor="let staff of inActiveStaff">
+        <ion-card-header>
+          <ion-card-title>{{ staff.staff_name }}</ion-card-title>
+          <ion-card-subtitle>
+            <span *ngIf="staff.staff_role == 1">Management</span>
+            <span *ngIf="staff.staff_role == 2">Engineering</span>
+            <span *ngIf="staff.staff_role == 3">Sales</span>
+            <span *ngIf="staff.staff_role == 4">Business development/ Govt & PR</span>
+            <span *ngIf="staff.staff_role == 5">Marketing and Design</span>
+            <span *ngIf="staff.staff_role == 6">Recruitment</span>
+            <span *ngIf="staff.staff_role == 7">Finance</span>
+            <span *ngIf="staff.staff_role == 8">HR</span>
+            <span *ngIf="staff.staff_role == 9">Customer success</span>
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+      <no-items *ngIf="!loading && inActiveStaff.length == 0" message="No Record Found For {{filters.date | date}}"></no-items>
+      <loading-modal [loading]="loading" type="text-list"></loading-modal>
+    </ion-list>
+
+    <ion-infinite-scroll *ngIf="inActiveCurrentPage < inActivePageCount"
+                         (ionInfinite)="doInfiniteInActive($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
 
 </ion-content>

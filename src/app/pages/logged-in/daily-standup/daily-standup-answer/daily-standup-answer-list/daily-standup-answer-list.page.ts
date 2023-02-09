@@ -8,7 +8,7 @@ import {DailyStandupAnswerService} from "src/app/providers/logged-in/daily-stand
 import {DailyStandupAnswer} from "src/app/models/daily-standup-answer";
 import {DailyStandupQuestionService} from "src/app/providers/logged-in/daily-standup-question.service";
 import {DailyStandupQuestion} from "src/app/models/daily-standup-question";
-import { isToday } from "date-fns";
+import {addDays, format, isToday, subDays} from "date-fns";
 import {DailyStandupAnswerViewPage} from "../daily-standup-answer-view/daily-standup-answer-view.page";
 import {StaffPage} from "../../../picker/staff/staff.page";
 
@@ -29,13 +29,19 @@ export class DailyStandupAnswerListPage implements OnInit {
 
   public questions: DailyStandupQuestion[];
   public answers: DailyStandupAnswer[];
+  public inActiveStaff = [];
+  public inActivePageCount = 0;
+  public inActiveCurrentPage = 1;
+  public totalWorking = 0;
+  public totalNonWorking = 0;
+  public selected = 'working';
 
   public filters: {
     staff_name: string,
     staff_id: string,
     question: string,
     question_uuid: string,
-    date: string,
+    date: any,
   } = {
     staff_name: null,
     staff_id: null,
@@ -58,11 +64,13 @@ export class DailyStandupAnswerListPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.filters.date = new Date();
     window.analytics.page('Daily Standup Answer List Page');
     let param = this.param.snapshot.paramMap.get('orderby');
 
     this.loadData(this.currentPage);
     this.loadQuestion();
+    this.loadInactiveData(1);
   }
 
   resetFilter() {
@@ -91,7 +99,7 @@ export class DailyStandupAnswerListPage implements OnInit {
     }
 
     if (this.filters.date) {
-      urlParams += '&date=' + this.filters.date;
+      urlParams += '&date=' + format(new Date(this.filters.date),'dd-MM-yyyy');
     }
     return urlParams;
   }
@@ -114,6 +122,7 @@ export class DailyStandupAnswerListPage implements OnInit {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalWorking = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.answers = response.body;
 
@@ -141,6 +150,7 @@ export class DailyStandupAnswerListPage implements OnInit {
 
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalWorking = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.answers = this.answers.concat(response.body);
 
@@ -206,4 +216,63 @@ export class DailyStandupAnswerListPage implements OnInit {
     });
     modal.present();
   }
+
+  adjustDate(param) {
+    if (param) {
+      this.filters.date = addDays(new Date(this.filters.date), 1);
+    } else {
+      this.filters.date = subDays(new Date(this.filters.date), 1);
+    }
+    this.loadData(1);
+    this.loadInactiveData(1);
+  }
+
+  /**
+   * @param page
+   * @param filter
+   */
+  async loadInactiveData(page, filter = false) {
+
+    this.loading = true;
+    const search = this.urlParams();
+    this.answerService.listInactive(page, search).subscribe(response => {
+
+      this.inActivePageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.inActiveCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalNonWorking = parseInt(response.headers.get('X-Pagination-Total-Count'));
+
+      this.loading = false;
+      this.inActiveStaff = response.body;
+
+    }, () => {
+      this.loading = false;
+    });
+  }
+
+  tabChange(event) {
+    this.selected = event.detail.value;
+  }
+
+  doInfiniteInActive(event) {
+
+    this.loading = true;
+
+    this.inActiveCurrentPage++;
+    const search = this.urlParams();
+    this.answerService.listInactive(this.inActiveCurrentPage, search).subscribe(response => {
+
+      this.loading = false;
+
+      this.inActivePageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.inActiveCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+
+      this.inActiveStaff = this.inActiveStaff.concat(response.body);
+
+      event.target.complete();
+
+    }, () => {
+      this.loading = false;
+    });
+  }
+
 }
