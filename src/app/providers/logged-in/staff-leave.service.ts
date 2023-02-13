@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {AuthHttpService} from "./logged-in/authhttp.service";
+import {AuthHttpService} from "../logged-in/authhttp.service";
 
 @Injectable({
   providedIn: 'root'

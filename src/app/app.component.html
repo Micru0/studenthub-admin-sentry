@@ -163,18 +163,10 @@
             </ion-item-divider>
 
             <ion-menu-toggle auto-hide="false">
-              <ion-item lines="none" [routerLink]="'daily-standup-question-list'">
-                <div tabindex="0"></div>
-                <ion-icon name="chatbox-outline" slot="start"></ion-icon>
-                <ion-label class="ion-text-wrap">Daily Stand-up Question</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-
-            <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'daily-standup-answer-list'">
                 <div tabindex="0"></div>
                 <ion-icon name="chatbox-outline" slot="start"></ion-icon>
-                <ion-label class="ion-text-wrap">Daily Stand-up Answer</ion-label>
+                <ion-label class="ion-text-wrap">Staff Daily Stand-up Answer</ion-label>
               </ion-item>
             </ion-menu-toggle>
             <ion-menu-toggle auto-hide="false">
@@ -182,6 +174,14 @@
                 <div tabindex="0"></div>
                 <ion-icon name="chatbox-outline" slot="start"></ion-icon>
                 <ion-label class="ion-text-wrap">Staff Work Session</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'staff-expense-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="cash-outline" slot="start"></ion-icon>
+                <ion-label>Staff Expenses</ion-label>
               </ion-item>
             </ion-menu-toggle>
 
@@ -229,13 +229,16 @@
               <ion-label>Entities </ion-label>
             </ion-item-divider>
 
+
             <ion-menu-toggle auto-hide="false">
-              <ion-item lines="none" [routerLink]="'staff-expense-list'">
+              <ion-item lines="none" [routerLink]="'daily-standup-question-list'">
                 <div tabindex="0"></div>
-                <ion-icon name="cash-outline" slot="start"></ion-icon>
-                <ion-label>Staff Expenses</ion-label>
+                <ion-icon name="chatbox-outline" slot="start"></ion-icon>
+                <ion-label class="ion-text-wrap">Daily Stand-up Question</ion-label>
               </ion-item>
             </ion-menu-toggle>
+
+
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" routerLink="expense-list">
                 <div tabindex="0"></div>
