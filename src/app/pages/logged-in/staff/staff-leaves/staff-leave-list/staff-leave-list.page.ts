@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AwsService} from "src/app/providers/aws.service";
-import {StaffLeaveService} from "src/app/providers/staff-leave.service";
+import {StaffLeaveService} from "src/app/providers/logged-in/staff-leave.service";
 import {AlertController, ToastController} from "@ionic/angular";
 import {StaffLeave} from "src/app/models/staff-leave";
 
