@@ -25,6 +25,7 @@ import { UploadFilePage } from '../upload-file/upload-file.page';
 import { CompanyNoteFormPage } from '../company-note-form/company-note-form.page';
 import {Contact} from "../../../../models/contact";
 import { ModalPopPage } from '../../modal-pop/modal-pop.page';
+import {StaffPage} from "src/app/pages/logged-in/picker/staff/staff.page";
 
 
 @Component({
@@ -65,7 +66,7 @@ export class CompanyViewPage implements OnInit {
   constructor(
     public platform: Platform,
     public router: Router,
-    public activatedRoute: ActivatedRoute,    
+    public activatedRoute: ActivatedRoute,
     public navCtrl: NavController,
     private _toastCtrl: ToastController,
     private modalCtrl: ModalController,
@@ -86,7 +87,7 @@ export class CompanyViewPage implements OnInit {
     // Load the passed model if available
     if (window.history.state) {
       this.company = window.history.state.model;
-    } 
+    }
 
     this.company_id = this.activatedRoute.snapshot.paramMap.get('company_id');
 
@@ -144,7 +145,7 @@ export class CompanyViewPage implements OnInit {
       }
     }
   }
-  
+
   /**
    * Loads Form in modal to update
    */
@@ -415,7 +416,7 @@ export class CompanyViewPage implements OnInit {
           handler: () => {
 
             this.deleting = true;
-                    
+
             this.noteService.delete(note).subscribe(async response => {
 
               this.deleting = false;
@@ -423,7 +424,7 @@ export class CompanyViewPage implements OnInit {
               if (response.operation == 'success') {
                 this.loadData(true);
               } else {
-                
+
                 this.deleting = false;
 
                 // failer text
@@ -446,7 +447,7 @@ export class CompanyViewPage implements OnInit {
     });
     confirm.present();
   }
-  
+
   loadContacts() {
     this.companyContactService.companyContacts(this.company_id).subscribe(data => {
       this.companyContacts = data;
@@ -455,7 +456,7 @@ export class CompanyViewPage implements OnInit {
 
   /**
    * onn contact selected
-   * @param companyContact 
+   * @param companyContact
    */
   async onContactSelected(companyContact) {
     this.router.navigate(['company-contact-view', companyContact.contact_uuid, this.company.company_id], {
@@ -510,7 +511,7 @@ export class CompanyViewPage implements OnInit {
 
     event.preventDefault();
     event.stopPropagation();
-   
+
     const confirm = await this.alertCtrl.create({
       header: 'Delete Contact',
       message: 'Do you want to delete this contact?',
@@ -563,7 +564,7 @@ export class CompanyViewPage implements OnInit {
   }
 
   async editSelected(ev, brand) {
-    
+
     ev.preventDefault();
     ev.stopPropagation();
 
@@ -784,7 +785,7 @@ export class CompanyViewPage implements OnInit {
   }
 
   async editDoc(event, file) {
-    
+
     event.preventDefault();
     event.stopPropagation();
 
@@ -813,11 +814,11 @@ export class CompanyViewPage implements OnInit {
   }
 
   toggleFollowup($event) {
-    
+
     this.followup = $event.detail.checked;
-    
+
     this.company.company_followup = $event.detail.checked;
-   
+
     this.updating = true;
 
     this.companyService.updateFollowup(this.company).subscribe(async response => {
@@ -850,23 +851,23 @@ export class CompanyViewPage implements OnInit {
 
   /**
    * update status
-   * @param $event 
+   * @param $event
    */
   changeStatus($event) {
-    
+
     this.companyStatusOverride = $event.detail.checked;
     this.companyStatus = $event.detail.checked;
-    
+
     this.updating = true;
-    
+
     const status = ($event.detail.checked) ? 1 : 0;
 
     this.companyService.changeStatus(this.company, status).subscribe(async response => {
-      
+
       this.updating = false;
 
       if (response && response.operation == 'success') {
-        
+
         this.eventService.reloadCompanyList$.next({});
 
         const toast = await this._toastCtrl.create({
@@ -943,5 +944,50 @@ export class CompanyViewPage implements OnInit {
   }
   convertStringToInt(str){
     return parseInt(str);
+  }
+
+  async updateManagedBy(event) {
+      window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+      const modal = await this.modalCtrl.create({
+        component: StaffPage,
+        componentProps: {
+          popup: true
+        }
+      });
+      modal.onDidDismiss().then(e => {
+
+        if (!e.data || e.data.from != 'native-back-btn') {
+          window['history-back-from'] = 'onDidDismiss';
+          window.history.back();
+        }
+        if (e.data) {
+          this.updating = true;
+          this.updateStaff(e.data);
+        }
+      });
+      modal.present();
+  }
+
+  updateStaff(staff) {
+    this.companyService.updateStaff(this.company, staff.staff_id).subscribe(async response => {
+
+      this.updating = false;
+
+      if (response && response.operation == 'success') {
+
+        this.loadData();
+        this.eventService.reloadCompanyList$.next({});
+
+        const toast = await this._toastCtrl.create({
+          message: response.message,
+          duration: 3000
+        });
+        toast.present();
+      }
+
+    }, () => {
+      this.updating = false;
+    });
   }
 }

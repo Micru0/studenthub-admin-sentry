@@ -36,6 +36,7 @@
 
     <ion-badge tappable color="primary" (click)="filterByApprovedToHire($event, 1)" [class.active]="filters.approved_to_hire == 1">Approved to hire</ion-badge>
     <ion-badge tappable color="primary" (click)="filterByApprovedToHire($event, 0)" [class.active]="filters.approved_to_hire == 0">Not approved to hire</ion-badge>
+    <ion-badge tappable color="primary" (click)="filterByStaff($event)" [class.active]="filters.staff">Manage By : {{this.filters.staff ? this.filters.staff.staff_name : 'All'}}</ion-badge>
 
   </div>
   <ion-list>
@@ -64,6 +65,10 @@
 
           <ion-badge slot="start" *ngIf="company.total_stores > 0">
             {{ company.total_stores }} stores
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.staff">
+            Managed By {{company.staff.staff_name}}
           </ion-badge>
 
           <ion-badge slot="start" color="success" *ngIf="company.company_approved_to_hire">
@@ -99,7 +104,7 @@
     </ion-item-sliding>
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
-
+    <no-items *ngIf="!loading && companies.length == 0" message='~ No Company Record Found ~'></no-items>
   </ion-list>
   <ion-infinite-scroll *ngIf="currentPage < pageCount"
     (ionInfinite)="doInfinite($event)">

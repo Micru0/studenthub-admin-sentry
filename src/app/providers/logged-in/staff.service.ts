@@ -28,21 +28,32 @@ export class StaffService {
     let url = this._staffEndpoint + '?page=' + page + param + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions';
     return this._authhttp.get(url, true);
   }
-  
+
+  /**
+   * List of all staff
+   * @param staffID
+   * @param page
+   * @param param
+   */
+  listCompanies(staffID, page: number, param: any = null): Observable<any>{
+    let url = this._staffEndpoint + '/list-companies/'+staffID+'?page=' + page;
+    return this._authhttp.get(url, true);
+  }
+
   /**
    * view staff details
-   * @param staff_id 
-   * @returns 
+   * @param staff_id
+   * @returns
    */
   view(staff_id): Observable<any>{
-    let url = this._staffEndpoint + '/' + staff_id + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions';
+    let url = this._staffEndpoint + '/' + staff_id + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions,companies';
     return this._authhttp.get(url);
   }
-  
+
   /**
    * view staff salaries
-   * @param staff_id 
-   * @returns 
+   * @param staff_id
+   * @returns
    */
   listSalaries(staff_id: number, page: number): Observable<any>{
     let url = this._staffEndpoint + '/list-salaries/' + staff_id + '?page=' + page;
@@ -51,8 +62,8 @@ export class StaffService {
 
   /**
    * import salary
-   * @param staff_salary_uuid 
-   * @returns 
+   * @param staff_salary_uuid
+   * @returns
    */
   viewSalary(staff_salary_uuid): Observable<any>{
     let url = this._staffEndpoint + '/view-salary/' + staff_salary_uuid;
@@ -61,21 +72,21 @@ export class StaffService {
 
   /**
    * import excel
-   * @param excel 
-   * @returns 
+   * @param excel
+   * @returns
    */
   importSalaryExcel(excel) : Observable<any>{
     let url = this._staffEndpoint + '/import-salary';
     return this._authhttp.post(url, {
-      excel: excel 
+      excel: excel
     });
   }
 
   /**
-   * add staff salary 
-   * @param staff_id 
-   * @param model 
-   * @returns 
+   * add staff salary
+   * @param staff_id
+   * @param model
+   * @returns
    */
   addSalary(staff_id: number, model: StaffSalary): Observable<any>{
     let postUrl = `${this._staffEndpoint}/add-salary/${staff_id}`;
@@ -91,9 +102,9 @@ export class StaffService {
 
   /**
    * update salary
-   * @param staff_salary_uuid 
-   * @param model 
-   * @returns 
+   * @param staff_salary_uuid
+   * @param model
+   * @returns
    */
   updateSalary(staff_salary_uuid, model: StaffSalary): Observable<any>{
     let postUrl = `${this._staffEndpoint}/update-salary/${staff_salary_uuid}`;
