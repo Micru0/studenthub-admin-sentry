@@ -61,15 +61,20 @@ export class StaffViewPage implements OnInit {
   public IPageCount;
   public ICurrentPage;
 
+  public CPageCount;
+  public CCurrentPage;
+
   public notes: Note[];
   public requests: Request[];
   public stories: Story[];
   public salaries = [];
   public invitations = [];
+  public companies = [];
 
   public candidateWorkHistory: CandidateWorkHistory[];
   public loadCandidateWorkHistory = false;
   public loading = false;
+  public CLoading = false;
   public RLoading = false;
   public NLoading = false;
   public SLoading = false;
@@ -276,6 +281,9 @@ export class StaffViewPage implements OnInit {
 
     if (this.segment == 'stand-up') {
         this.loadStandupData();
+    }
+    if (this.segment == 'companies') {
+        this.loadCompanies(1);
     }
   }
 
@@ -769,6 +777,49 @@ export class StaffViewPage implements OnInit {
 
       this.invitations = this.invitations.concat(response.body);
       this.ILoading = false;
+      event.target.complete();
+    }, () => {
+    });
+  }
+  /**
+   *
+   * @param page
+   * @param silent
+   */
+  async loadCompanies(page: number, silent = false) {
+
+    if (!silent) {
+      this.CLoading = true;
+    }
+    let params = this.urlParams() + '&expand=candidate';
+
+    this.staffService.listCompanies(this.staff_id, page, params).subscribe(response => {
+
+      this.CPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.CCurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.companies = response.body;
+      this.CLoading = false;
+
+    }, () => {
+      this.CLoading = false;
+    });
+  }
+
+  doInfiniteCompanies(event) {
+
+    this.CCurrentPage++;
+
+    this.CLoading = true;
+    let params = this.urlParams() + '&expand=candidate';
+
+    this.staffService.listCompanies(this.staff_id, this.CCurrentPage, params).subscribe(response => {
+
+      this.CPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
+      this.ICurrentPage = parseInt(response.headers.get('X-Pagination-Current-Page'), 10);
+
+      this.companies = this.companies.concat(response.body);
+      this.CLoading = false;
       event.target.complete();
     }, () => {
     });

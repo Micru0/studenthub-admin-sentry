@@ -156,6 +156,17 @@
         <ion-item>
           <div tabindex="0"></div>
           <ion-label>
+            <h3>Managed By </h3>
+            <p tappable [routerLink]="['/staff-view/',company.staff_id,1,1]" *ngIf="company.staff_id">{{ company.staff.staff_name }}</p>
+            <ion-button (click)="updateManagedBy($event)">
+              <ion-icon name="pencil-outline"></ion-icon> Change
+            </ion-button>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>
             <h3>Description - English</h3>
             <p *ngIf="company.company_description_en" [innerHTML]="company.company_description_en"></p>
             <p *ngIf="!company.company_description_en">-</p>

@@ -25,7 +25,7 @@ export class CompanyService {
    */
   list(page: number, searchParams: string): Observable<any> {
     // const url = this._companyEndpoint + '?page=' + page + searchParams + '&expand=files,notes,notes.staff,stores,subCompanies';
-    const url = this._companyEndpoint + '?page=' + page + searchParams;
+    const url = this._companyEndpoint + '?page=' + page + searchParams+ '&expand=staff'
     return this._authhttp.get(url, true);
   }
 
@@ -35,7 +35,7 @@ export class CompanyService {
    */
   viewYearReport(company_id: number, year: number): Observable<any> {
     let url = `${this._companyEndpoint}/year-report?company_id=${company_id}`;
-    
+
     if (year) {
       url += `&year=${year}`;
     }
@@ -109,7 +109,7 @@ export class CompanyService {
    */
   view(company_id: string): Observable<any> {
     // const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,notes,notes.createdBy,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
-    const url = `${this._companyEndpoint}/${company_id}?expand=subCompanies,stores,files,brands,requests,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
+    const url = `${this._companyEndpoint}/${company_id}?expand=staff,subCompanies,stores,files,brands,requests,parentTransfers,parentTransfers.childTransfers,parentTransfers.childTransfers.company`;
     return this._authhttp.get(url);
   }
 
@@ -140,7 +140,7 @@ export class CompanyService {
 
   /**
    * update follow up
-   * @param model 
+   * @param model
    */
   updateFollowup(model: Company): Observable<any> {
     const url = `${this._companyEndpoint}/update-followup/${model.company_id}`;
@@ -152,8 +152,8 @@ export class CompanyService {
 
   /**
    * update follow up interval in weeks
-   * @param company_id 
-   * @param company_followup_interval_weeks 
+   * @param company_id
+   * @param company_followup_interval_weeks
    */
   updateFollowupInterval(company_id, company_followup_interval_weeks): Observable<any> {
     const url = `${this._companyEndpoint}/update-followup-interval/${company_id}`;
@@ -206,5 +206,10 @@ export class CompanyService {
   changeStatus(model: Company, status: number = 10): Observable<any> {
     const url = `${this._companyEndpoint}/change-status/${model.company_id}`;
     return this._authhttp.patch(url, { status });
+  }
+
+  updateStaff(model: Company, staff_id: null): Observable<any> {
+    const url = `${this._companyEndpoint}/update-staff/${model.company_id}`;
+    return this._authhttp.patch(url, { staff_id });
   }
 }

@@ -32,6 +32,9 @@
       <ion-segment-button value="assign_candidate">
         <ion-label>Candidate</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="companies">
+        <ion-label>Companies</ion-label>
+      </ion-segment-button>
       <ion-segment-button value="request">
         <ion-label>Request</ion-label>
       </ion-segment-button>
@@ -63,6 +66,11 @@
       <ion-select-option value="request">
         Request
       </ion-select-option>
+
+      <ion-select-option value="companies">
+        Companies
+      </ion-select-option>
+
       <ion-select-option value="salaries"  *ngIf="authService.restrictedAccess()">
         Salaries
       </ion-select-option>
@@ -389,7 +397,6 @@
       </ion-infinite-scroll>
 
     </section>
-
     <section *ngIf="segment == 'note'" class="ion-padding">
       <ion-card *ngFor="let note of notes">
         <ion-badge>
@@ -431,6 +438,66 @@
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
     </section>
+
+    <section *ngIf="segment == 'companies'" class="ion-padding">
+
+      <ng-container *ngIf="companies">
+        <ion-item *ngFor="let company of companies" tappable [routerLink]="['/company-view/',company.company_id]">
+        <div tabindex="0"></div>
+        <ion-label class="ion-text-wrap">
+          {{ company.company_name }}<br/>
+          <ion-badge class="company_status_badge" slot="start" color="danger" *ngIf="!company.company_status">
+            Inactive
+          </ion-badge>
+          <ion-badge class="company_status_badge" slot="start" color="success" *ngIf="company.company_status">
+            Active
+          </ion-badge>
+          <ion-badge color="medium" slot="start" *ngIf="company.total_suggestions > 0">
+            {{ company.total_suggestions }} suggestions
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.total_candidates > 0">
+            {{ company.total_candidates }} employed
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.total_subcompanies > 0">
+            {{ company.total_subcompanies }} sub-companies
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.total_stores > 0">
+            {{ company.total_stores }} stores
+          </ion-badge>
+
+          <ion-badge slot="start" *ngIf="company.staff">
+            Managed By {{company.staff.staff_name}}
+          </ion-badge>
+
+          <ion-badge slot="start" color="success" *ngIf="company.company_approved_to_hire">
+            <ion-icon name="checkmark-outline"></ion-icon> Approved to hire
+          </ion-badge>
+
+          <ion-badge slot="start" color="warning" *ngIf="!company.company_approved_to_hire">
+            <ion-icon name="close-outline"></ion-icon> Not approved to hire
+          </ion-badge>
+        </ion-label>
+        <ion-avatar slot="start">
+          <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
+          <img *ngIf="!company.company_logo" src="/assets/icon.png">
+        </ion-avatar>
+
+      </ion-item>
+      </ng-container>
+      <no-items *ngIf="!CLoading && companies.length == 0" message='~ No Company Record Found ~'></no-items>
+
+      <loading-modal type="review-list" [loading]="SLoading"></loading-modal>
+
+      <ion-infinite-scroll *ngIf="SCurrentPage < SPageCount" (ionInfinite)="doInfiniteCompanies($event)">
+        <ion-infinite-scroll-content>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+    </section>
+
   </ion-list>
 
   <loading-modal [loading]="loading" type="university-view"></loading-modal>

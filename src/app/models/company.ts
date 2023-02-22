@@ -1,6 +1,7 @@
 import { Store } from './store';
 import { CompanyContact } from './company-contact';
 import { Request } from './request';
+import {Staff} from "src/app/models/staff";
 
 export class Company {
     company_id: number;
@@ -33,12 +34,14 @@ export class Company {
     transferInLast40Days: number;
     company_approved_to_hire: any;
     password: any;
+    staff_id: any;
     subcompanies: Company[];
     subCompanies: Company[];
     stores: Store[];
     files: any[];
     brands: any[];
     notes: any[];
+    staff: Staff;
     companyContacts: CompanyContact[];
     requests: Request[];
     parentTransfers: any[];

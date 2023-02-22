@@ -10,6 +10,7 @@ import { AwsService } from '../../../../providers/aws.service';
 import { EventService } from '../../../../providers/event.service';
 // pages
 import { CompanyFormPage } from '../company-form/company-form.page';
+import {StaffPage} from "src/app/pages/logged-in/picker/staff/staff.page";
 
 
 @Component({
@@ -35,10 +36,12 @@ export class CompanyListPage implements OnInit {
     name: string,
     status: any,
     approved_to_hire: any
+    staff: any
   } = {
       name: null,
       status: 4,
-      approved_to_hire: null
+      approved_to_hire: null,
+      staff: 0
     };
 
   constructor(
@@ -216,7 +219,8 @@ export class CompanyListPage implements OnInit {
     this.filters = {
       name: this.filters.name,
       status: 4,
-      approved_to_hire: null
+      approved_to_hire: null,
+      staff: 0
     };
 
     this.loadData(1); // reload all result
@@ -226,7 +230,8 @@ export class CompanyListPage implements OnInit {
     this.filters = {
       name: null,
       status: 4,
-      approved_to_hire: null
+      approved_to_hire: null,
+      staff: 0
     };
 
     this.loadData(1); // reload all result
@@ -250,6 +255,10 @@ export class CompanyListPage implements OnInit {
       urlParams += '&approved_to_hire=' + this.filters.approved_to_hire;
     }
 
+    if (this.filters.staff) {
+      urlParams += '&staff_id=' + this.filters.staff.staff_id;
+    }
+
     return urlParams;
   }
 
@@ -259,7 +268,7 @@ export class CompanyListPage implements OnInit {
   }
 
   filterByStatus($event, status) {
-    
+
     if(this.filters.status == status) {
       this.filters.status = null;
     } else {
@@ -306,4 +315,39 @@ export class CompanyListPage implements OnInit {
     });
     confirm.present();
   }
+
+  /**
+   * filter by staff
+   * @param event
+   */
+  async filterByStaff(event) {
+
+    if(this.filters.staff) {
+      this.filters.staff = 0;
+      this.loadData(1);
+      return false;
+    }
+
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: StaffPage,
+      componentProps: {
+        popup: true
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+      if (e.data) {
+        this.filters.staff = e.data;
+        this.loadData(1);
+      }
+    });
+    modal.present();
+  }
+
 }
