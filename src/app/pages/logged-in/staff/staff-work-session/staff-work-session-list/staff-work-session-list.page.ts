@@ -35,10 +35,14 @@ export class StaffWorkSessionListPage implements OnInit {
     staff_name: string,
     staff_id: string,
     date: any,
+    startDate: any,
+    endDate: any,
   } = {
     staff_name: null,
     staff_id: null,
     date: null,
+    startDate: null,
+    endDate: null,
   };
 
 
@@ -55,7 +59,8 @@ export class StaffWorkSessionListPage implements OnInit {
   }
 
   ngOnInit() {
-    this.filters.date = new Date();
+    this.filters.startDate = new Date();
+    this.filters.endDate = new Date();
     window.analytics.page('Daily working List Page');
 
     this.loadData(1);
@@ -66,9 +71,12 @@ export class StaffWorkSessionListPage implements OnInit {
     this.filters = {
       staff_name: null,
       staff_id: null,
-      date: null
+      date: null,
+      startDate: null,
+      endDate: null
     };
-    this.filters.date = new Date();
+    this.filters.startDate = new Date();
+    this.filters.endDate = new Date();
     this.loadData(1); // reload all result
   }
 
@@ -81,9 +89,12 @@ export class StaffWorkSessionListPage implements OnInit {
     if (this.filters.staff_id) {
       urlParams += '&staff_id=' + this.filters.staff_id;
     }
+    if (this.filters.startDate) {
+      urlParams += '&startDate=' + format(new Date(this.filters.startDate),'dd-MM-yyyy');
+    }
 
-    if (this.filters.date) {
-      urlParams += '&date=' + format(new Date(this.filters.date),'dd-MM-yyyy');
+    if (this.filters.endDate) {
+      urlParams += '&endDate=' + format(new Date(this.filters.endDate),'dd-MM-yyyy');
     }
     return urlParams;
   }
@@ -216,9 +227,11 @@ export class StaffWorkSessionListPage implements OnInit {
 
   adjustDate(param) {
     if (param) {
-      this.filters.date = addDays(new Date(this.filters.date), 1);
+      this.filters.startDate = addDays(new Date(this.filters.startDate), 1);
+      this.filters.endDate = addDays(new Date(this.filters.endDate), 1);
     } else {
-      this.filters.date = subDays(new Date(this.filters.date), 1);
+      this.filters.startDate = subDays(new Date(this.filters.startDate), 1);
+      this.filters.endDate = subDays(new Date(this.filters.endDate), 1);
     }
     this.loadData(1);
     this.loadInactiveData(1);
