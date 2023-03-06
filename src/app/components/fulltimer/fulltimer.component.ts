@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {AwsService} from '../../providers/aws.service';
 import {Fulltimer} from "../../models/fulltimer";
+import {SuggestionService} from "src/app/providers/logged-in/suggestion.service";
+import {AuthService} from "src/app/providers/auth.service";
 
 @Component({
   selector: 'app-fulltimer',
@@ -11,10 +13,13 @@ import {Fulltimer} from "../../models/fulltimer";
 export class FulltimerComponent implements OnInit {
 
   @Input() fulltimer: Fulltimer;
+  @Input() suggestion: any;
   public resume;
   constructor(
       public router: Router,
       public aws: AwsService,
+      public suggestionService: SuggestionService,
+      public authService: AuthService,
   ) { }
 
   ngOnInit() {
@@ -40,5 +45,15 @@ export class FulltimerComponent implements OnInit {
    */
   loadLogo($event, candidate) {
     candidate.candidate_personal_photo = null;
+  }
+
+  changeStatus(event, suggestion, status) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.suggestionService.changeStatus(suggestion.suggestion_uuid, status).subscribe(res => {
+      if (res.operation == 'success') {
+        this.suggestion.suggestion_status = status;
+      }
+    })
   }
 }

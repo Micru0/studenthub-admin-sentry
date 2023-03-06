@@ -182,7 +182,7 @@ export class RequestViewPage implements OnInit {
     if (!silent) {
       this.loading = true;
     }
-    const searchParams = '&expand=candidate&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=candidate,fulltimer&request_uuid=' + this.request_uuid;
     this.suggestionService.list(page, searchParams).subscribe(response => {
 
       this.SPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);
@@ -205,7 +205,7 @@ export class RequestViewPage implements OnInit {
     this.SCurrentPage++;
 
     this.loading = true;
-    const searchParams = '&expand=candidate&request_uuid=' + this.request_uuid;
+    const searchParams = '&expand=candidate,fulltimer&request_uuid=' + this.request_uuid;
     this.suggestionService.list(this.SCurrentPage, searchParams).subscribe(response => {
 
       this.SPageCount = parseInt(response.headers.get('X-Pagination-Page-Count'), 10);

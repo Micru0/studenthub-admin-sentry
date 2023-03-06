@@ -21,4 +21,15 @@ export class SuggestionService {
     const url = this._endPoint + '?page=' + page + params;
     return this._authhttp.get(url, true);
   }
+
+  /**
+   * changeStatus
+   * @returns {Observable<any>}
+   */
+  changeStatus(suggestionUUID, status): Observable<any>{
+    const url = this._endPoint + '/change-status/' + suggestionUUID;
+    return this._authhttp.patch(url, {
+      status
+    });
+  }
 }

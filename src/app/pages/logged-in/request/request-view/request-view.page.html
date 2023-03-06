@@ -95,7 +95,11 @@
   </section>
   <section *ngIf="segment == 'suggestions'">
     <ion-list *ngIf="suggestions && suggestions.length > 0">
-        <app-candidate *ngFor="let suggestion of suggestions" [candidate]="suggestion.candidate"></app-candidate>
+      <ng-container *ngFor="let suggestion of suggestions" >
+        <app-candidate [suggestion]="suggestion" [candidate]="suggestion.candidate" *ngIf="suggestion.candidate_id"></app-candidate>
+        <app-fulltimer [suggestion]="suggestion" [fulltimer]="suggestion.fulltimer" *ngIf="suggestion.fulltimer_uuid"></app-fulltimer>
+
+      </ng-container>
     </ion-list>
     <ion-infinite-scroll *ngIf="SCurrentPage < SPageCount"
                          (ionInfinite)="doSuggestionsInfinite($event)">

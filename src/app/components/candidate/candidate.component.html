@@ -26,6 +26,17 @@
     <ion-badge *ngIf="candidate.deleted" color="danger">
       Deleted
     </ion-badge>
+    <div *ngIf="suggestion">
+      <p>Suggested on: {{suggestion.suggestion_datetime | date}}</p>
+      <p>Suggested Status:
+        <span *ngIf="suggestion.suggestion_status == 0">Pending</span>
+        <span *ngIf="suggestion.suggestion_status == 1">Suggested</span>
+        <span *ngIf="suggestion.suggestion_status == 2">Rejected</span>
+        <span *ngIf="suggestion.suggestion_status == 3">Accepted</span>
+      </p>
+      <ion-button (click)="changeStatus($event, suggestion,3)" *ngIf="suggestion.suggestion_status != 3 && authService.restrictedAccess()">Accepted</ion-button>
+      <ion-button (click)="changeStatus($event, suggestion,2)" *ngIf="suggestion.suggestion_status != 2 && authService.restrictedAccess()">Rejected</ion-button>
+      <ion-button (click)="changeStatus($event, suggestion,1)" *ngIf="suggestion.suggestion_status != 1 && authService.restrictedAccess()">Suggested</ion-button>
+    </div>
   </ion-label>
-
 </ion-item>
