@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>App Setting</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button clear color="primary" 
+        [disabled]="!form || !form.valid"
+        (click)="save()">
+        <span *ngIf="!saving">Save</span>
+        <ion-spinner *ngIf="saving"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form [formGroup]="form" *ngIf="form">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+                
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                Segment <ion-toggle formControlName="Segment-Status"></ion-toggle>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content *ngIf="form.value['Segment-Status']">
+                               
+              <ion-item class="field-password">
+                <ion-label position="floating">Segment Key</ion-label>
+                <ion-input [type]="type['Segment-Key']? type['Segment-Key']: 'password'" formControlName="Segment-Key"></ion-input>
+                 
+                <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Segment-Key')">
+                  <ion-icon *ngIf="type['Segment-Key'] == 'password'" name="eye"></ion-icon>
+                  <ion-icon *ngIf="type['Segment-Key'] != 'password'" name="eye-off"></ion-icon>
+                </ion-button>
+              </ion-item>
+
+              <ion-item class="field-password">
+                <ion-label position="floating">Segment Key for Wallet App</ion-label>
+                <ion-input [type]="type['Segment-Key-Wallet']? type['Segment-Key-Wallet']: 'password'" formControlName="Segment-Key-Wallet"></ion-input>
+                  
+                <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Segment-Key-Wallet')">
+                  <ion-icon *ngIf="type['Segment-Key-Wallet'] == 'password'" name="eye"></ion-icon>
+                  <ion-icon *ngIf="type['Segment-Key-Wallet'] != 'password'" name="eye-off"></ion-icon>
+                </ion-button>
+              </ion-item>
+
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col>
+                
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                Mixpanel <ion-toggle formControlName="Mixpanel-Status"></ion-toggle>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content  *ngIf="form.value['Mixpanel-Status']">
+              <ion-item class="field-password">
+                <ion-label position="floating">Mixpanel Key</ion-label>
+                <ion-input [type]="type['Mixpanel-Key']? type['Mixpanel-Key']: 'password'" formControlName="Mixpanel-Key"></ion-input>
+                      
+                <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Mixpanel-Key')">
+                  <ion-icon *ngIf="type['Mixpanel-Key'] == 'password'" name="eye"></ion-icon>
+                  <ion-icon *ngIf="type['Mixpanel-Key'] != 'password'" name="eye-off"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </form>
+
+</ion-content>
