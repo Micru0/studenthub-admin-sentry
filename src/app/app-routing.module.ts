@@ -643,10 +643,16 @@ const routes: Routes = [
       navDisable: false,
     }
   },
+  
+  {
+    path: 'setting',
+    loadChildren: () => import('./pages/logged-in/setting/setting.module').then( m => m.SettingPageModule)
+  },
   {
     path: '**',
     redirectTo: 'not-found'
   },
+
 ];
 
 @NgModule({
