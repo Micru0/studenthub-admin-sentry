@@ -8,6 +8,7 @@ export class Staff{
     staff_gmail_password: string;
     staff_role: number;
     staff_salary: string;
+    staff_photo: string;
     staff_salary_currency: string;
     hours_per_day: number;
     week_start_day: number;

@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, ToastController, ModalController } from '@ionic/angular';
+import {
+  AlertController,
+  ToastController,
+  ModalController,
+  IonButton,
+  ActionSheetController,
+  Platform
+} from '@ionic/angular';
 import { CustomValidator } from 'src/app/validators/custom.validator';
 import { ActivatedRoute } from '@angular/router';
 //models
@@ -8,6 +15,10 @@ import { Staff } from 'src/app/models/staff';
 //services
 import { StaffService } from 'src/app/providers/logged-in/staff.service';
 import { AuthService } from 'src/app/providers/auth.service';
+import {Subscription} from "rxjs";
+import {AwsService} from "src/app/providers/aws.service";
+import {CameraService} from "src/app/providers/logged-in/camera.service";
+import {SentryErrorhandlerService} from "src/app/providers/sentry.errorhandler.service";
 
 
 @Component({
@@ -17,10 +28,10 @@ import { AuthService } from 'src/app/providers/auth.service';
 })
 export class StaffFormPage implements OnInit {
 
-  public loading: boolean = false; 
+  public loading: boolean = false;
 
-  public saving: boolean = false; 
-  
+  public saving: boolean = false;
+
   public staff_id;
 
   public model: Staff;
@@ -31,13 +42,27 @@ export class StaffFormPage implements OnInit {
 
   public type: string = 'password';
 
-  constructor( 
+  @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
+
+  @ViewChild('btnChangePhoto', { static: false }) btnChangePhoto: IonButton;
+
+  public progress;
+
+  public uploadFileSubscription: Subscription;
+
+  public currentTarget;
+  constructor(
     private authService: AuthService,
     public staffService: StaffService,
-    private _fb: FormBuilder, 
-    private _alertCtrl: AlertController,
+    private _fb: FormBuilder,
+    private alertCtrl: AlertController,
     private _toastCtrl: ToastController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public awsService: AwsService,
+    public _cameraService: CameraService,
+    public actionSheetCtrl: ActionSheetController,
+    public sentryService: SentryErrorhandlerService,
+    public platform: Platform
   ) {
   }
 
@@ -60,10 +85,10 @@ export class StaffFormPage implements OnInit {
 
   loadData(staff_id) {
 
-    this.loading = true; 
+    this.loading = true;
 
     this.staffService.view(staff_id).subscribe(model => {
-      this.model = model; 
+      this.model = model;
 
       this.loading = false;
 
@@ -92,6 +117,8 @@ export class StaffFormPage implements OnInit {
         hours_per_day: ['', Validators.required],
         week_start_day: ['', Validators.required],
         work_days: ['', Validators.required],
+        logo_path: [''],
+        logo: [''],
       });
     }else{ // Show Update Form
       this.operation = "Update Staff";
@@ -108,6 +135,8 @@ export class StaffFormPage implements OnInit {
         hours_per_day: [this.model.hours_per_day, Validators.required],
         week_start_day: [this.model.week_start_day, Validators.required],
         work_days: [this.model.work_days, Validators.required],
+        logo_path: [this.awsService.cloudinaryUrl + 'staff-photo/' + this.model.staff_photo],
+        logo: [this.model.staff_photo]
       });
     }
   }
@@ -128,6 +157,7 @@ export class StaffFormPage implements OnInit {
     this.model.hours_per_day  = this.form.value.hours_per_day;
     this.model.week_start_day  = this.form.value.week_start_day;
     this.model.work_days  = this.form.value.work_days;
+    this.model.staff_photo  = this.form.value.logo;
   }
 
   /**
@@ -142,7 +172,7 @@ export class StaffFormPage implements OnInit {
    * Save the model
    */
   async save() {
-    
+
     this.saving = true;
 
     this.updateModelDataFromForm();
@@ -157,16 +187,16 @@ export class StaffFormPage implements OnInit {
     }
 
     action.subscribe(async jsonResponse => {
-      
+
       this.saving = false;
 
       // On Success
       if(jsonResponse.operation == "success") {
-        
+
         // Close the page
         let data = { 'refresh': true };
         this.modalCtrl.dismiss(data);
-        
+
         //success toast
         let toast = await this._toastCtrl.create({
           message: "Staff Member "+this.model.staff_name+' account created successfully',
@@ -178,7 +208,7 @@ export class StaffFormPage implements OnInit {
       // On Failure
       if (jsonResponse.operation == "error") {
 
-        let prompt = await this._alertCtrl.create({
+        let prompt = await this.alertCtrl.create({
           message: this.authService.errorMessage(jsonResponse.message),
           buttons: ["Ok"]
         });
@@ -189,5 +219,265 @@ export class StaffFormPage implements OnInit {
 
   togglePasswordVisibility() {
     this.type = this.type == 'password'? 'text': 'password';
+  }
+
+  /**
+   * Upload logo from mobile
+   */
+  mobileUpload() {
+
+    const SelectSourceLbl = 'Select image source';
+    const LoadLibLbl = 'Load from Library';
+    const ErrorLibLbl = 'Error getting picture from Library: ';
+    const UseCamLbl = 'Use Camera';
+    const ErrorCamLbl = 'Error getting picture from Camera: ';
+
+    const arrButtons = [
+      {
+        text: LoadLibLbl,
+        handler: () => {
+
+          this._cameraService.getImageFromLibrary().then((nativeImageFilePath) => {
+            // Upload and process for progress
+            this.uploadFileViaNativeFilePath(nativeImageFilePath);
+          }, async (err) => {
+
+            const ignoreErrors = [
+              'No image picked',
+              'User cancelled photos app'
+            ];
+
+            if (err && ignoreErrors.indexOf(err.message) > -1) {
+              return null;
+            }
+
+            const alert = await this.alertCtrl.create({
+              header: 'Error getting picture from Library',
+              message: err.message,
+              buttons: ['Okay']
+            });
+
+            await alert.present();
+            this.progress = null;
+          });
+        }
+      },
+      {
+        text: UseCamLbl,
+        handler: () => {
+
+          this._cameraService.getImageFromCamera().then((nativeImageFilePath) => {
+            // Upload and process for progress
+            this.uploadFileViaNativeFilePath(nativeImageFilePath);
+          }, async (err) => {
+
+            const ignoreErrors = [
+              'No image picked',
+              'User cancelled photos app'
+            ];
+
+            if (err && ignoreErrors.indexOf(err.message) > -1) {
+              return null;
+            }
+
+            const alert = await this.alertCtrl.create({
+              header: 'Error getting picture from Library',
+              message: err.message,
+              buttons: ['Okay']
+            });
+
+            await alert.present();
+            this.progress = null;
+          });
+        }
+      }
+    ];
+
+    // Display action sheet giving user option of camera vs local filesystem.
+    this.actionSheetCtrl.create({
+      header: SelectSourceLbl,
+      buttons: arrButtons
+    }).then(actionSheet => actionSheet.present());
+  }
+
+  /**
+   * Upload logo by native path
+   */
+  async uploadFileViaNativeFilePath(uri) {
+    this.progress = 1;//show loader
+
+    this.awsService.uploadNativePath(uri).then(o => {
+      o.subscribe(event => {
+        this._handleFileSuccess(event);
+      }, async err => {
+
+        this.progress = false;
+
+        const ignoreErrors = [
+          'No image picked',
+          'User cancelled photos app',
+        ];
+
+        if (err && ignoreErrors.indexOf(err.message) > -1) {
+          return null;
+        }
+
+        // log to slack/sentry to know how many user getting file upload error
+
+        this.sentryService.handleError(err);
+
+        // always show abstract error message
+
+        let message;
+
+        const networkErrors = [
+          '504:null',
+          'NetworkingError: Network Failure'
+        ];
+
+        // networking errors
+        if (err && networkErrors.indexOf(err.message) > -1) {
+          message = 'Error uploading file';
+          // system errors
+        } else if (err.message && err.message.indexOf(':') > -1) {
+          message = 'Error getting file from Library';
+          // plugin errors
+        } else if (err.message) {
+          message = err.message;
+          // custom file validation errors
+        } else {
+          message = err;
+        }
+
+        const alert = await this.alertCtrl.create({
+          header: 'Error',
+          message: message,
+          buttons: ['Okay']
+        });
+
+        await alert.present();
+      });
+    });
+  }
+
+  /**
+   * Upload logo from browser
+   * @param event
+   */
+  async browserUpload(event) {
+
+    const fileList: FileList = event.target.files;
+
+    if (fileList.length == 0) {
+      return false;
+    }
+
+    const prefix = fileList[0].name.split('.')[0];
+
+    const type = fileList[0].type.split('/')[0];
+
+    if (type != 'image') {
+      this.alertCtrl.create({
+        message: 'Invalid File format',
+        buttons: ['Ok']
+      }).then(alert => { alert.present(); });
+    }
+    else
+    {
+      this.progress = 1;
+
+      this.uploadFileSubscription = this.awsService.uploadFile(fileList[0]).subscribe(event => {
+        this._handleFileSuccess(event);
+      }, async err => {
+
+        // log to sentry
+
+        this.sentryService.handleError(err);
+
+        if (this.fileInput && this.fileInput.nativeElement) {
+          this.fileInput.nativeElement.value = null;
+        }
+
+        const alert = await this.alertCtrl.create({
+          header: 'Error',
+          message: 'Error while uploading file!',
+          buttons: ['Okay']
+        });
+
+        await alert.present();
+
+        this.progress = false;
+      }, () => {
+        this.uploadFileSubscription.unsubscribe();
+      });
+    }
+  }
+
+  /**
+   * Handle logo upload api response
+   * @param event
+   */
+  _handleFileSuccess(event) {
+    // Via this API, you get access to the raw event stream.
+    // Look for upload progress events.
+    if (event.type === 'progress') {
+      // This is an upload progress event. Compute and show the % done:
+      this.progress = Math.round(100 * event.loaded / event.total);
+    } else if (event.Key && event.Key.length > 0) {
+
+      if (this.fileInput && this.fileInput.nativeElement) {
+        this.fileInput.nativeElement.value = null;
+      }
+
+      const imgLarge = new Image();
+      imgLarge.src = event.Location;
+      imgLarge.onload = () => {
+
+        this.form.controls['logo_path'].setValue(event.Location);
+        this.form.controls['logo'].setValue(event.Key);
+        this.form.controls['logo'].markAsDirty();
+        this.form.updateValueAndValidity();
+
+        this.model.staff_photo = event.Key;
+
+        this.progress = null;
+
+      };
+    } else {
+      this.currentTarget = event;
+    }
+  }
+
+  /**
+   * Display options to update logo
+   */
+  async updatePhoto(ev) {
+    if (this.platform.is('capacitor')) {
+      this.mobileUpload();
+    } else {
+      this.fileInput.nativeElement.click();
+    }
+  }
+
+  /**
+   * trigger click event on change logo button
+   */
+  triggerUpdatePhoto($event) {
+    $event.stopPropagation();
+    document.getElementById('upload-pic').click();
+    // this.fileInput.nativeElement.click();
+  }
+
+  /**
+   * cancel file upload
+   */
+  cancelUpload() {
+    if (this.fileInput && this.fileInput.nativeElement) {
+      this.fileInput.nativeElement.value = null;
+    }
+
+    this.progress = null;
+
+    this.currentTarget.abort();
   }
 }

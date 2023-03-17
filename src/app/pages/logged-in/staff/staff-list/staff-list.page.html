@@ -97,6 +97,10 @@
     <ion-item-sliding *ngFor="let staffMember of staff">
       <ion-item tappable (click)="rowSelected(staffMember)">
         <div tabindex="0"></div>
+        <ion-avatar slot="start">
+          <img *ngIf="staffMember.staff_photo" src="{{ aws.cloudinaryUrl + 'staff-photo/' + staffMember.staff_photo }}">
+          <img *ngIf="!staffMember.staff_photo" src="/assets/icon.png">
+        </ion-avatar>
         <ion-label>
           {{ staffMember.staff_name }}
           <ion-icon name="checkmark-circle" class="active" *ngIf="staffMember.staff_status == '10'"></ion-icon>

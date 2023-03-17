@@ -8,6 +8,7 @@ import { StaffFormPage } from '../staff-form/staff-form.page';
 // services
 import { StaffService } from 'src/app/providers/logged-in/staff.service';
 import {AuthService} from '../../../../providers/auth.service';
+import {AwsService} from "src/app/providers/aws.service";
 
 
 @Component({
@@ -55,6 +56,7 @@ export class StaffListPage implements OnInit {
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
     public authService: AuthService,
+    public aws: AwsService,
   ) {
   }
 
