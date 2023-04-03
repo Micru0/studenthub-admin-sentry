@@ -9,5 +9,18 @@
     <p>Phone: {{ fulltimer.fulltimer_phone}}</p>
     <p *ngIf="fulltimer.country">Country : {{ fulltimer.country.country_name_en }}</p>
     <p *ngIf="fulltimer.nationality">Nationality : {{ fulltimer.nationality.country_name_en }}</p>
+
+    <div *ngIf="suggestion">
+      <p>Suggested on: {{suggestion.suggestion_datetime | date}}</p>
+      <p>Suggested Status:
+        <span *ngIf="suggestion.suggestion_status == 0"> Pending</span>
+        <span *ngIf="suggestion.suggestion_status == 1"> Suggested</span>
+        <span *ngIf="suggestion.suggestion_status == 2"> Rejected</span>
+        <span *ngIf="suggestion.suggestion_status == 3"> Accepted</span>
+        <ion-button (click)="changeStatus($event, suggestion,3)" *ngIf="suggestion.suggestion_status != 3 && authService.restrictedAccess()">Accepted</ion-button>
+        <ion-button (click)="changeStatus($event, suggestion,2)" *ngIf="suggestion.suggestion_status != 2 && authService.restrictedAccess()">Rejected</ion-button>
+        <ion-button (click)="changeStatus($event, suggestion,1)" *ngIf="suggestion.suggestion_status != 1 && authService.restrictedAccess()">Suggested</ion-button>
+      </p>
+    </div>
   </ion-label>
 </ion-item>

@@ -138,6 +138,7 @@ export class StaffService {
       'hours_per_day': model.hours_per_day,
       'week_start_day': model.week_start_day,
       'work_days': model.work_days,
+      'staff_photo': model.staff_photo,
     };
 
     return this._authhttp.post(postUrl, params);
@@ -162,6 +163,7 @@ export class StaffService {
       'hours_per_day': model.hours_per_day,
       'week_start_day': model.week_start_day,
       'work_days': model.work_days,
+      'staff_photo': model.staff_photo,
     };
 
     return this._authhttp.patch(url, params);

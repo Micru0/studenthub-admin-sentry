@@ -8,12 +8,18 @@
       </ion-menu-toggle>
     </ion-buttons>
     <ion-title>
-      Daily Working Hours for  : {{filters.date | date}}
+      Daily Working Hours for  : {{filters.startDate | date}} - {{filters.endDate | date}}
       <ion-button (click)="adjustDate(0);"><ion-icon name="chevron-back-outline"></ion-icon></ion-button>
       <ion-button (click)="adjustDate(1);"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
     </ion-title>
     <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
 
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="exportData($event)">
+        <span *ngIf="!exporting">Export</span>
+        <ion-spinner *ngIf="exporting"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -32,10 +38,18 @@
           <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
             <!-- Filter by Tag -->
             <ion-item>
-              <ion-label position="stacked" color="primary">Date</ion-label>
-              <ion-input type="date" [(ngModel)]="filters.date"></ion-input>
+              <ion-label position="stacked" color="primary">Start Date</ion-label>
+              <ion-input type="date" [(ngModel)]="filters.startDate"></ion-input>
             </ion-item>
           </ion-col>
+          <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+            <!-- Filter by Tag -->
+            <ion-item>
+              <ion-label position="stacked" color="primary">End Date</ion-label>
+              <ion-input type="date" [(ngModel)]="filters.endDate"></ion-input>
+            </ion-item>
+          </ion-col>
+
           <ion-col size-md="4" size-lg="4" size-sm="6" size-xs="12" class="btn-ctrl">
             <!-- Filter by Tag -->
             <ion-button (click)="loadData(1, true);">Submit</ion-button>
@@ -82,7 +96,7 @@
           </ion-item>
         </ion-card-content>
         <ion-card-content>
-          Total : {{getTotal(work.dayActivity) | timeSpent}}
+          Total: {{getTotal(work.dayActivity) | timeSpent}} | Date: {{work.created_at | date}}
         </ion-card-content>
       </ion-card>
       <no-items *ngIf="!loading && staffWorkSessions.length == 0" message="No Record Found For {{filters.date | date}}"></no-items>
