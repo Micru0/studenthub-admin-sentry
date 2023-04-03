@@ -39,4 +39,14 @@ export class StaffWorkSessionService {
     let url = this._endpoint + '/list-inactive?page=' + page + '&expand=staff,dayActivity' + param;
     return this._authhttp.get(url, true);
   }
+
+  /**
+   * download working hours details
+   * @param {Company} model
+   * @returns {Observable<any>}
+   */
+  downloadExcel(param: any): Observable<any> {
+    const url = `${this._endpoint}/download-list-excel?download=1${param}`;
+    return this._authhttp.excelget(url, `working-hours-list.xlsx`);
+  }
 }

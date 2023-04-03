@@ -18,6 +18,7 @@ export class StaffWorkSessionListPage implements OnInit {
   public loading = false;
 
   public deleting = false;
+  public exporting = false;
   public showFilter = false;
 
   public pageCount = 0;
@@ -244,5 +245,32 @@ export class StaffWorkSessionListPage implements OnInit {
 
   tabChange(event) {
     this.selected = event.detail.value;
+  }
+
+  async exportData(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const confirm = await this._alertCtrl.create({
+      header: 'Export Data?',
+      message: 'Do you really wants to export company data?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.exporting = true;
+            const searchParams = this.urlParams();
+            this.staffWorkService.downloadExcel(searchParams).subscribe(async jsonResp => {
+              this.exporting = false;
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no'
+        }
+      ]
+    });
+    confirm.present();
   }
 }
