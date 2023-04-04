@@ -419,3 +419,15 @@
 
   <loading-modal [loading]="loading" type="university-view"></loading-modal>
 </ion-content>
+<ion-footer *ngIf="candidate && !authService.admin_limited_access">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" (click)="resetPassword()" *ngIf="!candidate.deleted">
+          <span *ngIf="!sendingNewPassword">Send new password to Candidate</span>
+          <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -23,6 +23,7 @@ export class CandidateViewPage implements OnInit {
 
   public loading: boolean = false;
   public deleting: boolean = false;
+  public sendingNewPassword: boolean = false;
 
   public loadingSalaryTransfers: boolean = false;
 
@@ -301,5 +302,72 @@ export class CandidateViewPage implements OnInit {
       ]
     });
     confirm.present();
+  }
+
+  /**
+   * Confirm password reset and send new password
+   */
+  async resetPassword() {
+
+    const confirm = await this._alertCtrl.create({
+      header: 'Enter New Password',
+      inputs: [
+        {
+          name: 'password',
+          type: 'text',
+          placeholder: 'Please enter password'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Send',
+          handler: (data) => {
+            if (data && data.password.trim()) {
+              this.candidate.candidate_password_hash = data.password;
+              this.sendNewPassword();
+            } else {
+              this.toastCtrl.create({
+                message: 'Please enter password',
+                duration: 3000
+              }).then(toast => toast.present());
+            }
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  /**
+   * Reset and email the staff a new password
+   */
+  async sendNewPassword() {
+
+    this.sendingNewPassword = true;
+
+    this.candidateService.resetPassword(this.candidate).subscribe(async response => {
+      this.sendingNewPassword = false;
+
+      if (response.operation == 'error') {
+        const toast = await this.toastCtrl.create({
+          message: response.message,
+          duration: 3000
+        });
+        toast.present();
+      } else {
+        const alert = await this._alertCtrl.create({
+          header: 'Reset Password',
+          subHeader: 'New password sent to candidate',
+          buttons: ['Okay']
+        });
+        alert.present();
+      }
+    }, () => {
+      this.sendingNewPassword = false;
+    });
   }
 }
