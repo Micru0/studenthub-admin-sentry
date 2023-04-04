@@ -8,7 +8,6 @@ import { Store } from '../../models/store';
 import { Country } from '../../models/country';
 import { University } from '../../models/university';
 
-
 /**
  * Manages Staff Functionality on the server
  */
@@ -142,4 +141,14 @@ export class CandidateService {
     let url = this._candidateEndpoint +'/work-history/'+ candidate.candidate_id + '?expand=store';
     return this._authhttp.get(url);
   }
+
+  /**
+   * Send new password to candidate
+   * @param model
+   */
+  resetPassword(model: Candidate): Observable<any>{
+    let url = `${this._candidateEndpoint}/reset-password/${model.candidate_id}`;
+    return this._authhttp.patch(url, {password : model.candidate_password_hash});
+  }
+
 }
