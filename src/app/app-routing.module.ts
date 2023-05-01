@@ -643,7 +643,14 @@ const routes: Routes = [
       navDisable: false,
     }
   },
-  
+  {
+    path: 'dashboard-quicks',
+    loadChildren: () => import('./pages/logged-in/dashboard/dashboard-quicks/dashboard-quicks.module').then(m => m.DashboardQuicksPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'DashboardQuicksPage'
+    }
+  },
   {
     path: 'setting',
     loadChildren: () => import('./pages/logged-in/setting/setting.module').then( m => m.SettingPageModule)
