@@ -31,6 +31,15 @@
                 </ion-label>
               </ion-item>
             </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'/dashboard-quicks'">
+                <div tabindex="0"></div>
+                <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Payment Summary
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
 
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'transfer-list'">
@@ -295,8 +304,8 @@
               <ion-label class="ion-text-wrap">Candidate Working Hours</ion-label>
             </ion-item>
           </ion-menu-toggle>
-          
-          
+
+
           <ion-item-group>
             <ion-item-divider>
               <ion-label>Settings </ion-label>

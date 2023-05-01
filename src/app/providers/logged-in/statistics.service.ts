@@ -20,17 +20,17 @@ export class StatisticService {
    * list statistics
    * @returns {Observable<any>}
    */
-  get(): Observable<any>{
-    let url = this._endpoint;
+  get(param): Observable<any>{
+    let url = this._endpoint +'?param=1'+ param;
     return this._authhttp.get(url);
   }
 
   /**
-   * return transfer stats 
-   * @returns 
+   * return transfer stats
+   * @returns
    */
-  viewTransfers(): Observable<any>{
-    let url = this._endpoint + '/transfer';
+  viewTransfers(param = null): Observable<any>{
+    let url = this._endpoint + '/transfer?param=1'+ param;
     return this._authhttp.get(url);
   }
 }

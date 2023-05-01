@@ -1,0 +1,155 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title>Payment Summary</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content ion-text-left">
+    <ion-card class="padding-none ion-text-left">
+      <ion-card-header>
+        <ion-card-title>Filter by</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+              <!-- Filter by Major -->
+              <ion-item>
+                <ion-label position="stacked" color="primary">Start Date</ion-label>
+                <ion-input type="date" [(ngModel)]="filters.startDate"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+              <!-- Filter by Major -->
+              <ion-item>
+                <ion-label position="stacked" color="primary">End Date</ion-label>
+                <ion-input type="date" [(ngModel)]="filters.endDate"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+
+      <ion-card-header>
+        <ion-button (click)="loadAllData();">Submit</ion-button>
+        <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+      </ion-card-header>
+
+    </ion-card>
+  </div>
+
+  <ion-grid *ngIf="statistics">
+    <h3 class="txt-title">Payment</h3>
+
+    <ion-row>
+      <!-- Payment Sent Notification Card -->
+      <ion-col size="12" size-md="6" *ngIf="statistics.transfers.paymentSent.total > 0">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.transfers.paymentSent.total }} {{ statistics.transfers.paymentSent.total == 1? "Transfer has" : "Transfers have"  }} been marked as payment sent
+          </ion-card-header>
+          <ion-card-content>
+            <p>Check if bank received and process their transfer</p>
+            <ion-button (click)="showTransfers(statistics.transfers.paymentSent.code)">
+              View
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Transfer Locked Notification Card -->
+      <ion-col size="12" size-md="6" *ngIf="statistics.transfers.locked.total > 0">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.transfers.locked.total }} Locked {{ statistics.transfers.locked.total == 1? "Transfer" : "Transfers"  }} Available
+          </ion-card-header>
+          <ion-card-content>
+            <p>Company will need to mark as payment sent soon</p>
+            <ion-button (click)="showTransfers(statistics.transfers.locked.code)">
+              View
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Transfer payable Notification Card -->
+      <ion-col size="12" size-md="6" *ngIf="statistics.payable.total > 0">
+        <ion-card>
+          <ion-card-header>
+            You have KWD {{ statistics.payable.amount | number:'1.3-3' }} payable to {{ statistics.payable.total }} {{ statistics.payable.total > 1 ? 'candidates' : 'candidate' }}
+          </ion-card-header>
+          <ion-card-content>
+            <p>You'll need to verify their bank info and process their payment</p>
+            <ion-button (click)="loadPayableCandidatesPage()">
+              View
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Review Requirements Card -->
+      <ion-col size="12" size-md="6" *ngIf="statistics.candidates.total_unapproved > 0">
+        <ion-card>
+          <ion-card-header>
+            Candidates Require Review
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{statistics.candidates.total_unapproved}} remaining</p>
+            <ion-button (click)="loadCandidateReviewPage()">
+              View
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Candidate Count Card -->
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            {{statistics.candidates.total_assigned}} candidates currently working
+          </ion-card-header>
+          <ion-card-content>
+            <p>from a total of {{statistics.candidates.total_candidate}} registered candidates</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6" *ngIf="statistics.totalUniversitiesToFix > 0">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.totalUniversitiesToFix }} university entry need attention
+          </ion-card-header>
+          <ion-card-content>
+            <p>to fix details</p>
+            <ion-button routerLink="/university-list">
+              View
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            {{ statistics.totalSalaryPaid }} KWD total salary paid
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button routerLink="/import-salary-form">
+              Import salary
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

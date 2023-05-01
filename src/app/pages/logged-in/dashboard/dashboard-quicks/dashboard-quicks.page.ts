@@ -8,11 +8,11 @@ import {ModalController} from "@ionic/angular";
 
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
+  selector: 'app-dashboard-quicks',
+  templateUrl: './dashboard-quicks.page.html',
+  styleUrls: ['./dashboard-quicks.page.scss'],
 })
-export class DashboardPage implements OnInit {
+export class DashboardQuicksPage implements OnInit {
 
   public statistics: any;
   public statisticsFinance: any;
