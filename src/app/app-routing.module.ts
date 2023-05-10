@@ -58,6 +58,30 @@ const routes: Routes = [
     }
   },
   {
+    path: 'tag-list',
+    loadChildren: () => import('./pages/logged-in/tag/tag-list/tag-list.module').then(m => m.TagListPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'TagListPage',
+    }
+  },
+  {
+    path: 'tag-form',
+    loadChildren: () => import('./pages/logged-in/tag/tag-form/tag-form.module').then(m => m.TagFormPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'TagFormPage',
+    }
+  },
+  {
+    path: 'tag-view',
+    loadChildren: () => import('./pages/logged-in/tag/tag-view/tag-view.module').then(m => m.TagViewPageModule),
+    canActivate: [AuthService],
+    data: {
+      name: 'TagViewPage',
+    }
+  },
+  {
     path: 'candidate-list',
     loadChildren: () => import('./pages/logged-in/candidate/candidate-list/candidate-list.module').then(m => m.CandidateListPageModule),
     canActivate: [AuthService],
