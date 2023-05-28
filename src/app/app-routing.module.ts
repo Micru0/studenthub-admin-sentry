@@ -672,17 +672,51 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/dashboard/dashboard-quicks/dashboard-quicks.module').then(m => m.DashboardQuicksPageModule),
     canActivate: [AuthService],
     data: {
-      name: 'DashboardQuicksPage'
+      name: 'DashboardQuicksPage',
+      navDisable: false,
     }
   },
   {
     path: 'setting',
-    loadChildren: () => import('./pages/logged-in/setting/setting.module').then( m => m.SettingPageModule)
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/setting/setting.module').then( m => m.SettingPageModule),
+    data: {
+      name: 'DashboardQuicksPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'webhook-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/webhook/webhook-list/webhook-list.module').then( m => m.WebhookListPageModule),
+    data: {
+      name: 'WebhookListPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'webhook-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/webhook/webhook-form/webhook-form.module').then( m => m.WebhookFormPageModule),
+    data: {
+      name: 'WebhookFormPage',
+      navDisable: false,
+    }
+  },
+  {
+    path: 'webhook-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/webhook/webhook-view/webhook-view.module').then( m => m.WebhookViewPageModule),
+    data: {
+      name: 'WebhookViewPage',
+      navDisable: false,
+    }
   },
   {
     path: '**',
     redirectTo: 'not-found'
   },
+
 
 ];
 

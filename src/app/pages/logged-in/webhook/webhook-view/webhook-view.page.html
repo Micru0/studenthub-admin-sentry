@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="webhook-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="webhook">
+      {{ webhook.event }}
+    </ion-title>
+
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list *ngIf="webhook">
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>ID</h5>
+        <p>{{ webhook.webhook_id }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Event Name</h5>
+        <p>{{ webhook.event }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Endpoint</h5>
+        <p>{{ webhook.endpoint }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Endpoint</h5>
+        <p>{{ webhook.method }}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <loading-modal [loading]="loading" type="webhook-view"></loading-modal>
+
+</ion-content>

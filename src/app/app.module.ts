@@ -45,6 +45,7 @@ import {DailyStandupAnswerViewPageModule} from "./pages/logged-in/daily-standup/
 import {CanEvalQuesDeptFormPageModule} from "./pages/logged-in/candidate/evaluation/can-eval-ques-dept-form/can-eval-ques-dept-form.module";
 import {EvaluationReportViewPageModule} from "./pages/logged-in/candidate/evaluation/evaluation-report-view/evaluation-report-view.module";
 import { CandidatePageModule } from "./pages/logged-in/picker/candidate/candidate.module";
+import { WebhookFormPageModule } from './pages/logged-in/webhook/webhook-form/webhook-form.module';
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -85,6 +86,7 @@ declare global {
     StaffFormPageModule,
     AdminFormPageModule,
     UniversityFormPageModule,
+    WebhookFormPageModule,
     UpdateAlertModule,
     UploadFilePageModule,
     BrandFormPageModule,
