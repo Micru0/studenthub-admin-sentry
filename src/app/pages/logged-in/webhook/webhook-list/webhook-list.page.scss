@@ -1,0 +1,13 @@
+
+ion-item.alert {
+    --background: var(--ion-color-danger);
+    --color: var(--ion-color-danger-contrast);
+
+    p {
+        color: var(--ion-color-danger-contrast);
+    }
+
+    ion-button {
+        --ion-color-base: white !important;
+    }
+}
