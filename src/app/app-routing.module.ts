@@ -712,6 +712,12 @@ const routes: Routes = [
       navDisable: false,
     }
   },
+
+  {
+    path: 'webhook-test',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/webhook/webhook-test/webhook-test.module').then( m => m.WebhookTestPageModule)
+  },
   {
     path: '**',
     redirectTo: 'not-found'
