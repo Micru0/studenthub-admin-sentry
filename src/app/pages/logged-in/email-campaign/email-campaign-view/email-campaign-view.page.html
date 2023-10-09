@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="email-campaign-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="model">{{ model.subject }}</ion-title>
+
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list *ngIf="model">
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Campaign ID</h5>
+        <p>{{ model.campaign_uuid }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Subject</h5>
+        <p>{{ model.subject }}</p>
+      </ion-label>
+    </ion-item>
+     
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Status</h5>
+        <p *ngIf="model.status == 0">Draft</p>
+        <p *ngIf="model.status == 1">In Progress</p>
+        <p *ngIf="model.status == 2">Completed</p>
+        <p *ngIf="model.status == 3">Ready</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Progress (%)</h5>
+        <p>{{ model.progress }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Created at </h5>
+        <p>{{ model.created_at }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Updated at </h5>
+        <p>{{ model.updated_at }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ng-container *ngIf="model.emailCampaignFilters.length > 0">
+
+      <h5>Email Campaign Filter</h5>
+
+      <ion-item *ngFor="let emailCampaignFilter of model.emailCampaignFilters">
+        <div tabindex="0"></div>
+        <ion-label>
+          <h5>{{ emailCampaignFilter.param }}</h5>
+          <p>{{ emailCampaignFilter.value }}</p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+
+  </ion-list>
+</ion-content>

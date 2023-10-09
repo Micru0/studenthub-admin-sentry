@@ -46,6 +46,7 @@ import {CanEvalQuesDeptFormPageModule} from "./pages/logged-in/candidate/evaluat
 import {EvaluationReportViewPageModule} from "./pages/logged-in/candidate/evaluation/evaluation-report-view/evaluation-report-view.module";
 import { CandidatePageModule } from "./pages/logged-in/picker/candidate/candidate.module";
 import { WebhookFormPageModule } from './pages/logged-in/webhook/webhook-form/webhook-form.module';
+import { EmailCampaignFormPageModule } from './pages/logged-in/email-campaign/email-campaign-form/email-campaign-form.module';
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -97,6 +98,7 @@ declare global {
     CompanyNoteFormPageModule,
     ModalPopPageModule,
     RequestChecklistFormPageModule,
+    EmailCampaignFormPageModule,
     CompanyPageModule,
     CandidateModule,
     CandidateWorkHistoryModule,
