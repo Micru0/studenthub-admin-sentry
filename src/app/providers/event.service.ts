@@ -27,5 +27,10 @@ export class EventService {
 
   public markedAllUnpaid$ = new Subject();
 
+  public campaignStarted$ = new Subject();
+  public campaignStopped$ = new Subject();
+  public campaignStatus$ = new Subject();
+  public campaignStatusList$ = new Subject();
+  
   constructor() { }
 }
