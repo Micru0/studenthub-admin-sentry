@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { EmailCampaignFormPageRoutingModule } from './email-campaign-form-routing.module';
 
 import { EmailCampaignFormPage } from './email-campaign-form.page';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { EmailCampaignFormPage } from './email-campaign-form.page';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
+    EditorModule,
     EmailCampaignFormPageRoutingModule
   ],
   declarations: [EmailCampaignFormPage]

@@ -9,6 +9,7 @@ import { EmailCampaignListPageRoutingModule } from './email-campaign-list-routin
 import { EmailCampaignListPage } from './email-campaign-list.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 import { EmailCampaignFormPageModule } from '../email-campaign-form/email-campaign-form.module';
+import { NoItemsModule } from 'src/app/components/no-items/no-items.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { EmailCampaignFormPageModule } from '../email-campaign-form/email-campai
     IonicModule,
     EmailCampaignListPageRoutingModule,
     EmailCampaignFormPageModule,
-    LoadingModalModule
+    LoadingModalModule,
+    NoItemsModule, 
   ],
   declarations: [EmailCampaignListPage]
 })

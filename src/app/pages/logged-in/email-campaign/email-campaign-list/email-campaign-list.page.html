@@ -16,6 +16,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <ion-list>
     <ion-item-sliding *ngFor="let emailCampaign of emailCampaigns" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(emailCampaign)">
@@ -23,6 +27,11 @@
         <ion-label>
           <h5>{{ emailCampaign.subject }}</h5>
           <p *ngIf="emailCampaign.status == 1">Progress {{ emailCampaign.progress }}%</p>
+           <ion-chip *ngFor="let emailCampaignFilter of emailCampaign.emailCampaignFilters">
+            {{ emailCampaignFilter.param }} 
+            &nbsp;<b *ngIf="emailCampaignFilter.value">{{ emailCampaignFilter.value }}</b>
+
+          </ion-chip> 
         </ion-label>
 
         <ion-badge slot="end" *ngIf="emailCampaign.status == 0">Draft</ion-badge>
@@ -51,6 +60,8 @@
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
   </ion-list>
+
+  <no-items message = "No campaign added yet!" *ngIf="emailCampaigns.length == 0 && !loading"></no-items>
 
   <ion-infinite-scroll *ngIf="currentPage < pageCount"
     (ionInfinite)="doInfinite($event)">

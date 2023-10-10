@@ -33,6 +33,13 @@ export class EmailCampaignService {
     return this._authhttp.get(url, true);
   }
 
+  statusList(campaignIDs = []): Observable<any>{
+    let url = this._endpoint + '/status-list';
+    return this._authhttp.post(url, {
+      campaignIDs: campaignIDs
+    });
+  }
+
   /**
    * Create campaign
    * @param {campaign} model
@@ -50,6 +57,11 @@ export class EmailCampaignService {
    */
   update(model: EmailCampaign): Observable<any>{
     let url = `${this._endpoint}/${model.campaign_uuid}`; 
+    return this._authhttp.patch(url, model);
+  }
+
+  start(model: EmailCampaign): Observable<any>{
+    let url = `${this._endpoint}/run/${model.campaign_uuid}`; 
     return this._authhttp.patch(url, model);
   }
 

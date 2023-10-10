@@ -47,6 +47,7 @@ import {EvaluationReportViewPageModule} from "./pages/logged-in/candidate/evalua
 import { CandidatePageModule } from "./pages/logged-in/picker/candidate/candidate.module";
 import { WebhookFormPageModule } from './pages/logged-in/webhook/webhook-form/webhook-form.module';
 import { EmailCampaignFormPageModule } from './pages/logged-in/email-campaign/email-campaign-form/email-campaign-form.module';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -109,7 +110,8 @@ declare global {
     CanEvalQuesDeptFormPageModule,
     FulltimerModule,
     EvaluationReportViewPageModule,
-    CandidatePageModule
+    CandidatePageModule,
+    EditorModule
   ],
   providers: [
     {
@@ -123,6 +125,7 @@ declare global {
     NativeStorage,
     SwUpdate,
     SelectiveLoadingStrategy,
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: ErrorHandler, useClass: SentryErrorhandlerService }
   ],

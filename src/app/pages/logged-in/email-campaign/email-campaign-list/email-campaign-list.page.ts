@@ -8,6 +8,7 @@ import { EmailCampaignService } from 'src/app/providers/logged-in/email-campaign
 import { EmailCampaignFormPage } from '../email-campaign-form/email-campaign-form.page';
 // models
 import { EmailCampaign } from 'src/app/models/email-campaign';
+import { EventService } from 'src/app/providers/event.service';
  
 
 @Component({
@@ -24,7 +25,9 @@ export class EmailCampaignListPage implements OnInit {
   public pageCount = 0;
   public currentPage = 1;
 
-  public emailCampaigns: EmailCampaign[];
+  public emailCampaigns: EmailCampaign[] = [];
+
+  private interval;
 
   constructor(
     public platform: Platform,
@@ -33,7 +36,8 @@ export class EmailCampaignListPage implements OnInit {
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
-    public authService: AuthService
+    public authService: AuthService,
+    private eventService: EventService
   ) { }
 
   ngOnInit() {
@@ -42,11 +46,65 @@ export class EmailCampaignListPage implements OnInit {
     this.loadData(this.currentPage);
   }
 
+  ngOnDestroy() {
+    if(this.interval)
+      this.stopWatching();
+  }
+
+  ionViewWillLeave() {
+    if(this.interval)
+      this.stopWatching();
+  }
+
+  stopWatching() {
+    clearInterval(this.interval);
+    this.interval = null;  
+  }
+
+  startWatching() {
+    this.interval = setInterval(() => {
+      this.checkStatus();
+    }, 1000); 
+  }
+
+  checkStatus() {
+
+    const campaignIDs = this.emailCampaigns.filter(e => [1, 3].indexOf(e.status) > -1)
+      .map(e => e.campaign_uuid);
+
+    if(campaignIDs.length == 0) {
+      this.stopWatching();
+    }
+    
+    this.emailCampaignService.statusList(campaignIDs).subscribe(res => {
+       
+      this.emailCampaigns.forEach(emailCampaign => {
+
+        if(res[emailCampaign.campaign_uuid]) 
+        {
+          emailCampaign.status = res[emailCampaign.campaign_uuid].status;
+          emailCampaign.progress = res[emailCampaign.campaign_uuid].progress;
+        }
+      });
+      
+      //stop on no campaigns to watch ?
+      /*if(res.length == 0) {
+        this.stopWatching();
+      }*/
+
+      this.eventService.campaignStatusList$.next(res);
+    });
+  } 
+
+  handleRefresh(event) {
+    this.loadData(1, true, event);
+  }
+
   /**
    * list banks
    * @param page
    */
-  async loadData(page: number, silent = false) {
+  async loadData(page: number, silent = false, event = null) {
 
     if (!silent) {
       this.loading = true;
@@ -62,6 +120,12 @@ export class EmailCampaignListPage implements OnInit {
 
       this.emailCampaigns = response.body;
 
+      this.startWatching();
+
+      if(event) {
+        event.target.complete();
+      }
+      
     }, () => {
       this.loading = false;
       this.deleting = false;
