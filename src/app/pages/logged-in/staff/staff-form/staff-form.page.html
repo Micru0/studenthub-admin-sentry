@@ -145,6 +145,12 @@
           <ion-label position="floating">No of days per week </ion-label>
           <ion-input type="number" formControlName="work_days"></ion-input>
         </ion-item>
+ 
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label>Receive notification?</ion-label>
+          <ion-toggle (ionChange)="onchange($event)" formControlName="staff_notification"></ion-toggle>
+        </ion-item>
 
     </ion-list>
   </form>

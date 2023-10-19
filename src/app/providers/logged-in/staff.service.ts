@@ -139,6 +139,7 @@ export class StaffService {
       'week_start_day': model.week_start_day,
       'work_days': model.work_days,
       'staff_photo': model.staff_photo,
+      "staff_notification": model.staff_notification
     };
 
     return this._authhttp.post(postUrl, params);
@@ -164,6 +165,7 @@ export class StaffService {
       'week_start_day': model.week_start_day,
       'work_days': model.work_days,
       'staff_photo': model.staff_photo,
+      "staff_notification": model.staff_notification
     };
 
     return this._authhttp.patch(url, params);

@@ -14,7 +14,7 @@ export class Staff{
     week_start_day: number;
     work_days: number;
     staff_status: string;
-    staff_notification: string;
+    staff_notification: boolean | number;
     staff_created_at: string;
     staff_updated_at: string;
     totalAssigned: number;

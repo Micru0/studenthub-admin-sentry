@@ -51,6 +51,7 @@ export class StaffFormPage implements OnInit {
   public uploadFileSubscription: Subscription;
 
   public currentTarget;
+
   constructor(
     private authService: AuthService,
     public staffService: StaffService,
@@ -119,6 +120,7 @@ export class StaffFormPage implements OnInit {
         work_days: ['', Validators.required],
         logo_path: [''],
         logo: [''],
+        staff_notification: [1],
       });
     }else{ // Show Update Form
       this.operation = "Update Staff";
@@ -136,7 +138,8 @@ export class StaffFormPage implements OnInit {
         week_start_day: [this.model.week_start_day, Validators.required],
         work_days: [this.model.work_days, Validators.required],
         logo_path: [this.awsService.cloudinaryUrl + 'staff-photo/' + this.model.staff_photo],
-        logo: [this.model.staff_photo]
+        logo: [this.model.staff_photo],
+        staff_notification: [this.model.staff_notification],
       });
     }
   }
@@ -466,6 +469,10 @@ export class StaffFormPage implements OnInit {
     $event.stopPropagation();
     document.getElementById('upload-pic').click();
     // this.fileInput.nativeElement.click();
+  }
+
+  onchange($event) {
+    this.model.staff_notification = ($event.detail.checked) ? 1 : 0;
   }
 
   /**
