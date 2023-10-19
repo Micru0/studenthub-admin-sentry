@@ -43,6 +43,20 @@
       </span>
     </div>
 
+    <!-- If Transfer Initiated, Locked or Cancelled -->
+
+    <ion-button fill="outline" (click)="delete()"
+      *ngIf="[10, 5, 0].indexOf(transfer.transfer_status) > -1 && !authService.admin_limited_access">
+      <ion-icon name="trash-outline" slot="start"></ion-icon>
+      Delete
+    </ion-button>
+
+    <ion-button fill="outline" (click)="markCancel()"
+      *ngIf="transfer.transfer_status == 10 && !authService.admin_limited_access">
+      <ion-icon name="cross-outline" slot="start"></ion-icon>
+      Mark cancelled 
+    </ion-button>
+
     <!-- If Transfer Locked -->
 
     <ion-button fill="outline" (click)="markUnlock()"
