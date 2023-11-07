@@ -182,7 +182,7 @@ export class TransferListPage implements OnInit {
       urlParams += '&company_name=' + this.filters.companyName;
     }
 
-    if (this.filters.transferStatus) {
+    if (this.filters.transferStatus != "all") {
       urlParams += '&transfer_status=' + this.filters.transferStatus;
     }
 
@@ -222,9 +222,10 @@ export class TransferListPage implements OnInit {
   }
 
   filterByStatus($event, status) {
+
     this.filters.transferStatus = status;
 
-    if(this.filters.transferStatus == 0) {
+    if(this.filters.transferStatus == "all") {
       this.filters.suspicious = false;
     }
 
