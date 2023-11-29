@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import {
   AlertController,
   ToastController,
@@ -121,9 +121,13 @@ export class StaffFormPage implements OnInit {
         logo_path: [''],
         logo: [''],
         staff_notification: [1],
+        permissions: [],//new FormArray(permissionsCtrls),
       });
     }else{ // Show Update Form
       this.operation = "Update Staff";
+
+      let permissions = this.model.staffNotifications.map(e => e.permission);
+
       this.form = this._fb.group({
         name: [this.model.staff_name, Validators.required],
         email: [this.model.staff_email, [Validators.required, CustomValidator.emailValidator]],
@@ -140,6 +144,7 @@ export class StaffFormPage implements OnInit {
         logo_path: [this.awsService.cloudinaryUrl + 'staff-photo/' + this.model.staff_photo],
         logo: [this.model.staff_photo],
         staff_notification: [this.model.staff_notification],
+        permissions: [permissions]// new FormArray(permissionsCtrls),
       });
     }
   }
@@ -161,6 +166,7 @@ export class StaffFormPage implements OnInit {
     this.model.week_start_day  = this.form.value.week_start_day;
     this.model.work_days  = this.form.value.work_days;
     this.model.staff_photo  = this.form.value.logo;
+    this.model.permissions  = this.form.value.permissions;
   }
 
   /**
@@ -196,6 +202,8 @@ export class StaffFormPage implements OnInit {
       // On Success
       if(jsonResponse.operation == "success") {
 
+        this.model.staffNotifications = jsonResponse.staffNotifications;
+        
         // Close the page
         let data = { 'refresh': true };
         this.modalCtrl.dismiss(data);
