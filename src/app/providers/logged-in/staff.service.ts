@@ -25,7 +25,7 @@ export class StaffService {
    * @param param
    */
   list(page: number, param: any = null): Observable<any>{
-    let url = this._staffEndpoint + '?page=' + page + param + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions';
+    let url = this._staffEndpoint + '?page=' + page + param + '&expand=staffNotifications,totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions';
     return this._authhttp.get(url, true);
   }
 
@@ -46,7 +46,7 @@ export class StaffService {
    * @returns
    */
   view(staff_id): Observable<any>{
-    let url = this._staffEndpoint + '/' + staff_id + '&expand=totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions,companies';
+    let url = this._staffEndpoint + '/' + staff_id + '?expand=staffNotifications,totalSuggestions,totalAssigned,totalRequests,totalNotes,totalStories,totalInvitations,totalAcceptedInvitations,totalRejectedInvitations,permissions,companies';
     return this._authhttp.get(url);
   }
 
@@ -139,7 +139,8 @@ export class StaffService {
       'week_start_day': model.week_start_day,
       'work_days': model.work_days,
       'staff_photo': model.staff_photo,
-      "staff_notification": model.staff_notification
+      "staff_notification": model.staff_notification,
+      "permissions": model.permissions
     };
 
     return this._authhttp.post(postUrl, params);
@@ -165,7 +166,8 @@ export class StaffService {
       'week_start_day': model.week_start_day,
       'work_days': model.work_days,
       'staff_photo': model.staff_photo,
-      "staff_notification": model.staff_notification
+      "staff_notification": model.staff_notification,
+      "permissions": model.permissions
     };
 
     return this._authhttp.patch(url, params);

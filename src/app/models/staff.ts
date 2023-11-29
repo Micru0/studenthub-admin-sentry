@@ -1,3 +1,5 @@
+import { StaffNotification } from "./staff-notification";
+
 export class Staff{
     staff_id: number;
     staff_name: string;
@@ -27,4 +29,5 @@ export class Staff{
     totalRejectedInvitations: number;
     totalAcceptedInvitations:number;
     permissions:any[];
+    staffNotifications: StaffNotification[];
 }
