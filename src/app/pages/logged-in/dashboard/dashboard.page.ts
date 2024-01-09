@@ -15,6 +15,7 @@ import {ModalController} from "@ionic/angular";
 export class DashboardPage implements OnInit {
 
   public statistics: any;
+
   public statisticsFinance: any;
 
   public loading: boolean = false;
@@ -51,6 +52,7 @@ export class DashboardPage implements OnInit {
   async loadData(loading = true) {
 
     this.loading = loading;
+    
     const searchParams = this.urlParams();
     this.statisticService.get(searchParams).subscribe(response => {
       this.loading = false;
