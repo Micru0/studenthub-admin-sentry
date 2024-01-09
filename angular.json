@@ -65,6 +65,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "sourceMap": true,
               "outputHashing": "all"
             },
             "dev": {
@@ -100,22 +101,7 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
-            },
-            "anil": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.anil.ts"
-                }
-              ],
-              "ngswConfigPath": "ngsw-config.json",
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
-            },
+            }, 
             "khalid": {
               "fileReplacements": [
                 {
@@ -162,10 +148,7 @@
             },
             "krushn": {
               "browserTarget": "app:build:krushn"
-            },
-            "anil": {
-              "browserTarget": "app:build:anil"
-            },
+            }, 
             "docker": {
               "browserTarget": "app:build:docker"
             },
