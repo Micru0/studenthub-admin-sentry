@@ -48,6 +48,7 @@ import { CandidatePageModule } from "./pages/logged-in/picker/candidate/candidat
 import { WebhookFormPageModule } from './pages/logged-in/webhook/webhook-form/webhook-form.module';
 import { EmailCampaignFormPageModule } from './pages/logged-in/email-campaign/email-campaign-form/email-campaign-form.module';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { BlockedIpFormPageModule } from './pages/logged-in/blocked-ip/blocked-ip-form/blocked-ip-form.module';
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -111,6 +112,7 @@ declare global {
     FulltimerModule,
     EvaluationReportViewPageModule,
     CandidatePageModule,
+    BlockedIpFormPageModule,
     EditorModule
   ],
   providers: [

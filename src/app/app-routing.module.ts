@@ -734,11 +734,19 @@ const routes: Routes = [
     canActivate: [AuthService],
     loadChildren: () => import('./pages/logged-in/email-campaign/email-campaign-form/email-campaign-form.module').then( m => m.EmailCampaignFormPageModule)
   },
-
+  {
+    path: 'blocked-ip-list',
+    loadChildren: () => import('./pages/logged-in/blocked-ip/blocked-ip-list/blocked-ip-list.module').then( m => m.BlockedIpListPageModule)
+  },
+  {
+    path: 'blocked-ip-form',
+    loadChildren: () => import('./pages/logged-in/blocked-ip/blocked-ip-form/blocked-ip-form.module').then( m => m.BlockedIpFormPageModule)
+  },
   {
     path: '**',
     redirectTo: 'not-found'
-  }, 
+  },  
+
 
 
 ];
