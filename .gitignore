@@ -70,3 +70,6 @@ UserInterfaceState.xcuserstate
 .angular
 .angular/
 .angular/*
+
+# Sentry Config File
+.sentryclirc

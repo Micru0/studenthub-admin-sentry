@@ -53,6 +53,23 @@ export class WebhookService {
   }
 
   /**
+   * test model
+   * @param model 
+   * @param data 
+   * @returns 
+   */
+  test(model, data = null) : Observable<any>{
+    let url = `${this._webhookEndpoint}/test/${model.webhook_id}`;
+    let params = {
+      "event": model.event,
+      "endpoint": model.endpoint,
+      "method": model.method,
+      "data": data
+    };
+    return this._authhttp.post(url, params);
+  }
+
+  /**
    * Update webhook
    * @param {Webhook} model
    * @returns {Observable<any>}

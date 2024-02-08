@@ -10,6 +10,7 @@ import { Webhook } from 'src/app/models/webhook';
 import { Candidate } from 'src/app/models/candidate';
 // pages
 import { WebhookFormPage } from '../webhook-form/webhook-form.page';
+import { WebhookTestPage } from '../webhook-test/webhook-test.page';
 
 
 @Component({
@@ -71,6 +72,7 @@ export class WebhookViewPage implements OnInit {
       this.loading = false;
     });
   }
+
   /**
    * Loads Form in modal to update
    */
@@ -79,6 +81,30 @@ export class WebhookViewPage implements OnInit {
 
     const modal = await this._modalCtrl.create({
       component: WebhookFormPage,
+      componentProps: {
+        model: this.webhook,
+        webhook_id: this.webhook_id
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    });
+    modal.present();
+  }
+
+
+  /**
+   * Loads Form in modal to test
+   */
+  async test() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: WebhookTestPage,
       componentProps: {
         model: this.webhook,
         webhook_id: this.webhook_id

@@ -57,6 +57,22 @@
             </ion-menu-toggle>
           </ion-item-group>
 
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Marketing</ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'/email-campaign-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="mail-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Email Campaign
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+
           <!-- Process Payments -->
           <ion-item-group>
             <ion-item-divider>
@@ -318,6 +334,16 @@
             <ion-item-divider>
               <ion-label>Settings </ion-label>
             </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-menu-toggle auto-hide="false">
+                <ion-item lines="none" routerLink="/blocked-ip-list">
+                  <div tabindex="0"></div>
+                  <ion-icon name="cog-outline" slot="start"></ion-icon>
+                  <ion-label class="ion-text-wrap">Blocked IPs</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-menu-toggle>
 
             <ion-menu-toggle auto-hide="false">
               <ion-menu-toggle auto-hide="false">

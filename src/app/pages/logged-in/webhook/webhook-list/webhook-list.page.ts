@@ -8,6 +8,7 @@ import { WebhookService } from 'src/app/providers/logged-in/webhook.service';
 import { AuthService } from 'src/app/providers/auth.service';
 // pages
 import { WebhookFormPage } from '../webhook-form/webhook-form.page';
+import { WebhookTestPage } from '../webhook-test/webhook-test.page';
 
 
 @Component({
@@ -105,6 +106,33 @@ export class WebhookListPage implements OnInit {
         model: model
       }
     });
+  }
+
+  /**
+   * Loads Form in modal to test
+   */
+  async test(ev, webhook) {
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this._modalCtrl.create({
+      component: WebhookTestPage,
+      componentProps: {
+        model: webhook,
+        webhook_id: webhook.webhook_id
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    });
+    modal.present();
   }
 
   /**

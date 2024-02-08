@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="close()"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ operation }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button color="primary" [disabled]="!form.valid" (click)="save()">
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" *ngIf="form">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">IP Address</ion-label>
+        <ion-input type="text" formControlName="ip_address"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Note</ion-label>
+        <ion-textarea formControlName="note"></ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

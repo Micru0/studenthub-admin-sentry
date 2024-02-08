@@ -30,7 +30,11 @@
         </ion-label>
  
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
-
+          <ion-button (click)="test($event, webhook)">
+            <ion-icon slot="start" name="play-outline"></ion-icon>
+            Test
+          </ion-button>
+          
           <ion-button color="danger" (click)="delete($event, webhook)">
             <ion-icon slot="start" name="trash-outline"></ion-icon>
             Delete
@@ -40,6 +44,11 @@
       </ion-item>
 
       <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+        <ion-button (click)="test($event, webhook)">
+          <ion-icon slot="start" name="play-outline"></ion-icon>
+          Test
+        </ion-button>
+        
         <ion-button color="danger" (click)="delete($event, webhook)">
           <ion-icon slot="start" name="trash-outline"></ion-icon>
           Delete

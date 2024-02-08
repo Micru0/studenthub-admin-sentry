@@ -313,6 +313,80 @@ export class TransferViewPage implements OnInit {
     alert.present();
   }
   
+  async markCancel() {
+
+    let alert = await this.alertCtrl.create({
+      header: 'Cancel transfer?',
+      message: 'Do you want to change status to Cancelled?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: async () => {
+
+            this.processing = true;
+
+            this.transferService.markCancel(this.transfer).subscribe(async response => {
+              
+              let toast = await this.toastCtrl.create({
+                message: response.message,
+                duration: 3000
+              });
+              toast.present();
+
+              this.eventService.transferUpdated$.next({});
+
+              this.navCtrl.pop();
+
+              this.processing = false;
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  async delete() {
+
+    let alert = await this.alertCtrl.create({
+      header: 'Are you sure?',
+      message: 'Do you really want to delete this transfer?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: async () => {
+
+            this.processing = true;
+
+            this.transferService.delete(this.transfer).subscribe(async response => {
+              
+              let toast = await this.toastCtrl.create({
+                message: response.message,
+                duration: 3000
+              });
+              toast.present();
+
+              this.eventService.transferUpdated$.next({});
+
+              this.navCtrl.pop();
+
+              this.processing = false;
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   /**
    * Payment Sent. Revert back to locked.
    */

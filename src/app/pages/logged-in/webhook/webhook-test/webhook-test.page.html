@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="webhook-list" (click)="close()"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Test <span *ngIf="model && model.webhook_id">#{{ model.webhook_id }}</span> </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button clear color="primary" 
+        [disabled]="!form.valid"
+        (click)="save()">
+        <span *ngIf="!saving">Test</span>
+        <ion-spinner *ngIf="saving"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" *ngIf="form">
+    <ion-list>
+        
+      <ion-item>
+        <ion-label position="floating">Method</ion-label>
+        <ion-select formControlName="method" interface="popover">
+          <ion-select-option>GET</ion-select-option>
+          <ion-select-option>POST</ion-select-option>
+          <ion-select-option>PUT</ion-select-option>
+          <ion-select-option>PATCH</ion-select-option>
+          <ion-select-option>DELETE</ion-select-option>
+        </ion-select>
+      </ion-item> 
+
+      <ion-item>
+        <ion-label position="floating">Endpoint</ion-label>
+        <ion-input type="url" formControlName="endpoint"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating">JSON encoded data</ion-label>
+        <ion-textarea formControlName="data"></ion-textarea>
+      </ion-item>
+
+    </ion-list>
+
+    <p>You can use <a href="https://webhook.site" target="_blank">https://webhook.site</a> to get webhook endpoint for testing</p>
+    
+  </form>
+</ion-content>
