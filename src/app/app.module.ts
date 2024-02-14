@@ -49,6 +49,7 @@ import { WebhookFormPageModule } from './pages/logged-in/webhook/webhook-form/we
 import { EmailCampaignFormPageModule } from './pages/logged-in/email-campaign/email-campaign-form/email-campaign-form.module';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { BlockedIpFormPageModule } from './pages/logged-in/blocked-ip/blocked-ip-form/blocked-ip-form.module';
+import { CurrencyFormPageModule } from './pages/logged-in/currency/currency-form/currency-form.module';
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -113,6 +114,7 @@ declare global {
     EvaluationReportViewPageModule,
     CandidatePageModule,
     BlockedIpFormPageModule,
+    CurrencyFormPageModule,
     EditorModule
   ],
   providers: [

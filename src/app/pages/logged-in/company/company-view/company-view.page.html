@@ -264,7 +264,7 @@
         <ion-item>
           <div tabindex="0"></div>
           <ion-label>
-            Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} KWD
+            Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} {{ company.currency_code }}
           </ion-label>
         </ion-item>
       </section>
@@ -289,7 +289,7 @@
         <ion-item>
           <div tabindex="0"></div>
           <ion-label>
-            Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} KWD
+            Hourly Rate - {{ company.company_hourly_rate | number:'1.3-3' }} {{ company.currency_code }}
           </ion-label>
         </ion-item>
       </section>
@@ -599,7 +599,7 @@
         <ion-card *ngFor="let transfer of company.parentTransfers" tappable [routerLink]="['/transfer-view', transfer.transfer_id]">
           <ion-card-content>
             <p><strong>Transfer #{{ transfer.transfer_id}}</strong></p>
-            <h2><strong>KWD {{ transfer.company_total | number:'1.3-3' }}</strong></h2>
+            <h2><strong>{{ transfer.currency_code }} {{ transfer.company_total | number:'1.3-3' }}</strong></h2>
             <p>
               <strong>Status: </strong>
               <span class="status status_{{transfer.transfer_status}}" *ngIf="transfer.transfer_status==10"> Draft </span>

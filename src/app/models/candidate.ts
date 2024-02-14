@@ -48,6 +48,7 @@ export class Candidate {
     candidate_gender: number;
     candidate_objective: string;
     candidate_driving_license: number;
+    currency_code: string;
     candidateSkills: any[];
     candidateExperiences: any[];
 

@@ -66,7 +66,7 @@
                   Transfer file amount mismatch
                 </ion-badge>
               </p>
-              <h2>KWD {{ transfer.company_total | number:'1.3-3' }}</h2>
+              <h2>{{ transfer.currency_code }} {{ transfer.company_total | number:'1.3-3' }}</h2>
               <b>{{ transfer.company_name }}</b>
             </ion-col>
           </ion-row>
@@ -83,15 +83,15 @@
           <ion-row>
             <ion-col size="12" size-sm="6">
               <p>Employee Distribution</p>
-              KWD {{ transfer.total - transfer.total_transfer_cost | number:'1.3-3' }}
+              {{ transfer.currency_code }} {{ transfer.total - transfer.total_transfer_cost | number:'1.3-3' }}
             </ion-col>
             <ion-col size="12" size-sm="6" *ngIf="transfer.total_transfer_cost > 0">
               <p>Transfer Cost</p>
-              KWD {{ transfer.total_transfer_cost | number:'1.3-3' }}<br>
+              {{ transfer.currency_code }} {{ transfer.total_transfer_cost | number:'1.3-3' }}<br>
             </ion-col>
             <ion-col size="12" size-sm="6">
               <p>Profit</p>
-              KWD {{ transfer.profit | number:'1.3-3' }}<br>
+              {{ transfer.currency_code }} {{ transfer.profit | number:'1.3-3' }}<br>
             </ion-col>
           </ion-row>
           <ion-row>

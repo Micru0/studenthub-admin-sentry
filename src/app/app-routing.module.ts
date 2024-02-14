@@ -743,12 +743,21 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/blocked-ip/blocked-ip-form/blocked-ip-form.module').then( m => m.BlockedIpFormPageModule)
   },
   {
+    path: 'currency-list',
+    loadChildren: () => import('./pages/logged-in/currency/currency-list/currency-list.module').then( m => m.CurrencyListPageModule)
+  },
+  {
+    path: 'currency-view',
+    loadChildren: () => import('./pages/logged-in/currency/currency-view/currency-view.module').then( m => m.CurrencyViewPageModule)
+  },
+  {
+    path: 'currency-form',
+    loadChildren: () => import('./pages/logged-in/currency/currency-form/currency-form.module').then( m => m.CurrencyFormPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
-  },  
-
-
-
+  }
 ];
 
 @NgModule({
