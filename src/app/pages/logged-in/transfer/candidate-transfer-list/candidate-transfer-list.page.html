@@ -43,7 +43,7 @@
             <ion-label>
               <h5>Amount</h5>
               <p>
-                KWD {{ candidatePayableAmount(transfer) | number:'1.3-3' }}
+                {{ transfer.transfer.currency_code }} {{ candidatePayableAmount(transfer) | number:'1.3-3' }}
               </p>
             </ion-label>
           </ion-item>

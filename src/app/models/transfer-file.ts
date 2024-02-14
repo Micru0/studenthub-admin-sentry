@@ -5,4 +5,5 @@ export class TransferFile {
     transfer_file_created_at: string;
     transfer_file_updated_at: string;
     totalCandidates: number;
+    currency_code: string;
 }
