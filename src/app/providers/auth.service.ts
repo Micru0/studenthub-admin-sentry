@@ -1,7 +1,7 @@
 import { Injectable, RendererFactory2 } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
-
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError, first, take, map, retryWhen } from 'rxjs/operators';
 import { empty, Observable, throwError } from 'rxjs';
@@ -12,6 +12,7 @@ import { RouterStateSnapshot, ActivatedRouteSnapshot, UrlTree, Router } from '@a
 import { EventService } from './event.service';
 import { StorageService } from './storage.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+//import { TranslateLabelService } from './translate-label.service';
 
 
 @Injectable({
@@ -34,7 +35,8 @@ export class AuthService {
 
   private _urlBasicAuth = '/auth/login';
   public _urlLoginAuth0 = '/auth/login-auth0';
-
+  public _urlLoginByGoogle = '/auth/login-by-google';
+  
   constructor(
     public storage: Storage,
     public storageService: StorageService,
@@ -42,6 +44,7 @@ export class AuthService {
     public rendererFactory: RendererFactory2,
     public _http: HttpClient,
     public router: Router,
+    //public translate: TranslateLabelService,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     private eventService: EventService
@@ -262,6 +265,133 @@ export class AuthService {
         take(1),
         // map((res: Response) => res)
       );
+  }
+
+
+  /**
+   * show login error message
+   * @param message
+   */
+  async showLoginError(message = null) {
+    const alert = await this.alertCtrl.create({
+      message: message? message: 'Error getting login',
+      buttons: ['Okay']
+    });
+    await alert.present();
+  }
+
+  /**
+   * Login by Google for mobile app
+   */
+  loginByGoogle() {
+
+    GoogleAuth.signIn().then(async googleUser => {
+ 
+      if (googleUser && googleUser.authentication && googleUser.authentication.idToken) {
+        this.useGoogleIdTokenForAuth(googleUser.authentication.idToken, false);
+      } else {
+        this.eventService.googleLoginFinished$.next({});
+
+        this.showLoginError('Error getting login by Google+ API');
+      }
+    }).catch(async err => {
+
+      console.error(err);
+
+      this.eventService.googleLoginFinished$.next({});
+
+      if (err = 'popup_closed_by_user') {
+        return false;
+      }
+
+      this.showLoginError('Error getting login by Google+ API');
+    }); 
+  }
+  
+  /**
+   * Login by google idToken
+   */
+  async useGoogleIdTokenForAuth(idToken, showLoader = true) {
+
+    let loading;
+
+    if (showLoader) {
+      loading = await this.loadingCtrl.create({
+        spinner: 'crescent',
+        message: 'Logging in...'
+      });
+      loading.present();
+    }
+
+    const url = environment.apiEndpoint + this._urlLoginByGoogle;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Language: "en"
+    });
+    
+    return this._http.post(url, {
+      idToken: idToken,
+    }, {
+      headers: headers
+    })
+      .pipe(
+        //retryWhen(genericRetryStrategy()),
+        catchError((err) => this._handleError(err)),
+        first(),
+        map((res) => res)
+      )
+      .subscribe(async response => {
+
+        if (response.operation == 'success') {
+
+          this.handleLogin(response, 'Google');
+
+        } else if (response.operation == 'error') {
+          const alert = await this.alertCtrl.create({
+            message: 'Error getting login by Google+ API', // JSON.stringify(err)
+            buttons: ['Okay']
+          });
+          await alert.present();
+
+        }
+
+        this.eventService.googleLoginFinished$.next({});
+
+      }, err => {
+
+        this.eventService.googleLoginFinished$.next(err);
+      },
+      () => {
+        if (loading) {
+          loading.dismiss();
+        }
+      });
+  }
+
+  /**
+   * Handle response from api call to get login/register by google token or otp
+   * @param response
+   */
+  handleLogin(response, channel) {
+
+    if (response.operation === 'success') {
+ 
+      /*this.analyticsService.track("Log In", { 
+        login_method: channel
+      })*/
+
+      this.setAccessToken(response, true);
+
+    } else {
+
+      this.alertCtrl.create({
+        message: response.message,
+        buttons: ['Okay']
+      }).then(alert => {
+        alert.present();
+      });
+    }
   }
 
   /**

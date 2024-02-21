@@ -5,6 +5,7 @@ import { CustomValidator } from 'src/app/validators/custom.validator';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+import { EventService } from 'src/app/providers/event.service';
 
 
 @Component({
@@ -28,11 +29,14 @@ export class LoginPage implements OnInit {
   // Store number of invalid password attempts to suggest reset password
   private numberOfLoginAttempts = 0;
 
+  public loading: boolean = false; 
+
   constructor(
     public platform: Platform,
     public auth0: Auth0Service,
     private fb: FormBuilder,
     private auth: AuthService,
+    public eventService: EventService,
     private alertCtrl: AlertController
   ) {
     // Initialize the Login Form
@@ -44,6 +48,10 @@ export class LoginPage implements OnInit {
 
   ngOnInit(): void {
     window.analytics.page('Login Page');
+
+    this.eventService.googleLoginFinished$.subscribe(() => {
+      this.loading = false;
+    });
   }
 
   /**
@@ -115,6 +123,15 @@ export class LoginPage implements OnInit {
     const url = this.platform.is('hybrid') ? `co.studenthub.staff://view/tasks`: null;
     this.auth0.loginWithRedirect({ redirect_uri: url })
   }
+
+  /**
+   * login by google on capacitor app 
+   */
+  loginByGoogle() {
+    this.loading = true; 
+
+    this.auth.loginByGoogle();
+  } 
 
   togglePasswordVisibility() {
     this.type = this.type == 'password'? 'text': 'password';

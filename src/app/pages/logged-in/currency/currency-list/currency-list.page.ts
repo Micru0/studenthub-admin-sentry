@@ -25,7 +25,7 @@ export class CurrencyListPage implements OnInit {
   public pageCount = 0;
   public currentPage = 1;
 
-  public currencys: Currency[];
+  public currencies: Currency[];
 
   constructor(
     public platform: Platform,
@@ -44,7 +44,7 @@ export class CurrencyListPage implements OnInit {
   }
 
   /**
-   * list currencys
+   * list currencies
    * @param page
    */
   async loadData(page: number, silent = false) {
@@ -61,7 +61,7 @@ export class CurrencyListPage implements OnInit {
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
-      this.currencys = response.body;
+      this.currencies = response.body;
     }, () => {
       this.loading = false;
       this.deleting = false;
@@ -81,7 +81,7 @@ export class CurrencyListPage implements OnInit {
       this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
       this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
 
-      this.currencys = this.currencys.concat(response.body);
+      this.currencies = this.currencies.concat(response.body);
 
       event.target.complete();
 

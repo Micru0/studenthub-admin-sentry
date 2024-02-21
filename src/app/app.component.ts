@@ -14,6 +14,7 @@ import { AuthService } from './providers/auth.service';
 import { CandidateService } from './providers/logged-in/candidate.service';
 import { StorageService } from './providers/storage.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 
 @Component({
@@ -50,6 +51,14 @@ export class AppComponent implements OnInit {
   }
 
   async initializeApp() {
+
+    // use hook after platform dom ready
+    GoogleAuth.initialize({
+      clientId: "123188361193-ijgbu581g8sp4qag6gt4nia3410160qk.apps.googleusercontent.com",
+      scopes: ['profile', 'email'],
+      grantOfflineAccess: false,
+    });
+
     if(!this.storageService._storage)
       this.storageService._storage = await this.storage.create();
 
