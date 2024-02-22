@@ -32,6 +32,9 @@ export class AuthService {
   public email: string;
   public admin_limited_access: any;
   public theme: string;
+  public currency_pref: string = "KWD";
+
+  public currencies = [];
 
   private _urlBasicAuth = '/auth/login';
   public _urlLoginAuth0 = '/auth/login-auth0';
@@ -104,6 +107,10 @@ export class AuthService {
     if(!this.storageService._storage)
       this.storageService._storage = await this.storage.create();
 
+    this.storageService.get('currency_pref').then(ret => {
+      this.currency_pref = ret;
+    });
+    
     this.storageService.get('loggedInAdmin').then(ret => {
 
       const admin = ret;// JSON.parse(ret.value);
@@ -231,12 +238,15 @@ export class AuthService {
    * Save user data in storage
    */
   saveInStorage() {
+ 
+    this.storageService.set("currency_pref", this.currency_pref);
+
     this.storageService.set('loggedInAdmin', {
-        token: this._accessToken,
-        id: this.id,
-        name: this.name,
-        email: this.email,
-        admin_limited_access: this.admin_limited_access
+        token: this._accessToken? this._accessToken: null,
+        id: this.id? this.id: null,
+        name: this.name? this.name: null,
+        email: this.email? this.email: null,
+        admin_limited_access: this.admin_limited_access? this.admin_limited_access: null
     }).catch(r => {
       this.eventService.errorStorage$.next({});
     });
@@ -253,6 +263,7 @@ export class AuthService {
 
     const authHeader = new HttpHeaders({
       'Content-Type': 'application/json',
+      "Currency": this.currency_pref,
       Authorization: 'Basic ' + btoa(unescape(encodeURIComponent(`${email}:${password}`)))
     });
 
@@ -327,6 +338,7 @@ export class AuthService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
+      "Currency": this.currency_pref,
       Language: "en"
     });
     
@@ -466,7 +478,8 @@ export class AuthService {
   _buildAuthHeaders() {
     return new HttpHeaders({
       //Language: this.language_pref || 'en',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      "Currency": this.currency_pref
     });
   }
 

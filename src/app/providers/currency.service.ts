@@ -19,7 +19,7 @@ export class CurrencyService {
    * @param query
    */
   list(page, query = null): Observable<any> {
-    let url = `/currency?page=${page}`;
+    let url = `/currencies?page=${page}`;
     if (query) {
       url += `&keyword=${query}`;
     }

@@ -32,6 +32,14 @@
   
           </ion-item>
   
+          <ion-item>
+            <ion-select placeholder="Select Currency" formControlName="currency_code" (ionChange)="onCurrencyChange($event)"> 
+              <ion-select-option [value]="currency.code" *ngFor="let currency of auth.currencies">
+                {{ currency.code }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item> 
+
           <div class="ion-text-center">
             <ion-button expand="block" class="login-btn" type="submit"
               [disabled]="!loginForm.valid || isLoading ||
@@ -45,7 +53,6 @@
         </form>
         <!-- END Login Form -->
   
-      
         <div class="separator"> <span>OR</span> </div>
 
         <ion-button class="btn-login-bawes" fill="clear" (click)="loginWithRedirect()">

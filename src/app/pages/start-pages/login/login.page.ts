@@ -42,7 +42,8 @@ export class LoginPage implements OnInit {
     // Initialize the Login Form
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, CustomValidator.emailValidator]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      currency_code: [this.auth.currency_pref || "KWD", Validators.required],
     });
   }
 
@@ -135,5 +136,10 @@ export class LoginPage implements OnInit {
 
   togglePasswordVisibility() {
     this.type = this.type == 'password'? 'text': 'password';
+  }
+
+  onCurrencyChange(event) {
+    this.auth.currency_pref = event;
+    this.auth.saveInStorage();
   }
 }
