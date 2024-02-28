@@ -33,8 +33,8 @@
         <p>{{ candidate.transfer_confirmation_id }}</p>
       </ion-label>
 
-      <ion-badge slot="end" *ngIf="candidate.candidate_total">KWD {{ candidate.candidate_total | number:'1.3-3' }}</ion-badge>
-      <ion-badge slot="end" *ngIf="candidate.total_amount">KWD {{ candidate.total_amount | number:'1.3-3' }}</ion-badge>
+      <ion-badge slot="end" *ngIf="candidate.candidate_total">{{ candidate.currency_code }} {{ candidate.candidate_total | number:'1.3-3' }}</ion-badge>
+      <ion-badge slot="end" *ngIf="candidate.total_amount">{{ candidate.currency_code }} {{ candidate.total_amount | number:'1.3-3' }}</ion-badge>
     </ion-item>
   </ion-list>
 

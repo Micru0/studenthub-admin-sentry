@@ -84,7 +84,7 @@
       <ion-col size="12" size-md="6" *ngIf="statistics.payable.total > 0">
         <ion-card>
           <ion-card-header>
-            You have KWD {{ statistics.payable.amount | number:'1.3-3' }} payable to {{ statistics.payable.total }} {{ statistics.payable.total > 1 ? 'candidates' : 'candidate' }}
+            You have {{ authService.currency_pref }} {{ statistics.payable.amount | number:'1.3-3' }} payable to {{ statistics.payable.total }} {{ statistics.payable.total > 1 ? 'candidates' : 'candidate' }}
           </ion-card-header>
           <ion-card-content>
             <p>You'll need to verify their bank info and process their payment</p>
@@ -139,7 +139,7 @@
       <ion-col size="12" size-md="6">
         <ion-card>
           <ion-card-header>
-            {{ statistics.totalSalaryPaid }} KWD total salary paid
+            {{ statistics.totalSalaryPaid }} {{ authService.currency_pref }} total salary paid
           </ion-card-header>
           <ion-card-content>
             <ion-button routerLink="/import-salary-form">

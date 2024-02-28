@@ -38,6 +38,7 @@ export class AuthHttpService {
       observe: 'response',
       headers: new HttpHeaders({
         'Content-Type': 'text/plain',
+        "Currency": this._auth.currency_pref,
         'Authorization': 'Bearer ' + bearerToken
       })
     }).pipe(
@@ -67,6 +68,7 @@ export class AuthHttpService {
       responseType: 'blob',
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded',
+        "Currency": this._auth.currency_pref,
         'Authorization': 'Bearer ' + bearerToken
       })
     }).pipe(
@@ -95,6 +97,7 @@ export class AuthHttpService {
       responseType: 'blob',
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded',
+        "Currency": this._auth.currency_pref,
         'Authorization': 'Bearer ' + bearerToken
       })
     }).pipe(
@@ -255,7 +258,8 @@ export class AuthHttpService {
     // Build Headers with Bearer Token
     return new HttpHeaders({
       "Authorization": "Bearer " + bearerToken,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Currency": this._auth.currency_pref
     });
   }
 

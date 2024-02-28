@@ -14,6 +14,8 @@ import { AuthService } from './providers/auth.service';
 import { CandidateService } from './providers/logged-in/candidate.service';
 import { StorageService } from './providers/storage.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { CurrencyService } from './providers/currency.service';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
   constructor(
     public storage: Storage,
     public storageService: StorageService,
+    public currencyService: CurrencyService,
     public router: Router,
     public updates: SwUpdate,
     public appRef: ApplicationRef,
@@ -50,6 +53,14 @@ export class AppComponent implements OnInit {
   }
 
   async initializeApp() {
+
+    // use hook after platform dom ready
+    GoogleAuth.initialize({
+      clientId: "123188361193-ijgbu581g8sp4qag6gt4nia3410160qk.apps.googleusercontent.com",
+      scopes: ['profile', 'email'],
+      grantOfflineAccess: false,
+    });
+
     if(!this.storageService._storage)
       this.storageService._storage = await this.storage.create();
 
@@ -116,6 +127,8 @@ export class AppComponent implements OnInit {
 
     this.platform.ready().then(() => {
 
+      this.loadCurrencies();
+
       /**
        * todo: need to test in mobile app
        * when user comming back from auth0
@@ -139,6 +152,12 @@ export class AppComponent implements OnInit {
       }
 
       this.setServiceWorker();
+    });
+  }
+
+  loadCurrencies() {
+    this.currencyService.list(-1).subscribe(data => {
+      this.authService.currencies = data.body;
     });
   }
 
@@ -288,6 +307,17 @@ export class AppComponent implements OnInit {
     this.updatesAvailable = false;
   }
 
+  onCurrencyChange(event) {
+    //this.authService.currency_pref = event;
+    this.authService.saveInStorage();
+
+    //reload 
+    //this.handleRefresh();
+    setTimeout(() => {
+      window.location.reload();
+    }, 200);
+  }
+  
   /**
    * Get total required to review
    */
