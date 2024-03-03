@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="mail-log-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="mailLog">#{{ mailLog.mail_uuid }}</ion-title>
+ 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list *ngIf="mailLog">
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>From</h5>
+        <p>{{ mailLog.from }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>To</h5>
+        <p>{{ mailLog.to }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Subject</h5>
+        <p>{{ mailLog.subject }}</p>
+      </ion-label>
+    </ion-item>
+ 
+  </ion-list>
+
+  <loading-modal type="university-view" [loading]="loading && !mailLog"></loading-modal>
+ 
+</ion-content>

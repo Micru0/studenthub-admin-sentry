@@ -754,10 +754,20 @@ const routes: Routes = [
     path: 'currency-form',
     loadChildren: () => import('./pages/logged-in/currency/currency-form/currency-form.module').then( m => m.CurrencyFormPageModule)
   },
+  
+  {
+    path: 'mail-log-list',
+    loadChildren: () => import('./pages/logged-in/mail-log/mail-log-list/mail-log-list.module').then( m => m.MailLogListPageModule)
+  },
+  {
+    path: 'mail-log-view',
+    loadChildren: () => import('./pages/logged-in/mail-log/mail-log-view/mail-log-view.module').then( m => m.MailLogViewPageModule)
+  },
   {
     path: '**',
     redirectTo: 'not-found'
-  }
+  },
+
 ];
 
 @NgModule({

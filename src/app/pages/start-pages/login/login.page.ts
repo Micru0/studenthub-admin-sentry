@@ -65,6 +65,7 @@ export class LoginPage implements OnInit {
     const password = this.oldPasswordInput = this.loginForm.value.password;
 
     this.auth.basicAuth(email, password).subscribe(async res => {
+
       this.isLoading = false;
 
       if (res.operation == 'success') {
@@ -80,6 +81,7 @@ export class LoginPage implements OnInit {
       }
 
     }, async err => {
+
       this.isLoading = false;
 
       // Incorrect email or password
@@ -139,7 +141,7 @@ export class LoginPage implements OnInit {
   }
 
   onCurrencyChange(event) {
-    this.auth.currency_pref = event;
+    this.auth.currency_pref = event.detail.value;
     this.auth.saveInStorage();
   }
 }
