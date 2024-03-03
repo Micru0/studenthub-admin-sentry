@@ -210,8 +210,8 @@
                 {{ resource.candidate.candidate_name? resource.candidate.candidate_name: resource.candidate.candidate_name_ar }}
 
                 <span *ngIf="resource.candidate.candidate_hourly_rate != resource.candidate_hourly_rate && resource.candidate.store_id == resource.store_id">
-                  <br/>( Current Rate : {{resource.candidate.candidate_hourly_rate}} {{ resource.candidate.currency_code }}/hr)<br/>
-                  ( Distribution Rate : {{ resource.candidate_hourly_rate }} {{ resource.candidate.currency_code }}/hr)
+                  <br/>( Current Rate : {{resource.candidate.candidate_hourly_rate}} {{ resource.currency_code }}/hr)<br/>
+                  ( Distribution Rate : {{ resource.candidate_hourly_rate }} {{ resource.currency_code }}/hr)
                 </span>
 
               </h3>
@@ -234,7 +234,7 @@
               </ion-col>
               <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
                 <!-- todo: show hourly rate currency from company -->
-                <b>Company Pays {{ resource.company_hourly_rate }} {{ resource.candidate.currency_code }}/hr</b> <br />
+                <b>Company Pays {{ resource.company_hourly_rate }} {{ resource.currency_code }}/hr</b> <br />
                 {{ transfer.currency_code }} {{ totalCompanyPaysForCandidateWithoutBonus(resource) | number:'1.3-3' }}
                 <div *ngIf="resource.bonus > 0">
                   + Bonus {{ transfer.currency_code }} {{ resource.bonus | number:'1.3-3' }}
@@ -242,7 +242,7 @@
               </ion-col>
 
               <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
-                <b>We Distribute {{ resource.candidate_hourly_rate }} {{ resource.candidate.currency_code }}/hr</b> <br />
+                <b>We Distribute {{ resource.candidate_hourly_rate }} {{ resource.currency_code }}/hr</b> <br />
                 {{ transfer.currency_code }} {{ totalPaidToCandidateWithoutBonus(resource) | number:'1.3-3' }}
                 <div *ngIf="resource.candidate_bonus > 0">
                   + Bonus {{ transfer.currency_code }} {{ resource.candidate_bonus | number:'1.3-3' }}

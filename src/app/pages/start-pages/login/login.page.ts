@@ -139,7 +139,7 @@ export class LoginPage implements OnInit {
   }
 
   onCurrencyChange(event) {
-    this.auth.currency_pref = event;
+    this.auth.currency_pref = event.detail.value;
     this.auth.saveInStorage();
   }
 }

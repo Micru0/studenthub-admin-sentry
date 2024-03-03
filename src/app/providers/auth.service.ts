@@ -238,18 +238,22 @@ export class AuthService {
    * Save user data in storage
    */
   saveInStorage() {
- 
-    this.storageService.set("currency_pref", this.currency_pref);
+  
+    if(this.currency_pref) {
+      this.storageService.set("currency_pref", this.currency_pref);
+    }
 
-    this.storageService.set('loggedInAdmin', {
-        token: this._accessToken? this._accessToken: null,
-        id: this.id? this.id: null,
-        name: this.name? this.name: null,
-        email: this.email? this.email: null,
-        admin_limited_access: this.admin_limited_access? this.admin_limited_access: null
-    }).catch(r => {
-      this.eventService.errorStorage$.next({});
-    });
+    if(this._accessToken) {
+      this.storageService.set('loggedInAdmin', {
+          token: this._accessToken? this._accessToken: null,
+          id: this.id? this.id: null,
+          name: this.name? this.name: null,
+          email: this.email? this.email: null,
+          admin_limited_access: this.admin_limited_access? this.admin_limited_access: null
+      }).catch(r => {
+        this.eventService.errorStorage$.next({});
+      });
+    }
   }
 
   /**
