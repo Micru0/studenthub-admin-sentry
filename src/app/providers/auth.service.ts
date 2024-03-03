@@ -78,7 +78,7 @@ export class AuthService {
 
       this.storageService.get('loggedInAdmin').then(ret => {
 
-        const user = ret;//JSON.parse(ret.value);
+        const user = JSON.parse(ret.value);//ret;//
 
         if (user) {
 
@@ -104,16 +104,17 @@ export class AuthService {
 
   // This is the method you want to call at bootstrap
   async load(): Promise<any> {
-    if(!this.storageService._storage)
-      this.storageService._storage = await this.storage.create();
+    
+    //if(!this.storageService._storage)
+    //  this.storageService._storage = await this.storage.create();
 
     this.storageService.get('currency_pref').then(ret => {
-      this.currency_pref = ret;
+      this.currency_pref = ret.value;
     });
     
     this.storageService.get('loggedInAdmin').then(ret => {
 
-      const admin = ret;// JSON.parse(ret.value);
+      const admin = JSON.parse(ret.value);//ret;// 
 
       if (admin && admin.token) {
         return this.setAccessToken(admin);
@@ -126,8 +127,8 @@ export class AuthService {
 
     this.storageService.get('theme').then(ret => {
 
-      if (ret) {
-        this.setTheme(ret);
+      if (ret.value) {
+        this.setTheme(ret.value);
       }
     }).catch(r => {
       this.eventService.errorStorage$.next({});
@@ -146,7 +147,7 @@ export class AuthService {
     }
 
     this.storageService.get('loggedInAdmin').then(ret => {
-      const user = ret;//JSON.parse(ret.value);
+      const user = JSON.parse(ret.value);//ret;//
 
       if (user) {
         this.setAccessToken(user, redirect);
@@ -244,13 +245,14 @@ export class AuthService {
     }
 
     if(this._accessToken) {
-      this.storageService.set('loggedInAdmin', {
+        
+      this.storageService.set('loggedInAdmin', JSON.stringify({
           token: this._accessToken? this._accessToken: null,
           id: this.id? this.id: null,
           name: this.name? this.name: null,
           email: this.email? this.email: null,
           admin_limited_access: this.admin_limited_access? this.admin_limited_access: null
-      }).catch(r => {
+      })).catch(r => {
         this.eventService.errorStorage$.next({});
       });
     }
@@ -270,16 +272,16 @@ export class AuthService {
       "Currency": this.currency_pref,
       Authorization: 'Basic ' + btoa(unescape(encodeURIComponent(`${email}:${password}`)))
     });
-
+ 
     const url = environment.apiEndpoint + this._urlBasicAuth;
 
     return this._http.get(url, {
       headers: authHeader
-    })
+    });/*
       .pipe(
         take(1),
         // map((res: Response) => res)
-      );
+      );*/
   }
 
 

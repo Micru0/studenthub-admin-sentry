@@ -21,11 +21,11 @@
       <ion-item tappable (click)="rowSelected(currency)">
         <div tabindex="0"></div>
         <ion-label>
-          {{ currency.currency_name }}
-
-          <ion-badge color="danger" *ngIf="!currency.status">In-active</ion-badge>
-          <ion-badge color="success" *ngIf="currency.status">Active</ion-badge>
+          {{ currency.code }}
         </ion-label>
+
+        <ion-badge slot="end" color="danger" *ngIf="!currency.status">In-active</ion-badge>
+        <ion-badge slot="end" color="success" *ngIf="currency.status">Active</ion-badge>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access" >
 

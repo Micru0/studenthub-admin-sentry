@@ -61,8 +61,8 @@ export class AppComponent implements OnInit {
       grantOfflineAccess: false,
     });
 
-    if(!this.storageService._storage)
-      this.storageService._storage = await this.storage.create();
+    //if(!this.storageService._storage)
+    //  this.storageService._storage = await this.storage.create();
 
     App.addListener('appUrlOpen', (event) => {
       this.zone.run(() => {
