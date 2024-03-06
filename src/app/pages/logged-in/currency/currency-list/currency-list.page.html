@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title>Currencies</ion-title>
+
+    <ion-progress-bar type="indeterminate" *ngIf="deleting"></ion-progress-bar>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let currency of currencies" [disabled]="platform.width() > 768">
+      <ion-item tappable (click)="rowSelected(currency)">
+        <div tabindex="0"></div>
+        <ion-label>
+          {{ currency.code }}
+        </ion-label>
+
+        <ion-badge slot="end" color="danger" *ngIf="!currency.status">In-active</ion-badge>
+        <ion-badge slot="end" color="success" *ngIf="currency.status">Active</ion-badge>
+
+        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access" >
+
+          <ion-button color="danger" (click)="delete($event, currency)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-buttons>
+
+      </ion-item>
+
+      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+        <ion-button color="danger" (click)="delete($event, currency)">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loading" type="text-list"></loading-modal>
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="currentPage < pageCount"
+    (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+<ion-footer *ngIf="!authService.admin_limited_access">
+  <ion-button expand="full" (click)="create()">
+    Create
+  </ion-button>
+</ion-footer>

@@ -37,3 +37,7 @@ https://raw.githubusercontent.com/sangam14/dockercheatsheets/master/dockercheats
 To fix heap limit error 
 
 `export NODE_OPTIONS=--max_old_space_size=20480`
+
+todo
+- check suspicious transfers page for currency code 
+

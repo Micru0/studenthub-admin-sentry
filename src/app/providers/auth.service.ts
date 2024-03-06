@@ -1,7 +1,7 @@
 import { Injectable, RendererFactory2 } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
-
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError, first, take, map, retryWhen } from 'rxjs/operators';
 import { empty, Observable, throwError } from 'rxjs';
@@ -12,6 +12,7 @@ import { RouterStateSnapshot, ActivatedRouteSnapshot, UrlTree, Router } from '@a
 import { EventService } from './event.service';
 import { StorageService } from './storage.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+//import { TranslateLabelService } from './translate-label.service';
 
 
 @Injectable({
@@ -31,10 +32,14 @@ export class AuthService {
   public email: string;
   public admin_limited_access: any;
   public theme: string;
+  public currency_pref: string = "KWD";
+
+  public currencies = [];
 
   private _urlBasicAuth = '/auth/login';
   public _urlLoginAuth0 = '/auth/login-auth0';
-
+  public _urlLoginByGoogle = '/auth/login-by-google';
+  
   constructor(
     public storage: Storage,
     public storageService: StorageService,
@@ -42,6 +47,7 @@ export class AuthService {
     public rendererFactory: RendererFactory2,
     public _http: HttpClient,
     public router: Router,
+    //public translate: TranslateLabelService,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     private eventService: EventService
@@ -72,7 +78,7 @@ export class AuthService {
 
       this.storageService.get('loggedInAdmin').then(ret => {
 
-        const user = ret;//JSON.parse(ret.value);
+        const user = JSON.parse(ret.value);//ret;//
 
         if (user) {
 
@@ -98,12 +104,17 @@ export class AuthService {
 
   // This is the method you want to call at bootstrap
   async load(): Promise<any> {
-    if(!this.storageService._storage)
-      this.storageService._storage = await this.storage.create();
+    
+    //if(!this.storageService._storage)
+    //  this.storageService._storage = await this.storage.create();
 
+    this.storageService.get('currency_pref').then(ret => {
+      this.currency_pref = ret.value;
+    });
+    
     this.storageService.get('loggedInAdmin').then(ret => {
 
-      const admin = ret;// JSON.parse(ret.value);
+      const admin = JSON.parse(ret.value);//ret;// 
 
       if (admin && admin.token) {
         return this.setAccessToken(admin);
@@ -116,8 +127,8 @@ export class AuthService {
 
     this.storageService.get('theme').then(ret => {
 
-      if (ret) {
-        this.setTheme(ret);
+      if (ret.value) {
+        this.setTheme(ret.value);
       }
     }).catch(r => {
       this.eventService.errorStorage$.next({});
@@ -136,7 +147,7 @@ export class AuthService {
     }
 
     this.storageService.get('loggedInAdmin').then(ret => {
-      const user = ret;//JSON.parse(ret.value);
+      const user = JSON.parse(ret.value);//ret;//
 
       if (user) {
         this.setAccessToken(user, redirect);
@@ -228,15 +239,23 @@ export class AuthService {
    * Save user data in storage
    */
   saveInStorage() {
-    this.storageService.set('loggedInAdmin', {
-        token: this._accessToken,
-        id: this.id,
-        name: this.name,
-        email: this.email,
-        admin_limited_access: this.admin_limited_access
-    }).catch(r => {
-      this.eventService.errorStorage$.next({});
-    });
+  
+    if(this.currency_pref) {
+      this.storageService.set("currency_pref", this.currency_pref);
+    }
+
+    if(this._accessToken) {
+        
+      this.storageService.set('loggedInAdmin', JSON.stringify({
+          token: this._accessToken? this._accessToken: null,
+          id: this.id? this.id: null,
+          name: this.name? this.name: null,
+          email: this.email? this.email: null,
+          admin_limited_access: this.admin_limited_access? this.admin_limited_access: null
+      })).catch(r => {
+        this.eventService.errorStorage$.next({});
+      });
+    }
   }
 
   /**
@@ -250,18 +269,147 @@ export class AuthService {
 
     const authHeader = new HttpHeaders({
       'Content-Type': 'application/json',
+      "Currency": this.currency_pref,
       Authorization: 'Basic ' + btoa(unescape(encodeURIComponent(`${email}:${password}`)))
     });
-
+ 
     const url = environment.apiEndpoint + this._urlBasicAuth;
 
     return this._http.get(url, {
       headers: authHeader
-    })
+    });/*
       .pipe(
         take(1),
         // map((res: Response) => res)
-      );
+      );*/
+  }
+
+
+  /**
+   * show login error message
+   * @param message
+   */
+  async showLoginError(message = null) {
+    const alert = await this.alertCtrl.create({
+      message: message? message: 'Error getting login',
+      buttons: ['Okay']
+    });
+    await alert.present();
+  }
+
+  /**
+   * Login by Google for mobile app
+   */
+  loginByGoogle() {
+
+    GoogleAuth.signIn().then(async googleUser => {
+ 
+      if (googleUser && googleUser.authentication && googleUser.authentication.idToken) {
+        this.useGoogleIdTokenForAuth(googleUser.authentication.idToken, false);
+      } else {
+        this.eventService.googleLoginFinished$.next({});
+
+        this.showLoginError('Error getting login by Google+ API');
+      }
+    }).catch(async err => {
+
+      console.error(err);
+
+      this.eventService.googleLoginFinished$.next({});
+
+      if (err = 'popup_closed_by_user') {
+        return false;
+      }
+
+      this.showLoginError('Error getting login by Google+ API');
+    }); 
+  }
+  
+  /**
+   * Login by google idToken
+   */
+  async useGoogleIdTokenForAuth(idToken, showLoader = true) {
+
+    let loading;
+
+    if (showLoader) {
+      loading = await this.loadingCtrl.create({
+        spinner: 'crescent',
+        message: 'Logging in...'
+      });
+      loading.present();
+    }
+
+    const url = environment.apiEndpoint + this._urlLoginByGoogle;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      "Currency": this.currency_pref,
+      Language: "en"
+    });
+    
+    return this._http.post(url, {
+      idToken: idToken,
+    }, {
+      headers: headers
+    })
+      .pipe(
+        //retryWhen(genericRetryStrategy()),
+        catchError((err) => this._handleError(err)),
+        first(),
+        map((res) => res)
+      )
+      .subscribe(async response => {
+
+        if (response.operation == 'success') {
+
+          this.handleLogin(response, 'Google');
+
+        } else if (response.operation == 'error') {
+          const alert = await this.alertCtrl.create({
+            message: 'Error getting login by Google+ API', // JSON.stringify(err)
+            buttons: ['Okay']
+          });
+          await alert.present();
+
+        }
+
+        this.eventService.googleLoginFinished$.next({});
+
+      }, err => {
+
+        this.eventService.googleLoginFinished$.next(err);
+      },
+      () => {
+        if (loading) {
+          loading.dismiss();
+        }
+      });
+  }
+
+  /**
+   * Handle response from api call to get login/register by google token or otp
+   * @param response
+   */
+  handleLogin(response, channel) {
+
+    if (response.operation === 'success') {
+ 
+      /*this.analyticsService.track("Log In", { 
+        login_method: channel
+      })*/
+
+      this.setAccessToken(response, true);
+
+    } else {
+
+      this.alertCtrl.create({
+        message: response.message,
+        buttons: ['Okay']
+      }).then(alert => {
+        alert.present();
+      });
+    }
   }
 
   /**
@@ -336,7 +484,8 @@ export class AuthService {
   _buildAuthHeaders() {
     return new HttpHeaders({
       //Language: this.language_pref || 'en',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      "Currency": this.currency_pref
     });
   }
 

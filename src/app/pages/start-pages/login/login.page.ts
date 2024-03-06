@@ -5,6 +5,7 @@ import { CustomValidator } from 'src/app/validators/custom.validator';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+import { EventService } from 'src/app/providers/event.service';
 
 
 @Component({
@@ -28,22 +29,30 @@ export class LoginPage implements OnInit {
   // Store number of invalid password attempts to suggest reset password
   private numberOfLoginAttempts = 0;
 
+  public loading: boolean = false; 
+
   constructor(
     public platform: Platform,
     public auth0: Auth0Service,
     private fb: FormBuilder,
     private auth: AuthService,
+    public eventService: EventService,
     private alertCtrl: AlertController
   ) {
     // Initialize the Login Form
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, CustomValidator.emailValidator]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      currency_code: [this.auth.currency_pref || "KWD", Validators.required],
     });
   }
 
   ngOnInit(): void {
     window.analytics.page('Login Page');
+
+    this.eventService.googleLoginFinished$.subscribe(() => {
+      this.loading = false;
+    });
   }
 
   /**
@@ -56,6 +65,7 @@ export class LoginPage implements OnInit {
     const password = this.oldPasswordInput = this.loginForm.value.password;
 
     this.auth.basicAuth(email, password).subscribe(async res => {
+
       this.isLoading = false;
 
       if (res.operation == 'success') {
@@ -71,6 +81,7 @@ export class LoginPage implements OnInit {
       }
 
     }, async err => {
+
       this.isLoading = false;
 
       // Incorrect email or password
@@ -116,7 +127,21 @@ export class LoginPage implements OnInit {
     this.auth0.loginWithRedirect({ redirect_uri: url })
   }
 
+  /**
+   * login by google on capacitor app 
+   */
+  loginByGoogle() {
+    this.loading = true; 
+
+    this.auth.loginByGoogle();
+  } 
+
   togglePasswordVisibility() {
     this.type = this.type == 'password'? 'text': 'password';
+  }
+
+  onCurrencyChange(event) {
+    this.auth.currency_pref = event.detail.value;
+    this.auth.saveInStorage();
   }
 }

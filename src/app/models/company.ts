@@ -35,6 +35,8 @@ export class Company {
     company_approved_to_hire: any;
     password: any;
     staff_id: any;
+    country_id: number;
+    currency_code: string;
     subcompanies: Company[];
     subCompanies: Company[];
     stores: Store[];

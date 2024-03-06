@@ -32,5 +32,7 @@ export class EventService {
   public campaignStatus$ = new Subject();
   public campaignStatusList$ = new Subject();
   
+  public googleLoginFinished$ = new Subject();
+  
   constructor() { }
 }

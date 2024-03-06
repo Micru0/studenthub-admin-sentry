@@ -5,6 +5,7 @@ import { StatisticService } from 'src/app/providers/logged-in/statistics.service
 import { EventService } from 'src/app/providers/event.service';
 import {CalendarModal, CalendarModalOptions, CalendarResult} from "ion2-calendar";
 import {ModalController} from "@ionic/angular";
+import { AuthService } from 'src/app/providers/auth.service';
 
 
 @Component({
@@ -28,11 +29,13 @@ export class DashboardPage implements OnInit {
     endDate: null
   };
 
-
+  public clearingCache: boolean = false; 
+  
   constructor(
   	public router: Router,
   	public statisticService: StatisticService,
     private eventService: EventService,
+    public authService: AuthService,
     private modalCtrl: ModalController,
   ) {}
 
@@ -159,6 +162,17 @@ export class DashboardPage implements OnInit {
     this.loadFinancialData();
   }
 
+  onCurrencyChange(event) {
+    //this.authService.currency_pref = event;
+    this.authService.saveInStorage();
+
+    //reload 
+    //this.handleRefresh();
+    setTimeout(() => {
+      window.location.reload();
+    }, 400);
+  }
+
   /**
    * Reset question filter
    */
@@ -168,5 +182,13 @@ export class DashboardPage implements OnInit {
       endDate: null,
     };
     this.loadAllData(); // reload all result
+  }
+
+  clearCache() {
+    this.clearingCache = true;
+    this.statisticService.clearCache().subscribe(res => {
+      window.location.reload();
+      this.clearingCache = false;
+    });
   }
 }

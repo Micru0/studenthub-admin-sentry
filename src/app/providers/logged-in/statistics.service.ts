@@ -26,6 +26,15 @@ export class StatisticService {
   }
 
   /**
+   * clear cache in backend 
+   * @returns 
+   */
+  clearCache(): Observable<any>{
+    let url = this._endpoint +'/clear-cache';
+    return this._authhttp.get(url);
+  }
+
+  /**
    * return transfer stats
    * @returns
    */

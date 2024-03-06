@@ -17,7 +17,7 @@ export class Transfer {
 	company_name: string;
 	company_email: string;
 	total_transfer_cost: number;
-	
+	currency_code: string;
 	//extra field 
 	totalPaid: number;
 	totalUnpaid: number;
