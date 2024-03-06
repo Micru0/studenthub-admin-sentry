@@ -5,5 +5,4 @@ export class MailLog {
     subject: string; 
     created_at: string;
     updated_at: string;
-    
 }
