@@ -109,7 +109,8 @@ export class AuthService {
     //  this.storageService._storage = await this.storage.create();
 
     this.storageService.get('currency_pref').then(ret => {
-      this.currency_pref = ret.value;
+      if(ret.value)
+        this.currency_pref = ret.value;
     });
     
     this.storageService.get('loggedInAdmin').then(ret => {
@@ -269,7 +270,7 @@ export class AuthService {
 
     const authHeader = new HttpHeaders({
       'Content-Type': 'application/json',
-      "Currency": this.currency_pref,
+      "Currency": this.currency_pref || "KWD",
       Authorization: 'Basic ' + btoa(unescape(encodeURIComponent(`${email}:${password}`)))
     });
  
@@ -344,7 +345,7 @@ export class AuthService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      "Currency": this.currency_pref,
+      "Currency": this.currency_pref || "KWD",
       Language: "en"
     });
     
@@ -485,7 +486,7 @@ export class AuthService {
     return new HttpHeaders({
       //Language: this.language_pref || 'en',
       'Content-Type': 'application/json',
-      "Currency": this.currency_pref
+      "Currency": this.currency_pref || "KWD"
     });
   }
 
