@@ -33,6 +33,7 @@ export class StatsPage implements OnInit {
     this.loading = true;
 
     this.statisticService.viewTransfers().subscribe(data => {
+      
       this.loading = false;
 
       this.totalTransferCandidate = data.totalTransferCandidate;
