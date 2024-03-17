@@ -16,7 +16,8 @@
         Clear Cache 
       </ion-button>-->
 
-      <ion-select placeholder="Select currency" [(ngModel)]="authService.currency_pref" (ionChange)="onCurrencyChange($event)"> 
+      <ion-select placeholder="Select currency" [(ngModel)]="authService.currency_pref"
+        (ionChange)="onCurrencyChange($event)">
         <ion-select-option [value]="currency.code" *ngFor="let currency of authService.currencies">
           {{ currency.code }}
         </ion-select-option>
@@ -154,41 +155,46 @@
         </ion-card>
       </ion-col>
 
-      <ion-col size="12" size-md="4">
-        <ion-card>
-          <div class="avatar bg-rgba-success">
-            <div class="avatar-content">
-              <ion-icon name="rocket-outline" class="text-primary"></ion-icon>
+      <ng-container *ngIf="statisticsFinance">
+        <ion-col size="12" size-md="4">
+          <ion-card>
+            <div class="avatar bg-rgba-success">
+              <div class="avatar-content">
+                <ion-icon name="rocket-outline" class="text-primary"></ion-icon>
+              </div>
             </div>
-          </div>
-          <h2 class="bold">{{ statisticsFinance.totalPaymentAmountReceived | number:'1.0-0' }} {{ authService.currency_pref }}</h2>
-          <p class="fs-12" color="light">Total Revenue</p>
-        </ion-card>
-      </ion-col>
+            <h2 class="bold">{{ statisticsFinance.totalPaymentAmountReceived | number:'1.0-0' }} {{
+              authService.currency_pref }}</h2>
+            <p class="fs-12" color="light">Total Revenue</p>
+          </ion-card>
+        </ion-col>
 
-      <ion-col size="12" size-md="4">
-        <ion-card>
-          <div class="avatar bg-rgba-danger">
-            <div class="avatar-content">
-              <ion-icon name="people-outline" class="text-danger"></ion-icon>
+        <ion-col size="12" size-md="4">
+          <ion-card>
+            <div class="avatar bg-rgba-danger">
+              <div class="avatar-content">
+                <ion-icon name="people-outline" class="text-danger"></ion-icon>
+              </div>
             </div>
-          </div>
-          <h2 class="bold">{{ statisticsFinance.totalBelongingToCandidates | number:'1.0-0' }} {{ authService.currency_pref }}</h2>
-          <p class="fs-12" color="light">Total Cost of Services</p>
-        </ion-card>
-      </ion-col>
-      
-      <ion-col size="12" size-md="4">
-        <ion-card>
-          <div class="avatar bg-rgba-danger">
-            <div class="avatar-content">
-              <ion-icon name="people-outline" class="text-danger"></ion-icon>
+            <h2 class="bold">{{ statisticsFinance.totalBelongingToCandidates | number:'1.0-0' }} {{
+              authService.currency_pref }}</h2>
+            <p class="fs-12" color="light">Total Cost of Services</p>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="12" size-md="4">
+          <ion-card>
+            <div class="avatar bg-rgba-danger">
+              <div class="avatar-content">
+                <ion-icon name="people-outline" class="text-danger"></ion-icon>
+              </div>
             </div>
-          </div>
-          <h2 class="bold">{{ statisticsFinance.totalProfit | number:'1.0-0' }} {{ authService.currency_pref }}</h2>
-          <p class="fs-12" color="light">Gross Profit</p>
-        </ion-card>
-      </ion-col>
+            <h2 class="bold">{{ statisticsFinance.totalProfit | number:'1.0-0' }} {{ authService.currency_pref }}</h2>
+            <p class="fs-12" color="light">Gross Profit</p>
+          </ion-card>
+        </ion-col>
+      </ng-container>
     </ion-row>
+
   </ion-grid>
 </ion-content>

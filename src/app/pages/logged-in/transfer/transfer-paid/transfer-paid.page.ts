@@ -65,6 +65,10 @@ export class TransferPaidPage implements OnInit {
    */
   async markPaid() {
 
+    if(!this.candidatelistData) {
+      return false;
+    }
+    
     let candidate_ids = [];
 
     this.candidatelistData.forEach((value, index) => {
