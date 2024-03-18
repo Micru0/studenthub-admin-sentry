@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, CustomValidator.emailValidator]],
       password: ['', Validators.required],
-      currency_code: [this.auth.currency_pref || "KWD", Validators.required],
+      currency_code: [this.auth.currency_pref || "KWD"],
     });
   }
 
