@@ -21,7 +21,7 @@
   <ion-searchbar (ionInput)="searchFilter($event)" debounce=500>
   </ion-searchbar>
   <ion-list>
-    <ion-item tappable *ngFor="let mailLog of mailLogs" (click)="rowSelected(country)">
+    <ion-item tappable *ngFor="let mailLog of mailLogs" (click)="rowSelected(mailLog)">
       <div tabindex="0"></div>
       <ion-label>
         <h5>{{ mailLog.subject }}</h5>

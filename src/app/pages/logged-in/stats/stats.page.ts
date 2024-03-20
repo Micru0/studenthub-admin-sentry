@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 //services
+import { AuthService } from 'src/app/providers/auth.service';
 import { StatisticService } from 'src/app/providers/logged-in/statistics.service';
 
 
@@ -20,6 +21,7 @@ export class StatsPage implements OnInit {
   //public range = 'this-week';
 
   constructor(
+    public authService: AuthService,
     public statisticService: StatisticService
   ) { }
 
@@ -40,6 +42,7 @@ export class StatsPage implements OnInit {
       this.totalPaymentAmountReceived = data.totalPaymentAmountReceived;
       this.totalBelongingToCandidates = data.totalBelongingToCandidates;
       this.totalProfit = data.totalProfit;
+
     });
   }
 }

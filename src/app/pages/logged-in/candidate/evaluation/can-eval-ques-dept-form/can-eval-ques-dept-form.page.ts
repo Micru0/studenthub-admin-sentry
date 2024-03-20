@@ -66,10 +66,7 @@ export class CanEvalQuesDeptFormPage implements OnInit {
         buttons: [
           {
             text: 'Ok',
-            role: 'cancel',
-            handler: _ => {
-              console.log('closed');
-            }
+            role: 'cancel'
           }
         ]
       }).then(alert => alert.present())

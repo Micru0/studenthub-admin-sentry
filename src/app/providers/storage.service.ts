@@ -22,7 +22,6 @@ export class StorageService {
   // Create and expose methods that users of this service can
   // call, for example:
   public set(key: string, value: any) {
-    console.log(key, value);
     //return this._storage?.set(key, value);
 
     return Preferences.set({
@@ -32,14 +31,12 @@ export class StorageService {
   }
 
   public remove(key: string) {
-    console.log(key);
     //return this._storage?.remove(key);
 
     return Preferences.remove({ key: key});
   }
 
   public get(key: string) {
-    console.log(key);
     //return this._storage.get(key);
 
     return Preferences.get({ key: key });
