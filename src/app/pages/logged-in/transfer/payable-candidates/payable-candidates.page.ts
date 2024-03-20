@@ -149,13 +149,10 @@ export class PayableCandidatesPage  {
       transfer.unPaidTransferCandidates.forEach(transferCandidate => {
         this.totalPayableCandidate ++;
         if (!transferCandidate.candidate || !transferCandidate.candidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name) {
-          console.log('missing bank info', transferCandidate.candidate_id);
           this.payableMissingAmount += transferCandidate.candidate_total; // missing bank info
         } else if (!transferCandidate.candidate.isProfileCompleted) {
-          console.log('incomplete profile', transferCandidate.candidate_id);
           this.payableIncompleteProfile += transferCandidate.candidate_total;
         } else {
-          console.log('ok', transferCandidate.candidate_id);
           this.payableAvailAmount += transferCandidate.candidate_total;
         }
       });

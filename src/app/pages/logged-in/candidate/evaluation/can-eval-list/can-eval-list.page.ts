@@ -187,8 +187,7 @@ export class CanEvalListPage implements OnInit {
     let candidateName = report.candidate.candidate_name.replaceAll(' ', '-').toLowerCase();
     let dept = report.department.replaceAll(' ', '-').toLowerCase();
     let name = `${candidateName}_${dept}-report`;
-    this.candidateEvaluationService.downloadReport(report.can_eval_uuid,name).subscribe(response => {
-        console.log('download file');
+    this.candidateEvaluationService.downloadReport(report.can_eval_uuid,name).subscribe(() => {
       },err => loading.dismiss(),
       () => loading.dismiss()
     )

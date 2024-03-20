@@ -105,10 +105,7 @@ export class StaffExpenseViewPage implements OnInit {
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
+          role: 'cancel'
         },
         {
           text: 'Yes',
