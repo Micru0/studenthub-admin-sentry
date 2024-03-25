@@ -42,4 +42,14 @@ export class StatisticService {
     let url = this._endpoint + '/transfer?param=1'+ param;
     return this._authhttp.get(url);
   }
+
+  /**
+   * get revenue data 
+   * @param param 
+   * @returns 
+   */
+  getRevenue(): Observable<any>{
+    let url = this._endpoint + '/revenue';
+    return this._authhttp.get(url);
+  }
 }

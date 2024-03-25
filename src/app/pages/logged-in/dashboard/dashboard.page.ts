@@ -29,6 +29,22 @@ export class DashboardPage implements OnInit {
     endDate: null
   };
 
+  public revenueStats: {
+    candidate_clv: number,
+    total_candidate: number,
+    total_company: number,
+    company_stats: {
+     total_revenue: number,
+     min_revenue: number,
+     max_revenue: number,
+    },
+    candidate_stats: {
+     total_revenue: number,
+     min_revenue: number,
+     max_revenue: number
+    }
+  }
+  
   public clearingCache: boolean = false; 
   
   constructor(
@@ -80,6 +96,12 @@ export class DashboardPage implements OnInit {
     },
     () => {
       this.loading = false;
+    });
+  }
+
+  async loadRevenue() {
+    this.statisticService.getRevenue().subscribe(res => {
+      this.revenueStats = res;
     });
   }
 
@@ -160,6 +182,7 @@ export class DashboardPage implements OnInit {
   loadAllData() {
     this.loadData();
     this.loadFinancialData();
+    this.loadRevenue();
   }
 
   onCurrencyChange(event) {
@@ -184,6 +207,9 @@ export class DashboardPage implements OnInit {
     this.loadAllData(); // reload all result
   }
 
+  /**
+   * remove backend cache 
+   */
   clearCache() {
     this.clearingCache = true;
     this.statisticService.clearCache().subscribe(res => {
