@@ -11,5 +11,27 @@
 </ion-header>
 
 <ion-content>
-//todo - list bank transactions from mongodb 
+  <ion-list>
+    <ion-item *ngFor="let bankTransaction of bankTransactions">
+      <div tabindex="0"></div>
+      <ion-label>
+        <h4 *ngIf="bankTransaction.contact">{{ bankTransaction.contact.name }}</h4>
+        
+        
+        <p>#{{ bankTransaction.bank_transaction_id }}</p>
+        
+        <p>{{ toDate(bankTransaction.date) | date: 'MMM d, y, h:mm:ss a' 
+           }}</p>
+      </ion-label>
+      <ion-badge slot="end">{{ bankTransaction.type }} / {{bankTransaction.status }}</ion-badge>
+      <ion-note slot="end">{{ bankTransaction.total }} {{ bankTransaction.currency_code }}</ion-note>
+    </ion-item>
+
+  <loading-modal [loading]="loading" type="text-list"></loading-modal>
+</ion-list>
+
+<ion-infinite-scroll *ngIf="currentPage < pageCount"
+  (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>
 </ion-content>
