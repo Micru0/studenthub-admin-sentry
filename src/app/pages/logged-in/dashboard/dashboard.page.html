@@ -81,6 +81,84 @@
 
     </ion-row>
 
+    <h3>Recruitment cost ratio for last month </h3>
+
+    <ion-row *ngIf="revenueStats">
+       
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <div class="avatar bg-rgba-primary">
+            <div class="avatar-content">
+                <ion-icon name="cash-outline" class="text-primary"></ion-icon>
+            </div>
+          </div>
+          <h2 class="bold">{{ revenueStats.recruitment_cost_ratio.salaryPaid | number:'1.0-0' }}</h2>
+          <p class="fs-12" color="light">Salary paid to recruitment team</p>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <div class="avatar bg-rgba-primary">
+            <div class="avatar-content">
+                <ion-icon name="people-outline" class="text-primary"></ion-icon>
+            </div>
+          </div>
+          <h2 class="bold">{{ revenueStats.recruitment_cost_ratio.noOfHired | number:'1.0-0' }}</h2>
+          <p class="fs-12" color="light">Total candidate hired</p>
+        </ion-card>
+      </ion-col>
+      
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <div class="avatar bg-rgba-primary">
+            <div class="avatar-content">
+                <ion-icon name="cash-outline" class="text-primary"></ion-icon>
+            </div>
+          </div>
+          <h2 class="bold">{{ revenueStats.recruitment_cost_ratio.costPerCandidate }}</h2>
+          <p class="fs-12" color="light">Cost per candidate</p>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <div class="avatar bg-rgba-primary">
+            <div class="avatar-content">
+                <ion-icon name="cash-outline" class="text-primary"></ion-icon>
+            </div>
+          </div>
+          <h2 class="bold">{{ revenueStats.recruitment_cost_ratio.averageMonthDurationPerAssignment | number:'1.0-0' }}</h2>
+          <p class="fs-12" color="light">Average no. of month candidate staying in job</p>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <div class="avatar bg-rgba-primary">
+            <div class="avatar-content">
+                <ion-icon name="cash-outline" class="text-primary"></ion-icon>
+            </div>
+          </div>
+          <h2 class="bold">{{ revenueStats.recruitment_cost_ratio.possibleEarningPerAssignment  }}</h2>
+          <p class="fs-12" color="light">Possible earning per assignment</p>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <div class="avatar bg-rgba-danger">
+            <div class="avatar-content">
+                <ion-icon name="cash-outline" class="text-danger"></ion-icon>
+            </div>
+          </div>
+          <h2 class="bold">{{ revenueStats.recruitment_cost_ratio.costPerCandidate / revenueStats.recruitment_cost_ratio.possibleEarningPerAssignment }}</h2>
+          <p class="fs-12" color="light">Cost ratio</p>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+
     <h3>Candidate statistics</h3>
 
     <ion-row>
