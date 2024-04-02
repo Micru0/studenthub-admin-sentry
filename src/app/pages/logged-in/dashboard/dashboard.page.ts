@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import * as ApexCharts from 'apexcharts';
 // services
 import { StatisticService } from 'src/app/providers/logged-in/statistics.service';
 import { EventService } from 'src/app/providers/event.service';
@@ -44,6 +45,15 @@ export class DashboardPage implements OnInit {
      max_revenue: number
     }
   }
+  
+  @ViewChild('reportcanva', { read: ElementRef, static: true }) reportcanva: ElementRef;
+
+  public chartOptions: any;
+
+  categories = [];
+  seriesData = [];
+
+  public chart;
   
   public clearingCache: boolean = false; 
   
@@ -161,6 +171,8 @@ export class DashboardPage implements OnInit {
     }
 
     this.loadAllData();
+    this.getInvitationGraphData();
+
   }
 
   /**
@@ -183,6 +195,7 @@ export class DashboardPage implements OnInit {
     this.loadData();
     this.loadFinancialData();
     this.loadRevenue();
+    this.getInvitationGraphData();
   }
 
   onCurrencyChange(event) {
@@ -217,4 +230,99 @@ export class DashboardPage implements OnInit {
       this.clearingCache = false;
     });
   }
+
+  /**
+   * 
+   */
+  getInvitationGraphData() {
+
+    this.statisticService.getInvitationGraphData().subscribe(data => {
+
+      /*for (const row of data.series) {
+        if (row.name == "Total") {
+          this.totalInvitation.push(row.month);
+        } else if (row.day) {
+          this.categories.push(row.day);
+        }
+  
+        //this.seriesData.push(row.total); 
+      }*/
+
+      this.categories = data.categories;
+      this.seriesData = data.series; 
+
+      this.renderChart();
+    })
+  }
+
+  renderChart() {
+    
+    this.chartOptions = {
+      series: this.seriesData,
+      /*markers: {
+        size: 0,
+        colors: "#000",
+        strokeColors: "#000",
+        strokeWidth: 2,
+        strokeOpacity: 0.9,
+        strokeDashArray: 0,
+        fillOpacity: 1,
+        discrete: [],
+        shape: "circle",
+        radius: 2,
+        offsetX: 0,
+        offsetY: 0,
+        onClick: undefined,
+        onDblClick: undefined,
+        showNullDataPoints: true,
+        hover: {
+          size: 4,
+          sizeOffset: 3
+        }
+      },*/
+      chart: {
+        height: 350,
+        type: "line",
+        toolbar: {
+          show: false,
+        },
+        zoom: {
+          enabled: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      /*stroke: {
+        colors: ["#000"],
+        curve: 'straight',
+        width: 2.5,
+      },
+      fill: {
+        colors: ["#000"]
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: "20%",
+          horizontal: false,
+        }
+      },*/
+      xaxis: {
+        categories: this.categories
+      },
+      tooltip: {
+        y: {
+          formatter: (val) => {
+            return val;
+          }
+        },
+        x: {
+          show: true,
+        }
+      }
+    };
+
+    this.chart = new ApexCharts(this.reportcanva.nativeElement, this.chartOptions);
+    this.chart.render();
+  } 
 }
