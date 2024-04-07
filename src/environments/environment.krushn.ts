@@ -10,6 +10,8 @@ export const environment = {
   //apiEndpoint: 'http://localhost/studenthub/admin/web/v1',
   apiEndpoint: 'http://localhost:8888/bawes/studenthub/admin/web/v1',
   permanentBucketUrl: "https://studenthub-uploads-dev-server.s3.amazonaws.com/",
+  candidateAppUrl: "http://localhost:8100/",
+  employerAppUrl: "http://localhost:8100/",
 };
  
 /* 

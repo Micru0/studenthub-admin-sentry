@@ -821,6 +821,21 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/xero/bank-transactions-sync/bank-transactions-sync.module').then( m => m.BankTransactionsSyncPageModule)
   },
   {
+    path: 'campaign-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/marketing/campaign/campaign-list/campaign-list.module').then( m => m.CampaignListPageModule)
+  },
+  {
+    path: 'campaign-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/marketing/campaign/campaign-view/campaign-view.module').then( m => m.CampaignViewPageModule)
+  },
+  {
+    path: 'campaign-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/marketing/campaign/campaign-form/campaign-form.module').then( m => m.CampaignFormPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
   },

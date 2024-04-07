@@ -1,0 +1,51 @@
+<ion-header [class.add-border]="borderLimit" class="clear-header">
+  <ion-toolbar>
+    <ion-back-button slot="start" *ngIf="platform.width() < 768" defaultHref="/"></ion-back-button>
+    
+    <ion-title>
+      {{ "Campaigns" | translate }}
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="add()"><!-- routerLink="/campaign-form" -->
+        {{ "+ New Campaign" | translate }}
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content [attr.dir]="translateService.direction()" class="ion-padding" color="light">
+
+  <ion-item *ngFor="let campaign of campaigns" [routerLink]="'/campaign-view/' + campaign.utm_uuid">
+    <ion-label>
+      <h5>{{ campaign.utm_source }}</h5>
+      <p>{{ campaign.utm_medium }}</p>
+
+      <p class="txt-time">{{ translateService.toDate(campaign.updated_at) | date : 'EEE dd, MMM, hh:mm a' : '': translateService.currentLang == 'ar' ? 'ar-KW' : 'en-US'
+          }}</p>
+
+      <ion-badge>{{ campaign.no_of_signups }} Sign ups</ion-badge>
+      <ion-badge>{{ campaign.no_of_clicks }} Clicks</ion-badge>
+      <ion-badge>{{ campaign.total_revenue }} Revenue</ion-badge>
+    </ion-label>
+    
+    <ion-button slot="end" (click)="remove($event, campaign)">Delete</ion-button>
+  </ion-item>
+
+  
+
+  <div class="no-data" *ngIf="!loading && campaigns.length == 0">
+    <no-items icon="trending-up" 
+      message="{{ 'You can generate campaign links here...' | translate }}">
+    </no-items>
+
+    <p>{{ "For more info visit" | translate }} <br /> <a href="https://support.google.com/analytics/answer/1033867?hl=en" target="_blank">
+      https://support.google.com/analytics/answer/1033867?hl=en
+     </a></p>
+
+  </div>
+
+
+  <loading-modal type="currency-list" [loading]="loading"></loading-modal>
+
+</ion-content>

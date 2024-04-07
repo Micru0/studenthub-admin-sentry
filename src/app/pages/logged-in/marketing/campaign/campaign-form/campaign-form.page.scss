@@ -1,0 +1,126 @@
+ion-content {
+     background: #f5f5f5;
+     --background: #f5f5f5;
+   }
+    
+   
+   ion-list {
+     margin: 0 auto;
+     margin-top: 15px;
+     padding: 20px;
+     max-width: 700px;
+   
+     ion-item {
+       position: relative;
+       --padding-start: 0;
+       --inner-padding-end: 0;
+   
+       ion-label {
+         font-family: NunitoSans;
+         font-size: 16px;
+         font-weight: bold;
+         font-stretch: normal;
+         font-style: normal;
+         line-height: normal;
+         letter-spacing: normal;
+         text-align: var(--start);
+         color: #000000;
+       }
+   
+       .field-duration,
+       ion-input {
+         min-height: 52px;
+         margin: 9px 0 18px 0;
+         border-radius: 2px;
+         border: solid 1px #9d9d9d;
+         background-color: #ffffff;
+         --padding-start: 11px;
+       }
+   
+       .field-duration {
+         width: 100%;
+         padding: 13px 10px;
+       }
+     }
+   }
+   
+   .submit-icon {
+     font-size: 34px;
+     font-weight: bold;
+     color:var(--ion-color-primary);
+   }
+   
+   strong {
+     font-size: 16px;
+     padding-left: 16px;
+   }
+   
+   strong.rtl {
+     font-size: 16px;
+     padding-right: 16px;
+     padding-left: 0;
+   }
+   
+   ion-radio {
+     opacity: 0;
+     padding: 0;
+     margin: 0;
+     position: absolute;
+     width: 100%;
+     height: 100%;
+   }
+   ion-radio-group {
+     display: flex;
+     margin: 9px 0 18px 0;
+     ion-item {
+       width: 179px;
+       flex-grow: 0;
+       display: flex;
+       flex-direction: row;
+       justify-content: center;
+       border: solid 1px #e0e0e0;
+       ion-label {
+         text-align: center;
+         font-size: 14px;
+       }
+     }
+   } 
+   
+   strong.end {
+     position: absolute;
+     right: 15px;
+   }
+   
+   [dir='rtl'] {
+     strong.end {
+       position: absolute;
+       right: auto;
+       left: 15px;
+     }
+   }
+   
+   ion-title {
+     flex-grow: 0;
+     font-family: Inter;
+     font-size: 20px;
+     font-weight: bold;
+     font-stretch: normal;
+     font-style: normal;
+     line-height: normal;
+     letter-spacing: normal;
+     color: #112131;
+   }
+   ion-back-button {
+     display: block;
+   }
+   
+       .hint { 
+            font-size: 12px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #828282;
+            margin: -15px 0 0 0;
+        }

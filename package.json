@@ -45,6 +45,8 @@
     "@sentry/browser": "^7.92.0",
     "@sentry/cli": "^2.24.1",
     "@tinymce/tinymce-angular": "^7.0.0",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
     "apexcharts": "^3.46.0",
     "aws-sdk": "^2.1278.0",
     "cordova-plugin-file": "^7.0.0",

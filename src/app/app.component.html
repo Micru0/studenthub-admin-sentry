@@ -63,6 +63,16 @@
             </ion-item-divider>
 
             <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'/campaign-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="globe-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Social Campaign
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'/email-campaign-list'">
                 <div tabindex="0"></div>
                 <ion-icon name="mail-outline" slot="start"></ion-icon>
