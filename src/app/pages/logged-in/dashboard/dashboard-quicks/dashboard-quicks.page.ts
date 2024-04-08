@@ -5,6 +5,7 @@ import { StatisticService } from 'src/app/providers/logged-in/statistics.service
 import { EventService } from 'src/app/providers/event.service';
 import {CalendarModal, CalendarModalOptions, CalendarResult} from "ion2-calendar";
 import {ModalController} from "@ionic/angular";
+import { AuthService } from 'src/app/providers/auth.service';
 
 
 @Component({
@@ -27,9 +28,9 @@ export class DashboardQuicksPage implements OnInit {
     endDate: null
   };
 
-
   constructor(
   	public router: Router,
+    public authService: AuthService,
   	public statisticService: StatisticService,
     private eventService: EventService,
     private modalCtrl: ModalController,

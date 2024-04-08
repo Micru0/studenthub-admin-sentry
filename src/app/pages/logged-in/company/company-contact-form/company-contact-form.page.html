@@ -97,15 +97,15 @@
 
     </ion-list>
 
-    <ion-card *ngIf="!contact">
+    <ion-card *ngIf="!contact" formArrayName="emails">
       <ion-card-header>
         <ion-card-title>Extra Emails </ion-card-title>
       </ion-card-header>
       <ion-card-content>
 
         <div *ngFor="let email of emails.controls; let i = index">
-          <ion-item [formGroup]="email">
-           
+          <ion-item >
+           <!-- [formGroup]="email"-->
             <ion-input type="email" autocomplete="off1" (ionChange)="onEmailChange($event, i)" formControlName="email_address" inputmode="email"
               enterkeyhint="Next"></ion-input>
 
@@ -125,8 +125,8 @@
       <ion-card-content>
 
         <div *ngFor="let phone of phones.controls; let i = index">
-          <ion-item [formGroup]="phone">
-
+          <ion-item >
+<!-- [formGroup]="phone"-->
             <ion-input type="telephone" autocomplete="off1" (ionChange)="onPhoneChange($event, i)" formControlName="phone_number" inputmode="telephone"
                   enterkeyhint="Next"></ion-input>
 

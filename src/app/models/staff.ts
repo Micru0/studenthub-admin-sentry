@@ -28,6 +28,9 @@ export class Staff{
     totalSuggestions: number;
     totalRejectedInvitations: number;
     totalAcceptedInvitations:number;
+    total_notes: number;
+    total_assigned: number;
+    total_requests: number;
     permissions:any[];
     staffNotifications: StaffNotification[];
 }

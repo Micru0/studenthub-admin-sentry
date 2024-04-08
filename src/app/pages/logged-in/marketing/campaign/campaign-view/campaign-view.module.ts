@@ -9,6 +9,7 @@ import { CampaignViewPageRoutingModule } from './campaign-view-routing.module';
 import { CampaignViewPage } from './campaign-view.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { ReportChartModule } from 'src/app/components/report-chart/report-chart.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IonicModule,
     TranslateModule.forChild(),
     LoadingModalModule,
+    ReportChartModule,
     CampaignViewPageRoutingModule
   ],
   declarations: [CampaignViewPage]

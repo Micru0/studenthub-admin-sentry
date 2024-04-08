@@ -15,7 +15,7 @@
     <ion-item *ngFor="let bankTransaction of bankTransactions">
       <div tabindex="0"></div>
       <ion-label>
-        <h4 *ngIf="bankTransaction.contact">{{ bankTransaction.contact.name }}</h4>
+        <h4 *ngIf="bankTransaction.contact">{{ bankTransaction.contact.contact_name }}</h4>
         
         
         <p>#{{ bankTransaction.bank_transaction_id }}</p>

@@ -12,8 +12,8 @@ import { CompanyContactFormPage } from './company-contact-form.page';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     ReactiveFormsModule,
+    IonicModule,
     CompanyContactFormPageRoutingModule
   ],
   declarations: [CompanyContactFormPage]

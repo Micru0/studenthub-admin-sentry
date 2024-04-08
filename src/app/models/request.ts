@@ -38,7 +38,7 @@ export class Request {
     staff: Staff;
     contact: any;
     company: Company;
-    stories: Story;
+    stories: Story[];
     suggestions: Suggestion[];
     requestActivities: Note[];
 }

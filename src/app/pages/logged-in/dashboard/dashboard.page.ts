@@ -31,9 +31,11 @@ export class DashboardPage implements OnInit {
   };
 
   public revenueStats: {
+
     candidate_clv: number,
     total_candidate: number,
     total_company: number,
+    recruitment_cost_ratio: any,
     company_stats: {
      total_revenue: number,
      min_revenue: number,
@@ -42,7 +44,8 @@ export class DashboardPage implements OnInit {
     candidate_stats: {
      total_revenue: number,
      min_revenue: number,
-     max_revenue: number
+     max_revenue: number,
+
     }
   }
   
