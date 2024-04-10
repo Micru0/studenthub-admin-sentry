@@ -5,7 +5,7 @@ import * as ApexCharts from 'apexcharts';
 import { StatisticService } from 'src/app/providers/logged-in/statistics.service';
 import { EventService } from 'src/app/providers/event.service';
 import {CalendarModal, CalendarModalOptions, CalendarResult} from "ion2-calendar";
-import {ModalController} from "@ionic/angular";
+import {ModalController, Platform} from "@ionic/angular";
 import { AuthService } from 'src/app/providers/auth.service';
 
 
@@ -49,7 +49,7 @@ export class DashboardPage implements OnInit {
     }
   }
   
-  @ViewChild('reportcanva', { read: ElementRef, static: true }) reportcanva: ElementRef;
+  @ViewChild('reportcanva', { read: ElementRef, static: false }) reportcanva: ElementRef;
 
   public chartOptions: any;
 
@@ -60,8 +60,11 @@ export class DashboardPage implements OnInit {
   
   public clearingCache: boolean = false; 
   
+  public segment = "general";
+
   constructor(
   	public router: Router,
+    public platform: Platform,
   	public statisticService: StatisticService,
     private eventService: EventService,
     public authService: AuthService,
@@ -71,7 +74,7 @@ export class DashboardPage implements OnInit {
   ngOnInit(){
     window.analytics.page('Dashboard Page');
 
-    this.loadAllData();
+    this.loadData();
 
     this.eventService.updatePayable$.subscribe((userEventData) => {
       this.loadData(false);
@@ -86,8 +89,10 @@ export class DashboardPage implements OnInit {
     this.loading = loading;
     
     const searchParams = this.urlParams();
+
     this.statisticService.get(searchParams).subscribe(response => {
       this.loading = false;
+
       this.statistics = response;
       this.eventService.payableCandidate$.next(this.statistics.payable.total);
     },
@@ -173,9 +178,9 @@ export class DashboardPage implements OnInit {
       this.filters.endDate = date.to.string;
     }
 
-    this.loadAllData();
-    this.getInvitationGraphData();
-
+    this.loadData();
+    //this.loadAllData();
+    //this.getInvitationGraphData();
   }
 
   /**
@@ -201,6 +206,28 @@ export class DashboardPage implements OnInit {
     this.getInvitationGraphData();
   }
 
+  onFilterSubmit() {
+    switch (this.segment) {
+      case "general":
+        this.loadData();
+        break;
+      case "financial":
+        this.loadFinancialData();
+        break;
+      case "revenue":
+        this.loadRevenue();
+        break;
+      case "invitation":
+        this.getInvitationGraphData();
+        break;
+    }
+  }
+
+  segmentChanged(event) {
+    this.segment = event.target.value;
+    this.onFilterSubmit();
+  }
+
   onCurrencyChange(event) {
     //this.authService.currency_pref = event;
     this.authService.saveInStorage();
@@ -220,7 +247,8 @@ export class DashboardPage implements OnInit {
       startDate: null,
       endDate: null,
     };
-    this.loadAllData(); // reload all result
+    this.loadData(); 
+    //this.loadAllData() reload all result
   }
 
   /**
