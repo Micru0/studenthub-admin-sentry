@@ -8,6 +8,7 @@ import { PayableCandidatesPageRoutingModule } from './payable-candidates-routing
 
 import { PayableCandidatesPage } from './payable-candidates.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
+import { PayableCandidatesActionComponent } from './payable-candidates-action';
 
 @NgModule({
   imports: [
@@ -15,8 +16,9 @@ import { LoadingModalModule } from 'src/app/components/loading-modal/loading-mod
     FormsModule,
     IonicModule,
     LoadingModalModule,
+    
     PayableCandidatesPageRoutingModule
   ],
-  declarations: [PayableCandidatesPage]
+  declarations: [PayableCandidatesPage, PayableCandidatesActionComponent]
 })
 export class PayableCandidatesPageModule {}

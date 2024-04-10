@@ -12,7 +12,13 @@
     <ion-title>
       Payable candidates <small>({{totalPayableCandidate}})</small>
     </ion-title>
-
+    
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="openActionSheet($event)">
+        <ion-icon name="ellipsis-vertical-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
     <ion-progress-bar type="indeterminate" *ngIf="processing"></ion-progress-bar>
 
   </ion-toolbar>
@@ -106,33 +112,3 @@
   </ion-list>
 
 </ion-content>
-
-<ion-footer *ngIf="!authService.admin_limited_access">
-  <ion-button *ngIf="candidates && candidates.length > 0" expand="full" (click)="markAllPaid()">
-    Mark candidates as paid
-  </ion-button>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="3">
-        <ion-button expand="full" (click)="export()">
-          Download as Excel
-        </ion-button>
-      </ion-col>
-      <ion-col size="3">
-        <ion-button expand="full" (click)="exportText()">
-          Download Transfer File
-        </ion-button>
-      </ion-col>
-      <ion-col size="3">
-        <ion-button expand="full" (click)="downloadAdvice()">
-          Download Transfer Advice File
-        </ion-button>
-      </ion-col>
-      <ion-col size="3">
-        <ion-button expand="full" (click)="export(true)">
-          Download Transfer Excel
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
