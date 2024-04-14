@@ -232,7 +232,7 @@ export class DateDropdownComponent implements ControlValueAccessor, OnInit, OnCh
    * @param event
    */
   onDateChange(event) {
-    this.value = event.target.value;
+    this.value = dateFns.format(dateFns.parseISO(event.target.value), this.pickerFormat);
   }
 
   /**

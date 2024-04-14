@@ -34,5 +34,7 @@ export class EventService {
   
   public googleLoginFinished$ = new Subject();
   
+  public refreshCampaign$ = new Subject();
+
   constructor() { }
 }

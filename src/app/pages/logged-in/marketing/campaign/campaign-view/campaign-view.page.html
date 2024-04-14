@@ -1,0 +1,108 @@
+<ion-header [class.add-border]="borderLimit" class="clear-header">
+  <ion-toolbar>
+
+    <ion-back-button slot="start" defaultHref="/"></ion-back-button>
+    
+
+    <ion-title>
+      {{ "Campaign" | translate }} 
+      <span *ngIf="campaign">
+        - {{ campaign.utm_source }}
+      </span>
+      <ion-skeleton-text animated *ngIf="!campaign"></ion-skeleton-text>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button routerLink="/campaign-form/{{ utm_uuid }}">
+        {{ "Update Campaign" | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="logScrolling($event)" [attr.dir]="translateService.direction()" class="ion-padding" color="light">
+
+  <ion-card *ngIf="campaign">
+    <ion-label>
+      <h5>{{ "Source" | translate }}</h5>
+      <p>{{ campaign.utm_source }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "Medium" | translate }}</h5>
+      <p>{{ campaign.utm_medium }}</p>
+    </ion-label>
+    
+    <ion-label>
+      <h5>{{ "Campaign" | translate }}</h5>
+      <p>{{ campaign.utm_campaign }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "Content" | translate }}</h5>
+      <p>{{ campaign.utm_content }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "Term" | translate }}</h5>
+      <p>{{ campaign.utm_term }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "Investment" | translate }}</h5>
+      <p>{{ campaign.investment }}</p>
+    </ion-label>
+
+
+    <ion-label>
+      <h5>{{ "No of signups" | translate }}</h5>
+      <p>{{ campaign.no_of_signups }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "No of clicks" | translate }}</h5>
+      <p>{{ campaign.no_of_clicks }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "Total revenue" | translate }}</h5>
+      <p>{{ campaign.total_revenue }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "URL" | translate }}</h5>
+      <p>    
+        <a target="_blank" href="{{ candidateAppUrl }}?utm_source={{ campaign.utm_source }}&utm_medium={{ campaign.utm_medium }}&utm_campaign={{ campaign.utm_campaign }}&utm_id={{ campaign.utm_uuid }}&utm_term={{ campaign.utm_term }}&utm_content={{ campaign.utm_content }}">
+          {{ candidateAppUrl }}?utm_source={{ campaign.utm_source }}&utm_medium={{ campaign.utm_medium }}&utm_campaign={{ campaign.utm_campaign }}&utm_id={{ campaign.utm_uuid }}&utm_term={{ campaign.utm_term }}&utm_content={{ campaign.utm_content }}
+        </a>    
+      </p>
+      <p>    
+        <a target="_blank" href="{{ employerAppUrl }}?utm_source={{ campaign.utm_source }}&utm_medium={{ campaign.utm_medium }}&utm_campaign={{ campaign.utm_campaign }}&utm_id={{ campaign.utm_uuid }}&utm_term={{ campaign.utm_term }}&utm_content={{ campaign.utm_content }}">
+          {{ employerAppUrl }}?utm_source={{ campaign.utm_source }}&utm_medium={{ campaign.utm_medium }}&utm_campaign={{ campaign.utm_campaign }}&utm_id={{ campaign.utm_uuid }}&utm_term={{ campaign.utm_term }}&utm_content={{ campaign.utm_content }}
+        </a>    
+      </p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "Added at" | translate }}</h5>
+      <p>{{ translateService.toDate(campaign.created_at) | date : 'EEE dd, MMM, hh:mm a' : '': translateService.currentLang == 'ar' ? 'ar-KW' : 'en-US' }}</p>
+    </ion-label>
+
+    <ion-label>
+      <h5>{{ "Last Updated at" | translate }}</h5>
+      <p>{{ translateService.toDate(campaign.updated_at) | date : 'EEE dd, MMM, hh:mm a' : '': translateService.currentLang == 'ar' ? 'ar-KW' : 'en-US' }}</p>
+    </ion-label>
+
+  </ion-card>
+  
+  <report-chart *ngIf="candidateCampaignChartData" [id]="'candidateCampaignChartData'" [color]="'#2B546A'"
+    [chartdata]="candidateCampaignChartData" [type]="'line'"
+    title="{{ 'Candidates' | translate }}"></report-chart>
+    
+  <report-chart *ngIf="contactCampaignChartData" [id]="'contactCampaignChartData'" [color]="'#2B546A'"
+    [chartdata]="contactCampaignChartData" [type]="'line'"
+    title="{{ 'Company contacts' | translate }}"></report-chart>
+
+    <!-- todo: add loader -->
+</ion-content>

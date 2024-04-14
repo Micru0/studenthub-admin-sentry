@@ -6,7 +6,12 @@ export class StaffLeave {
     from_date: string;
     to_date: string;
     note: string;
-    staff: Staff;
+    category: string;
+    file: string;
+    status: number;
+    statusLbl: string;
+    categoryLbl: string;
     created_at: string;
     updated_at: string;
+    staff: Staff;
 }

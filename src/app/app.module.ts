@@ -12,7 +12,7 @@ import { CalendarModule } from 'ion2-calendar';
 import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AuthService } from './providers/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BankFormPageModule } from './pages/logged-in/bank/bank-form/bank-form.module';
 import { CompanyFormPageModule } from './pages/logged-in/company/company-form/company-form.module';
 import { StaffFormPageModule } from './pages/logged-in/staff/staff-form/staff-form.module';
@@ -50,9 +50,17 @@ import { EmailCampaignFormPageModule } from './pages/logged-in/email-campaign/em
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { BlockedIpFormPageModule } from './pages/logged-in/blocked-ip/blocked-ip-form/blocked-ip-form.module';
 import { CurrencyFormPageModule } from './pages/logged-in/currency/currency-form/currency-form.module';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { registerLocaleData } from '@angular/common';
+import localeAr from '@angular/common/locales/ar-KW';
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
+}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/');
 }
 
 declare global {
@@ -71,6 +79,13 @@ declare global {
     }),
     CKEditorModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     BrowserModule,
     CalendarModule,
     IonicModule.forRoot(),
@@ -141,6 +156,7 @@ export class AppModule {
 
   constructor(public injector: Injector) {
     AppModule.injector = injector;
+    registerLocaleData(localeAr, 'ar');
   }
 }
 

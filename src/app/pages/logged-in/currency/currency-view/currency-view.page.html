@@ -5,7 +5,7 @@
       <ion-back-button defaultHref="currency-list"></ion-back-button>
     </ion-buttons>
 
-    <ion-title *ngIf="currency">{{ currency.currency_name }}</ion-title>
+    <ion-title *ngIf="currency">{{ currency.code }}</ion-title>
 
     <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
       <ion-button (click)="update()">

@@ -1,0 +1,109 @@
+ion-content {
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --padding-top: 15px;
+  }
+  
+  ion-title {
+    flex-grow: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #112131;
+  }
+  
+  ion-header ion-button {
+    flex-grow: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+    text-transform: none;
+  }
+  
+  ion-card {
+    flex-grow: 0;
+    padding: 5px 11px 8px 21px;
+    border-radius: 0;
+    background-color: #ffffff;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 4px;
+    margin-bottom: 0;
+  
+    ion-label {
+      margin-bottom: 15px;
+    }
+  
+    ion-label h5 {
+      flex-grow: 0;
+      font-size: 14px;
+      font-weight: normal;
+      color: #333333;
+    }
+  
+    ion-label p {
+      flex-grow: 0;
+      font-size: 15px;
+      font-weight: bold;
+      color: #333333 !important;
+    }
+  }
+  
+  .btn-activate {
+    height: 40px;
+    align-self: stretch;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 5px;
+    flex-grow: 0;
+    font-size: 14px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    text-align: center;
+    --background: none;
+    --box-shadow: none;
+    text-transform: none;
+    margin: 5px 14px;
+  }
+  
+  .btn-deactivate {
+    height: 40px;
+    align-self: stretch;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 5px;
+    border: solid 1px #e16563;
+    flex-grow: 0;
+    font-family: NunitoSans;
+    font-size: 14px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    text-align: center;
+    color: #e16563;
+    --background: none;
+    --box-shadow: none;
+    text-transform: none;
+    margin: 5px 14px;
+  }
+  
+  [dir="ltr"] ion-card ion-note {
+    right: 13px;
+  }
+  
+  [dir="rtl"] ion-card ion-note {
+    left: 13px;
+  }
+  

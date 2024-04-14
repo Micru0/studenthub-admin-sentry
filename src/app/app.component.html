@@ -63,6 +63,16 @@
             </ion-item-divider>
 
             <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'/campaign-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="globe-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Social Campaign
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'/email-campaign-list'">
                 <div tabindex="0"></div>
                 <ion-icon name="mail-outline" slot="start"></ion-icon>
@@ -374,6 +384,18 @@
                 <ion-label>Permission Section</ion-label>
               </ion-item>
             </ion-menu-toggle>
+          </ion-item-group>
+
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Xero </ion-label>
+            </ion-item-divider>
+
+            <ion-item lines="none" routerLink="/bank-transactions">
+              <div tabindex="0"></div>
+              <ion-icon name="cash-outline" slot="start"></ion-icon>
+              <ion-label class="ion-text-wrap">Bank Transactions</ion-label>
+            </ion-item> 
           </ion-item-group>
 
           <ion-item-group>

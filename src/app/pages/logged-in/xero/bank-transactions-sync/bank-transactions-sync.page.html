@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bank transactions sync started</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<p *ngIf="currentPage == 1">checking for access... </p>
+<p *ngIf="currentPage > 1">{{ currentPage - 1 }} page synched </p>
+<!--
+//todo: ability to cancel 
+//todo: ability to select sync from beginning or from not-syched 
+-->
+</ion-content>

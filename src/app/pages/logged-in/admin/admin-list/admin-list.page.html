@@ -21,8 +21,8 @@
         <div tabindex="0"></div>
         <ion-label>
           {{ admin.admin_name }}
-          <ion-icon name="checkmark-circle" class="active" *ngIf="admin.admin_status == '10'"></ion-icon>
-          <ion-icon name="close-circle" class="inactive" *ngIf="admin.admin_status != '10'"></ion-icon>
+          <ion-icon name="checkmark-circle" class="active" *ngIf="admin.admin_status == 10"></ion-icon>
+          <ion-icon name="close-circle" class="inactive" *ngIf="admin.admin_status != 10"></ion-icon>
           <br/>
           <small *ngIf="admin.admin_limited_access">Limited Access</small>
           <small *ngIf="!admin.admin_limited_access">Full Access</small>

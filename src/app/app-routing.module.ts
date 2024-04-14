@@ -716,58 +716,129 @@ const routes: Routes = [
   {
     path: 'webhook-test',
     canActivate: [AuthService],
+    data: {
+      name: 'WebhookTestPage'
+    },
     loadChildren: () => import('./pages/logged-in/webhook/webhook-test/webhook-test.module').then( m => m.WebhookTestPageModule)
   },
 
   {
     path: 'email-campaign-list',
     canActivate: [AuthService],
+    data: {
+      name: 'EmailCampaignListPage'
+    },
     loadChildren: () => import('./pages/logged-in/email-campaign/email-campaign-list/email-campaign-list.module').then( m => m.EmailCampaignListPageModule)
   },
   {
     path: 'email-campaign-view',
     canActivate: [AuthService],
+    data: {
+      name: 'EmailCampaignViewPage'
+    },
     loadChildren: () => import('./pages/logged-in/email-campaign/email-campaign-view/email-campaign-view.module').then( m => m.EmailCampaignViewPageModule)
   },
   {
     path: 'email-campaign-form',
     canActivate: [AuthService],
+    data: {
+      name: 'EmailCampaignFormPage'
+    },
     loadChildren: () => import('./pages/logged-in/email-campaign/email-campaign-form/email-campaign-form.module').then( m => m.EmailCampaignFormPageModule)
   },
   {
     path: 'blocked-ip-list',
+    canActivate: [AuthService],
+    data: {
+      name: 'BlockedIpListPage'
+    },
     loadChildren: () => import('./pages/logged-in/blocked-ip/blocked-ip-list/blocked-ip-list.module').then( m => m.BlockedIpListPageModule)
   },
   {
     path: 'blocked-ip-form',
+    canActivate: [AuthService],
+    data: {
+      name: 'BlockedIpFormPage'
+    },
     loadChildren: () => import('./pages/logged-in/blocked-ip/blocked-ip-form/blocked-ip-form.module').then( m => m.BlockedIpFormPageModule)
   },
   {
     path: 'currency-list',
+    canActivate: [AuthService],
+    data: {
+      name: 'CurrencyListPage'
+    },
     loadChildren: () => import('./pages/logged-in/currency/currency-list/currency-list.module').then( m => m.CurrencyListPageModule)
   },
   {
     path: 'currency-view',
+    canActivate: [AuthService],
+    data: {
+      name: 'CurrencyViewPage'
+    },
     loadChildren: () => import('./pages/logged-in/currency/currency-view/currency-view.module').then( m => m.CurrencyViewPageModule)
   },
   {
     path: 'currency-form',
+    canActivate: [AuthService],
+    data: {
+      name: 'CurrencyFormPage'
+    },
     loadChildren: () => import('./pages/logged-in/currency/currency-form/currency-form.module').then( m => m.CurrencyFormPageModule)
   },
   
   {
     path: 'mail-log-list',
+    canActivate: [AuthService],
+    data: {
+      name: 'MailLogListPage'
+    },
     loadChildren: () => import('./pages/logged-in/mail-log/mail-log-list/mail-log-list.module').then( m => m.MailLogListPageModule)
   },
   {
     path: 'mail-log-view',
+    canActivate: [AuthService],
+    data: {
+      name: 'MailLogViewPage'
+    },
     loadChildren: () => import('./pages/logged-in/mail-log/mail-log-view/mail-log-view.module').then( m => m.MailLogViewPageModule)
+  },
+
+  {
+    path: 'bank-transactions',
+    canActivate: [AuthService],
+    data: {
+      name: 'BankTransactionsPage'
+    },
+    loadChildren: () => import('./pages/logged-in/xero/bank-transactions/bank-transactions.module').then( m => m.BankTransactionsPageModule)
+  },
+  {
+    path: 'bank-transactions-sync',
+    canActivate: [AuthService],
+    data: {
+      name: 'BankTransactionsSyncPage'
+    },
+    loadChildren: () => import('./pages/logged-in/xero/bank-transactions-sync/bank-transactions-sync.module').then( m => m.BankTransactionsSyncPageModule)
+  },
+  {
+    path: 'campaign-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/marketing/campaign/campaign-list/campaign-list.module').then( m => m.CampaignListPageModule)
+  },
+  {
+    path: 'campaign-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/marketing/campaign/campaign-view/campaign-view.module').then( m => m.CampaignViewPageModule)
+  },
+  {
+    path: 'campaign-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/marketing/campaign/campaign-form/campaign-form.module').then( m => m.CampaignFormPageModule)
   },
   {
     path: '**',
     redirectTo: 'not-found'
   },
-
 ];
 
 @NgModule({

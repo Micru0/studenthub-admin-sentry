@@ -7,6 +7,8 @@ import { EventService } from 'src/app/providers/event.service';
 import {AuthService} from '../../../../providers/auth.service';
 // models
 import {Transfer} from '../../../../models/transfer';
+import { PopoverController } from '@ionic/angular';
+import { PayableCandidatesActionComponent } from './payable-candidates-action';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class PayableCandidatesPage  {
   constructor(
     public router: Router,
     public aws: AwsService,
+    public popoverCtrl: PopoverController,
     public eventService: EventService,
     public transferService: TransferService,
     public authService: AuthService,
@@ -63,6 +66,44 @@ export class PayableCandidatesPage  {
     () => {
       this.loading = false;
     });
+  }
+
+  async openActionSheet(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    /*window.history.pushState({
+      navigationId: window.history.state.navigationId
+    }, null, window.location.pathname);*/
+
+    const popover = await this.popoverCtrl.create({
+      component: PayableCandidatesActionComponent,
+      animated: true,
+      event,
+      translucent: true
+    });
+    /*popover.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    });*/
+    await popover.present();
+
+    const { data } = await popover.onDidDismiss();
+
+    if (data && data.action == 'mark-all-paid' && this.candidates && this.candidates.length > 0) {
+      this.markAllPaid();
+    } else if (data && data.action == 'export') {
+      this.export();
+    } else if (data && data.action == 'export-text') {
+      this.exportText();
+    } else if (data && data.action == 'download-advice') {
+      this.downloadAdvice();
+    } else if (data && data.action == 'export-transfer') {
+      this.export(true);
+    }
   }
 
   /**

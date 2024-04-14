@@ -1,0 +1,72 @@
+<ion-header [class.add-border]="borderLimit" class="clear-header">
+  <ion-toolbar>
+
+    <ion-back-button slot="start" defaultHref="/" icon="close"></ion-back-button>
+
+    <ion-title *ngIf="utm_uuid">
+      {{ "Update Campaign" | translate }}
+    </ion-title>
+
+    <ion-title *ngIf="!utm_uuid">
+      {{ "Add Campaign" | translate }}
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button class="no-shadow" type="submit" (click)="save()" expand="block" mode="md" color="success"
+        [disabled]="saving || (form && form.invalid)">
+        <span *ngIf="!saving">
+          <ion-icon class="submit-icon" name="checkmark-outline"></ion-icon>
+        </span>
+        <span *ngIf="saving">
+          <ion-spinner></ion-spinner>
+        </span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="logScrolling($event)" [attr.dir]="translateService.direction()">
+
+  <form *ngIf="form" [formGroup]="form" (submit)="save()">
+
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="stacked">{{ "Source" | translate }}<span class="required-field">*</span></ion-label>
+        <ion-input type="text" formControlName="source"></ion-input>
+        <p class="hint">{{ "The referrer (e.g. google, newsletter)" | translate }}</p>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">{{ "Medium" | translate }}<span class="required-field">*</span></ion-label>
+        <ion-input type="text" formControlName="medium"></ion-input>
+        <p class="hint">{{ "Marketing medium (e.g. cpc, banner, email)" | translate }}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">{{ "Campaign" | translate }}<span class="required-field">*</span></ion-label>
+        <ion-input type="text" formControlName="campaign"></ion-input>
+        <p class="hint">{{ "Product, promo code, or slogan (e.g. spring_sale) One of campaign name or campaign id are required." | translate }}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">{{ "Term" | translate }}</ion-label>
+        <ion-input type="text" formControlName="term"></ion-input>
+        <p class="hint">{{ "Identify the paid keywords" | translate }}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">{{ "Content" | translate }}</ion-label>
+        <ion-input type="text" formControlName="content"></ion-input>
+        <p class="hint">{{ "Use to differentiate ads" | translate }}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">{{ "Investment" | translate }}</ion-label>
+        <ion-input type="text" formControlName="investment"></ion-input>
+      </ion-item>
+
+    </ion-list>
+  </form>
+
+</ion-content>

@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bank transactions</ion-title>
+  
+  <ion-buttons slot="end">
+    <ion-button routerLink="/bank-transactions-sync">
+      Sync
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let bankTransaction of bankTransactions">
+      <div tabindex="0"></div>
+      <ion-label>
+        <h4 *ngIf="bankTransaction.contact">{{ bankTransaction.contact.contact_name }}</h4>
+        
+        
+        <p>#{{ bankTransaction.bank_transaction_id }}</p>
+        
+        <p>{{ toDate(bankTransaction.date) | date: 'MMM d, y, h:mm:ss a' 
+           }}</p>
+      </ion-label>
+      <ion-badge slot="end">{{ bankTransaction.type }} / {{bankTransaction.status }}</ion-badge>
+      <ion-note slot="end">{{ bankTransaction.total }} {{ bankTransaction.currency_code }}</ion-note>
+    </ion-item>
+
+  <loading-modal [loading]="loading" type="text-list"></loading-modal>
+</ion-list>
+
+<ion-infinite-scroll *ngIf="currentPage < pageCount"
+  (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>
+</ion-content>
