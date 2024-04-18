@@ -88,6 +88,9 @@
   body.night {
     background: #000000;
 
+    --ck-color-base-background: var(--background);
+    --ck-color-toolbar-background: var(--background);
+
     --ion-color-primary: #428cff;
     --ion-color-primary-rgb: 66, 140, 255;
     --ion-color-primary-contrast: #ffffff;
