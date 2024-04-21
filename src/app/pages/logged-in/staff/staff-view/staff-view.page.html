@@ -508,18 +508,27 @@
   <ng-container *ngIf="segment == 'info'" >
     <ion-grid>
       <ion-row>
-        <ion-col  size-md="6" size-lg="6" size-sm="12" size-xs="12">
-          <ion-button expand="full" (click)="resetPassword()" *ngIf="!staff.deleted">
+
+        <ion-col size-md="4" size-lg="4" size-sm="12" size-xs="12" *ngIf="!staff.deleted">
+          <ion-button [disabled]="loadingLoginUrl" (click)="login()">
+            <span *ngIf="!loadingLoginUrl">Login <ion-icon name="open-outline"></ion-icon></span>
+            <ion-spinner *ngIf="loadingLoginUrl"></ion-spinner>
+          </ion-button>
+        </ion-col>
+
+        <ion-col  size-md="4" size-lg="4" size-sm="12" size-xs="12">
+          <ion-button [disabled]="sendingNewPassword" (click)="resetPassword()" *ngIf="!staff.deleted">
             <span *ngIf="!sendingNewPassword">Send new password to staff</span>
             <ion-spinner *ngIf="sendingNewPassword"></ion-spinner>
           </ion-button>
-          <ion-button expand="full" (click)="recover()" *ngIf="staff.deleted">
+          <ion-button [disabled]="deleting" (click)="recover()" *ngIf="staff.deleted">
             <span *ngIf="!deleting">Recover Account</span>
             <ion-spinner *ngIf="deleting"></ion-spinner>
           </ion-button>
         </ion-col>
-        <ion-col  size-md="6" size-lg="6" size-sm="12" size-xs="12">
-          <ion-button expand="full" (click)="changeStatus()">
+
+        <ion-col  size-md="4" size-lg="4" size-sm="12" size-xs="12">
+          <ion-button [disabled]="statusChanging" (click)="changeStatus()">
             <span *ngIf="!statusChanging">{{staff.staff_status == '10' ? 'De-Activate' : 'Activate'}}</span>
             <ion-spinner *ngIf="statusChanging"></ion-spinner>
           </ion-button>

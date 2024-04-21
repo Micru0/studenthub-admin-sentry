@@ -201,4 +201,14 @@ export class StaffService {
     let url = `${this._staffEndpoint}/${model.staff_id}`;
     return this._authhttp.delete(url);
   }
+
+  /**
+   * get login url and open in new window 
+   * @param staff_id 
+   * @returns 
+   */
+  login(staff_id): Observable<any>{
+    let url = `${this._staffEndpoint}/login/${staff_id}`;
+    return this._authhttp.post(url, {});
+  }
 }

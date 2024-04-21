@@ -87,6 +87,8 @@ export class StaffViewPage implements OnInit {
 
   public sendingNewPassword = false;
 
+  public loadingLoginUrl: boolean = false; 
+
   constructor(
     public router: Router,
     public aws: AwsService,
@@ -839,4 +841,23 @@ export class StaffViewPage implements OnInit {
     return urlParams;
   }
 
+  login() {
+    this.loadingLoginUrl = true; 
+
+    this.staffService.login(this.staff_id).subscribe(async res => {
+
+      this.loadingLoginUrl = false;
+       
+      if(res.operation == "error") {
+        const alert = await this._alertCtrl.create({
+          header: 'Oops',
+          subHeader: this.authService.errorMessage(res.message),
+          buttons: ['Okay']
+        });
+        alert.present();
+      } else {
+        window.open(res.redirect, "_blank");
+      }
+    });
+  }
 }

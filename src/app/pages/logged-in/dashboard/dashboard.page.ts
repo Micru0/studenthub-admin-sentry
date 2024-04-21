@@ -45,7 +45,6 @@ export class DashboardPage implements OnInit {
      total_revenue: number,
      min_revenue: number,
      max_revenue: number,
-
     }
   }
   
