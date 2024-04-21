@@ -48,6 +48,16 @@ export class CandidateService {
   }
 
   /**
+   * get login url and open in new window 
+   * @param candidate_id 
+   * @returns 
+   */
+  login(candidate_id): Observable<any>{
+    let url = `${this._candidateEndpoint}/login/${candidate_id}`;
+    return this._authhttp.post(url, {});
+  }
+
+  /**
    * Deletes Candidate
    * @param {Candidate} model
    * @returns {Observable<any>}

@@ -137,4 +137,14 @@ export class CompanyContactService {
     let url = `${this._endpoint}/${model.contact_uuid}`;
     return this._authhttp.delete(url);
   }
+
+  /**
+   * get login url and open in new window 
+   * @param contact_uuid 
+   * @returns 
+   */
+  login(contact_uuid): Observable<any>{
+    let url = `${this._endpoint}/login/${contact_uuid}`;
+    return this._authhttp.post(url, {});
+  }
 }

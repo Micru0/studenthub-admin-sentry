@@ -25,6 +25,8 @@ export class CandidateViewPage implements OnInit {
   public deleting: boolean = false;
   public sendingNewPassword: boolean = false;
 
+  public loadingLoginUrl: boolean = false; 
+
   public loadingSalaryTransfers: boolean = false;
 
   public candidate_id;
@@ -368,6 +370,26 @@ export class CandidateViewPage implements OnInit {
       }
     }, () => {
       this.sendingNewPassword = false;
+    });
+  }
+
+  login() {
+    this.loadingLoginUrl = true; 
+
+    this.candidateService.login(this.candidate_id).subscribe(async res => {
+
+      this.loadingLoginUrl = false;
+       
+      if(res.operation == "error") {
+        const alert = await this._alertCtrl.create({
+          header: 'Oops',
+          subHeader: this.authService.errorMessage(res.message),
+          buttons: ['Okay']
+        });
+        alert.present();
+      } else {
+        window.open(res.redirect, "_blank");
+      }
     });
   }
 }

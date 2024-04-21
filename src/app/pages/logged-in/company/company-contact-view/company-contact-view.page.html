@@ -147,3 +147,9 @@
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
   </div>
 </ion-content>
+<ion-footer>
+  <ion-button [disabled]="loadingLoginUrl" (click)="login()">
+    <span *ngIf="!loadingLoginUrl">Login <ion-icon name="open-outline"></ion-icon></span>
+    <ion-spinner *ngIf="loadingLoginUrl"></ion-spinner>
+  </ion-button>
+</ion-footer>

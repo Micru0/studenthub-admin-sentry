@@ -212,4 +212,14 @@ export class CompanyService {
     const url = `${this._companyEndpoint}/update-staff/${model.company_id}`;
     return this._authhttp.patch(url, { staff_id });
   }
+
+  /**
+   * get login url and open in new window 
+   * @param company_id 
+   * @returns 
+   */
+  login(company_id): Observable<any>{
+    let url = `${this._companyEndpoint}/login/${company_id}`;
+    return this._authhttp.post(url, {});
+  }
 }

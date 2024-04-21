@@ -34,6 +34,8 @@ export class CompanyContactViewPage implements OnInit {
 
   public deleting: boolean = false;
 
+  public loadingLoginUrl: boolean = false; 
+
   public contact: Contact = null;
 
   public companyContact: CompanyContact = null;
@@ -406,6 +408,26 @@ export class CompanyContactViewPage implements OnInit {
     this.noteForm = this.fb.group({
       note: ['', Validators.required],
       type: ['Internal Note', Validators.required],
+    });
+  }
+
+  login() {
+    this.loadingLoginUrl = true; 
+
+    this.companyContactService.login(this.contact_uuid).subscribe(async res => {
+
+      this.loadingLoginUrl = false;
+       
+      if(res.operation == "error") {
+        const alert = await this.alertCtrl.create({
+          header: 'Oops',
+          subHeader: this.authService.errorMessage(res.message),
+          buttons: ['Okay']
+        });
+        alert.present();
+      } else {
+        window.open(res.redirect, "_blank");
+      }
     });
   }
 
