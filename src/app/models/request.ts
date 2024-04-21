@@ -41,8 +41,13 @@ export class Request {
     stories: Story[];
     suggestions: Suggestion[];
     requestActivities: Note[];
+    requestSkills: RequestSkill[];
 }
 
+export class RequestSkill {
+    request_uuid: string;
+    skill: string;
+}
 
 export class Story {
     story_uuid: string;

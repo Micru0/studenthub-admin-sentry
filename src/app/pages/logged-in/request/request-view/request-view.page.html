@@ -80,6 +80,10 @@
       <ion-item *ngIf="request.request_time_spent">Time Spent: {{request.request_time_spent}}</ion-item>
       <ion-item>Updated Datetime: {{request.request_updated_datetime}}</ion-item>
     </ion-list>
+
+    <h5>Skills </h5>
+    <ion-badge *ngFor="let requestSkill of request.requestSkills">{{ requestSkill.skill }}</ion-badge>
+        
   </section>
   <section *ngIf="segment == 'company'">
     <ion-list>

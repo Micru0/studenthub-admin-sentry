@@ -27,7 +27,7 @@ export class RequestService {
    * @returns {Observable<any>}
    */
   view(uuid): Observable<any>{
-    const url = this._endPoint + '/' + uuid + '?expand=requestCreatedBy,requestUpdatedBy,company,staffs,contact,stories,stories.staff';
+    const url = this._endPoint + '/' + uuid + '?expand=requestSkills,requestCreatedBy,requestUpdatedBy,company,staffs,contact,stories,stories.staff';
     return this._authhttp.get(url);
   }
 }
