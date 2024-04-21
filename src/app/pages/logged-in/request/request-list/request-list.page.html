@@ -87,6 +87,9 @@
         <h4><b>Status:</b> {{request.request_status}}</h4>
         <h5><b>Created On:</b> {{request.request_created_datetime}} | Updated On {{request.request_updated_datetime}}</h5>
         <h5 *ngIf="request.requestCreatedBy"><b>Created By</b> {{request.requestCreatedBy.staff_name}}</h5>
+
+        <ion-badge *ngFor="let requestSkill of request.requestSkills">{{ requestSkill.skill }}</ion-badge>
+        
       </ion-label>
     </ion-item>
     <no-items *ngIf="!loading && requests.length == 0" message="~ No Data Found~"></no-items>
