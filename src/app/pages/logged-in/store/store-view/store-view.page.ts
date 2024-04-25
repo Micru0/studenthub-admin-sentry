@@ -7,6 +7,8 @@ import { StoreService } from 'src/app/providers/logged-in/store.service';
 import { Store } from 'src/app/models/store';
 import { Candidate } from 'src/app/models/candidate';
 import { AwsService } from 'src/app/providers/aws.service';
+import { AlertController } from '@ionic/angular';
+import { AuthService } from 'src/app/providers/auth.service';
 
 
 @Component({
@@ -26,8 +28,12 @@ export class StoreViewPage implements OnInit {
 
   store_id;
 
+  public loadingLoginUrl: boolean = false; 
+
   constructor( 
     public aws: AwsService,
+    public alertCtrl: AlertController, 
+    public authService: AuthService,
     public activateRoute: ActivatedRoute,
     public router: Router,
     public storeService: StoreService,
@@ -129,6 +135,27 @@ export class StoreViewPage implements OnInit {
       }
     });
   }
+
+  login() {
+    this.loadingLoginUrl = true; 
+
+    this.storeService.login(this.store_id).subscribe(async res => {
+
+      this.loadingLoginUrl = false;
+       
+      if(res.operation == "error") {
+        const alert = await this.alertCtrl.create({
+          header: 'Oops',
+          subHeader: this.authService.errorMessage(res.message),
+          buttons: ['Okay']
+        });
+        alert.present();
+      } else {
+        window.open(res.redirect, "_blank");
+      }
+    });
+  }
+
   /**
    * @param $event
    * @param candidate
