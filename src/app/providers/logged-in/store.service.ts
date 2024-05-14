@@ -32,7 +32,7 @@ export class StoreService {
    * @param store_id 
    */
   view(store_id): Observable<any>{
-    return this._authhttp.get(`${this._storeEndpoint}/${store_id}?expand=candidates,brand,company,company.brands`);
+    return this._authhttp.get(`${this._storeEndpoint}/${store_id}?expand=storeManager,candidates,brand,company,company.brands`);
   }
 
   /**
@@ -73,5 +73,15 @@ export class StoreService {
   delete(model: Store): Observable<any>{
     let url = `${this._storeEndpoint}/${model.store_id}`;
     return this._authhttp.delete(url);
+  }
+
+  /**
+   * get login url and open in new window 
+   * @param store_id 
+   * @returns 
+   */
+  login(store_id): Observable<any>{
+    let url = `${this._storeEndpoint}/login/${store_id}`;
+    return this._authhttp.post(url, {});
   }
 }
