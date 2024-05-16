@@ -36,12 +36,16 @@ export class CompanyListPage implements OnInit {
     name: string,
     status: any,
     approved_to_hire: any
-    staff: any
+    staff: any,
+    last_payment_from: string,
+    last_payment_to: string
   } = {
       name: null,
       status: 4,
       approved_to_hire: null,
-      staff: 0
+      staff: 0,
+      last_payment_from: null, 
+      last_payment_to: null
     };
 
   constructor(
@@ -54,7 +58,8 @@ export class CompanyListPage implements OnInit {
     private _toastCtrl: ToastController,
     public authService: AuthService,
     public eventService: EventService
-  ) { }
+  ) { 
+  }
 
   ngOnInit() {
     window.analytics.page('Company List Page');
@@ -220,7 +225,9 @@ export class CompanyListPage implements OnInit {
       name: this.filters.name,
       status: 4,
       approved_to_hire: null,
-      staff: 0
+      staff: 0,
+      last_payment_from: null, 
+      last_payment_to: null 
     };
 
     this.loadData(1); // reload all result
@@ -231,7 +238,9 @@ export class CompanyListPage implements OnInit {
       name: null,
       status: 4,
       approved_to_hire: null,
-      staff: 0
+      staff: 0,
+      last_payment_from: null, 
+      last_payment_to: null 
     };
 
     this.loadData(1); // reload all result
@@ -259,8 +268,50 @@ export class CompanyListPage implements OnInit {
       urlParams += '&staff_id=' + this.filters.staff.staff_id;
     }
 
+    if (this.filters.last_payment_from) {
+      urlParams += '&last_payment_from=' + this.filters.last_payment_from;
+    }
+
+    if (this.filters.last_payment_to) {
+      urlParams += '&last_payment_to=' + this.filters.last_payment_to;
+    }
+
     return urlParams;
   }
+
+  /*
+  async selectDate(last_payment_from = true) {
+
+    if (last_payment_from && this.filters.last_payment_to) {
+      this.filters.last_payment_from = null;
+      this.filters.last_payment_to = null;
+      return true;
+    }
+
+    const options: CalendarModalOptions = {
+      pickMode: 'range',
+      title: 'Select Date',
+      canBackwardsSelected: true,
+    };
+
+    const myCalendar = await this.modalCtrl.create({
+      component: CalendarModal,
+      componentProps: { options }
+    });
+
+    myCalendar.present();
+
+    const event: any = await myCalendar.onDidDismiss();
+
+    const date = event.data;
+
+    if (date) {
+      this.filters.last_payment_from = date.from.string;
+      this.filters.last_payment_to = date.to.string;
+    }
+
+    this.loadAllData();
+  }*/
 
   searchByName($event) {
     this.filters.name = $event.detail.value;
@@ -322,11 +373,11 @@ export class CompanyListPage implements OnInit {
    */
   async filterByStaff(event) {
 
-    if(this.filters.staff) {
+    /*if(this.filters.staff) {
       this.filters.staff = 0;
       this.loadData(1);
       return false;
-    }
+    }*/
 
     window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
 
@@ -344,10 +395,19 @@ export class CompanyListPage implements OnInit {
       }
       if (e.data) {
         this.filters.staff = e.data;
-        this.loadData(1);
+        //this.loadData(1);
       }
     });
     modal.present();
   }
 
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date) {
+      return new Date(date.replace(/-/g, '/'));
+    }
+  }
 }

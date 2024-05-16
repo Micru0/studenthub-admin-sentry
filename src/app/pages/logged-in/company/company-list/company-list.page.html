@@ -22,29 +22,82 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
 
   <div class="content ion-padding">
+ 
+    <ion-card class="padding-none ion-text-left">
+      <ion-card-header>
+        <ion-card-title>Filter by</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+              <ion-item>
+                <ion-label position="stacked" color="primary">Last Payment From</ion-label>
+                <ion-input type="date" [(ngModel)]="filters.last_payment_from"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+              <ion-item>
+                <ion-label position="stacked" color="primary">Last Payment to</ion-label>
+                <ion-input type="date" [(ngModel)]="filters.last_payment_to"></ion-input>
+              </ion-item>
+            </ion-col>
+          
+            <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+              <ion-item>
+                <ion-label position="stacked" color="primary">Status</ion-label>
+                <ion-select interface="popover" label="Status" [(ngModel)]="filters.status">
+                  <ion-select-option value="1">Active</ion-select-option>
+                  <ion-select-option value="2">Inactive</ion-select-option>
+                  <ion-select-option value="3">Active + 40 days no payment</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+              <ion-item>
+                <ion-label position="stacked" color="primary">Approved to hire</ion-label>
+                <ion-select interface="popover" label="Approved to hire"  [(ngModel)]="filters.approved_to_hire">
+                  <ion-select-option value="1">Approved to hire</ion-select-option>
+                  <ion-select-option value="0">Not approved to hire</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size-md="3" size-lg="3" size-sm="6" size-xs="12">
+              <ion-item>
+                <ion-label position="stacked" color="primary">Staff</ion-label>
+                <ion-input (click)="filterByStaff($event)" 
+                  [value]="filters.staff?.staff_name"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
 
-    <ion-badge tappable color="primary" (click)="resetStatus()" [class.active]="filters.status == 4 && [1, 0].indexOf(filters.approved_to_hire) == -1">
-      All clients
-    </ion-badge>
+      </ion-card-content>
 
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, 1)" [class.active]="filters.status == 1">Active</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, 2)" [class.active]="filters.status == 2">Inactive</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStatus($event, 3)" [class.active]="filters.status == 3">Active + 40 days no payment</ion-badge>
+      <ion-card-header>
+        <ion-button (click)="loadData(1);">Submit</ion-button>
+        <ion-button (click)="resetFilter();" color="secondary">Reset</ion-button>
+      </ion-card-header>
 
-    <ion-badge tappable color="primary" (click)="filterByApprovedToHire($event, 1)" [class.active]="filters.approved_to_hire == 1">Approved to hire</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByApprovedToHire($event, 0)" [class.active]="filters.approved_to_hire == 0">Not approved to hire</ion-badge>
-    <ion-badge tappable color="primary" (click)="filterByStaff($event)" [class.active]="filters.staff">Manage By : {{this.filters.staff ? this.filters.staff.staff_name : 'All'}}</ion-badge>
-
+    </ion-card>
   </div>
+  
+  <ion-searchbar debounce="500" placeholder="Type to search" (ionChange)="searchByName($event)"></ion-searchbar>
+  
   <ion-list>
     <ion-item-sliding *ngFor="let company of companies" [disabled]="platform.width() > 768">
       <ion-item tappable (click)="rowSelected(company)">
         <div tabindex="0"></div>
         <ion-label class="ion-text-wrap">
-          {{ company.company_name }}<br/>
+          <h5>{{ company.company_name }}</h5>
+          <p *ngIf="company.last_payment_datetime">
+            Last payment at {{ toDate(company.last_payment_datetime) | date: 'MMM d, y' }}
+          </p>
+          
           <ion-badge class="company_status_badge" slot="start" color="danger" *ngIf="!company.company_status">
             Inactive
           </ion-badge>
@@ -79,6 +132,7 @@
             <ion-icon name="close-outline"></ion-icon> Not approved to hire
           </ion-badge>
         </ion-label>
+
         <ion-avatar slot="start">
           <img *ngIf="company.company_logo" src="{{ awsService.cloudinaryUrl + company.company_logo }}" (error)="loadLogo($event,company)">
           <img *ngIf="!company.company_logo" src="/assets/icon.png">

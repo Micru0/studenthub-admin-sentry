@@ -37,6 +37,7 @@ export class Company {
     staff_id: any;
     country_id: number;
     currency_code: string;
+    last_payment_datetime: string;
     subcompanies: Company[];
     subCompanies: Company[];
     stores: Store[];
