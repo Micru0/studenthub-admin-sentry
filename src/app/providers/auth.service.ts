@@ -577,10 +577,13 @@ export class AuthService {
   }
 
   restrictedAccess() {
+
+    return true;
+
     // khalid and meet access
-    if (this.id == 1 || this.id == 7 || this.id == 10) {
+    /*if (this.id == 1 || this.id == 7 || this.id == 10) {
       return true;
     }
-    return false;
+    return false;*/
   }
 }

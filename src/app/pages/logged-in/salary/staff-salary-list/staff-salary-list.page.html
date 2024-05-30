@@ -61,7 +61,7 @@
     <ion-item tappable *ngFor="let salary of staffSalaries">
       <div tabindex="0"></div>
       <ion-label>
-        {{ salary.staff.staff_name }}
+        <h5 *ngIf="salary.staff">{{ salary.staff.staff_name }}</h5>
         <p>Salary: {{salary.salary_currency}}{{salary.salary}}</p>
         <p>Salary Date: {{salary.salary_date}}</p>
         <p>Comment: {{salary.comment}}</p>
