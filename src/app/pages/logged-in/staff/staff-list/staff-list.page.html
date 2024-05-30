@@ -173,10 +173,12 @@
 </ion-content>
 
 <ion-footer *ngIf="!authService.admin_limited_access && authService.restrictedAccess()">
+  <ion-button expand="full" (click)="create()">Create</ion-button>
+  <!--
   <ion-grid>
     <ion-row>
-      <ion-col><ion-button expand="full" (click)="create()">Create</ion-button></ion-col>
+      <ion-col></ion-col>
       <ion-col><ion-button expand="full" routerLink="/staff-salary-list">Salary List</ion-button></ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid>-->
 </ion-footer>
