@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="major-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="major">
+      {{ major.major_name_en }}
+      <span *ngIf="!major.major_name_en">{{ major.major_name_ar }}</span>
+    </ion-title>
+
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list *ngIf="major">
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Major ID</h5>
+        <p>{{ major.major_uuid }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Major Name</h5>
+        <p>{{ major.major_name_en }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Major Name - Arabic</h5>
+        <p>{{ major.major_name_ar }}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <loading-modal [loading]="loading" type="major-view"></loading-modal>
+
+</ion-content>

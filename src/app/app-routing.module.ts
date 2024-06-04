@@ -836,9 +836,54 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/marketing/campaign/campaign-form/campaign-form.module').then( m => m.CampaignFormPageModule)
   },
   {
+    path: 'major-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/major/major-list/major-list.module').then( m => m.MajorListPageModule)
+  },
+  {
+    path: 'major-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/major/major-view/major-view.module').then( m => m.MajorViewPageModule)
+  },
+  {
+    path: 'major-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/major/major-form/major-form.module').then( m => m.MajorFormPageModule)
+  }, 
+  {
+    path: 'degree-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/degree/degree-list/degree-list.module').then( m => m.DegreeListPageModule)
+  },
+  {
+    path: 'degree-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/degree/degree-view/degree-view.module').then( m => m.DegreeViewPageModule)
+  },
+  {
+    path: 'degree-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/degree/degree-form/degree-form.module').then( m => m.DegreeFormPageModule)
+  },
+  {
+    path: 'degree-group-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/degree-group/degree-group-form/degree-group-form.module').then( m => m.DegreeGroupFormPageModule)
+  },
+  {
+    path: 'degree-group-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/degree-group/degree-group-view/degree-group-view.module').then( m => m.DegreeGroupViewPageModule)
+  },
+  {
+    path: 'degree-group-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/degree-group/degree-group-list/degree-group-list.module').then( m => m.DegreeGroupListPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
-  },
+  }, 
 ];
 
 @NgModule({

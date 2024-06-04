@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="degree-list"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="degree">
+      {{ degree.degree_name_en }}
+      <span *ngIf="!degree.degree_name_en">{{ degree.degree_name_ar }}</span>
+    </ion-title>
+
+    <ion-buttons slot="end" *ngIf="!authService.admin_limited_access">
+      <ion-button (click)="update()">
+        Update
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list *ngIf="degree">
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Degree ID</h5>
+        <p>{{ degree.degree_uuid }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Degree Name</h5>
+        <p>{{ degree.degree_name_en }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Degree Name - Arabic</h5>
+        <p>{{ degree.degree_name_ar }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="degree.degreeGroup">
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Degree Group Name</h5>
+        <p>{{ degree.degreeGroup.degree_group_name_en }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="degree.degreeGroup">
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Degree Group Name - Arabic</h5>
+        <p>{{ degree.degreeGroup.degree_group_name_ar }}</p>
+      </ion-label>
+    </ion-item>
+    
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
+        <h5>Sort Order</h5>
+        <p>{{ degree.degree_sort_order }}</p>
+      </ion-label>
+    </ion-item>
+ 
+  </ion-list>
+
+  <loading-modal [loading]="loading" type="degree-view"></loading-modal>
+
+</ion-content>
