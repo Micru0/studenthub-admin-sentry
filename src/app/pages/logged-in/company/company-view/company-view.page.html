@@ -647,9 +647,10 @@
           Create Sub Company
         </ion-button>
       </ion-col>
-      <ion-col *ngIf="stores && stores.length > 0" >
-        <ion-button expand="full" (click)="downloadCandidatesExcel($event)">
-          Download Candidates Excel
+      <ion-col *ngIf="stores && stores.length > 0">
+        <ion-button expand="full" [disabled]="exporting" (click)="downloadCandidatesExcel($event)">
+          <span *ngIf="!exporting">Download Candidates Excel</span>
+          <ion-spinner *ngIf="exporting"></ion-spinner>
         </ion-button>
       </ion-col>
     </ion-row>
