@@ -640,7 +640,18 @@
 </ion-content>
 
 <ion-footer *ngIf="company && !authService.admin_limited_access">
-  <ion-button expand="full" *ngIf="!stores || stores.length == 0" (click)="create(company.company_id, true)">
-    Create Sub Company
-  </ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngIf="!stores || stores.length == 0" >
+        <ion-button expand="full" (click)="create(company.company_id, true)">
+          Create Sub Company
+        </ion-button>
+      </ion-col>
+      <ion-col *ngIf="stores && stores.length > 0" >
+        <ion-button expand="full" (click)="downloadCandidatesExcel($event)">
+          Download Candidates Excel
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-footer>
