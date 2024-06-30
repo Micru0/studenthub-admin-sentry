@@ -62,7 +62,8 @@ export class CompanyViewPage implements OnInit {
   public followup = false;
 
   public updating = false;
-
+  public exporting: boolean = false; 
+  
   constructor(
     public platform: Platform,
     public router: Router,
@@ -135,6 +136,37 @@ export class CompanyViewPage implements OnInit {
       this.loading = false;
       this.deleting = false;
     });
+  }
+
+  /**
+   * download candidate details
+   * @param ev 
+   */
+  async downloadCandidatesExcel(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    const confirm = await this.alertCtrl.create({
+      header: 'Export Data?',
+      message: 'Do you really wants to export candidate data?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.exporting = true;
+             
+            this.companyService.downloadCandidatesExcel(this.company_id).subscribe(async jsonResp => {
+              this.exporting = false;
+            });
+          }
+        },
+        {
+          text: 'No',
+          role: 'no'
+        }
+      ]
+    });
+    confirm.present();
   }
 
   segmentChanged(event) {

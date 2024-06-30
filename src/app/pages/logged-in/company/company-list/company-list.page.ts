@@ -10,7 +10,7 @@ import { AwsService } from '../../../../providers/aws.service';
 import { EventService } from '../../../../providers/event.service';
 // pages
 import { CompanyFormPage } from '../company-form/company-form.page';
-import {StaffPage} from "src/app/pages/logged-in/picker/staff/staff.page";
+import { StaffPage } from "src/app/pages/logged-in/picker/staff/staff.page";
 
 
 @Component({
@@ -24,9 +24,11 @@ export class CompanyListPage implements OnInit {
   public totalCount = 0;
   public currentPage = 1;
   public segment = 1;
+
   public companies: Company[];
   public enableCompanies: Company[] = [];
   public disableCompanies: Company[] = [];
+  
   public deleting = false;
 
   public loading = false;
