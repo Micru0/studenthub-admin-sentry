@@ -124,7 +124,6 @@ export class CandidateTransferDetailPage implements OnInit {
     alert.present(); 
   }
  
-
   /**
    * mark single transfer candiate as paid + add amount to wallet
    */
@@ -158,6 +157,10 @@ export class CandidateTransferDetailPage implements OnInit {
             this._eventService.updatePayable$.next(this.transferCandidate);
             
             this.payingToWallet = false;
+
+            if (response.operation == "success") {
+              this.transferCandidate.paid = 1;
+            }
 
             this.navCtrl.pop();
           }, () => {

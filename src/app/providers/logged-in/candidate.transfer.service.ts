@@ -76,7 +76,6 @@ export class CandidateTransferService {
     return this._authhttp.patch(url, {});
   }
   
-  
   /**
    * mark paid candidate and amount to wallet
    * @param {Candidate} model
