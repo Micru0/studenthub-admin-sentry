@@ -5,10 +5,10 @@ import { AlertController, ToastController, NavController } from '@ionic/angular'
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 import { EventService } from 'src/app/providers/event.service';
 import { AwsService } from 'src/app/providers/aws.service'; 
+import {AuthService} from "../../../../providers/auth.service";
 //models
 import { Candidate } from 'src/app/models/candidate';
 import { TransferCandidate } from 'src/app/models/transfer-candidate';
-import {AuthService} from "../../../../providers/auth.service";
 
 
 @Component({
@@ -232,6 +232,10 @@ export class CandidateTransferDetailPage implements OnInit {
             this._eventService.updatePayable$.next(this.transferCandidate);
             
             this.markingPaid = false;
+            
+            if (response.operation == "success") {
+              this.transferCandidate.paid = 1;
+            }
 
             this.navCtrl.pop();
           }, () => {
