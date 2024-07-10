@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { CompanyFormPageRoutingModule } from './company-form-routing.module';
 
 import { CompanyFormPage } from './company-form.page';
-import {ImageUploadComponent} from 'src/app/components/image-upload/image-upload.component';
+//import {ImageUploadComponent} from 'src/app/components/image-upload/image-upload.component';
+import { ImageUploadModule } from 'src/app/components/image-upload/image-upload.module';
 
 @NgModule({
   imports: [
@@ -16,8 +17,9 @@ import {ImageUploadComponent} from 'src/app/components/image-upload/image-upload
     IonicModule,
     ReactiveFormsModule,
     CompanyFormPageRoutingModule,
-    CKEditorModule
+    CKEditorModule,
+    ImageUploadModule
   ],
-  declarations: [CompanyFormPage, ImageUploadComponent]
+  declarations: [CompanyFormPage]//ImageUploadComponent
 })
 export class CompanyFormPageModule {}

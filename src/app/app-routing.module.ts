@@ -881,9 +881,40 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/degree-group/degree-group-list/degree-group-list.module').then( m => m.DegreeGroupListPageModule)
   },
   {
+    path: 'discount-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/company/discount/discount-form/discount-form.module').then( m => m.DiscountFormPageModule)
+  },
+  {
+    path: 'discount-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/company/discount/discount-list/discount-list.module').then( m => m.DiscountListPageModule)
+  },
+  {
+    path: 'discount-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/company/discount/discount-view/discount-view.module').then( m => m.DiscountViewPageModule)
+  },
+  {
+    path: 'discount-category-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/discount-category/discount-category-view/discount-category-view.module').then( m => m.DiscountCategoryViewPageModule)
+  },
+  {
+    path: 'discount-category-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/discount-category/discount-category-list/discount-category-list.module').then( m => m.DiscountCategoryListPageModule)
+  },
+  {
+    path: 'discount-category-form',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/discount-category/discount-category-form/discount-category-form.module').then( m => m.DiscountCategoryFormPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
-  }, 
+  },   
+
 ];
 
 @NgModule({

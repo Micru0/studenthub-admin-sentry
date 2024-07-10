@@ -11,7 +11,7 @@ import { DiscountCategory } from '../../models/discount-category';
 })
 export class DiscountCategoryCategoryService {
 
-  private _discountEndpoint: string = "/discounts";
+  private _discountEndpoint: string = "/discount-categories";
 
   constructor(private _authhttp: AuthHttpService) { }
 

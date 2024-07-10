@@ -314,6 +314,7 @@
               </ion-item>
             </ion-menu-toggle>
 
+
             <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'degree-list'">
                 <div tabindex="0"></div>
@@ -397,6 +398,20 @@
             
           </ion-item-group>
 
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Discounts </ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" routerLink="/discount-category-list">
+                <div tabindex="0"></div>
+                <ion-icon name="cart-outline" slot="start"></ion-icon>
+                <ion-label>Discount Categories</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+          
           <ion-item-group>
             <ion-item-divider>
               <ion-label>Permission </ion-label>
