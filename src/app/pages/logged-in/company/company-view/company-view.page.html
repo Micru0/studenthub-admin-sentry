@@ -59,6 +59,10 @@
       <ion-segment-button value="transfer" *ngIf="company && company.parentTransfers && company.parentTransfers.length > 0">
         <ion-label>Transfer</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="discounts">
+        <ion-label>Discounts</ion-label>
+      </ion-segment-button>
+
       <ion-segment-button value="stats">
         <ion-label>Yearly Stats</ion-label>
       </ion-segment-button>
@@ -637,11 +641,76 @@
       </ion-row>
     </ion-list>
   </section>
+
+  <section *ngIf="segment == 'discounts'">
+    <!-- <app-discount-list [company]="company"></app-discount-list>-->
+
+    <no-items message = "No discount added yet!" *ngIf="discounts.length == 0 && !loadingDiscount"></no-items>
+
+    <ion-item-sliding *ngFor="let discount of discounts" [disabled]="platform.width() > 768">
+      <ion-item [class.alert]="!discount.description_en || 
+        !discount.description_ar || 
+        discount.description_en == discount.description_ar"
+        tappable (click)="discountSelected(discount)">
+        
+        <div tabindex="0"></div>
+        
+        <ion-thumbnail *ngIf="discount.image" slot="start">
+          <ion-img  
+            src="{{ aws.permanentBucketUrl + 'discount/' + discount.image }}"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>
+          <h5>{{ discount.description_en }}</h5>
+          <p>{{ discount.description_ar }}</p>
+        </ion-label>
+ 
+        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
+
+          <ion-button (click)="editDiscount($event, discount)">
+            <ion-icon slot="start" name="pencil-outline"></ion-icon>
+            Edit
+          </ion-button>
+          
+          <ion-button color="danger" (click)="deleteDiscount($event, discount)">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-buttons>
+
+      </ion-item>
+
+      <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
+        <ion-button (click)="editDiscount($event, discount)">
+          <ion-icon slot="start" name="pencil-outline"></ion-icon>
+          Edit
+        </ion-button>
+        <ion-button color="danger" (click)="deleteDiscount($event, discount)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Delete
+        </ion-button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+    <loading-modal [loading]="loadingDiscount" type="text-list"></loading-modal>
+    
+    <ion-infinite-scroll *ngIf="currentPageDiscount < pageCountDiscount"
+      (ionInfinite)="doInfiniteDiscounts($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </section>
+
 </ion-content>
 
 <ion-footer *ngIf="company && !authService.admin_limited_access">
   <ion-grid>
     <ion-row>
+      <ion-col *ngIf="segment == 'discounts'">
+        <ion-button expand="full" (click)="createDiscount()">
+          Add discount
+        </ion-button>
+      </ion-col>
       <ion-col *ngIf="!stores || stores.length == 0" >
         <ion-button expand="full" (click)="create(company.company_id, true)">
           Create Sub Company

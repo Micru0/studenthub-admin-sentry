@@ -10,12 +10,14 @@ import { BrandService } from 'src/app/providers/logged-in/brand.service';
 import { CompanyContactService } from 'src/app/providers/logged-in/company-contact.service';
 import { AuthService } from 'src/app/providers/auth.service';
 import { EventService } from '../../../../providers/event.service';
+import { DiscountService } from 'src/app/providers/logged-in/discount.service';
 // models
 import { Note } from 'src/app/models/note';
 import { Company } from 'src/app/models/company';
 import { Store } from 'src/app/models/store';
 import { File } from '../../../../models/file';
 import { CompanyContact } from 'src/app/models/company-contact';
+import { Discount } from 'src/app/models/discount';
 import { Brand } from 'src/app/models/brand';
 // pages
 import { BrandFormPage } from '../brand-form/brand-form.page';
@@ -23,9 +25,10 @@ import { CompanyContactFormPage } from '../company-contact-form/company-contact-
 import { CompanyFormPage } from '../company-form/company-form.page';
 import { UploadFilePage } from '../upload-file/upload-file.page';
 import { CompanyNoteFormPage } from '../company-note-form/company-note-form.page';
-import {Contact} from "../../../../models/contact";
 import { ModalPopPage } from '../../modal-pop/modal-pop.page';
 import {StaffPage} from "src/app/pages/logged-in/picker/staff/staff.page";
+import { DiscountFormPage } from '../discount/discount-form/discount-form.page';
+import { DiscountViewPage } from '../discount/discount-view/discount-view.page';
 
 
 @Component({
@@ -64,6 +67,16 @@ export class CompanyViewPage implements OnInit {
   public updating = false;
   public exporting: boolean = false; 
   
+
+  public deletingDiscount = false;
+  public loadingDiscount = false;
+
+  public totalCountDiscount = 0;
+  public pageCountDiscount = 0;
+  public currentPageDiscount = 1;
+
+  public discounts: Discount[] = [];
+
   constructor(
     public platform: Platform,
     public router: Router,
@@ -73,6 +86,7 @@ export class CompanyViewPage implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     public companyService: CompanyService,
+    public discountService: DiscountService,
     public companyContactService: CompanyContactService,
     public brandService: BrandService,
     public storeService: StoreService,
@@ -175,8 +189,210 @@ export class CompanyViewPage implements OnInit {
       if (!this.companyNotes || this.companyNotes.length == 0) {
         this.loadNotesData(1);
       }
+    } else if(this.segment == "discounts") {
+      this.loadDiscounts(this.currentPageDiscount);
     }
   }
+
+  /**
+   * load data
+   * @param page
+   */
+  async loadDiscounts(page: number, silent = false) {
+
+    if (!silent) {
+      this.loadingDiscount = true;
+    }
+
+    const urlParams = "&company_id=" + this.company.company_id;
+
+    this.discountService.list(page, urlParams).subscribe(response => {
+
+      this.loadingDiscount = false;
+      this.deletingDiscount = false;
+
+      this.pageCountDiscount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPageDiscount = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalCountDiscount = parseInt(response.headers.get('X-Pagination-Total-Count'));
+
+      this.discounts = response.body;
+    }, () => {
+      this.loadingDiscount = false;
+      this.deletingDiscount = false;
+    });
+  }
+
+  /**
+   * load more on scroll to bottom
+   * @param event
+   */
+  doInfiniteDiscounts(event) {
+
+    this.currentPageDiscount++;
+
+    this.loadingDiscount = true;
+
+    const urlParams = "&company_id=" + this.company.company_id;
+
+    this.discountService.list(this.currentPage, urlParams).subscribe(response => {
+
+      this.loadingDiscount = false;
+
+      this.pageCountDiscount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPageDiscount = parseInt(response.headers.get('X-Pagination-Current-Page'));
+
+      this.discounts = this.discounts.concat(response.body);
+
+      event.target.complete();
+
+    }, () => {
+      this.loadingDiscount = false;
+    });
+  }
+
+  /**
+   * When its selected
+   */
+  async discountSelected(model) {
+
+    /*this.router.navigate(['discount-view', model.discount_uuid], {
+      state: {
+        model: model
+      }
+    });*/
+
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+ 
+    const modal = await this.modalCtrl.create({
+      component: DiscountViewPage,
+      componentProps: {
+        model: model
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+    });
+    modal.present();
+  }
+
+  /**
+   * Loads the create page
+   */
+  async createDiscount() {
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    let model = new Discount;
+    model.company_id = this.company.company_id; 
+
+    const modal = await this.modalCtrl.create({
+      component: DiscountFormPage,
+      componentProps: {
+        model: model,
+        company: this.company
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+
+      if (e && e.data && e.data.refresh) {
+        this.currentPageDiscount = 1;
+        this.loadDiscounts(this.currentPageDiscount);
+      }
+    });
+    modal.present();
+  }
+
+  async editDiscount(ev, model: Discount) {
+
+    ev.preventDefault();
+    ev.stopPropagation(); 
+
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this.modalCtrl.create({
+      component: DiscountFormPage,
+      componentProps: {
+        model: model,
+        company: this.company
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+
+      if (e && e.data && e.data.refresh) {
+        this.currentPageDiscount = 1;
+        this.loadDiscounts(this.currentPageDiscount);
+      }
+    });
+    modal.present();
+  }
+
+  /**
+   * Delete the provided model
+   */
+  async deleteDiscount(ev, model: Discount) {
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const confirm = await this.alertCtrl.create({
+      header: 'Delete Discount?',
+      message: 'Are you sure you want to delete this Discount?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+
+            this.deletingDiscount = true;
+
+            this.discountService.delete(model).subscribe(async jsonResp => {
+
+              if (jsonResp.operation == 'error') {
+
+                this.deletingDiscount = false;
+
+                const alert = await this.alertCtrl.create({
+                  header: 'Deletion Error!',
+                  subHeader: jsonResp.message,
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+
+              if (jsonResp.operation == 'success') {
+                const toast = await this._toastCtrl.create({
+                  message: jsonResp.message,
+                  duration: 3000
+                });
+                toast.present();
+              }
+              this.loadDiscounts(this.currentPageDiscount, true);
+            }, () => {
+              this.deleting = false;
+            });
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  /**--- end discount code--- */
 
   /**
    * Loads Form in modal to update

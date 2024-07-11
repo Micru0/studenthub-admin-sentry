@@ -1,9 +1,91 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>discount-view</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="dismiss()"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="model">{{ model.description_en }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list *ngIf="model">
+
+    <ion-thumbnail *ngIf="model.image" slot="start">
+      <ion-img  
+        src="{{ aws.permanentBucketUrl + 'discount/' + model.image }}"></ion-img>
+    </ion-thumbnail>
+
+    <ion-item>
+      <ion-label>
+        <h5>Category</h5>
+        <p>{{ model.category.name_en }}</p>
+      </ion-label>
+     </ion-item>
+     
+     <ion-item>
+      <ion-label>
+        <h5>Company</h5>
+        <p>{{ model.company.company_name }}</p>
+      </ion-label>
+     </ion-item>
+     
+     <ion-item *ngIf="model.store">
+      <ion-label>
+        <h5>Store</h5>
+        <p>{{ model.store.store_name }}</p>
+      </ion-label>
+     </ion-item>
+ 
+     <ion-item>
+
+     <ion-label>
+      <h5>Description - English</h5>
+      <p>{{ model.description_en }}</p>
+    </ion-label>
+    </ion-item>
+
+    <ion-item>
+    <ion-label>
+      <h5>Description - Arabic</h5>
+      <p>{{ model.description_ar }}</p>
+    </ion-label>
+   </ion-item>
+ 
+   <ion-item>
+    <ion-label>
+      <h5>How to apply - English</h5>
+      <p>{{ model.how_to_apply_en }}</p>
+    </ion-label>
+   </ion-item>
+
+   <ion-item>
+    <ion-label>
+      <h5>How to apply - Arabic</h5>
+      <p>{{ model.how_to_apply_ar }}</p>
+    </ion-label>
+   </ion-item>
+
+   <ion-item>
+    <ion-label>
+      <h5>Valid Until</h5>
+      <p>{{ model.valid_until? model.valid_until: "Lifetime" }}</p>
+    </ion-label>
+   </ion-item>
+
+   <ion-item>
+    <ion-label>
+      <h5>Created At</h5>
+      <p>{{ model.created_at }}</p>
+    </ion-label>
+   </ion-item>
+   
+   <ion-item>
+    <ion-label>
+      <h5>Updated At</h5>
+      <p>{{ model.updated_at }}</p>
+    </ion-label>
+   </ion-item>
+  
+  </ion-list>
 
 </ion-content>

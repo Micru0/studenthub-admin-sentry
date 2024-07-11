@@ -3,8 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, ModalController } from '@ionic/angular';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
-import { DiscountCategoryCategoryService } from 'src/app/providers/logged-in/discount-category.service';
-// models
+import { DiscountCategoryService } from 'src/app/providers/logged-in/discount-category.service';
 
 
 @Component({
@@ -27,7 +26,7 @@ export class DiscountCategoryFormPage implements OnInit {
   public operation;
 
   constructor(
-    public discountCategoryService: DiscountCategoryCategoryService,
+    public discountCategoryService: DiscountCategoryService,
     public authService: AuthService,
     private _fb: FormBuilder,
     private _alertCtrl: AlertController,

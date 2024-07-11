@@ -19,8 +19,8 @@ export class DiscountService {
    * List of all discount
    * @returns {Observable<any>}
    */
-  list(page: number): Observable<any>{
-    let url = this._discountEndpoint + '?expand=&page=' + page;
+  list(page: number, urlParams: string = ""): Observable<any>{
+    let url = this._discountEndpoint + '?expand=company,store,category&page=' + page + urlParams;
     return this._authhttp.get(url, true);
   }
   
@@ -28,8 +28,8 @@ export class DiscountService {
    * return discount detail 
    * @param discount_uuid 
    */
-  view(discount_uuid: number): Observable<any>{
-    let url = this._discountEndpoint + '/' + discount_uuid + '?expand=';
+  view(discount_uuid: string): Observable<any>{
+    let url = this._discountEndpoint + '/' + discount_uuid + '?expand=company,store,category';
     return this._authhttp.get(url);
   }
 

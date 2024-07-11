@@ -22,9 +22,9 @@ export class StoreService {
    * List of all store
    * @returns {Observable<any>}
    */
-  list(): Observable<any>{
-    let url = this._storeEndpoint;
-    return this._authhttp.get(url);
+  list(page: number, urlParams: string = ""): Observable<any>{
+    let url = this._storeEndpoint + "?page=" + page + urlParams;
+    return this._authhttp.get(url, true);
   }
   
   /**

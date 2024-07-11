@@ -66,6 +66,9 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
     } else if(this.prefix == "discount-category") {
       this.bucketUrlPermanent = this.awsService.permanentBucketUrl + 'discount-category/';
       this.bucketUrl = this.bucketUrlPermanent ;
+    }else if(this.prefix == "discount") {
+      this.bucketUrlPermanent = this.awsService.permanentBucketUrl + 'discount/';
+      this.bucketUrl = this.bucketUrlPermanent;
     }
   }
 

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { DiscountCategory } from 'src/app/models/discount-category';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
-import { DiscountCategoryCategoryService } from 'src/app/providers/logged-in/discount-category.service';
+import { DiscountCategoryService } from 'src/app/providers/logged-in/discount-category.service';
 // pages
 import { DiscountCategoryFormPage } from '../discount-category-form/discount-category-form.page';
 import { AwsService } from 'src/app/providers/aws.service';
@@ -32,7 +32,7 @@ export class DiscountCategoryListPage implements OnInit {
     public platform: Platform,
     public router: Router,
     public aws: AwsService,
-    public discountCategoryService: DiscountCategoryCategoryService,
+    public discountCategoryService: DiscountCategoryService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,

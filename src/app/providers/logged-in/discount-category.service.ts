@@ -9,7 +9,7 @@ import { DiscountCategory } from '../../models/discount-category';
 @Injectable({
   providedIn: 'root'
 })
-export class DiscountCategoryCategoryService {
+export class DiscountCategoryService {
 
   private _discountEndpoint: string = "/discount-categories";
 
