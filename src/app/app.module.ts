@@ -54,6 +54,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
 import localeAr from '@angular/common/locales/ar-KW';
+import { MajorFormPageModule } from './pages/logged-in/major/major-form/major-form.module';
+import { DegreeGroupFormPageModule } from './pages/logged-in/degree-group/degree-group-form/degree-group-form.module';
+import { DegreeFormPageModule } from './pages/logged-in/degree/degree-form/degree-form.module';
 
 export function startupServiceFactory(authService: AuthService) {
   return () => authService.load();
@@ -105,6 +108,9 @@ declare global {
     StaffFormPageModule,
     AdminFormPageModule,
     UniversityFormPageModule,
+    MajorFormPageModule,
+    DegreeGroupFormPageModule,
+    DegreeFormPageModule,
     WebhookFormPageModule,
     UpdateAlertModule,
     UploadFilePageModule,

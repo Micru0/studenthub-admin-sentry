@@ -4,6 +4,7 @@ import { University } from './university';
 import { Country } from './country';
 import { Bank } from './bank';
 import { Area } from './area';
+import { CandidateEducation } from './candidate-education';
 
 
 export class Candidate {
@@ -51,6 +52,7 @@ export class Candidate {
     currency_code: string;
     candidateSkills: any[];
     candidateExperiences: any[];
+    candidateEducations: CandidateEducation[];
 
     // Related
     store: Store;

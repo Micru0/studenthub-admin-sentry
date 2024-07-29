@@ -218,6 +218,11 @@ export class CompanyService {
     return this._authhttp.patch(url, { status });
   }
 
+  /**
+   * @param model 
+   * @param staff_id 
+   * @returns 
+   */
   updateStaff(model: Company, staff_id: null): Observable<any> {
     const url = `${this._companyEndpoint}/update-staff/${model.company_id}`;
     return this._authhttp.patch(url, { staff_id });

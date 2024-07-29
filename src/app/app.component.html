@@ -307,6 +307,32 @@
             </ion-menu-toggle>
 
             <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'major-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="school-outline" slot="start"></ion-icon>
+                <ion-label>Majors</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'degree-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="school-outline" slot="start"></ion-icon>
+                <ion-label>Degrees</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'degree-group-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="school-outline" slot="start"></ion-icon>
+                <ion-label>Degree Groups</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
               <ion-item lines="none" [routerLink]="'country-list'">
                 <div tabindex="0"></div>
                 <ion-icon name="paper-plane-outline" slot="start"></ion-icon>
@@ -372,6 +398,20 @@
             
           </ion-item-group>
 
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Discounts </ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" routerLink="/discount-category-list">
+                <div tabindex="0"></div>
+                <ion-icon name="cart-outline" slot="start"></ion-icon>
+                <ion-label>Discount Categories</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>
+          
           <ion-item-group>
             <ion-item-divider>
               <ion-label>Permission </ion-label>
