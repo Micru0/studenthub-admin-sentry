@@ -5,6 +5,8 @@ import * as AWS from 'aws-sdk';
 import { Filesystem, Encoding } from '@capacitor/filesystem';
 import { Platform, AlertController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
+import { AuthHttpService } from './logged-in/authhttp.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -24,8 +26,8 @@ export class AwsService {
     public urlResume = environment.permanentBucketUrl + 'candidate-resume/';
 
     private _region = 'eu-west-2'; // London
-    private _access_key_id = 'AKIAWMITDJRKTSQ4T67K';
-    private _secret_access_key = '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';
+    private _access_key_id = '';
+    private _secret_access_key = '';
     private _bucket_name = 'studenthub-public-anyone-can-upload-24hr-expiry';
 
     public maxUploadSize = 18874368; // 18MB
@@ -33,11 +35,43 @@ export class AwsService {
     public txtMaxUploadSize = '18MB';
 
     constructor(
+        private http: HttpClient,
         public platform: Platform,
         public alertController: AlertController,
         public file: NativeFile
     ) {
-        this.initAwsService();
+        //this.initAwsService();
+    }
+
+    /**
+     * get temp aws access/ todo: can also get authorised link  
+     * @returns 
+     */
+    getConfig(): Observable<any> {
+        let url = environment.apiEndpoint + `/aws/config`;
+        return this.http.get(url);
+    }
+
+    /**
+     * @param config 
+     */
+    setConfig() {
+        return new Promise((resolve, reject) => {
+            this.getConfig().subscribe(config => {
+                this._region = config.region;
+                this._access_key_id = config.key;
+                this._secret_access_key = config.secret;
+                this._bucket_name = config.bucket;
+
+                AWS.config.region = this._region;
+                AWS.config.accessKeyId = this._access_key_id;
+                AWS.config.secretAccessKey = this._secret_access_key;
+
+                resolve(true);
+            }, err => {
+                reject(err);
+            });
+        });
     }
 
     /**
