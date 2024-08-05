@@ -5,7 +5,6 @@ import * as AWS from 'aws-sdk';
 import { Filesystem, Encoding } from '@capacitor/filesystem';
 import { Platform, AlertController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
-import { AuthHttpService } from './logged-in/authhttp.service';
 import { HttpClient } from '@angular/common/http';
 
 

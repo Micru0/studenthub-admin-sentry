@@ -225,6 +225,10 @@
               <span *ngIf="resource.paid==0"> Transfer in progress </span>
             </ion-badge>
 
+            <ion-badge slot="end" color="danger" *ngIf="resource.candidate && resource.candidate.civilExpired">
+              Civil Expired
+            </ion-badge>
+
           </ion-item>
 
           <ion-grid *ngIf="resource.hours > 0 || resource.bonus > 0">
