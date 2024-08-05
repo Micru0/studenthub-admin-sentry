@@ -25,7 +25,7 @@ export class CandidateTransferService {
    * @param transfer_id 
    */
   listTransferCandidates(transfer_id: number, page: number): Observable<any> {
-    let url = `${this._transferEndpoint}/by-transfer/${transfer_id}?page=${page}&expand=transferFileEntry,transferFile,bank,candidate`;
+    let url = `${this._transferEndpoint}/by-transfer/${transfer_id}?page=${page}&expand=transferFileEntry,transferFile,bank,candidate,candidate.civilExpired`;
     return this._authhttp.get(url, true);
   }
 
@@ -35,7 +35,7 @@ export class CandidateTransferService {
    * @param transfer_file_id 
    */
   listByTransferFile(transfer_file_id: number, page: number): Observable<any> {
-    let url = `${this._transferEndpoint}/by-transfer-file/${transfer_file_id}?page=${page}&expand=transferFileEntry,bank,candidate`;
+    let url = `${this._transferEndpoint}/by-transfer-file/${transfer_file_id}?page=${page}&expand=transferFileEntry,bank,candidate,candidate.civilExpired`;
     return this._authhttp.get(url, true);
   } 
 
@@ -44,7 +44,7 @@ export class CandidateTransferService {
    * @returns {Observable<any>}
    */
   list(tc_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}?tc_id=${tc_id}&expand=transferFile,bank,candidate`;
+    let url = `${this._transferEndpoint}?tc_id=${tc_id}&expand=transferFile,bank,candidate,candidate.civilExpired`;
     return this._authhttp.get(url, true);
   }
 
@@ -53,7 +53,7 @@ export class CandidateTransferService {
    * @param transfer_confirmation_id 
    */
   loadByConfirmationId(transfer_confirmation_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}?transfer_confirmation_id=${transfer_confirmation_id}&expand=transferFile,bank,candidate`;
+    let url = `${this._transferEndpoint}?transfer_confirmation_id=${transfer_confirmation_id}&expand=transferFile,bank,candidate,candidate.civilExpired`;
     return this._authhttp.get(url, true);
   }
   
@@ -62,7 +62,7 @@ export class CandidateTransferService {
    * @param tc_id 
    */
   view(tc_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${tc_id}?expand=transferFileEntry,transferFile,bank,candidate`;//store,company
+    let url = `${this._transferEndpoint}/${tc_id}?expand=transferFileEntry,transferFile,bank,candidate,candidate.civilExpired`;//store,company
     return this._authhttp.get(url);
   }
 
