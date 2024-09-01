@@ -23,6 +23,8 @@ export class ImportTransferFormPage implements OnInit {
 
   public uploading: Boolean = false; 
 
+  public bank: string = "KFH";
+
   constructor(
     public navCtrl: NavController,
     public awsService: AwsService,
@@ -102,7 +104,11 @@ export class ImportTransferFormPage implements OnInit {
       if (this.fileInput && this.fileInput.nativeElement)
         this.fileInput.nativeElement.value = null;
 
-        this.navCtrl.navigateForward(['transfer-paid', event.Key]);
+        this.navCtrl.navigateForward(['transfer-paid', event.Key, this.bank], {
+          state: {
+            bank: this.bank
+          }
+        });
     }
   }
 }

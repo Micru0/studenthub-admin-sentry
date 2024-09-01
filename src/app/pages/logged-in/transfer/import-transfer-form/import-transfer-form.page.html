@@ -7,16 +7,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding ion-text-center">
+<ion-content class="ion-padding">
  
-  <h4>Upload the updated Excel file</h4>
-  
+  <!-- <h4>Upload the updated Excel file</h4> -->
+   
+  <ion-list>
+    <ion-list-header>Bank</ion-list-header>
+    <ion-radio-group [(ngModel)]="bank">
+      <ion-item>
+        <ion-label>KFH</ion-label>
+        <ion-radio value="KFH"></ion-radio> 
+      </ion-item>
+      <ion-item>
+        <ion-label>AUB (old format)</ion-label>
+        <ion-radio value="AUB">AUB (old format)</ion-radio> 
+      </ion-item>
+    </ion-radio-group>
+
+    <ion-list-header>File</ion-list-header>
+    <ion-button (click)="upload()" [disabled]="uploading" class="btn-upload">
+      <span *ngIf="!uploading">Choose <ion-icon name="folder-open"></ion-icon></span>
+      <ion-spinner *ngIf="uploading">Uploading...</ion-spinner>
+    </ion-button>
+  </ion-list>
+
   <!-- Upload Form -->
   <input type='file' #fileInput (change)="browserUpload($event)" accept=".xlsx,.xls"/>
   
-  <ion-button (click)="upload()" [disabled]="uploading">
-    <span *ngIf="!uploading">Upload</span>
-    <ion-spinner *ngIf="uploading">Uploading...</ion-spinner>
-  </ion-button>
+  
+  
 
 </ion-content>

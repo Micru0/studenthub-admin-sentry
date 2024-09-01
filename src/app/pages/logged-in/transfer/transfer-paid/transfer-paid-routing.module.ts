@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: ':excel',
     component: TransferPaidPage
+  },
+  {
+    path: ':excel/:bank',
+    component: TransferPaidPage
   }
 ];
 

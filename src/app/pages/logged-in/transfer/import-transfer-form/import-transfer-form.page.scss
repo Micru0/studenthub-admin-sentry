@@ -6,3 +6,12 @@ input[type="file"] {
   position: absolute;
   visibility: hidden;
 }
+
+.btn-upload {
+  margin-inline-start: 15px;
+  //text-transform: none;
+
+  ion-icon {
+    margin-inline-start: 8px;
+  }
+}
