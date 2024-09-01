@@ -29,8 +29,17 @@
     <ion-item *ngFor="let candidate of candidatelistData"> 
       <div tabindex="0"></div>
       <ion-label>
-        <h2  class="candidate_name">{{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}</h2>
-        <p>{{ candidate.transfer_confirmation_id }}</p>
+        <h2  class="candidate_name">
+          <a target="_blank" [routerLink]="'/candidate-view/' + candidate.candidate_id">
+            {{ candidate.candidate_name? candidate.candidate_name: candidate.candidate_name_ar }}
+          </a>
+        </h2>
+        <p><b>Bank reference no.: </b> {{ candidate.transfer_confirmation_id }} </p>
+        <p><b>Company Transfer ID: </b> <a target="_blank" [routerLink]="'/transfer-view/' + candidate.transfer_id">{{ candidate.transfer_id }} </a></p>
+        <p><b>Candidate Transfer ID: </b> <a target="_blank" [routerLink]="'/candidate-transfer-detail/' + candidate.tc_id">{{ candidate.tc_id }} </a></p>
+        
+        <p *ngIf="candidate.tc_created_at"> 
+          <ion-icon name="time" mode="md"></ion-icon> {{ toDate(candidate.tc_created_at) | date: 'MMM d, y' }}
       </ion-label>
 
       <ion-badge slot="end" *ngIf="candidate.candidate_total">{{ candidate.currency_code }} {{ candidate.candidate_total | number:'1.3-3' }}</ion-badge>

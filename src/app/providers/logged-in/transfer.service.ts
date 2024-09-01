@@ -145,16 +145,29 @@ export class TransferService {
   }
 
   /**
+   * import transfer confirmation excel from KFH bank
+   * @param excelUrl 
+   * @returns 
+   */
+  importKFHExcel(excelUrl: string): Observable<any> {
+    let url = `${this._transferEndpoint}/import-kfh-excel`;
+    return this._authhttp.post(url, {
+      excel: excelUrl
+    });
+  }
+
+  /**
    * Mark All candidates as paid 
    * @param {array} candidates
    * @param {string} excel
    * @returns {Observable<any>}
    */
-  markPaidAll(candidates: any, excel: string): Observable<any> {
+  markPaidAll(candidates: any, excel: string, bank: string): Observable<any> {
     let url = `${this._transferEndpoint}/mark-paid-all`;
     let params = {
       "candidates": candidates,
-      "excel": excel
+      "excel": excel,
+      bank: bank
     };
 
     const retryStrategy =  {

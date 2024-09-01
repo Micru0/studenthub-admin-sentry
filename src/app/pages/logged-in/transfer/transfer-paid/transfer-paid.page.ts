@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 //services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { EventService } from 'src/app/providers/event.service';
+import { AuthService } from 'src/app/providers/auth.service';
 
 
 @Component({
@@ -21,12 +22,14 @@ export class TransferPaidPage implements OnInit {
   public total;
 
   public excel: string; 
+  public bank: string; 
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public navCtrl: NavController,
     private _alertCtrl: AlertController,
+    public authService: AuthService,
     private transferService: TransferService,
     public toastCtrl: ToastController,
     private _eventService: EventService
@@ -36,6 +39,7 @@ export class TransferPaidPage implements OnInit {
     window.analytics.page('Transfer Paid Page');
 
     this.excel = this.activatedRoute.snapshot.paramMap.get('excel');
+    this.bank = this.activatedRoute.snapshot.paramMap.get('bank');
 
     this.loadData();
   }
@@ -47,7 +51,14 @@ export class TransferPaidPage implements OnInit {
 
     this.loading = true;
     
-    this.transferService.importExcel(this.excel).subscribe(response => {
+    let action;
+    if (this.bank == "AUB") {
+      action = this.transferService.importExcel(this.excel);
+    } else {
+      action = this.transferService.importKFHExcel(this.excel);
+    }
+
+    action.subscribe(response => {
 
       this.total = response.total;
 
@@ -100,23 +111,42 @@ export class TransferPaidPage implements OnInit {
 
     this.markingPaid = true;
 
-    this.transferService.markPaidAll(candidate_ids, this.excel).subscribe(async response => {
+    this.transferService.markPaidAll(candidate_ids, this.excel, this.bank).subscribe(async response => {
 
-      let toast = await this.toastCtrl.create({
-        message: response.message,
-        duration: 3000
-      });
-      toast.present();
+      if (response.operation == "success") {
+        let toast = await this.toastCtrl.create({
+          message: this.authService.errorMessage(response.message),
+          duration: 3000
+        });
+        toast.present();
 
-      //update review count 
-      this._eventService.updatePayable$.next({});
+        //update review count 
+        this._eventService.updatePayable$.next({});
 
-      this.navCtrl.navigateRoot(['payable-candidates']);
+        this.navCtrl.navigateRoot(['payable-candidates']);
+      } else {
+        let alert = await this._alertCtrl.create({
+          header: "Error",
+          subHeader: "Please re-check and correct uploaded excel!",
+          message: this.authService.errorMessage(response.message),
+        });
+        alert.present();
+      }
 
       this.markingPaid = false;
 
     }, () => {
       this.markingPaid = false;
     });
+  }
+  
+  /**
+   * Make date readable by Safari
+   * @param date
+   */
+  toDate(date) {
+    if (date) {
+      return new Date(date.replace(/-/g, '/'));
+    }
   }
 }
