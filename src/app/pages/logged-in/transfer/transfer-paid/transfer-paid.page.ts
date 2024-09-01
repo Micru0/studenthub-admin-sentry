@@ -58,12 +58,24 @@ export class TransferPaidPage implements OnInit {
       action = this.transferService.importKFHExcel(this.excel);
     }
 
-    action.subscribe(response => {
+    action.subscribe(async response => {
 
-      this.total = response.total;
+      if (response.operation == "success") {
+        this.total = response.total;
 
-      this.candidatelistData = response.candidates;
-    
+        this.candidatelistData = response.candidates;
+      } else {
+        const alert = await this._alertCtrl.create({
+          header: 'Error',
+          message: this.authService.errorMessage(response.message),
+          buttons: ['Okay']
+        });
+  
+        await alert.present();
+
+        this.navCtrl.back();
+      }
+
       this.loading = false;
     },
     () => {
@@ -129,6 +141,7 @@ export class TransferPaidPage implements OnInit {
           header: "Error",
           subHeader: "Please re-check and correct uploaded excel!",
           message: this.authService.errorMessage(response.message),
+          buttons: ['Okay']
         });
         alert.present();
       }
