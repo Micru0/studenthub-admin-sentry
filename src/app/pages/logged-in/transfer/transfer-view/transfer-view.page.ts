@@ -477,11 +477,13 @@ export class TransferViewPage implements OnInit {
    * @param candidate 
    */
   totalCompanyPaysForCandidateWithBonus(transferCandidate: TransferCandidate) {
-    return this.totalCompanyPaysForCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.bonus);
+    return transferCandidate.company_total;
+    //this.totalCompanyPaysForCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.bonus);
   }
 
   totalCompanyPaysForCandidateWithoutBonus(transferCandidate: TransferCandidate) {
-    return (Number(transferCandidate.company_hourly_rate) * Number(transferCandidate.hours));
+    return transferCandidate.company_total - (transferCandidate.bonus - transferCandidate.bonus_commission);
+    //(Number(transferCandidate.company_hourly_rate) * Number(transferCandidate.hours));
   }
 
   /**
@@ -495,7 +497,7 @@ export class TransferViewPage implements OnInit {
   }
 
   totalPaidToCandidateWithoutBonus(transferCandidate: TransferCandidate) {
-    return (Number(transferCandidate.candidate_total) - Number(transferCandidate.candidate_bonus));
+    return (Number(transferCandidate.candidate_total) - Number(transferCandidate.bonus - transferCandidate.candidate_bonus));
     //return (Number(transferCandidate.candidate_hourly_rate) * Number(transferCandidate.hours));
   }
 

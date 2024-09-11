@@ -324,12 +324,13 @@ export class SuspiciousTransferViewPage implements OnInit {
    * @param candidate 
    */
   totalCompanyPaysForCandidateWithBonus(transferCandidate: TransferCandidate) {
-    return this.totalCompanyPaysForCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.bonus);
+    return transferCandidate.company_total;
+    //this.totalCompanyPaysForCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.bonus);
   }
 
-
   totalCompanyPaysForCandidateWithoutBonus(transferCandidate: TransferCandidate) {
-    return (Number(transferCandidate.company_hourly_rate) * Number(transferCandidate.hours));
+    return transferCandidate.company_total - transferCandidate.bonus;
+    //(Number(transferCandidate.company_hourly_rate) * Number(transferCandidate.hours));
   }
 
   /**
@@ -338,11 +339,13 @@ export class SuspiciousTransferViewPage implements OnInit {
    * @param transferCandidate 
    */
   totalPaidToCandidateWithBoth(transferCandidate: TransferCandidate) {
-    return this.totalPaidToCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.candidate_bonus);
+    return transferCandidate.candidate_total;
+    //this.totalPaidToCandidateWithoutBonus(transferCandidate) + Number(transferCandidate.bonus - transferCandidate.bonus_commission);
   }
 
   totalPaidToCandidateWithoutBonus(transferCandidate: TransferCandidate) {
-    return (Number(transferCandidate.candidate_hourly_rate) * Number(transferCandidate.hours));
+    return transferCandidate.candidate_total - (transferCandidate.bonus - transferCandidate.bonus_commission);
+    //(Number(transferCandidate.candidate_hourly_rate) * Number(transferCandidate.hours));
   }
 
   /**
