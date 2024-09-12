@@ -48,7 +48,8 @@ export class BankService {
       "swift_code": model.bank_swift_code,
       "address": model.bank_address,
       "bank_iban_code": model.bank_iban_code,
-      "type": model.bank_transfer_type
+      "type": model.bank_transfer_type,
+      "bank_code_abk": model.bank_code_abk
     };
 
     return this._authhttp.post(postUrl, params);
@@ -67,7 +68,8 @@ export class BankService {
       "swift_code": model.bank_swift_code,
       "address": model.bank_address,
       "bank_iban_code": model.bank_iban_code,
-      "type": model.bank_transfer_type
+      "type": model.bank_transfer_type,
+      "bank_code_abk": model.bank_code_abk
     };
 
     return this._authhttp.patch(url, params);

@@ -19,6 +19,9 @@ import { Component } from '@angular/core';
         <ion-item (click)="close('export-transfer')" tappable lines="none">
           Download Transfer Excel
         </ion-item>
+        <ion-item (click)="close('export-abk-transfer')" tappable lines="none">
+          Download ABK Transfer Excel
+        </ion-item>
       </ion-list>
     `
 })

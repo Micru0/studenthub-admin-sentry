@@ -103,7 +103,18 @@ export class PayableCandidatesPage  {
       this.downloadAdvice();
     } else if (data && data.action == 'export-transfer') {
       this.export(true);
+    } else if (data && data.action == 'export-abk-transfer') {
+      this.downloadAdviceForABK(true);
     }
+  }
+
+  async downloadAdviceForABK(onlyPayable: boolean = false) {
+
+    this.processing = true;
+
+    this.transferService.downloadAdviceForABK(onlyPayable).subscribe(response => {
+      this.processing = false;
+    });
   }
 
   /**

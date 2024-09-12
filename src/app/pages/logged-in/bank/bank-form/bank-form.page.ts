@@ -83,6 +83,7 @@ export class BankFormPage implements OnInit {
         name: ["", Validators.required],
         swift_code: ["", Validators.required],
         bank_iban_code: ["", Validators.required],
+        bank_code_abk: [""],
         address: ["", Validators.required],
         type: ["", Validators.required]
       });
@@ -92,6 +93,7 @@ export class BankFormPage implements OnInit {
         name: [this.model.bank_name, Validators.required],
         swift_code: [this.model.bank_swift_code, Validators.required],
         bank_iban_code: [this.model.bank_iban_code, Validators.required],
+        bank_code_abk: [""],
         address: [this.model.bank_address, Validators.required],
         type: [this.model.bank_transfer_type, Validators.required]
       });
@@ -106,6 +108,7 @@ export class BankFormPage implements OnInit {
     this.model.bank_swift_code = this.form.value.swift_code;
     this.model.bank_address = this.form.value.address;
     this.model.bank_iban_code = this.form.value.bank_iban_code;
+    this.model.bank_code_abk = this.form.value.bank_code_abk;
     this.model.bank_transfer_type = this.form.value.type;
   }
 
