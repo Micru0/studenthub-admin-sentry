@@ -17,16 +17,21 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let bankMember of banks" [disabled]="platform.width() > 768">
-      <ion-item tappable (click)="rowSelected(bankMember)">
+    <ion-item-sliding *ngFor="let bank of banks" [disabled]="platform.width() > 768">
+      <ion-item tappable (click)="rowSelected(bank)">
         <div tabindex="0"></div>
         <ion-label>
-          {{ bankMember.bank_name }}
+          <h5>{{ bank.bank_name }}</h5>
+          <p><b>IBAN:</b> {{ bank.bank_iban_code }}</p>
+          <p><b>SWIFT:</b> {{ bank.bank_swift_code }}</p>
+          <p *ngIf="bank.bank_code_abk"><b>ABK Bank Code:</b> {{ bank.bank_code_abk }}</p>
+          <p><b>Transfer Type:</b> {{ bank.bank_transfer_type }}</p>
+
         </ion-label>
 
         <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access" >
 
-          <ion-button color="danger" (click)="delete($event, bankMember)">
+          <ion-button color="danger" (click)="delete($event, bank)">
             <ion-icon name="trash-outline" slot="start"></ion-icon>
             Delete
           </ion-button>
@@ -35,7 +40,7 @@
       </ion-item>
 
       <ion-item-options side="end" *ngIf="!authService.admin_limited_access">
-        <ion-button color="danger" (click)="delete($event, bankMember)">
+        <ion-button color="danger" (click)="delete($event, bank)">
           <ion-icon name="trash-outline" slot="start"></ion-icon>
           Delete
         </ion-button>

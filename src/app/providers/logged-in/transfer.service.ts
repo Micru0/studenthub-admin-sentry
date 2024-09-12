@@ -197,6 +197,16 @@ export class TransferService {
     return this._authhttp.downloadTextFile(url);
   }
 
+  downloadAdviceForABK(onlyPayable: boolean = false): Observable<any> {
+    let url = `${this._transferEndpoint}/download-payment-advice-for-abk`;
+
+    if(onlyPayable) {
+      url += '?only-payable=true';
+    }
+    
+    return this._authhttp.excelget(url, `Payable Candidates [ABK].xlsx`);
+  }
+
   /**
    * Mark the passed transfer as locked
    * @param {number} invoice_id
