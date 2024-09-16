@@ -197,6 +197,11 @@ export class TransferService {
     return this._authhttp.downloadTextFile(url);
   }
 
+  downloadTextAdviceForABK(): Observable<any> {
+    let url = `${this._transferEndpoint}/download-text-payment-advice-for-abk`;
+    return this._authhttp.downloadTextFile(url);
+  }
+
   downloadAdviceForABK(onlyPayable: boolean = false): Observable<any> {
     let url = `${this._transferEndpoint}/download-payment-advice-for-abk`;
 

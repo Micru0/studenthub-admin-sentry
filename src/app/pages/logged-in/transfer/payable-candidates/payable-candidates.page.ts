@@ -105,14 +105,24 @@ export class PayableCandidatesPage  {
       this.export(true);
     } else if (data && data.action == 'export-abk-transfer') {
       this.downloadAdviceForABK(true);
+    } else if (data && data.action == 'export-abk-payment-advice') {
+      this.downloadTextAdviceForABK();
     }
+  }
+
+  downloadTextAdviceForABK() {
+    this.processing = true;
+
+    this.transferService.downloadTextAdviceForABK().subscribe(() => {
+      this.processing = false;
+    });
   }
 
   async downloadAdviceForABK(onlyPayable: boolean = false) {
 
     this.processing = true;
 
-    this.transferService.downloadAdviceForABK(onlyPayable).subscribe(response => {
+    this.transferService.downloadAdviceForABK(onlyPayable).subscribe(() => {
       this.processing = false;
     });
   }
