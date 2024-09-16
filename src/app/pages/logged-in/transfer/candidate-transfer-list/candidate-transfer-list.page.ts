@@ -224,6 +224,7 @@ export class CandidateTransferListPage implements OnInit {
    * @param transfersCandidate 
    */
   candidatePayableAmount(transfersCandidate) {
-    return ((parseFloat(transfersCandidate.candidate_hourly_rate) * parseFloat(transfersCandidate.hours)) + parseFloat(transfersCandidate.bonus));
+    return transfersCandidate.candidate_total;
+    //((parseFloat(transfersCandidate.candidate_hourly_rate) * parseFloat(transfersCandidate.hours)) + parseFloat(transfersCandidate.bonus));
   }
 }
