@@ -59,6 +59,22 @@
 
           <ion-item-group>
             <ion-item-divider>
+              <ion-label>Call center</ion-label>
+            </ion-item-divider>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'/voice-mail-list'">
+                <div tabindex="0"></div>
+                <ion-icon name="globe-outline" slot="start"></ion-icon>
+                <ion-label>
+                  Voice mails
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-item-group>    
+
+          <ion-item-group>
+            <ion-item-divider>
               <ion-label>Marketing</ion-label>
             </ion-item-divider>
 
