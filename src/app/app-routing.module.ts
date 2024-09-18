@@ -911,9 +911,20 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logged-in/discount-category/discount-category-form/discount-category-form.module').then( m => m.DiscountCategoryFormPageModule)
   },
   {
+    path: 'voice-mail-list',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/yeaster/voice-mail/voice-mail-list/voice-mail-list.module').then( m => m.VoiceMailListPageModule)
+  },
+  {
+    path: 'voice-mail-view',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/yeaster/voice-mail/voice-mail-view/voice-mail-view.module').then( m => m.VoiceMailViewPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
   },   
+  
 
 ];
 
