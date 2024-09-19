@@ -9,6 +9,7 @@ import { PayableCandidatesPageRoutingModule } from './payable-candidates-routing
 import { PayableCandidatesPage } from './payable-candidates.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
 import { PayableCandidatesActionComponent } from './payable-candidates-action';
+import { CandidatePageModule } from '../../picker/candidate/candidate.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import { PayableCandidatesActionComponent } from './payable-candidates-action';
     FormsModule,
     IonicModule,
     LoadingModalModule,
-    
+    CandidatePageModule,
     PayableCandidatesPageRoutingModule
   ],
   declarations: [PayableCandidatesPage, PayableCandidatesActionComponent]

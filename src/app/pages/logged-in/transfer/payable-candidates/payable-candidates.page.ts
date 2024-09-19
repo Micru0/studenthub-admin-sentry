@@ -7,8 +7,10 @@ import { EventService } from 'src/app/providers/event.service';
 import {AuthService} from '../../../../providers/auth.service';
 // models
 import {Transfer} from '../../../../models/transfer';
-import { PopoverController } from '@ionic/angular';
+import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { PayableCandidatesActionComponent } from './payable-candidates-action';
+import { CandidatePage } from '../../picker/candidate/candidate.page';
+import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 
 
 @Component({
@@ -33,8 +35,11 @@ export class PayableCandidatesPage  {
   constructor(
     public router: Router,
     public aws: AwsService,
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
     public popoverCtrl: PopoverController,
     public eventService: EventService,
+    public candidateTransferService: CandidateTransferService,
     public transferService: TransferService,
     public authService: AuthService,
   ) { }
@@ -227,5 +232,44 @@ export class PayableCandidatesPage  {
    */
   loadLogo($event, candidate) {
     candidate.candidate_personal_photo = null;
+  }
+
+  async replace(event, tc) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    window.history.pushState({ navigationId: window.history.state.navigationId }, null, window.location.pathname);
+
+    const modal = await this.modalCtrl.create({
+      component: CandidatePage,
+      componentProps: {
+        popup: true
+      }
+    });
+    modal.onDidDismiss().then(e => {
+
+      if (!e.data || e.data.from != 'native-back-btn') {
+        window['history-back-from'] = 'onDidDismiss';
+        window.history.back();
+      }
+      if (e.data) {
+        this.candidateTransferService.replace(tc.tc_id, e.data.candidate_id).subscribe(async res => {
+          if (res.operation == "success") {
+            tc.candidate = res.candidate; 
+            tc.candidate_id = res.candidate.candidate_id;
+            tc.transfer_benef_name = res.transfer.transfer_benef_name;
+            tc.transfer_benef_iban = res.transfer.transfer_benef_iban;
+            tc.bank_id = res.transfer.bank_id;
+          } else {
+            const prompt = await this.alertCtrl.create({
+              message: this.authService.errorMessage(res.message),
+              buttons: ['Ok']
+            });
+            prompt.present();
+          }
+        });
+      }
+    });
+    modal.present();
   }
 }

@@ -66,6 +66,13 @@ export class CandidateTransferService {
     return this._authhttp.get(url);
   }
 
+  replace(tc_id, candidate_id) : Observable<any>{
+    let url = `${this._transferEndpoint}/replace/${tc_id}`;
+    return this._authhttp.patch(url, {
+      candidate_id
+    });
+  }
+
   /**
    * mark unpaid candidate
    * @param {Candidate} model
