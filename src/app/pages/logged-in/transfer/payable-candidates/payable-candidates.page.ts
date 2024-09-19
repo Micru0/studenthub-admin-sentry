@@ -7,7 +7,7 @@ import { EventService } from 'src/app/providers/event.service';
 import {AuthService} from '../../../../providers/auth.service';
 // models
 import {Transfer} from '../../../../models/transfer';
-import { PopoverController } from '@ionic/angular';
+import { AlertController, PopoverController } from '@ionic/angular';
 import { PayableCandidatesActionComponent } from './payable-candidates-action';
 
 
@@ -33,6 +33,7 @@ export class PayableCandidatesPage  {
   constructor(
     public router: Router,
     public aws: AwsService,
+    public alertCtrl: AlertController,
     public popoverCtrl: PopoverController,
     public eventService: EventService,
     public transferService: TransferService,
@@ -95,34 +96,70 @@ export class PayableCandidatesPage  {
 
     if (data && data.action == 'mark-all-paid' && this.candidates && this.candidates.length > 0) {
       this.markAllPaid();
-    } else if (data && data.action == 'export') {
-      this.export();
-    } else if (data && data.action == 'export-text') {
-      this.exportText();
-    } else if (data && data.action == 'download-advice') {
-      this.downloadAdvice();
-    } else if (data && data.action == 'export-transfer') {
-      this.export(true);
-    } else if (data && data.action == 'export-abk-transfer') {
-      this.downloadAdviceForABK(true);
-    } else if (data && data.action == 'export-abk-payment-advice') {
-      this.downloadTextAdviceForABK();
+    } else {
+      this.getOffsetLimit(data);
     }
   }
 
-  downloadTextAdviceForABK() {
+  async getOffsetLimit(data) {
+
+    const confirm = await this.alertCtrl.create({
+      header: 'Pagination, Ignore to download all',
+      
+      inputs: [
+        {
+          name: 'offset',
+          type: 'number',
+          placeholder: 'Dataset offset'
+        },
+        {
+          name: 'limit',
+          type: 'number',
+          placeholder: 'Dataset record limit'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Submit',
+          handler: (formData) => {
+            
+            if (data && data.action == 'export') {
+              this.export(formData.offset.trim(), formData.limit.trim());
+            } else if (data && data.action == 'export-text') {
+              this.exportText(formData.offset.trim(), formData.limit.trim());
+            } else if (data && data.action == 'download-advice') {
+              this.downloadAdvice(formData.offset.trim(), formData.limit.trim());
+            } else if (data && data.action == 'export-transfer') {
+              this.export(true, formData.offset.trim(), formData.limit.trim());
+            } else if (data && data.action == 'export-abk-transfer') {
+              this.downloadAdviceForABK(true, formData.offset.trim(), formData.limit.trim());
+            } else if (data && data.action == 'export-abk-payment-advice') {
+              this.downloadTextAdviceForABK(formData.offset.trim(), formData.limit.trim());
+            }
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  downloadTextAdviceForABK(offset = null, limit = null) {
     this.processing = true;
 
-    this.transferService.downloadTextAdviceForABK().subscribe(() => {
+    this.transferService.downloadTextAdviceForABK(offset, limit).subscribe(() => {
       this.processing = false;
     });
   }
 
-  async downloadAdviceForABK(onlyPayable: boolean = false) {
+  async downloadAdviceForABK(onlyPayable: boolean = false, offset = null, limit = null) {
 
     this.processing = true;
 
-    this.transferService.downloadAdviceForABK(onlyPayable).subscribe(() => {
+    this.transferService.downloadAdviceForABK(onlyPayable, offset, limit).subscribe(() => {
       this.processing = false;
     });
   }
@@ -130,11 +167,11 @@ export class PayableCandidatesPage  {
   /**
    * Export Payable Candidates as Excel
    */
-  async export(onlyPayable: boolean = false) {
+  async export(onlyPayable: boolean = false, offset = null, limit = null) {
 
     this.processing = true;
 
-    this.transferService.exportPayableCandidates(onlyPayable).subscribe(response => {
+    this.transferService.exportPayableCandidates(onlyPayable, offset, limit).subscribe(response => {
       this.processing = false;
     });
   }
@@ -142,10 +179,10 @@ export class PayableCandidatesPage  {
   /**
    * Export Payment Advice File
    */
-  async downloadAdvice() {
+  async downloadAdvice(offset = null, limit = null) {
     this.processing = true;
 
-    this.transferService.downloadAdvice().subscribe(response => {
+    this.transferService.downloadAdvice(offset, limit).subscribe(response => {
       this.processing = false;
     });
   }
@@ -153,10 +190,10 @@ export class PayableCandidatesPage  {
   /**
    * Export Payable Candidates as Text
    */
-  async exportText() {
+  async exportText(offset = null, limit = null) {
     this.processing = true;
 
-    this.transferService.downloadTxt().subscribe(response => {
+    this.transferService.downloadTxt(offset, limit).subscribe(response => {
       this.processing = false;
     });
   }
