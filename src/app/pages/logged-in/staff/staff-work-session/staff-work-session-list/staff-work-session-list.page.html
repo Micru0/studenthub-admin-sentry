@@ -99,7 +99,7 @@
           Total: {{getTotal(work.dayActivity) | timeSpent}} | Date: {{work.created_at | date}}
         </ion-card-content>
       </ion-card>
-      <no-items *ngIf="!loading && staffWorkSessions.length == 0" message="No Record Found For {{filters.date | date}}"></no-items>
+      <no-items *ngIf="!loading && (!staffWorkSessions || staffWorkSessions.length == 0)" message="No Record Found For {{filters.date | date}}"></no-items>
       <loading-modal [loading]="loading" type="text-list"></loading-modal>
     </ion-list>
 
