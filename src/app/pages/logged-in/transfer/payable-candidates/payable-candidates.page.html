@@ -107,9 +107,17 @@
             <ion-badge slot="start" color="warning" *ngIf="!tc.candidate.isProfileCompleted">Incomplete Profile</ion-badge>
           </p>
           <p><small>Credit Narrative/TC_ID : {{tc.tc_id}}</small></p>
+
+          <p><small>Beneficiary name : {{tc.transfer_benef_name}}</small></p>
+          <p><small>IBAN : {{tc.transfer_benef_iban}}</small></p>
+          
         </ion-label>
 
         <ion-badge slot="end">{{ tc.currency_code }} {{ tc.candidate_total | number:'1.3-3' }}</ion-badge>
+
+        <ion-button slot="end" (click)="replace($event, tc)">
+          Replace
+        </ion-button>
       </ion-item>
 
     </section>
