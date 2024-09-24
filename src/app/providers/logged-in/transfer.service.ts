@@ -174,6 +174,18 @@ export class TransferService {
   }
 
   /**
+   * import manually generated excel
+   * @param excelUrl 
+   * @returns 
+   */
+  importGoogleExcel(excelUrl: string): Observable<any> {
+    let url = `${this._transferEndpoint}/import-google-excel`;
+    return this._authhttp.post(url, {
+      excel: excelUrl
+    });
+  }
+
+  /**
    * Mark All candidates as paid 
    * @param {array} candidates
    * @param {string} excel
