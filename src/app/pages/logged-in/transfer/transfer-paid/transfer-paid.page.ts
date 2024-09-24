@@ -54,8 +54,10 @@ export class TransferPaidPage implements OnInit {
     let action;
     if (this.bank == "AUB") {
       action = this.transferService.importExcel(this.excel);
-    } else {
+    } else if (this.bank == "KFH") {
       action = this.transferService.importKFHExcel(this.excel);
+    } else {
+      action = this.transferService.importGoogleExcel(this.excel);
     }
 
     action.subscribe(async response => {
