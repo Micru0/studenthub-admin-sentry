@@ -61,9 +61,9 @@
     </ion-card-header>
     <ion-card-content>
       
-      <ion-button (click)="exportGoogleExcel()" [disabled]="uploading" class="btn-upload"> 
-        <span *ngIf="!uploading">Download <ion-icon name="download-outline"></ion-icon></span>
-        <ion-spinner *ngIf="uploading">Downloading...</ion-spinner>
+      <ion-button (click)="exportGoogleExcel()" [disabled]="downloading" class="btn-upload"> 
+        <span *ngIf="!downloading">Download <ion-icon name="download-outline"></ion-icon></span>
+        <ion-spinner *ngIf="downloading">Downloading...</ion-spinner>
       </ion-button>
     </ion-card-content>
   </ion-card>
