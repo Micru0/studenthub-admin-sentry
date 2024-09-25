@@ -168,6 +168,16 @@ export class TransferService {
     });
   }
 
+  exportGoogleExcel(onlyPayable: boolean = false): Observable<any> {
+    let url = `${this._transferEndpoint}/export-google-excel`;
+
+    if(onlyPayable) {
+      url += '?only-payable=true';
+    }
+    
+    return this._authhttp.excelget(url, `Paid Candidates.xlsx`);
+  }
+
   /**
    * Mark All candidates as paid 
    * @param {array} candidates
