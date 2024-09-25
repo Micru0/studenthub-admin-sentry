@@ -32,6 +32,8 @@ export class Request {
     staff_id: any;
     is_old: any;
     request_delivered_at: any;
+    our_fees_unit: string;
+    our_fees: number;
     requestCreatedBy: Staff;
     requestUpdatedBy: Staff;
     staffs: Staff[];

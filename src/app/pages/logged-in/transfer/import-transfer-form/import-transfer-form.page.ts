@@ -3,6 +3,7 @@ import { AlertController, IonContent, NavController } from "@ionic/angular";
 import { Subscription } from 'rxjs';
 //services
 import { AwsService } from 'src/app/providers/aws.service';
+import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { SentryErrorhandlerService } from 'src/app/providers/sentry.errorhandler.service';
 
 
@@ -25,8 +26,11 @@ export class ImportTransferFormPage implements OnInit {
 
   public bank: string = "KFH";
 
+  public downloading;
+
   constructor(
     public navCtrl: NavController,
+    public transferService: TransferService,
     public awsService: AwsService,
     public sentryService: SentryErrorhandlerService,
     private _alertCtrl: AlertController,
@@ -110,5 +114,13 @@ export class ImportTransferFormPage implements OnInit {
           }
         });
     }
+  }
+
+  exportGoogleExcel() {
+    this.downloading = true;
+
+    this.transferService.exportGoogleExcel().subscribe(() => {
+      this.downloading = false;
+    })
   }
 }

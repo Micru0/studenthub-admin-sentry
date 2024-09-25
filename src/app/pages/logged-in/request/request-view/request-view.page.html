@@ -54,6 +54,11 @@
 
   <section *ngIf="segment == 'info'">
     <ion-list>
+
+      <ion-item>
+        Our Fees: {{ request.our_fees + " " + request.company.currency_code + " / " + request.our_fees_unit }}
+      </ion-item>
+
       <ion-item>Position Title:  {{request.request_position_title}}</ion-item>
       <ion-item>Position Type:
         <span *ngIf="request.request_position_type == 1">Full Timer</span>

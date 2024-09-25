@@ -11,35 +11,62 @@
  
   <!-- <h4>Upload the updated Excel file</h4> -->
    
-  <ion-list>
-    <ion-list-header>Bank</ion-list-header>
-    <ion-radio-group [(ngModel)]="bank">
-      <ion-item>
-        <ion-label>KFH</ion-label>
-        <ion-radio value="KFH"></ion-radio> 
-      </ion-item>
-      <ion-item>
-        <ion-label>AUB (old format)</ion-label>
-        <ion-radio value="AUB"></ion-radio> 
-      </ion-item>
-      <ion-item>
-        <ion-label>Manually generated excel</ion-label>
-        <ion-radio value=""></ion-radio> 
-      </ion-item>
-      
-    </ion-radio-group>
+  <ion-card> 
+    <ion-card-header> 
+      <ion-card-title>
+        Import excel
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-list-header>Bank</ion-list-header>
+        <ion-radio-group [(ngModel)]="bank">
+          <ion-item>
+            <ion-label>KFH</ion-label>
+            <ion-radio value="KFH"></ion-radio> 
+          </ion-item>
+          <ion-item>
+            <ion-label>AUB (old format)</ion-label>
+            <ion-radio value="AUB"></ion-radio> 
+          </ion-item>
+          <ion-item>
+            <ion-label>Manually generated excel</ion-label>
+            <ion-radio value=""></ion-radio>  
+          </ion-item>
+          
+        </ion-radio-group>
 
-    <ion-list-header>File</ion-list-header>
-    <ion-button (click)="upload()" [disabled]="uploading" class="btn-upload">
-      <span *ngIf="!uploading">Choose <ion-icon name="folder-open"></ion-icon></span>
-      <ion-spinner *ngIf="uploading">Uploading...</ion-spinner>
-    </ion-button>
-  </ion-list>
+        <ion-list-header>File</ion-list-header>
+        <ion-button (click)="upload()" [disabled]="uploading" class="btn-upload">
+          <span *ngIf="!uploading">Choose <ion-icon name="folder-open"></ion-icon></span>
+          <ion-spinner *ngIf="uploading">Uploading...</ion-spinner>
+        </ion-button>
+
+        
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
   <!-- Upload Form -->
   <input type='file' #fileInput (change)="browserUpload($event)" accept=".xlsx,.xls"/>
   
-  
+  <br />
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Template to manually fill data
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      
+      <ion-button (click)="exportGoogleExcel()" [disabled]="downloading" class="btn-upload"> 
+        <span *ngIf="!downloading">Download <ion-icon name="download-outline"></ion-icon></span>
+        <ion-spinner *ngIf="downloading">Downloading...</ion-spinner>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
   
 
 </ion-content>

@@ -6,4 +6,6 @@ export class TransferFile {
     transfer_file_updated_at: string;
     totalCandidates: number;
     currency_code: string;
+    error: string;
+    status: number;
 }
