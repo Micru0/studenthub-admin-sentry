@@ -33,13 +33,20 @@ export class TransferService {
    * Download excel containing payable canidates info 
    * @returns {Observable<any>}
    */
-  exportPayableCandidates(onlyPayable: boolean = false): Observable<any> {
-    let url = `${this._transferEndpoint}/export-payable-candidates`;
+  exportPayableCandidates(onlyPayable: boolean = false, offset= null, limit = null): Observable<any> {
+    let url = `${this._transferEndpoint}/export-payable-candidates?`;
 
     if(onlyPayable) {
-      url += '?only-payable=true';
+      url += '&only-payable=true';
     }
     
+    if (offset) {
+      url += "&offset=" + offset;
+    }
+
+    if (limit) {
+      url += "&limit=" + limit;
+    }
     return this._authhttp.excelget(url, `Payable Candidates.xlsx`);
   }
 
@@ -76,8 +83,18 @@ export class TransferService {
    * @param {Transfer} transfer
    * @returns {Observable<any>}
    */
-  export(transfer: Transfer): Observable<any> {
-    let url = `${this._transferEndpoint}/export/${transfer.transfer_id}`;
+  export(transfer: Transfer, offset = null, limit = null): Observable<any> {
+    
+    let url = `${this._transferEndpoint}/export/${transfer.transfer_id}?`;
+
+    if (offset) {
+      url += "&offset=" + offset;
+    }
+
+    if (limit) {
+      url += "&limit=" + limit;
+    }
+    
     return this._authhttp.excelget(url, `Transfer ${transfer.transfer_id}.xlsx`);
   }
 
@@ -205,8 +222,17 @@ export class TransferService {
    * Download text file
    * @returns {Observable<any>}
    */
-  downloadTxt() {
-    let url = `${this._transferEndpoint}/text`;
+  downloadTxt(offset = null, limit = null) {
+    let url = `${this._transferEndpoint}/text?`;
+
+    if (offset) {
+      url += "&offset=" + offset;
+    }
+
+    if (limit) {
+      url += "&limit=" + limit;
+    }
+
     return this._authhttp.downloadTextFile(url);
   }
 
@@ -214,23 +240,49 @@ export class TransferService {
    * download payment advice file
    * @returns 
    */
-  downloadAdvice() {
-    let url = `${this._transferEndpoint}/download-payment-advice`;
-    return this._authhttp.downloadTextFile(url);
-  }
+  downloadAdvice(offset = null, limit = null) {
+    let url = `${this._transferEndpoint}/download-payment-advice?`;
 
-  downloadTextAdviceForABK(): Observable<any> {
-    let url = `${this._transferEndpoint}/download-text-payment-advice-for-abk`;
-    return this._authhttp.downloadTextFile(url);
-  }
+    if (offset) {
+      url += "&offset=" + offset;
+    }
 
-  downloadAdviceForABK(onlyPayable: boolean = false): Observable<any> {
-    let url = `${this._transferEndpoint}/download-payment-advice-for-abk`;
-
-    if(onlyPayable) {
-      url += '?only-payable=true';
+    if (limit) {
+      url += "&limit=" + limit;
     }
     
+    return this._authhttp.downloadTextFile(url);
+  }
+
+  downloadTextAdviceForABK(offset = null, limit = null): Observable<any> {
+    let url = `${this._transferEndpoint}/download-text-payment-advice-for-abk?`;
+
+    if (offset) {
+      url += "&offset=" + offset;
+    }
+
+    if (limit) {
+      url += "&limit=" + limit;
+    }
+    
+    return this._authhttp.downloadTextFile(url);
+  }
+
+  downloadAdviceForABK(onlyPayable: boolean = false, offset = null, limit = null): Observable<any> {
+    let url = `${this._transferEndpoint}/download-payment-advice-for-abk?`;
+
+    if(onlyPayable) {
+      url += '&only-payable=true';
+    }
+    
+    if (offset) {
+      url += "&offset=" + offset;
+    }
+
+    if (limit) {
+      url += "&limit=" + limit;
+    }
+
     return this._authhttp.excelget(url, `Payable Candidates [ABK].xlsx`);
   }
 
