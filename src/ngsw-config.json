@@ -31,8 +31,14 @@
       },
       {
         "name": "app",
-        "installMode": "prefetch",
+        "installMode": "lazy",
         "resources": {
+          "cacheConfig": {
+              "strategy": "freshness",
+              "maxSize": 0,
+              "maxAge": "0u",
+              "timeout": "21s"
+          },
           "files": [
             "/favicon.ico",
             "/index.html",
