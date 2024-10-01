@@ -106,6 +106,16 @@
             </ion-item-divider>
 
             <ion-menu-toggle auto-hide="false">
+              <ion-item lines="none" [routerLink]="'transfer-bank-advice'">
+                <div tabindex="0"></div>
+                <ion-icon name="globe-outline" slot="start"></ion-icon>
+                <ion-label class="ion-text-wrap">
+                   Bank Advice Files 
+                </ion-label> 
+              </ion-item>
+            </ion-menu-toggle>
+            
+            <ion-menu-toggle auto-hide="false">
               <!-- *ngIf="totalPayableCandidate > 0" -->
               <ion-item lines="none" [routerLink]="'payable-candidates'">
                 <div tabindex="0"></div>
