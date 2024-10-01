@@ -920,10 +920,18 @@ const routes: Routes = [
     canActivate: [AuthService],
     loadChildren: () => import('./pages/logged-in/yeaster/voice-mail/voice-mail-view/voice-mail-view.module').then( m => m.VoiceMailViewPageModule)
   },
+  
+  {
+    path: 'transfer-bank-advice',
+    canActivate: [AuthService],
+    loadChildren: () => import('./pages/logged-in/transfer/transfer-bank-advice/transfer-bank-advice.module').then( m => m.TransferBankAdvicePageModule)
+  },
+  
   {
     path: '**',
     redirectTo: 'not-found'
-  }
+  },
+
 ];
 
 @NgModule({
