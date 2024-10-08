@@ -30,6 +30,10 @@
             <ion-radio value="AUB"></ion-radio> 
           </ion-item>
           <ion-item>
+            <ion-label>Bank Statement</ion-label>
+            <ion-radio value="BankStatement"></ion-radio>  
+          </ion-item>
+          <ion-item>
             <ion-label>Manually generated excel</ion-label>
             <ion-radio value=""></ion-radio>  
           </ion-item>
@@ -41,8 +45,6 @@
           <span *ngIf="!uploading">Choose <ion-icon name="folder-open"></ion-icon></span>
           <ion-spinner *ngIf="uploading">Uploading...</ion-spinner>
         </ion-button>
-
-        
 
       </ion-list>
     </ion-card-content>

@@ -38,6 +38,10 @@
         <p><b>Company Transfer ID: </b> <a target="_blank" [routerLink]="'/transfer-view/' + candidate.transfer_id">{{ candidate.transfer_id }} </a></p>
         <p><b>Candidate Transfer ID: </b> <a target="_blank" [routerLink]="'/candidate-transfer-detail/' + candidate.tc_id">{{ candidate.tc_id }} </a></p>
         
+        <ion-badge color="danger" *ngIf="candidate.debited_amount && candidate.total_amount != candidate.debited_amount">
+          Amount not matching : {{ candidate.total_amount }} in transfer v/s {{ candidate.debited_amount }} in statement
+        </ion-badge>
+
         <p *ngIf="candidate.tc_created_at"> 
           <ion-icon name="time" mode="md"></ion-icon> {{ toDate(candidate.tc_created_at) | date: 'MMM d, y' }}
       </ion-label>

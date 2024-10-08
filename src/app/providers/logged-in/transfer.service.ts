@@ -160,6 +160,17 @@ export class TransferService {
       excel: excelUrl
     });
   }
+ 
+  /**
+   * @param excelUrl 
+   * @returns 
+   */
+  importBankStatementExcel(excelUrl: string): Observable<any> {
+    let url = `${this._transferEndpoint}/import-bank-statement-excel`;
+    return this._authhttp.post(url, {
+      excel: excelUrl
+    });
+  }
 
   /**
    * import transfer confirmation excel from KFH bank
