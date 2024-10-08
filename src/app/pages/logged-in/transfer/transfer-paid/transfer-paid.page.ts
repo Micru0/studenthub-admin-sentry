@@ -24,6 +24,8 @@ export class TransferPaidPage implements OnInit {
   public excel: string; 
   public bank: string; 
 
+  public errors: string[] = [];
+  
   constructor(
     public activatedRoute: ActivatedRoute,
     public router: Router,
@@ -68,6 +70,8 @@ export class TransferPaidPage implements OnInit {
         this.total = response.total;
 
         this.candidatelistData = response.candidates;
+        this.errors = response.errors;
+
       } else {
         const alert = await this._alertCtrl.create({
           header: 'Error',

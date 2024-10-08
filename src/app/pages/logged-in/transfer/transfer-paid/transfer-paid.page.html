@@ -17,6 +17,10 @@
 </ion-header>
 <ion-content>
 
+  <p class="alert alert-warning" *ngFor="let error of errors">
+    {{ error }}
+  </p>
+  
   <ion-item lines="none" *ngIf="total">
     <div tabindex="0"></div>
     <ion-label>
