@@ -29,6 +29,9 @@
           {{ transferFile.error }}
         </p>
       </ion-label>
+      <ion-badge>
+        {{ transferFile.bank}}
+      </ion-badge>
       <ion-badge color="warning" slot="end" *ngIf="transferFile.status == 0">Pending</ion-badge>
       <ion-badge color="danger" slot="end" *ngIf="transferFile.status == 1">Failed</ion-badge>
       <ion-badge color="success" slot="end" *ngIf="transferFile.status == 2">Processed</ion-badge>
