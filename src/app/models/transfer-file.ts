@@ -7,5 +7,6 @@ export class TransferFile {
     totalCandidates: number;
     currency_code: string;
     error: string;
+    bank: string;
     status: number;
 }
