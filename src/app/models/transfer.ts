@@ -1,11 +1,14 @@
 import { TransferCandidate } from './transfer-candidate';
 import { Candidate } from './candidate';
 import { Company } from './company';
+import { Contract } from './contract';
 
 export class Transfer {
 	transfer_id: number;
 	parent_transfer_id: number;
 	company_id: number; 
+	contract_uuid: string;
+	contract_type: string;
 	total: number;
 	company_total: number;
 	payment_received_on: string;
@@ -28,6 +31,7 @@ export class Transfer {
 	transferCandidates: TransferCandidate[];
 	unPaidTransferCandidates: TransferCandidate[];
 	invoices: Invoice[];
+	contract: Contract;
 }
 
 export class Invoice {

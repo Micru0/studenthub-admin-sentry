@@ -540,6 +540,8 @@ export class TransferViewPage implements OnInit {
   }
 
   isCandidateTransferSuspicious(resource) {
-    return resource.transferFileEntry && parseFloat(resource.transferFileEntry.credit_amount) != parseFloat(resource.candidate_total);
+
+    if (!this.transfer.contract_type || this.transfer.contract_type == "HOURLY")
+      return resource.transferFileEntry && parseFloat(resource.transferFileEntry.credit_amount) != parseFloat(resource.candidate_total);
   }
 }

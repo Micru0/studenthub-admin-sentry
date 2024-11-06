@@ -55,7 +55,7 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   list(searchParams: string, page: number): Observable<any> {
-    let url = `${this._transferEndpoint}?page=${page}&expand=isSuspicious,profit${searchParams}`;
+    let url = `${this._transferEndpoint}?page=${page}&expand=contract,contract.amount,isSuspicious,profit${searchParams}`;
     return this._authhttp.get(url, true);
   }
 
@@ -113,7 +113,7 @@ export class TransferService {
    * @returns {Observable<any>}
    */
   transferIdDetails(transfer_id: number): Observable<any> {
-    let url = `${this._transferEndpoint}/${transfer_id}?expand=isSuspicious,totalPaid,totalUnpaid,profit`;
+    let url = `${this._transferEndpoint}/${transfer_id}?expand=isSuspicious,totalPaid,totalUnpaid,profit,contract,contract.amount`;
     return this._authhttp.get(url);
   }
 
@@ -196,6 +196,10 @@ export class TransferService {
     });
   }
 
+  /**
+   * @param onlyPayable 
+   * @returns 
+   */
   exportGoogleExcel(onlyPayable: boolean = false): Observable<any> {
     let url = `${this._transferEndpoint}/export-google-excel`;
 
@@ -265,6 +269,11 @@ export class TransferService {
     return this._authhttp.downloadTextFile(url);
   }
 
+  /**
+   * @param offset 
+   * @param limit 
+   * @returns 
+   */
   downloadTextAdviceForABK(offset = null, limit = null): Observable<any> {
     let url = `${this._transferEndpoint}/download-text-payment-advice-for-abk?`;
 
@@ -279,6 +288,12 @@ export class TransferService {
     return this._authhttp.downloadTextFile(url);
   }
 
+  /**
+   * @param onlyPayable 
+   * @param offset 
+   * @param limit 
+   * @returns 
+   */
   downloadAdviceForABK(onlyPayable: boolean = false, offset = null, limit = null): Observable<any> {
     let url = `${this._transferEndpoint}/download-payment-advice-for-abk?`;
 
@@ -307,6 +322,10 @@ export class TransferService {
     return this._authhttp.patch(url, '');
   }
 
+  /**
+   * @param transfer 
+   * @returns 
+   */
   markCancel(transfer: Transfer): Observable<any> {
     let url = `${this._transferEndpoint}/cancel/${transfer.transfer_id}`;
     return this._authhttp.patch(url, '');
