@@ -14,7 +14,6 @@ import { StorageService } from './storage.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 //import { TranslateLabelService } from './translate-label.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -265,16 +264,17 @@ export class AuthService {
    * @param  {string} email
    * @param  {string} password
    */
-  basicAuth(email: string, password: string): Observable<any> {
+  basicAuth(email: string, password: string, token: string): Observable<any> {
     // Add Basic Auth Header with Base64 encoded email and password
 
     const authHeader = new HttpHeaders({
       'Content-Type': 'application/json',
       "Currency": this.currency_pref || "KWD",
-      Authorization: 'Basic ' + btoa(unescape(encodeURIComponent(`${email}:${password}`)))
+      Authorization: 'Basic ' + btoa(unescape(encodeURIComponent(`${email}:${password}`))),
+      'g-recaptcha-response': token
     });
  
-    const url = environment.apiEndpoint + this._urlBasicAuth;
+    const url = environment.apiEndpoint + this._urlBasicAuth + '?token=' + token;
 
     return this._http.get(url, {
       headers: authHeader
