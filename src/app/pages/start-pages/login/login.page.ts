@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, Platform } from '@ionic/angular';
 import { CustomValidator } from 'src/app/validators/custom.validator';
@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/providers/auth.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { EventService } from 'src/app/providers/event.service';
 
+
+declare let grecaptcha: any;
 
 @Component({
   selector: 'app-login',
@@ -59,12 +61,20 @@ export class LoginPage implements OnInit {
    * Attempts to login with the provided email and password
    */
   async onSubmit() {
+    grecaptcha.ready(() => {
+      grecaptcha.execute('6Lei9R4pAAAAAEJYoXxoIvP2Uu0oq8iXkCVfmy6V', {action: 'submit'}).then((token: string) => {
+        this.onValidCaptcha(token);
+      });
+    });
+  }
+
+  onValidCaptcha(token: string) {
     this.isLoading = true;
 
     const email = this.oldEmailInput = this.loginForm.value.email;
     const password = this.oldPasswordInput = this.loginForm.value.password;
 
-    this.auth.basicAuth(email, password).subscribe(async res => {
+    this.auth.basicAuth(email, password, token).subscribe(async res => {
 
       this.isLoading = false;
 
