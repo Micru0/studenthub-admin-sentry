@@ -274,7 +274,7 @@ export class AuthService {
       'g-recaptcha-response': token
     });
  
-    const url = environment.apiEndpoint + this._urlBasicAuth + '?token=' + token;
+    const url = environment.apiEndpoint + this._urlBasicAuth;// + '?token=' + token;
 
     return this._http.get(url, {
       headers: authHeader
