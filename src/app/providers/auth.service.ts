@@ -38,7 +38,7 @@ export class AuthService {
   private _urlBasicAuth = '/auth/login';
   public _urlLoginAuth0 = '/auth/login-auth0';
   public _urlLoginByGoogle = '/auth/login-by-google';
-  
+  private _urlTwoStep = '/auth/login-two-step';
   constructor(
     public storage: Storage,
     public storageService: StorageService,
@@ -256,6 +256,28 @@ export class AuthService {
         this.eventService.errorStorage$.next({});
       });
     }
+  }
+
+  loginTwoStep(grecaptchaToken: string, token: string, otp: string): Observable<any> {
+     
+    const authHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      "Currency": this.currency_pref || "KWD",
+      'g-recaptcha-response': grecaptchaToken
+    });
+ 
+    const url = environment.apiEndpoint + this._urlTwoStep;
+
+    return this._http.post(url, {
+      token: token,
+      otp: otp
+    }, {
+      headers: authHeader
+    });/*
+      .pipe(
+        take(1),
+        // map((res: Response) => res)
+      );*/
   }
 
   /**
