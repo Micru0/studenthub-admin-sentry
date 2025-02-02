@@ -39,6 +39,7 @@ export class AuthService {
   public _urlLoginAuth0 = '/auth/login-auth0';
   public _urlLoginByGoogle = '/auth/login-by-google';
   private _urlTwoStep = '/auth/login-two-step';
+  
   constructor(
     public storage: Storage,
     public storageService: StorageService,

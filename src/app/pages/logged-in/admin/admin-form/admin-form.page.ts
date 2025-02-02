@@ -165,6 +165,9 @@ export class AdminFormPage implements OnInit {
 
   onTwoStepAuthChange(event) {
     this.model.enable_two_step_auth = (event.detail.checked) ? 1 : 0;
+    this.form.patchValue({
+      enable_two_step_auth: this.model.enable_two_step_auth
+    });
   }
 
   onchange($event) {
