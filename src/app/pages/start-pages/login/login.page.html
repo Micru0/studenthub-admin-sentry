@@ -55,9 +55,10 @@
   
         <div class="separator"> <span>OR</span> </div>
 
+        <!--
         <ion-button class="btn-login-bawes" fill="clear" (click)="loginWithRedirect()">
           Log in with BAWES <ion-icon slot="end" src="assets/images/icon-bawes.svg"></ion-icon>
-        </ion-button>
+        </ion-button>-->
         
       <ion-button class="btn-login-google" fill="clear" [class.google-logo]="!loading" [disabled]="loading" (click)="loginByGoogle()">
         <ion-spinner *ngIf="loading"></ion-spinner>

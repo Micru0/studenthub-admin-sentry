@@ -44,7 +44,8 @@ export class AdminService {
       name : model.admin_name,
       email : model.admin_email,
       password : model.admin_password_hash,
-      limited_access: model.admin_limited_access
+      limited_access: model.admin_limited_access,
+      enable_two_step_auth: model.enable_two_step_auth
     });
   }
 
@@ -53,7 +54,8 @@ export class AdminService {
     return this.authHttp.patch(`${this.endpoint}/${model.admin_id}`, {
       name: model.admin_name,
       email: model.admin_email,
-      limited_access: model.admin_limited_access
+      limited_access: model.admin_limited_access,
+      enable_two_step_auth: model.enable_two_step_auth
     });
   }
 

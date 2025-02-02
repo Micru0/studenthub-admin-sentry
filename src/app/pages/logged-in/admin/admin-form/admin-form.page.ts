@@ -80,7 +80,8 @@ export class AdminFormPage implements OnInit {
         name: ['', Validators.required],
         email: ['', [Validators.required, CustomValidator.emailValidator]],
         password: ['', Validators.required],
-        limited_access: [0]
+        limited_access: [0],
+        enable_two_step_auth: [0]
       });
     }else{ // Show Update Form
       this.operation = 'Update Admin';
@@ -88,7 +89,8 @@ export class AdminFormPage implements OnInit {
         name: [this.model.admin_name, Validators.required],
         email: [this.model.admin_email, [Validators.required, CustomValidator.emailValidator]],
         password: [this.model.admin_password_hash],
-        limited_access: [this.model.admin_limited_access]
+        limited_access: [this.model.admin_limited_access],
+        enable_two_step_auth: [this.model.enable_two_step_auth]
       });
     }
   }
@@ -100,6 +102,8 @@ export class AdminFormPage implements OnInit {
     this.model.admin_name = this.form.value.name;
     this.model.admin_email = this.form.value.email;
     this.model.admin_password_hash = this.form.value.password;
+    this.model.admin_limited_access = this.form.value.limited_access;
+    this.model.enable_two_step_auth = this.form.value.enable_two_step_auth;
   }
 
   /**
@@ -157,6 +161,10 @@ export class AdminFormPage implements OnInit {
         prompt.present();
       }
     });
+  }
+
+  onTwoStepAuthChange(event) {
+    this.model.enable_two_step_auth = (event.detail.checked) ? 1 : 0;
   }
 
   onchange($event) {
