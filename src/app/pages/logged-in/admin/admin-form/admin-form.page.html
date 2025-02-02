@@ -36,6 +36,12 @@
             <ion-toggle (ionChange)="onchange($event)" formControlName="limited_access"></ion-toggle>
         </ion-item>
 
+        <ion-item>
+          <div tabindex="0"></div>
+            <ion-label>Two Step Auth</ion-label>
+            <ion-toggle (ionChange)="onTwoStepAuthChange($event)" formControlName="enable_two_step_auth"></ion-toggle>
+        </ion-item>
+
         <ion-item class="field-password" *ngIf="!model.admin_id">
           <ion-label position="floating">Password</ion-label>
           <ion-input type="{{ type }}" formControlName="password"></ion-input>

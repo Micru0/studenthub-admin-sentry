@@ -55,6 +55,15 @@
     <ion-item>
       <div tabindex="0"></div>
       <ion-label>
+        <h5>Two Step Auth</h5> 
+        <p *ngIf="admin.enable_two_step_auth">Enabled</p>
+        <p *ngIf="!admin.enable_two_step_auth">Disabled</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <div tabindex="0"></div>
+      <ion-label>
         <h5>Access</h5>
         <p *ngIf="admin.admin_limited_access">Limited Access</p>
         <p *ngIf="!admin.admin_limited_access">Full Access</p>

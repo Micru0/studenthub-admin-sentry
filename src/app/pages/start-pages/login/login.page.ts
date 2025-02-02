@@ -6,6 +6,7 @@ import { CustomValidator } from 'src/app/validators/custom.validator';
 import { AuthService } from 'src/app/providers/auth.service';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { EventService } from 'src/app/providers/event.service';
+import { Router } from '@angular/router';
 
 
 declare let grecaptcha: any;
@@ -36,6 +37,7 @@ export class LoginPage implements OnInit {
   constructor(
     public platform: Platform,
     public auth0: Auth0Service,
+    private router: Router,
     private fb: FormBuilder,
     private auth: AuthService,
     public eventService: EventService,
@@ -79,8 +81,14 @@ export class LoginPage implements OnInit {
       this.isLoading = false;
 
       if (res.operation == 'success') {
+        
         // Successfully logged in, set the access token within AuthService
-        this.auth.setAccessToken(res, true);
+        if (res.token_status == 0) {
+          this.router.navigateByUrl('/login-two-step/' + res.token);
+        } else {
+          this.auth.setAccessToken(res, true);
+        }
+
       } else if (res.operation == 'error') {
         const alert = await this.alertCtrl.create({
           header: 'Unable to Log In',

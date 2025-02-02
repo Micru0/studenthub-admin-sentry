@@ -928,6 +928,11 @@ const routes: Routes = [
   },
   
   {
+    path: 'login-two-step',
+    //canActivate: [AuthService],
+    loadChildren: () => import('./pages/start-pages/login-two-step/login-two-step.module').then( m => m.LoginTwoStepPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found'
   },
