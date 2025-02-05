@@ -28,7 +28,7 @@ export class TransferFileService {
   }
 
   view(tf_id): Observable<any>{
-    let url = this._transferEndpoint + '/' + tf_id;
+    let url = this._transferEndpoint + '/' + tf_id + '?expand=transferFileEntry,transferFileEntry.candidate';
     return this._authhttp.get(url);
   }
 }

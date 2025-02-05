@@ -9,4 +9,5 @@ export class TransferFile {
     error: string;
     bank: string;
     status: number;
+    transferFileEntry: any[];
 }
