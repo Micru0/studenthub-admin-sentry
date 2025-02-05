@@ -35,6 +35,14 @@
       <ion-badge color="warning" slot="end" *ngIf="transferFile.status == 0">Pending</ion-badge>
       <ion-badge color="danger" slot="end" *ngIf="transferFile.status == 1">Failed</ion-badge>
       <ion-badge color="success" slot="end" *ngIf="transferFile.status == 2">Processed</ion-badge>
+      <ion-badge color="success" slot="end" *ngIf="transferFile.status == 3">Processing</ion-badge>
+
+      <ion-buttons slot="end" *ngIf="transferFile.status == 1">
+        <ion-button (click)="reSchedule(transferFile, $event)"> 
+          <ion-icon name="refresh-circle"></ion-icon>
+            Re-Schedule 
+        </ion-button>
+      </ion-buttons>
     </ion-item>
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>
