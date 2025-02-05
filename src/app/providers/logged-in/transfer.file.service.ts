@@ -22,8 +22,13 @@ export class TransferFileService {
     return this._authhttp.get(url, true);
   }
   
-  view(staff_id): Observable<any>{
-    let url = this._transferEndpoint + '/' + staff_id;
+  reSchedule(tf_id): Observable<any>{
+    let url = this._transferEndpoint + '/re-schedule/' + tf_id;
+    return this._authhttp.patch(url, {});
+  }
+
+  view(tf_id): Observable<any>{
+    let url = this._transferEndpoint + '/' + tf_id + '?expand=transferFileEntry,transferFileEntry.candidate';
     return this._authhttp.get(url);
   }
 }

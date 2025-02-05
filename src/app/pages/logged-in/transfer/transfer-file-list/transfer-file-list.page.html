@@ -19,6 +19,7 @@
       <ion-label>
         
         <h5>Transfer File # {{ transferFile.transfer_file_id }}</h5>
+        
         <h4 *ngIf="transferFile.totalCandidates > 0">Paid <b>{{ transferFile.currency_code }} {{ transferFile.transfer_amount | number:'1.3-3' }}</b> to <b>{{ transferFile.totalCandidates }} candidates</b></h4>
 
         <p>
@@ -35,6 +36,14 @@
       <ion-badge color="warning" slot="end" *ngIf="transferFile.status == 0">Pending</ion-badge>
       <ion-badge color="danger" slot="end" *ngIf="transferFile.status == 1">Failed</ion-badge>
       <ion-badge color="success" slot="end" *ngIf="transferFile.status == 2">Processed</ion-badge>
+      <ion-badge color="success" slot="end" *ngIf="transferFile.status == 3">Processing</ion-badge>
+
+      <ion-buttons slot="end" *ngIf="transferFile.status == 1">
+        <ion-button (click)="reSchedule(transferFile, $event)"> 
+          <ion-icon name="refresh-circle"></ion-icon>
+            Re-Schedule 
+        </ion-button>
+      </ion-buttons>
     </ion-item>
 
     <loading-modal [loading]="loading" type="text-list"></loading-modal>

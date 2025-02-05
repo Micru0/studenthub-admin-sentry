@@ -6,7 +6,7 @@ import { AwsService } from 'src/app/providers/aws.service';
 //models
 import { TransferFile } from 'src/app/models/transfer-file';
 import {AuthService} from "../../../../providers/auth.service";
-
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-transfer-file-list',
@@ -26,6 +26,7 @@ export class TransferFileListPage implements OnInit {
   constructor(
     public router: Router,
     public aws: AwsService,
+    public alertCtrl: AlertController,
     public transferFileService: TransferFileService,
     public authService: AuthService,
 
@@ -78,6 +79,23 @@ export class TransferFileListPage implements OnInit {
 
     },() => { 
       this.loading = false; 
+    });
+  }
+
+  reSchedule(transferFile, event) {
+    event.stopPropagation();  
+    event.preventDefault();
+    this.transferFileService.reSchedule(transferFile.transfer_file_id).subscribe(async response => {
+      if (response.operation == "success") {
+        transferFile.status = 0;
+      } else {
+
+        const prompt = await this.alertCtrl.create({
+          message: this.authService.errorMessage(response.message),
+          buttons: ['Ok']
+        });
+        prompt.present();
+      }
     });
   }
 

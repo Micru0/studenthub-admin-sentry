@@ -5,9 +5,26 @@
       <ion-back-button defaultHref="transfer-file-list"></ion-back-button>
     </ion-buttons>
 
-    <ion-title>
-      Transfer file <span *ngIf="transferFile">#{{ transferFile.transfer_file_id }}</span>
-    </ion-title>
+    <ng-container *ngIf="transferFile">
+      <ion-title>
+        Transfer file <span>#{{ transferFile.transfer_file_id }}</span>
+      </ion-title>
+
+      <ion-badge slot="end" *ngIf="transferFile.bank">
+        {{ transferFile.bank}}
+      </ion-badge>
+      <ion-badge color="warning" slot="end" *ngIf="transferFile.status == 0">Pending</ion-badge>
+      <ion-badge color="danger" slot="end" *ngIf="transferFile.status == 1">Failed</ion-badge>
+      <ion-badge color="success" slot="end" *ngIf="transferFile.status == 2">Processed</ion-badge>
+      <ion-badge color="success" slot="end" *ngIf="transferFile.status == 3">Processing</ion-badge>
+
+      <ion-buttons slot="end" *ngIf="transferFile.status == 1">
+        <ion-button (click)="reSchedule(transferFile, $event)"> 
+          <ion-icon name="refresh-circle"></ion-icon>
+            Re-Schedule 
+        </ion-button>
+      </ion-buttons>
+    </ng-container>
   </ion-toolbar>
 </ion-header>
 
@@ -16,7 +33,10 @@
   <ion-card *ngIf="transferFile">
     <ion-card-content>
 
+
       <h4>{{ transferFile.currency_code }} {{ transferFile.transfer_amount | number:'1.3-3' }}</h4>
+
+      <h4 *ngIf="transferFile.totalCandidates > 0">Paid <b>{{ transferFile.currency_code }} {{ transferFile.transfer_amount | number:'1.3-3' }}</b> to <b>{{ transferFile.totalCandidates }} candidates</b></h4>
 
       <a [href]="aws.permanentBucketUrl + transferFile.transfer_file_s3_path" (click)="doNothing($event)">
         {{ transferFile.transfer_file_s3_path }}
@@ -26,15 +46,43 @@
         @ {{ toDate(transferFile.transfer_file_created_at) | date: 'MMM d, y, h:mm:ss a' }}
       </p>
       
+      <p *ngIf="transferFile.error && transferFile.error.length > 0">
+        {{ transferFile.error }}
+      </p>
+
     </ion-card-content>
   </ion-card>
 
   <!-- Transfer Details made to each Candidate -->
 
-  <ion-list class='candidateList'>
-    <!-- store_name pipe returns the transferCandidates grouped by store as object of following format: -->
-    <!-- {name: string, resources: TransferCandidate[]} -->
-    <ion-item-group *ngFor="let group of transferCandidates | store_name">
+  <ion-segment (ionChange)="segmentChanged($event)" [value]="segment">
+    <ion-segment-button value="fileEntries">
+      <ion-label>File Entries</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="transferCandidates">
+      <ion-label>Transfer Candidates</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list class='candidateList' *ngIf="transferFile && transferFile.transferFileEntry && segment == 'fileEntries'">
+  
+    <ion-card tappable *ngFor="let fileEntry of transferFile.transferFileEntry">
+
+      <!-- If hours have been worked -->
+
+      <ion-card-content>
+        <pre>{{  fileEntry | json }}</pre>
+      </ion-card-content>
+
+    </ion-card> 
+
+  </ion-list>
+
+  <ng-container *ngIf="segment == 'transferCandidates'">
+    <ion-list class='candidateList'>
+      <!-- store_name pipe returns the transferCandidates grouped by store as object of following format: -->
+      <!-- {name: string, resources: TransferCandidate[]} -->
+      <ion-item-group *ngFor="let group of transferCandidates | store_name">
       <ion-item-divider>
         <ion-label>
           <b>{{group.name}}</b>
@@ -140,11 +188,12 @@
       </ion-card>
     </ion-item-group>
 
-  </ion-list>
-
-  <ion-infinite-scroll threshold="100px" *ngIf="currentPage < pageCount - 1" (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    </ion-list>
+    
+    <ion-infinite-scroll threshold="100px" *ngIf="currentPage < pageCount - 1" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
 
 </ion-content>

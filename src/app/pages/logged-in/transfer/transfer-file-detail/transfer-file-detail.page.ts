@@ -8,7 +8,8 @@ import { TransferCandidate } from 'src/app/models/transfer-candidate';
 import { TransferFileService } from 'src/app/providers/logged-in/transfer.file.service';
 import { AwsService } from 'src/app/providers/aws.service';
 import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
-
+import { AuthService } from 'src/app/providers/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-transfer-file-detail',
@@ -31,8 +32,12 @@ export class TransferFileDetailPage implements OnInit {
   
   public loadingCandidates: boolean = false; 
 
+  public segment: string = 'fileEntries';
+
   constructor(
     public router: Router,
+    public alertCtrl: AlertController,
+    public authService: AuthService,
     public activateRoute: ActivatedRoute,
     public aws: AwsService,
     public candidateTransferService: CandidateTransferService,
@@ -53,6 +58,10 @@ export class TransferFileDetailPage implements OnInit {
       this.loadData();
 
     this.loadCandidates(1);
+  }
+
+  segmentChanged(event) {
+    this.segment = event.detail.value;
   }
 
   /**
@@ -94,6 +103,23 @@ export class TransferFileDetailPage implements OnInit {
     });
   }
   
+  reSchedule(transferFile, event) {
+    event.stopPropagation();  
+    event.preventDefault();
+    this.transferFileService.reSchedule(transferFile.transfer_file_id).subscribe(async response => {
+      if (response.operation == "success") {
+        transferFile.status = 0;
+      } else {
+
+        const prompt = await this.alertCtrl.create({
+          message: this.authService.errorMessage(response.message),
+          buttons: ['Ok']
+        });
+        prompt.present();
+      }
+    });
+  }
+
   /**
    * load more candidates on scroll to bottom
    * @param event 
