@@ -145,7 +145,7 @@
   <ion-list *ngIf="transfer && transferCandidates" class='candidateList'>
     <!-- store_name pipe returns the transferCandidates grouped by store as object of following format: -->
     <!-- {name: string, resources: TransferCandidate[]} -->
-    <ion-item-group *ngFor="let group of transferCandidates | store_name">
+    <ion-item-group *ngFor="let group of transferCandidates | groupBy: 'store_name'">
       <ion-item-divider>
         <ion-label>
           <b>{{group.name}}</b>

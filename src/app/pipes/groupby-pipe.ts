@@ -1,15 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'store_name'
+  name: 'groupBy'
 })
 export class GroupByPipe implements PipeTransform {
 
-  transform(value) : any {
+  transform(value, key) : any {
     var groups = {};
 
     value.forEach(function(o) {
-      var group = o.store_name;
+      var group = o[key];
     
       groups[group] = groups[group] ?
          groups[group] : { name: group, resources: [] };

@@ -37,6 +37,7 @@
 
     </div>
     <ion-searchbar debounce="500" placeholder="Type to search invoice id, client…" (ionChange)="searchByName($event)"></ion-searchbar>
+    
     <div class="content ion-text-center">
       <ion-badge tappable color="primary" (click)="selectDate()" fill="outline" [class.active]="filters.startDate">
         <span *ngIf="!filters.startDate">Select Start Date</span>
