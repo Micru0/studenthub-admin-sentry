@@ -29,6 +29,16 @@ export class CandidateTransferService {
     return this._authhttp.get(url, true);
   }
 
+  payableCandidateStats(urlParams: string = ""): Observable<any> {
+    let url = `${this._transferEndpoint}/payable-candidates-stats?${urlParams}`;
+    return this._authhttp.get(url);
+  }
+
+  listPayableCandidates(page: number, urlParams: string = ""): Observable<any> {
+    let url = `${this._transferEndpoint}/payable-candidates?expand=candidate&page=${page}${urlParams}`;
+    return this._authhttp.get(url, true);
+  }
+
   /**
    * list transfer candidates by file used to mark as paid
    * sort by store_id

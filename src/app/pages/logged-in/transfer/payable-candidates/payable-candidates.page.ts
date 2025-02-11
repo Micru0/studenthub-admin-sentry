@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 // services
 import { TransferService } from 'src/app/providers/logged-in/transfer.service';
 import { AwsService } from 'src/app/providers/aws.service';
 import { EventService } from 'src/app/providers/event.service';
 import {AuthService} from '../../../../providers/auth.service';
+import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 // models
 import {Transfer} from '../../../../models/transfer';
-import { AlertController, ModalController, PopoverController } from '@ionic/angular';
+import { TransferCandidate } from 'src/app/models/transfer-candidate';
+// Components
 import { PayableCandidatesActionComponent } from './payable-candidates-action';
+// Pages
 import { CandidatePage } from '../../picker/candidate/candidate.page';
-import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.transfer.service';
 
 
 @Component({
@@ -20,18 +23,28 @@ import { CandidateTransferService } from 'src/app/providers/logged-in/candidate.
 })
 export class PayableCandidatesPage  {
 
-  public payableAmount = 0.0;
-  public payableMissingAmount = 0.0;
-  public payableIncompleteProfile = 0.0;
-  public payableAvailAmount = 0.0;
+  public totalUnpaid = 0.0;
+  public totalOfMissingBankInfo = 0.0;
+  public totalOfIncompleteProfile = 0.0;
+  public totalPayable = 0.0;
+  public totalOfExpiredCivil = 0.0;
 
-  public candidates: Transfer[] = [];
+  public transfers: Transfer[] = [];
   public totalPayableCandidate = 0;
 
   public loading = false;
 
   public processing = false;
 
+  public candidateTransfers: TransferCandidate[] = [];
+  public pageCount = 0;
+  public currentPage = 1;
+
+  public filter = {
+    searchName : null,
+    candidateTransferStatus : "",
+  }
+ 
   constructor(
     public router: Router,
     public aws: AwsService,
@@ -54,6 +67,42 @@ export class PayableCandidatesPage  {
     });
   }
 
+  resetFilter() {
+    this.filter = {
+      searchName : null,
+      candidateTransferStatus : null,
+    }
+  }
+
+  filterByStatus(event, status) {
+    this.filter.candidateTransferStatus = status;
+    this.loadData();
+  }
+
+  searchByName(event) {
+    this.filter.searchName = event.target.value;
+    this.loadData();
+  }
+
+  getUrlParams() {
+    let url ;
+
+    if (this.filter.searchName) {
+      url += '&searchName=' + this.filter.searchName;
+    }
+
+    if (this.filter.candidateTransferStatus) {
+      url += '&candidateTransferStatus=' + this.filter.candidateTransferStatus;
+    }
+
+    return url;
+  }
+
+  handleRefresh(event) {
+    this.loadData();
+    event.target.complete();
+  }
+
   /**
    * Load List of Payable Candidates
    */
@@ -61,14 +110,58 @@ export class PayableCandidatesPage  {
 
     this.loading = true;
 
-    this.transferService.listPayableCandidates().subscribe(response => {
+    this.candidateTransferService.listPayableCandidates(1, this.getUrlParams()).subscribe(response => {
 
       this.loading = false;
 
-      this.candidates = response.body;
-      this.totalPayableAmount(this.candidates); // calculate total payable amount
+      this.candidateTransfers = response.body;
+
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalPayableCandidate = parseInt(response.headers.get('X-Pagination-Total-Count'));
+      //this.totaltotalUnpaid(this.transfers); // calculate total payable amount
+
+      this.loadStats();
     },
     () => {
+      this.loading = false;
+    });
+  }
+
+  loadStats() {
+    this.candidateTransferService.payableCandidateStats(this.getUrlParams()).subscribe(response => {
+      this.totalUnpaid = response.totalUnpaid;
+      this.totalPayable = response.totalPayable;
+      this.totalOfMissingBankInfo = response.totalOfMissingBankInfo;
+      this.totalOfExpiredCivil = response.totalOfExpiredCivil;
+      this.totalOfIncompleteProfile = response.totalOfIncompleteProfile;
+    });
+  }
+
+  async doInfinite(event) {
+
+    if (this.currentPage >= this.pageCount) {
+      event.target.complete();
+      return;
+    }
+
+    this.loading = true;
+
+    this.currentPage++;
+
+    this.candidateTransferService.listPayableCandidates(this.currentPage, this.getUrlParams()).subscribe(response => {
+
+      this.loading = false;
+
+      this.pageCount = parseInt(response.headers.get('X-Pagination-Page-Count'));
+      this.currentPage = parseInt(response.headers.get('X-Pagination-Current-Page'));
+      this.totalPayableCandidate = parseInt(response.headers.get('X-Pagination-Total-Count'));
+
+      this.candidateTransfers = this.candidateTransfers.concat(response.body);
+
+      event.target.complete();
+
+    }, () => {
       this.loading = false;
     });
   }
@@ -98,7 +191,7 @@ export class PayableCandidatesPage  {
 
     const { data } = await popover.onDidDismiss();
 
-    if (data && data.action == 'mark-all-paid' && this.candidates && this.candidates.length > 0) {
+    if (data && data.action == 'mark-all-paid' && this.transfers && this.transfers.length > 0) {
       this.markAllPaid();
     } else {
       this.getOffsetLimit(data);
@@ -234,12 +327,12 @@ export class PayableCandidatesPage  {
   * calculating total payable amount.
   * @param candidates
   */
-  totalPayableAmount(transfers) {
+  totaltotalUnpaid(transfers) {
 
-    this.payableAmount = 0.0;
-    this.payableAvailAmount = 0.0;
-    this.payableMissingAmount = 0.0;
-    this.payableIncompleteProfile = 0.0;
+    this.totalUnpaid = 0.0;
+    this.totalPayable = 0.0;
+    this.totalOfMissingBankInfo = 0.0;
+    this.totalOfIncompleteProfile = 0.0;
 
     if (!transfers) {
       return null;
@@ -247,16 +340,16 @@ export class PayableCandidatesPage  {
 
     transfers.forEach(transfer => {
 
-      this.payableAmount = this.payableAmount + transfer.remainingPaymentTransferTotal;
+      this.totalUnpaid = this.totalUnpaid + transfer.remainingPaymentTransferTotal;
 
       transfer.unPaidTransferCandidates.forEach(transferCandidate => {
         this.totalPayableCandidate ++;
         if (!transferCandidate.candidate || !transferCandidate.candidate.bank_id || !transferCandidate.transfer_benef_iban || !transferCandidate.transfer_benef_name) {
-          this.payableMissingAmount += transferCandidate.candidate_total; // missing bank info
+          this.totalOfMissingBankInfo += transferCandidate.candidate_total; // missing bank info
         } else if (!transferCandidate.candidate.isProfileCompleted) {
-          this.payableIncompleteProfile += transferCandidate.candidate_total;
+          this.totalOfIncompleteProfile += transferCandidate.candidate_total;
         } else {
-          this.payableAvailAmount += transferCandidate.candidate_total;
+          this.totalPayable += transferCandidate.candidate_total;
         }
       });
     });
