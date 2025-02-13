@@ -191,7 +191,7 @@ export class PayableCandidatesPage  {
 
     const { data } = await popover.onDidDismiss();
 
-    if (data && data.action == 'mark-all-paid' && this.transfers && this.transfers.length > 0) {
+    if (data && data.action == 'mark-all-paid' && this.candidateTransfers && this.candidateTransfers.length > 0) {
       this.markAllPaid();
     } else {
       this.getOffsetLimit(data);
