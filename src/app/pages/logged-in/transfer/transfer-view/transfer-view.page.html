@@ -42,6 +42,12 @@
         <br />{{ transfer.totalPaid }} out of {{ transfer.totalUnpaid + transfer.totalPaid }} paid.
       </span>
     </div>
+    
+    <ion-button fill="outline" [disabled]="markingPaid" (click)="markPaid()" 
+      *ngIf="transfer.totalUnpaid == 0 && transfer.transfer_status == 3 && !authService.admin_limited_access">
+      <span *ngIf="!markingPaid">Mark as Paid</span>
+      <ion-spinner *ngIf="markingPaid"></ion-spinner>
+    </ion-button>
 
     <!-- If Transfer Initiated, Locked or Cancelled -->
 
@@ -71,7 +77,7 @@
       Mark Received & Distributing Salary
     </ion-button>
 
-    <ion-button fill="outline" [disabled]="payingByWallet" (click)="payByWallet()" *ngIf="transfer.transfer_status == 3 && !authService.admin_limited_access">
+    <ion-button fill="outline" [disabled]="payingByWallet" (click)="payByWallet()" *ngIf="transfer.totalUnpaid > 0 && transfer.transfer_status == 3 && !authService.admin_limited_access">
       <span *ngIf="!payingByWallet">Pay by Wallet</span>
       <ion-spinner *ngIf="payingByWallet"></ion-spinner>
     </ion-button>

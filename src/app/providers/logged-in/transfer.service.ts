@@ -69,6 +69,10 @@ export class TransferService {
     return this._authhttp.post(url, '');
   }
 
+  markPaid(transfer: Transfer): Observable<any> {
+    let url = `${this._transferEndpoint}/mark-paid/${transfer.transfer_id}`;
+    return this._authhttp.patch(url, {});
+  }
   /*
    * List of all Transfers
    * @returns {Observable<any>}
