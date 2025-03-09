@@ -45,6 +45,8 @@ export class TransferViewPage implements OnInit {
   public candidatePageCount: number;
   public candidatePage: number;
 
+  public markingPaid: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public router: Router,
@@ -194,6 +196,26 @@ export class TransferViewPage implements OnInit {
         this.transferStatusDescription = "All done!";
         break;
     }
+  }
+
+  markPaid() {
+    this.markingPaid = true;
+
+    this.transferService.markPaid(this.transfer).subscribe(async response => {
+
+      this.markingPaid = false;
+
+      if (response.operation == "success") {
+        this.transfer.transfer_status = 4;
+        this.loadData();
+      } else {
+        let toast = await this.toastCtrl.create({
+          message: response.message,
+          duration: 3000
+        });
+        toast.present();
+      }
+    });
   }
 
   /**
