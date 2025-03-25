@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms'; 
 import { AlertController, ToastController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 //services
 import { SettingService } from 'src/app/providers/logged-in/setting.service';
 import { AuthService } from 'src/app/providers/auth.service';
@@ -23,6 +24,8 @@ export class SettingPage implements OnInit {
 
   public type = {};
 
+  public isProduction: boolean = false;
+  
   constructor(
     private _fb: FormBuilder, 
     private _toastCtrl: ToastController,
@@ -33,6 +36,8 @@ export class SettingPage implements OnInit {
 
   ngOnInit() {
     window.analytics.page('Setting Page');
+
+    this.isProduction = environment.production;
 
     this.loadData();
   }
