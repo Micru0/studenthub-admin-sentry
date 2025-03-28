@@ -31,27 +31,52 @@
               </ion-card-title>
             </ion-card-header>
             <ion-card-content *ngIf="form.value['Segment-Status']">
-                               
-              <ion-item class="field-password">
-                <ion-label position="floating">Segment Key</ion-label>
-                <ion-input [type]="type['Segment-Key']? type['Segment-Key']: 'password'" formControlName="Segment-Key"></ion-input>
-                 
-                <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Segment-Key')">
-                  <ion-icon *ngIf="type['Segment-Key'] == 'password'" name="eye"></ion-icon>
-                  <ion-icon *ngIf="type['Segment-Key'] != 'password'" name="eye-off"></ion-icon>
-                </ion-button>
-              </ion-item>
-
-              <ion-item class="field-password">
-                <ion-label position="floating">Segment Key for Wallet App</ion-label>
-                <ion-input [type]="type['Segment-Key-Wallet']? type['Segment-Key-Wallet']: 'password'" formControlName="Segment-Key-Wallet"></ion-input>
+                         
+              <ng-container *ngIf="isProduction">
+                <ion-item class="field-password">
+                  <ion-label position="floating">Segment Key</ion-label>
+                  <ion-input [type]="type['Segment-Key']? type['Segment-Key']: 'password'" formControlName="Segment-Key"></ion-input>
                   
-                <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Segment-Key-Wallet')">
-                  <ion-icon *ngIf="type['Segment-Key-Wallet'] == 'password'" name="eye"></ion-icon>
-                  <ion-icon *ngIf="type['Segment-Key-Wallet'] != 'password'" name="eye-off"></ion-icon>
-                </ion-button>
-              </ion-item>
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Segment-Key')">
+                    <ion-icon *ngIf="type['Segment-Key'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Segment-Key'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
 
+                <ion-item class="field-password">
+                  <ion-label position="floating">Segment Key for Wallet App</ion-label>
+                  <ion-input [type]="type['Segment-Key-Wallet']? type['Segment-Key-Wallet']: 'password'" formControlName="Segment-Key-Wallet"></ion-input>
+                    
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Segment-Key-Wallet')">
+                    <ion-icon *ngIf="type['Segment-Key-Wallet'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Segment-Key-Wallet'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-container>
+
+              <ng-container *ngIf="!isProduction">
+                <h6>Sandbox Mode</h6>
+
+                <ion-item class="field-password">
+                  <ion-label position="floating">Segment Key</ion-label>
+                  <ion-input [type]="type['Test-Segment-Key']? type['Test-Segment-Key']: 'password'" formControlName="Test-Segment-Key"></ion-input>
+                  
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Test-Segment-Key')">
+                    <ion-icon *ngIf="type['Test-Segment-Key'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Test-Segment-Key'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
+
+                <ion-item class="field-password">
+                  <ion-label position="floating">Segment Key for Wallet App</ion-label>
+                  <ion-input [type]="type['Test-Segment-Key-Wallet']? type['Test-Segment-Key-Wallet']: 'password'" formControlName="Test-Segment-Key-Wallet"></ion-input>
+                    
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Test-Segment-Key-Wallet')">
+                    <ion-icon *ngIf="type['Test-Segment-Key-Wallet'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Test-Segment-Key-Wallet'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-container>
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -65,15 +90,53 @@
               </ion-card-title>
             </ion-card-header>
             <ion-card-content  *ngIf="form.value['Mixpanel-Status']">
-              <ion-item class="field-password">
-                <ion-label position="floating">Mixpanel Key</ion-label>
-                <ion-input [type]="type['Mixpanel-Key']? type['Mixpanel-Key']: 'password'" formControlName="Mixpanel-Key"></ion-input>
-                      
-                <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Mixpanel-Key')">
-                  <ion-icon *ngIf="type['Mixpanel-Key'] == 'password'" name="eye"></ion-icon>
-                  <ion-icon *ngIf="type['Mixpanel-Key'] != 'password'" name="eye-off"></ion-icon>
-                </ion-button>
-              </ion-item>
+
+              <ng-container *ngIf="isProduction">
+                <ion-item class="field-password">
+                  <ion-label position="floating">Mixpanel Key</ion-label>
+                  <ion-input [type]="type['Mixpanel-Key']? type['Mixpanel-Key']: 'password'" formControlName="Mixpanel-Key"></ion-input>
+                        
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Mixpanel-Key')">
+                    <ion-icon *ngIf="type['Mixpanel-Key'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Mixpanel-Key'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
+
+                <ion-item class="field-password">
+                  <ion-label position="floating">Mixpanel Key for BAWES Wallet </ion-label>
+                  <ion-input [type]="type['Mixpanel-Key-Wallet']? type['Mixpanel-Key-Wallet']: 'password'" formControlName="Mixpanel-Key-Wallet"></ion-input>
+                        
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Mixpanel-Key-Wallet')">
+                    <ion-icon *ngIf="type['Mixpanel-Key-Wallet'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Mixpanel-Key-Wallet'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-container>
+
+              <ng-container *ngIf="!isProduction">
+                <h6>Sandbox Mode</h6>
+
+                <ion-item class="field-password">
+                  <ion-label position="floating">Mixpanel Key</ion-label>
+                  <ion-input [type]="type['Test-Mixpanel-Key']? type['Test-Mixpanel-Key']: 'password'" formControlName="Test-Mixpanel-Key"></ion-input>
+                        
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Test-Mixpanel-Key')">
+                    <ion-icon *ngIf="type['Test-Mixpanel-Key'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Test-Mixpanel-Key'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
+
+                <ion-item class="field-password">
+                  <ion-label position="floating">Mixpanel Key for BAWES Wallet </ion-label>
+                  <ion-input [type]="type['Test-Mixpanel-Key-Wallet']? type['Test-Mixpanel-Key-Wallet']: 'password'" formControlName="Test-Mixpanel-Key-Wallet"></ion-input>
+                        
+                  <ion-button class="btn-password" fill="clear" (click)="togglePasswordVisibility('Test-Mixpanel-Key-Wallet')">
+                    <ion-icon *ngIf="type['Test-Mixpanel-Key-Wallet'] == 'password'" name="eye"></ion-icon>
+                    <ion-icon *ngIf="type['Test-Mixpanel-Key-Wallet'] != 'password'" name="eye-off"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ng-container>
+              
             </ion-card-content>
           </ion-card>
         </ion-col>
