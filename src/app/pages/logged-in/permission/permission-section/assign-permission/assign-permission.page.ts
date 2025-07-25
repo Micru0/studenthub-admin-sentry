@@ -3,6 +3,7 @@ import { ModalController, AlertController, ToastController, Platform } from '@io
 import {ActivatedRoute, Router} from '@angular/router';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
+import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import {PermissionService} from 'src/app/providers/logged-in/permission.service';
 import {Staff} from "../../../../../models/staff";
 import {StaffService} from "../../../../../providers/logged-in/staff.service";
@@ -17,7 +18,11 @@ export class AssignPermissionPage implements OnInit {
 
   public deleting = false;
   public loading = false;
-  public userPermission = {};
+  public loadingCompanies = false;
+  public userPermission: { [key: string]: boolean } = {};
+  public companyPermissions: { [key: string]: number[] } = {};
+  public companies: any[] = [];
+  public companySearchTerm: string = '';
 
   public totalCount = 0;
   public pageCount = 0;
@@ -37,6 +42,7 @@ export class AssignPermissionPage implements OnInit {
     public activateRoute: ActivatedRoute,
     public permissionService: PermissionService,
     public staffService: StaffService,
+    private companyService: CompanyService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
@@ -51,10 +57,13 @@ export class AssignPermissionPage implements OnInit {
 
     if (!this.staff) {
       this.loadStaff();
-      this.loadUserPermission();
     }
     this.loadPermission();
     this.loadData(this.currentPage);
+    this.loadUserPermission();
+    this.loadCompanies();
+
+
   }
 
   ngOnInit() {
@@ -103,16 +112,37 @@ export class AssignPermissionPage implements OnInit {
     });
   }
   async loadUserPermission() {
+    // include company assignments as well if available via new API
     this.permissionService.userPermission(this.type, this.user_id).subscribe(response => {
       if (response) {
-        response.map(res => {
+        // First, process all sub-section permissions
+        response.forEach(res => {
           this.userPermission[res.permission_sub_section_uuid] = true;
+          if (res.companies && res.companies.length) {
+            this.companyPermissions[res.permission_uuid] = res.companies;
+          }
         });
       }
     }, () => {
       this.loading = false;
       this.deleting = false;
     });
+  }
+
+  loadCompanies() {
+    this.loadingCompanies = true;
+    const searchParams = this.companySearchTerm? `&name=${encodeURIComponent(this.companySearchTerm)}` : '';
+    this.companyService.list(1, searchParams).subscribe(companies => {
+      this.companies = companies.body || [];
+      this.loadingCompanies = false;
+    }, () => this.loadingCompanies = false);
+  }
+
+  /**
+   * Check if a section has company-specific permissions
+   */
+  isCompanySpecific(section: any): boolean {
+    return section && (section.is_company_specific_permission === 1 || section.is_company_specific_permission === true);
   }
 
   /**
@@ -145,7 +175,7 @@ export class AssignPermissionPage implements OnInit {
    * Loads the create page
    */
   async save() {
-    this.permissionService.setUserPermission(this.userPermission, this.type, this.user_id).subscribe(async response => {
+    this.permissionService.setUserPermission(this.userPermission, this.type, this.user_id, this.companyPermissions).subscribe(async response => {
       if (response.operation == 'success') {
         this.loadData(1);
       }
