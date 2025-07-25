@@ -1,17 +1,44 @@
+// Global Variables for Consistency
+$primary-color: #007aff; // Matches ion-color-primary
+$secondary-color: #6c757d; // Medium gray for secondary text
+$border-radius: 8px;
+$spacing-unit: 16px;
+$breakpoint-mobile: 768px;
 
-ion-item.alert {
-    --background: var(--ion-color-danger);
-    --color: var(--ion-color-danger-contrast);
 
-    p {
-        color: var(--ion-color-danger-contrast);
-    }
-
-    ion-button {
-        --ion-color-base: white !important;
-    }
+ion-searchbar {
+  max-width: 30%;
+  --box-shadow: none;
+  --background: #f1f3f5;
+  --border-radius: 8px;
+  --placeholder-color: #6c757d;
+  --padding-start: 12px; // Increased padding for better input space
+  --padding-end: 12px;
+  display: inline-block; // Allows side-by-side alignment
+  margin-right: 10px; // Space between searchbar and select
+  vertical-align: middle; // Aligns vertically with select
+  &::part(searchbar-input) {
+    padding: 8px;
+  }
 }
-.sub_section {
-    --padding-start: 19px;
-    padding-left: 20px;
+
+.ion-select-companies {
+  max-width: 20%;
+  min-width: 50px; // Ensures a minimum usable width
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --border-radius: 8px;
+  --background: #ffffff;
+  --placeholder-opacity: 0.6;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap; // Prevents text wrapping
+  overflow: hidden; // Hides overflow text
+  text-overflow: ellipsis; // Adds ellipsis (...) for truncated text
+}
+
+ion-item.company-selection {
+  text-align: center; // or justify-content: space-between; depending on desired layout
+  display: flex;
+  align-items: left;
 }
