@@ -22,7 +22,8 @@ export class AssignPermissionPage implements OnInit {
   public userPermission: { [key: string]: boolean } = {};
   public companyPermissions: { [key: string]: number[] } = {};
   public companies: any[] = [];
-  public companySearchTerm: string = '';
+  public companySearchTerms: { [key: string]: string } = {}; // sectionId -> searchTerm
+  public filteredCompanies: { [key: string]: any[] } = {}; // sectionId -> companies[]
 
   public totalCount = 0;
   public pageCount = 0;
@@ -131,11 +132,44 @@ export class AssignPermissionPage implements OnInit {
 
   loadCompanies() {
     this.loadingCompanies = true;
-    const searchParams = this.companySearchTerm? `&name=${encodeURIComponent(this.companySearchTerm)}` : '';
-    this.companyService.list(1, searchParams).subscribe(companies => {
+    this.companyService.list(1, '', {
+      fields: 'company_id,company_name,company_email',
+      'per-page': 1000
+    }).subscribe(companies => {
       this.companies = companies.body || [];
+      // Initialize filtered companies for all sections that need it
+      this.permissionSection.forEach(section => {
+        if (this.isCompanySpecific(section)) {
+          this.filteredCompanies[section.permission_uuid] = [...this.companies];
+        }
+      });
       this.loadingCompanies = false;
     }, () => this.loadingCompanies = false);
+  }
+
+  /**
+   * Filter companies based on search term for a specific section
+   */
+  filterCompanies(sectionId: string) {
+    if (!this.companySearchTerms[sectionId]?.trim()) {
+      this.filteredCompanies[sectionId] = [...this.companies];
+      return;
+    }
+
+    const searchTerm = this.companySearchTerms[sectionId].toLowerCase().trim();
+    const selectedCompanyIds = this.companyPermissions[sectionId] || [];
+    const selectedCompanies = this.companies.filter(c => selectedCompanyIds.includes(c.company_id));
+
+    // Get matching non-selected companies
+    const matchingCompanies = this.companies.filter(company =>
+      !selectedCompanyIds.includes(company.company_id) && (
+        company.company_name?.toLowerCase().includes(searchTerm) ||
+        company.company_email?.toLowerCase().includes(searchTerm)
+      )
+    );
+
+    // Combine selected companies with matching non-selected companies
+    this.filteredCompanies[sectionId] = [...selectedCompanies, ...matchingCompanies];
   }
 
   /**

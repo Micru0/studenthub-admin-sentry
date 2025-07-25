@@ -23,9 +23,10 @@ export class CompanyService {
    * List of all companies
    * @returns {Observable<any>}
    */
-  list(page: number, searchParams: string): Observable<any> {
-    // const url = this._companyEndpoint + '?page=' + page + searchParams + '&expand=files,notes,notes.staff,stores,subCompanies';
-    const url = this._companyEndpoint + '?page=' + page + searchParams+ '&expand=staff'
+  list(page: number, searchParams: string, params: {} = {}): Observable<any> {
+    const urlParams = params ? new URLSearchParams(params) : '';
+    const url = `${this._companyEndpoint}?page=${page}${searchParams ? `&${searchParams}` : ''}&${urlParams.toString()}&expand=staff`;
+
     return this._authhttp.get(url, true);
   }
 
@@ -219,9 +220,9 @@ export class CompanyService {
   }
 
   /**
-   * @param model 
-   * @param staff_id 
-   * @returns 
+   * @param model
+   * @param staff_id
+   * @returns
    */
   updateStaff(model: Company, staff_id: null): Observable<any> {
     const url = `${this._companyEndpoint}/update-staff/${model.company_id}`;
@@ -229,9 +230,9 @@ export class CompanyService {
   }
 
   /**
-   * get login url and open in new window 
-   * @param company_id 
-   * @returns 
+   * get login url and open in new window
+   * @param company_id
+   * @returns
    */
   login(company_id): Observable<any>{
     let url = `${this._companyEndpoint}/login/${company_id}`;

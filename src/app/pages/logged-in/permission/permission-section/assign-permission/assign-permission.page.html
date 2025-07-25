@@ -29,22 +29,27 @@
 
         <!-- Company dropdown for company-specific permission at section level -->
         <ion-item *ngIf="isCompanySpecific(section)" lines="none" class="company-selection">
-          <ion-label>Select Companies</ion-label>
-
-            <!-- <ion-searchbar
-              [(ngModel)]="companySearchTerm"
-              (ionInput)="loadCompanies()"
+          <ion-label class="ion-text-left"></ion-label>
+            <ion-searchbar
+              [(ngModel)]="companySearchTerms[section.permission_uuid]"
+              (ionInput)="filterCompanies(section.permission_uuid)"
               placeholder="Search companies"
-              debounce="400"
+              debounce="300"
+              clearIcon="close-circle"
               showCancelButton="focus"
               style="margin-bottom: 8px;">
-            </ion-searchbar> -->
+            </ion-searchbar>
           <ion-select
             multiple="true"
             interface="popover"
-            [(ngModel)]="this.companyPermissions[section.permission_uuid]">
-            <ion-select-option *ngFor="let company of companies" [value]="company.company_id">
+            [(ngModel)]="companyPermissions[section.permission_uuid]"
+            (ionChange)="filterCompanies(section.permission_uuid)">
+            <ion-select-option
+              *ngFor="let company of filteredCompanies[section.permission_uuid] || companies"
+              [value]="company.company_id"
+              [class.selected-company]="(companyPermissions[section.permission_uuid] || []).includes(company.company_id)">
               {{ company.company_name }}
+              <!-- <span *ngIf="company.company_email" class="company-email">({{ company.company_email }})</span> -->
             </ion-select-option>
           </ion-select>
         </ion-item>
