@@ -80,10 +80,11 @@ export class PermissionService {
     });
   }
 
-  setUserPermission(permission, type, id): Observable<any>{
+  setUserPermission(permission, type, id, companies): Observable<any>{
     return this.authhttp.patch(`${this.noteEndpoint}/set-permission/${id}`, {
       permission,
-      type
+      type,
+      companies
     });
   }
 
