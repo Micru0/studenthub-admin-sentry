@@ -27,6 +27,32 @@
           <h5>{{ section.section_name }}</h5>
         </ion-label>
 
+        <!-- Company dropdown for company-specific permission at section level -->
+        <ion-item *ngIf="isCompanySpecific(section)" lines="none" class="company-selection">
+          <ion-label class="ion-text-left"></ion-label>
+            <ion-searchbar
+              [(ngModel)]="companySearchTerms[section.permission_uuid]"
+              (ionInput)="filterCompanies(section.permission_uuid)"
+              placeholder="Search companies"
+              debounce="300"
+              clearIcon="close-circle"
+              showCancelButton="focus"
+              style="margin-bottom: 8px;">
+            </ion-searchbar>
+          <ion-select
+            multiple="true"
+            interface="popover"
+            [(ngModel)]="companyPermissions[section.permission_uuid]"
+            (ionChange)="filterCompanies(section.permission_uuid)">
+            <ion-select-option
+              *ngFor="let company of filteredCompanies[section.permission_uuid] || companies"
+              [value]="company.company_id"
+              [class.selected-company]="(companyPermissions[section.permission_uuid] || []).includes(company.company_id)">
+              {{ company.company_name }}
+              <!-- <span *ngIf="company.company_email" class="company-email">({{ company.company_email }})</span> -->
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
       </ion-item>
       <ion-list  class="sub_section" *ngIf="section.permissionSubSections">
         <ion-item tappable *ngFor="let sub of section.permissionSubSections">
@@ -35,8 +61,9 @@
           <ion-label>
             <h5>{{ sub.sub_section_name }}</h5>
             <p>{{ sub.sub_section_slug }}</p>
-          </ion-label>
 
+
+          </ion-label>
           <ion-checkbox
                   [(ngModel)]="this.userPermission[sub.permission_sub_section_uuid]"
                   [checked]="this.userPermission[sub.permission_sub_section_uuid]"
@@ -46,8 +73,8 @@
       </ion-list>
     </ion-item-sliding>
 
-    <loading-modal [loading]="loading" type="text-list"></loading-modal>
-    
+    <loading-modal [loading]="loading || loadingCompanies" type="text-list"></loading-modal>
+
   </ion-list>
 
   <ion-infinite-scroll *ngIf="currentPage < pageCount"
