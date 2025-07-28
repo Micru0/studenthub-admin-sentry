@@ -134,7 +134,8 @@ export class AssignPermissionPage implements OnInit {
     this.loadingCompanies = true;
     this.companyService.list(1, '', {
       fields: 'company_id,company_name,company_email',
-      'per-page': 1000
+      'pagination': 0,
+      'isParent': 0
     }).subscribe(companies => {
       this.companies = companies.body || [];
       // Initialize filtered companies for all sections that need it
