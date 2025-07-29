@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { AssignPermissionPageRoutingModule } from './assign-permission-routing.m
 
 import { AssignPermissionPage } from './assign-permission.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   imports: [
@@ -15,8 +16,10 @@ import { LoadingModalModule } from 'src/app/components/loading-modal/loading-mod
     FormsModule,
     IonicModule,
     LoadingModalModule,
-    AssignPermissionPageRoutingModule
+    AssignPermissionPageRoutingModule,
+    IonicSelectableModule
   ],
-  declarations: [AssignPermissionPage]
+  declarations: [AssignPermissionPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class AssignPermissionPageModule {}

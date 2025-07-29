@@ -25,21 +25,25 @@
           <h5>{{ section.section_name }}</h5>
         </ion-label>
 
-        <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
-
-          <ion-button color="danger" (click)="delete($event, section)">
-            <ion-icon slot="start" name="trash-outline"></ion-icon>
-            Delete
-          </ion-button>
-
-          <ion-button (click)="edit($event, section)">
-            Edit
-          </ion-button>
-
-          <ion-button (click)="addSubSection($event, section)">
-            Add Sub
-          </ion-button>
-        </ion-buttons>
+        <!-- Company dropdown for company-specific permission at section level -->
+        <ion-item *ngIf="section.is_company_specific_permission === 1 || section.is_company_specific_permission === true" class="company-selectable-wrapper">
+          <ionic-selectable
+            [(ngModel)]="companyPermissions[section.permission_uuid]"
+            [items]="companies"
+            itemValueField="company_id"
+            [shouldStoreItemValue]="true"
+            itemTextField="company_name"
+            [isMultiple]="true"
+            [canSearch]="true"
+            searchPlaceholder="Search companies"
+            placeholder="Select companies"
+            class="company-selectable full-width"
+            confirmButtonText="Submit"
+            (onChange)="updateSection($event, section)"
+          >
+          </ionic-selectable>
+          <ion-badge slot="end" color="secondary">{{ companyPermissions[section.permission_uuid]?.length || 0 }}</ion-badge>
+        </ion-item>
 
       </ion-item>
       <ion-list  class="sub_section" *ngIf="section.permissionSubSections">
@@ -50,18 +54,6 @@
             <h5>{{ sub.sub_section_name }}</h5>
             <p>{{ sub.sub_section_slug }}</p>
           </ion-label>
-
-          <ion-buttons slot="end" *ngIf="platform.width() > 768 && !authService.admin_limited_access">
-
-            <ion-button color="danger" (click)="deleteSub($event, sub)">
-              <ion-icon slot="start" name="trash-outline"></ion-icon>
-              Delete
-            </ion-button>
-
-            <ion-button (click)="editSub($event, sub)">
-              Edit
-            </ion-button>
-          </ion-buttons>
 
         </ion-item>
       </ion-list>
@@ -82,7 +74,7 @@
 <ion-footer *ngIf="!authService.admin_limited_access">
   <ion-grid>
     <ion-row>
-      <ion-col><ion-button expand="full" (click)="create()">Create</ion-button></ion-col>
+      <!-- <ion-col><ion-button expand="full" (click)="create()">Create</ion-button></ion-col> -->
     </ion-row>
   </ion-grid>
 </ion-footer>

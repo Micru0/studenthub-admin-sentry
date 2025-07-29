@@ -5,10 +5,3 @@ $border-radius: 8px;
 $spacing-unit: 16px;
 $breakpoint-mobile: 768px;
 
-
-.full-width-select {
-  max-width: 100% !important; /* Prevents expansion beyond the column */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
