@@ -35,6 +35,11 @@
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
               },
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
               { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" },
               "src/manifest.webmanifest",
               "src/netlify.toml"
@@ -102,7 +107,7 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
-            }, 
+            },
             "khalid": {
               "fileReplacements": [
                 {
@@ -149,7 +154,7 @@
             },
             "krushn": {
               "browserTarget": "app:build:krushn"
-            }, 
+            },
             "docker": {
               "browserTarget": "app:build:docker"
             },
