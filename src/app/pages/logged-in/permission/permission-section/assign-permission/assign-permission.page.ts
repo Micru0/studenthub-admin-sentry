@@ -141,7 +141,7 @@ export class AssignPermissionPage implements OnInit {
       // Initialize filtered companies for all sections that need it
       this.permissionSection.forEach(section => {
         if (this.isCompanySpecific(section)) {
-          this.filteredCompanies[section.permission_uuid] = [...this.companies];
+          this.filterCompanies(section.permission_uuid);
         }
       });
       this.loadingCompanies = false;
@@ -151,26 +151,35 @@ export class AssignPermissionPage implements OnInit {
   /**
    * Filter companies based on search term for a specific section
    */
-  filterCompanies(sectionId: string) {
-    if (!this.companySearchTerms[sectionId]?.trim()) {
-      this.filteredCompanies[sectionId] = [...this.companies];
-      return;
+  filterCompanies(sectionId: string, event?: any) {
+    // If event is present, update the search term from the event's value
+    if (event && event.target && typeof event.target.value === 'string') {
+      this.companySearchTerms[sectionId] = event.target.value;
     }
-
-    const searchTerm = this.companySearchTerms[sectionId].toLowerCase().trim();
+    const searchTerm = (this.companySearchTerms[sectionId] || '').toLowerCase().trim();
     const selectedCompanyIds = this.companyPermissions[sectionId] || [];
     const selectedCompanies = this.companies.filter(c => selectedCompanyIds.includes(c.company_id));
 
-    // Get matching non-selected companies
-    const matchingCompanies = this.companies.filter(company =>
-      !selectedCompanyIds.includes(company.company_id) && (
-        company.company_name?.toLowerCase().includes(searchTerm) ||
-        company.company_email?.toLowerCase().includes(searchTerm)
-      )
-    );
-
-    // Combine selected companies with matching non-selected companies
+    let matchingCompanies: any[];
+    if (!searchTerm) {
+      // Show all companies, but selected at the top
+      matchingCompanies = this.companies.filter(company => !selectedCompanyIds.includes(company.company_id));
+    } else {
+      // Filter by name or email
+      matchingCompanies = this.companies.filter(company =>
+        !selectedCompanyIds.includes(company.company_id) && (
+          company.company_name?.toLowerCase().includes(searchTerm) ||
+          company.company_email?.toLowerCase().includes(searchTerm)
+        )
+      );
+    }
+    // Always show selected companies at the top
     this.filteredCompanies[sectionId] = [...selectedCompanies, ...matchingCompanies];
+  }
+
+  getSelectedCompanyText(permissionUuid: string): string {
+    const selected = this.companyPermissions[permissionUuid] || [];
+    return selected.length > 0 ? `${selected.length} companies selected` : 'Select companies';
   }
 
   /**
