@@ -8,6 +8,7 @@ import { PermissionSectionListPageRoutingModule } from './permission-section-lis
 
 import { PermissionSectionListPage } from './permission-section-list.page';
 import { LoadingModalModule } from 'src/app/components/loading-modal/loading-modal.module';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { LoadingModalModule } from 'src/app/components/loading-modal/loading-mod
     FormsModule,
     IonicModule,
     LoadingModalModule,
-    PermissionSectionListPageRoutingModule
+    PermissionSectionListPageRoutingModule,
+    IonicSelectableModule
   ],
   declarations: [PermissionSectionListPage]
 })

@@ -26,40 +26,6 @@
         <ion-label>
           <h5>{{ section.section_name }}</h5>
         </ion-label>
-        <!-- Company dropdown for company-specific permission at section level -->
-        <ion-item *ngIf="isCompanySpecific(section)" lines="none" class="company-selection">
-          <ion-grid class="company-search-grid">
-            <ion-row>
-              <ion-col size="6">
-                <ion-searchbar
-                  [(ngModel)]="companySearchTerms[section.permission_uuid]"
-                  (ionInput)="filterCompanies(section.permission_uuid, $event)"
-                  placeholder="Search companies"
-                  clearIcon="close-circle"
-                  showCancelButton="focus"
-                  class="full-width-search"
-                >
-                </ion-searchbar>
-              </ion-col>
-              <ion-col size="6">
-                <ion-select
-                  multiple="true"
-                  interface="popover"
-                  [(ngModel)]="companyPermissions[section.permission_uuid]"
-                  class="full-width-select"
-                  [selectedText]="getSelectedCompanyText(section.permission_uuid)"
-                >
-                  <ion-select-option
-                    *ngFor="let company of (filteredCompanies[section.permission_uuid]) | slice:0:((companyPermissions[section.permission_uuid]?.length || 0) + 10)"
-                    [value]="company.company_id"
-                  >
-                    {{ company.company_name }}
-                  </ion-select-option>
-                </ion-select>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
       </ion-item>
       
       <ion-list  class="sub_section" *ngIf="section.permissionSubSections">
