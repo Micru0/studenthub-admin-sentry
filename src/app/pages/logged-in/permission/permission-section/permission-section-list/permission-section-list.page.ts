@@ -3,7 +3,8 @@ import { ModalController, AlertController, ToastController, Platform } from '@io
 import { Router } from '@angular/router';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
-import {PermissionService} from 'src/app/providers/logged-in/permission.service';
+import { PermissionService } from 'src/app/providers/logged-in/permission.service';
+import { CompanyService } from 'src/app/providers/logged-in/company.service';
 // pages
 
 
@@ -23,12 +24,15 @@ export class PermissionSectionListPage implements OnInit {
   public exporting = false;
 
   public permissionSection: any[];
+  public companies: any[] = [];
+  public companyPermissions: { [key: string]: number[] } = {};
+
 
   constructor(
     public platform: Platform,
     public router: Router,
     public permissionService: PermissionService,
-    private _modalCtrl: ModalController,
+    private companyService: CompanyService,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
     public authService: AuthService
@@ -36,8 +40,18 @@ export class PermissionSectionListPage implements OnInit {
 
   ngOnInit() {
     window.analytics.page('permission List Page');
-
+    this.loadCompanies();
     this.loadData(this.currentPage);
+  }
+
+  loadCompanies() {
+    this.companyService.list(1, '', {
+      fields: 'company_id,company_name,company_email',
+      'pagination': 0,
+      'isParent': 0
+    }).subscribe(companies => {
+      this.companies = companies.body || [];
+    });
   }
 
   /**
@@ -59,6 +73,15 @@ export class PermissionSectionListPage implements OnInit {
       this.totalCount = parseInt(response.headers.get('X-Pagination-Total-Count'));
 
       this.permissionSection = response.body;
+      // Initialize companyPermissions for company-specific sections
+      if (this.permissionSection && this.permissionSection.length) {
+        this.permissionSection.forEach(section => {
+          if (section.is_company_specific_permission === 1 || section.is_company_specific_permission === true) {
+            // If section has companies assigned, set them; else empty array
+            this.companyPermissions[section.permission_uuid] = Array.isArray(section.companies) ? section.companies : [];
+          }
+        });
+      }
     }, () => {
       this.loading = false;
       this.deleting = false;
@@ -133,238 +156,25 @@ export class PermissionSectionListPage implements OnInit {
     alert.present();
   }
 
-  async edit(ev, section) {
-    const alert = await this._alertCtrl.create({
-      header: 'Update Section',
-      inputs: [
-        {
-          name: 'section',
-          type: 'text',
-          value: section.section_name,
+  async updateSection(ev: any, section) {
+    // If company-specific, update companies only
+    console.log(section)
+    if (section.is_company_specific_permission == 1) {
+      this.loading = true;
+      const companies = this.companyPermissions[section.permission_uuid] || [];
+      this.permissionService.updateSection(section.permission_uuid, {section_name: section.section_name, companies}).subscribe(async response => {
+        if (response.operation == 'success') {
+          this.loadData(1);
         }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-        },
-        {
-          text: 'Submit',
-          handler: async (data) => {
-            if (data.section) {
-              this.permissionService.updateSection(data.section, section.permission_uuid).subscribe(async response => {
-                if (response.operation == 'success') {
-                  this.loadData(1);
-                }
-
-                const toast = await this._toastCtrl.create({
-                  message: this.authService.errorMessage(response.message),
-                  duration: 3000
-                });
-                toast.present();
-                this.loading = false;
-              }, () => {
-                this.loading = false;
-              });
-            }
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-
-  async editSub(ev, sub) {
-    const alert = await this._alertCtrl.create({
-      header: 'Update Section',
-      inputs: [
-        {
-          name: 'section',
-          type: 'text',
-          value: sub.sub_section_name
-        },
-        {
-          name: 'slug',
-          type: 'text',
-          value: sub.sub_section_slug
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-        },
-        {
-          text: 'Submit',
-          handler: async (data) => {
-            if (data.section) {
-              this.permissionService.updateSubSection(data.section, data.slug, sub.permission_sub_section_uuid).subscribe(async response => {
-                if (response.operation == 'success') {
-                  this.loadData(1);
-                }
-
-                const toast = await this._toastCtrl.create({
-                  message: this.authService.errorMessage(response.message),
-                  duration: 3000
-                });
-                toast.present();
-                this.loading = false;
-              }, () => {
-                this.loading = false;
-              });
-            }
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-
-  async addSubSection(ev, section) {
-    const alert = await this._alertCtrl.create({
-      header: 'Add Sub Section',
-      inputs: [
-        {
-          name: 'section',
-          type: 'text',
-          placeholder: 'Sub Section Name'
-        },
-        {
-          name: 'slug',
-          type: 'text',
-          placeholder: 'Subsection Slug'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-        },
-        {
-          text: 'Submit',
-          handler: async (data) => {
-            if (data.section && data.slug) {
-              this.permissionService.createSubSection(data.section, data.slug, section.permission_uuid).subscribe(async response => {
-                if (response.operation == 'success') {
-                  this.loadData(1);
-                }
-
-                const toast = await this._toastCtrl.create({
-                  message: this.authService.errorMessage(response.message),
-                  duration: 3000
-                });
-                toast.present();
-                this.loading = false;
-              }, () => {
-                this.loading = false;
-              });
-            }
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  /**
-   * Delete the provided model
-   */
-  async delete(ev, section) {
-
-    ev.preventDefault();
-    ev.stopPropagation();
-
-    const confirm = await this._alertCtrl.create({
-      header: 'Delete Permission?',
-      message: 'Are you sure you want to delete this Permission?',
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () => {
-
-            this.deleting = true;
-
-            this.permissionService.deletePermission(section).subscribe(async jsonResp => {
-
-              if (jsonResp.operation == 'error') {
-
-                this.deleting = false;
-
-                const alert = await this._alertCtrl.create({
-                  header: 'Deletion Error!',
-                  subHeader: this.authService.errorMessage(jsonResp.message),
-                  buttons: ['OK']
-                });
-                alert.present();
-              }
-
-              if (jsonResp.operation == 'success') {
-                const toast = await this._toastCtrl.create({
-                  message: jsonResp.message,
-                  duration: 3000
-                });
-                toast.present();
-              }
-              this.loadData(this.currentPage, true);
-            }, () => {
-              this.deleting = false;
-            });
-          }
-        },
-        {
-          text: 'No'
-        }
-      ]
-    });
-    confirm.present();
-  }
-
-  async deleteSub(ev, section) {
-
-    ev.preventDefault();
-    ev.stopPropagation();
-
-    const confirm = await this._alertCtrl.create({
-      header: 'Delete Permission?',
-      message: 'Are you sure you want to delete this Permission?',
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () => {
-
-            this.deleting = true;
-
-            this.permissionService.deleteSubPermission(section).subscribe(async jsonResp => {
-
-              if (jsonResp.operation == 'error') {
-
-                this.deleting = false;
-
-                const alert = await this._alertCtrl.create({
-                  header: 'Deletion Error!',
-                  subHeader: this.authService.errorMessage(jsonResp.message),
-                  buttons: ['OK']
-                });
-                alert.present();
-              }
-
-              if (jsonResp.operation == 'success') {
-                const toast = await this._toastCtrl.create({
-                  message: jsonResp.message,
-                  duration: 3000
-                });
-                toast.present();
-              }
-              this.loadData(this.currentPage, true);
-            }, () => {
-              this.deleting = false;
-            });
-          }
-        },
-        {
-          text: 'No'
-        }
-      ]
-    });
-    confirm.present();
+        const toast = await this._toastCtrl.create({
+          message: this.authService.errorMessage(response.message),
+          duration: 3000
+        });
+        toast.present();
+        this.loading = false;
+      }, () => {
+        this.loading = false;
+      });
+    }
   }
 }

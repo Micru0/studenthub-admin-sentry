@@ -3,7 +3,6 @@ import { ModalController, AlertController, ToastController, Platform } from '@io
 import {ActivatedRoute, Router} from '@angular/router';
 // services
 import { AuthService } from 'src/app/providers/auth.service';
-import { CompanyService } from 'src/app/providers/logged-in/company.service';
 import {PermissionService} from 'src/app/providers/logged-in/permission.service';
 import {Staff} from "../../../../../models/staff";
 import {StaffService} from "../../../../../providers/logged-in/staff.service";
@@ -20,10 +19,6 @@ export class AssignPermissionPage implements OnInit {
   public loading = false;
   public loadingCompanies = false;
   public userPermission: { [key: string]: boolean } = {};
-  public companyPermissions: { [key: string]: number[] } = {};
-  public companies: any[] = [];
-  public companySearchTerms: { [key: string]: string } = {}; // sectionId -> searchTerm
-  public filteredCompanies: { [key: string]: any[] } = {}; // sectionId -> companies[]
 
   public totalCount = 0;
   public pageCount = 0;
@@ -43,7 +38,6 @@ export class AssignPermissionPage implements OnInit {
     public activateRoute: ActivatedRoute,
     public permissionService: PermissionService,
     public staffService: StaffService,
-    private companyService: CompanyService,
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _toastCtrl: ToastController,
@@ -62,7 +56,6 @@ export class AssignPermissionPage implements OnInit {
     this.loadPermission();
     this.loadData(this.currentPage);
     this.loadUserPermission();
-    this.loadCompanies();
 
 
   }
@@ -113,15 +106,11 @@ export class AssignPermissionPage implements OnInit {
     });
   }
   async loadUserPermission() {
-    // include company assignments as well if available via new API
     this.permissionService.userPermission(this.type, this.user_id).subscribe(response => {
       if (response) {
         // First, process all sub-section permissions
         response.forEach(res => {
           this.userPermission[res.permission_sub_section_uuid] = true;
-          if (res.companies && res.companies.length) {
-            this.companyPermissions[res.permission_uuid] = res.companies;
-          }
         });
       }
     }, () => {
@@ -130,57 +119,6 @@ export class AssignPermissionPage implements OnInit {
     });
   }
 
-  loadCompanies() {
-    this.loadingCompanies = true;
-    this.companyService.list(1, '', {
-      fields: 'company_id,company_name,company_email',
-      'pagination': 0,
-      'isParent': 0
-    }).subscribe(companies => {
-      this.companies = companies.body || [];
-      // Initialize filtered companies for all sections that need it
-      this.permissionSection.forEach(section => {
-        if (this.isCompanySpecific(section)) {
-          this.filterCompanies(section.permission_uuid);
-        }
-      });
-      this.loadingCompanies = false;
-    }, () => this.loadingCompanies = false);
-  }
-
-  /**
-   * Filter companies based on search term for a specific section
-   */
-  filterCompanies(sectionId: string, event?: any) {
-    // If event is present, update the search term from the event's value
-    if (event && event.target && typeof event.target.value === 'string') {
-      this.companySearchTerms[sectionId] = event.target.value;
-    }
-    const searchTerm = (this.companySearchTerms[sectionId] || '').toLowerCase().trim();
-    const selectedCompanyIds = this.companyPermissions[sectionId] || [];
-    const selectedCompanies = this.companies.filter(c => selectedCompanyIds.includes(c.company_id));
-
-    let matchingCompanies: any[];
-    if (!searchTerm) {
-      // Show all companies, but selected at the top
-      matchingCompanies = this.companies.filter(company => !selectedCompanyIds.includes(company.company_id));
-    } else {
-      // Filter by name or email
-      matchingCompanies = this.companies.filter(company =>
-        !selectedCompanyIds.includes(company.company_id) && (
-          company.company_name?.toLowerCase().includes(searchTerm) ||
-          company.company_email?.toLowerCase().includes(searchTerm)
-        )
-      );
-    }
-    // Always show selected companies at the top
-    this.filteredCompanies[sectionId] = [...selectedCompanies, ...matchingCompanies];
-  }
-
-  getSelectedCompanyText(permissionUuid: string): string {
-    const selected = this.companyPermissions[permissionUuid] || [];
-    return selected.length > 0 ? `${selected.length} companies selected` : 'Select companies';
-  }
 
   /**
    * Check if a section has company-specific permissions
@@ -219,7 +157,7 @@ export class AssignPermissionPage implements OnInit {
    * Loads the create page
    */
   async save() {
-    this.permissionService.setUserPermission(this.userPermission, this.type, this.user_id, this.companyPermissions).subscribe(async response => {
+    this.permissionService.setUserPermission(this.userPermission, this.type, this.user_id).subscribe(async response => {
       if (response.operation == 'success') {
         this.loadData(1);
       }

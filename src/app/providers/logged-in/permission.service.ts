@@ -67,9 +67,10 @@ export class PermissionService {
    * update note
    * @param model
    */
-  updateSection(name, uuid): Observable<any>{
+  updateSection(uuid, {section_name, companies}): Observable<any>{
     return this.authhttp.patch(`${this.noteEndpoint}/${uuid}`, {
-      section_name: name
+      section_name,
+      companies
     });
   }
 
@@ -80,11 +81,10 @@ export class PermissionService {
     });
   }
 
-  setUserPermission(permission, type, id, companies): Observable<any>{
+  setUserPermission(permission, type, id): Observable<any>{
     return this.authhttp.patch(`${this.noteEndpoint}/set-permission/${id}`, {
       permission,
-      type,
-      companies
+      type
     });
   }
 
