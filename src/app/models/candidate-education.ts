@@ -2,6 +2,8 @@ import { Degree } from "./degree";
 import { Major } from "./major";
 import { University } from "./university";
 
+export type EducationType = 'standard' | 'custom_university' | 'studying_abroad' | 'not_studying';
+
 export class CandidateEducation {
     education_uuid: string;
     candidate_id: number;
@@ -15,4 +17,7 @@ export class CandidateEducation {
     major: Major;
     degree: Degree;
     university: University;
+    custom_major?: string | null;
+    education_type?: EducationType;
+    custom_institution_name?: string | null;
 }
