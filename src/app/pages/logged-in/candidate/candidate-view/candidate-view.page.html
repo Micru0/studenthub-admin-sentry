@@ -202,12 +202,21 @@
       <ion-item>
         <div tabindex="0"></div>
         <ion-label>
-          <h5>University</h5>
-          <p *ngIf="candidate.university">
-            {{ candidate.university.university_name_en }}
-            <span *ngIf="!candidate.university.university_name_en">{{ candidate.university.university_name_ar }}</span>
-          </p>
-          <p *ngIf="!candidate.university">-</p>
+          <h5 >University</h5>
+          <ng-container *ngIf="candidate.candidateEducations && candidate.candidateEducations.length > 0">
+            <ng-container *ngFor="let education of candidate.candidateEducations">
+              <p>
+                <ng-container *ngIf="education.education_type === 'standard'">
+                  {{ education.university.university_name_en }}
+                  <span *ngIf="!education.university.university_name_en">{{ education.university.university_name_ar }}</span>
+                </ng-container>
+                <ng-container *ngIf="education.education_type === 'custom_university' || education.education_type === 'studying_abroad'">
+                  {{ education.custom_institution_name }}
+                </ng-container>
+              </p>
+            </ng-container>
+          </ng-container>
+          <p *ngIf="!candidate.candidateEducations">-</p>
         </ion-label>
       </ion-item>
 
