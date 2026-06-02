@@ -11,6 +11,7 @@ export const environment = {
   apiEndpoint: 'https://admin.api.dev.studenthub.co/v1',
   candidateAppUrl: "https://student.dev.studenthub.co/",
   employerAppUrl: "https://employer.dev.studenthub.co/",
+  sentryDsn: 'https://6014915ff760cfec27ecbf605511ccd6@o70039.ingest.us.sentry.io/4511495402225664',
 };
 
 /*
