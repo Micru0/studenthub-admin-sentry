@@ -1,11 +1,24 @@
-const { deleteSourceMaps, getSentryRelease, runSentryCli } = require('./sentry-release-utils');
+const { deleteSourceMaps, getProjectSlug, getSentryRelease, runSentryCli } = require('./sentry-release-utils');
 
 const buildOutputPath = './www';
 const sentryRelease = getSentryRelease();
-const sentryOrg = process.env.SENTRY_ORG;
-const sentryProject = process.env.SENTRY_PROJECT;
+const sentryOrg = (process.env.SENTRY_ORG || '').trim();
+const sentryProject = getProjectSlug();
 const sentryEnvironment = process.env.SENTRY_ENVIRONMENT || 'production';
 const canUploadSourceMaps = Boolean(process.env.SENTRY_AUTH_TOKEN && sentryOrg && sentryProject && sentryRelease);
+
+function createRelease() {
+	try {
+		runSentryCli(['releases', 'new', sentryRelease, '--org', sentryOrg, '--project', sentryProject]);
+	} catch (error) {
+		if (/already exists/i.test(error.message)) {
+			console.warn(`Sentry release already exists: ${sentryRelease}`);
+			return;
+		}
+
+		throw error;
+	}
+}
 
 function runOptionalSentryCli(args, label) {
 	try {
@@ -21,7 +34,7 @@ try {
 	} else {
 		console.log(`Uploading Sentry source maps for ${sentryRelease} to ${sentryOrg}/${sentryProject}.`);
 
-		runOptionalSentryCli(['releases', 'new', sentryRelease, '--org', sentryOrg, '--project', sentryProject], 'Sentry release creation');
+		createRelease();
 		runOptionalSentryCli(['releases', 'set-commits', sentryRelease, '--auto', '--org', sentryOrg, '--project', sentryProject], 'Sentry set-commits');
 		runSentryCli(['sourcemaps', 'inject', buildOutputPath, '--org', sentryOrg, '--project', sentryProject]);
 		runSentryCli(['sourcemaps', 'upload', buildOutputPath, '--release', sentryRelease, '--org', sentryOrg, '--project', sentryProject]);

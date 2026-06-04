@@ -5,7 +5,9 @@ const { spawnSync } = require('child_process');
 const DEFAULT_PROJECT = 'sh-admin-app';
 
 function getProjectSlug() {
-	return process.env.SENTRY_PROJECT || DEFAULT_PROJECT;
+	const sentryProject = (process.env.SENTRY_PROJECT || '').trim();
+
+	return sentryProject || DEFAULT_PROJECT;
 }
 
 function getSentryRelease() {
@@ -57,8 +59,12 @@ function deleteSourceMaps(directory) {
 			}
 
 			if (entry.isFile() && entry.name.endsWith('.map')) {
-				fs.unlinkSync(entryPath);
-				deletedCount += 1;
+				try {
+					fs.unlinkSync(entryPath);
+					deletedCount += 1;
+				} catch (error) {
+					console.warn(`Unable to delete source map ${entryPath}: ${error.message}`);
+				}
 			}
 		}
 	}
@@ -69,13 +75,28 @@ function deleteSourceMaps(directory) {
 
 function runSentryCli(args) {
 	const result = spawnSync('sentry-cli', args, {
-		stdio: 'inherit',
+		encoding: 'utf8',
 		shell: process.platform === 'win32',
 	});
+	const output = `${result.stdout || ''}${result.stderr || ''}`;
+
+	if (result.stdout) {
+		process.stdout.write(result.stdout);
+	}
+
+	if (result.stderr) {
+		process.stderr.write(result.stderr);
+	}
+
+	if (result.error) {
+		throw new Error(`Unable to run sentry-cli: ${result.error.message}`);
+	}
 
 	if (result.status !== 0) {
-		throw new Error(`sentry-cli ${args.join(' ')} failed`);
+		throw new Error(`sentry-cli ${args.join(' ')} failed${output ? `: ${output}` : ''}`);
 	}
+
+	return output;
 }
 
 module.exports = {

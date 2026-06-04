@@ -5,18 +5,20 @@
   "homepage": "http://bawes.net/",
   "scripts": {
     "ng": "ng",
-    "prebuild": "node scripts/sentry-prebuild.js",
+    "prebuild": "npm run sentry:prebuild",
     "start": "ng serve",
     "build": "ng build",
-    "postbuild": "node scripts/sentry-postbuild.js",
+    "postbuild": "npm run sentry:postbuild",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
     "serve-kk": "ionic serve --configuration=krushn",
-    "build:devserver": "ng build --configuration=dev",
-    "build:production": "ng build --configuration=production",
+    "build:devserver": "npm run sentry:prebuild && ng build --configuration=dev && npm run sentry:postbuild",
+    "build:production": "npm run sentry:prebuild && ng build --configuration=production && npm run sentry:postbuild",
     "ionic:serve:khalid": "ionic serve --configuration=khalid",
-    "sentry:sourcemaps": "node scripts/sentry-postbuild.js"
+    "sentry:prebuild": "node scripts/sentry-prebuild.js",
+    "sentry:postbuild": "node scripts/sentry-postbuild.js",
+    "sentry:sourcemaps": "npm run sentry:postbuild"
   },
   "private": true,
   "dependencies": {
