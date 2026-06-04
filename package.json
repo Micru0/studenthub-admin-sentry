@@ -5,8 +5,10 @@
   "homepage": "http://bawes.net/",
   "scripts": {
     "ng": "ng",
+    "prebuild": "node scripts/sentry-prebuild.js",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "node scripts/sentry-postbuild.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
@@ -14,7 +16,7 @@
     "build:devserver": "ng build --configuration=dev",
     "build:production": "ng build --configuration=production",
     "ionic:serve:khalid": "ionic serve --configuration=khalid",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org pogi --project sh-admin-app ./www && sentry-cli sourcemaps upload --org pogi --project sh-admin-app ./www"
+    "sentry:sourcemaps": "node scripts/sentry-postbuild.js"
   },
   "private": true,
   "dependencies": {
